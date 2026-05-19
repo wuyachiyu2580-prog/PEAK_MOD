@@ -1,0 +1,9 @@
+{
+    "name": "ItemInfoCN",
+    "version_number": "1.0.0",
+    "website_url": "",
+    "description": "A Chinese-localized item info display mod for PEAK. Shows detailed item effects, afflictions, weight, uses, and cooking status with color-coded Chinese text when holding any item.",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.2403"
+    ]
+}

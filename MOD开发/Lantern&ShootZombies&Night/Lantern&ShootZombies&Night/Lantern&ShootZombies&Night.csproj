@@ -1,0 +1,106 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>net4.7.2</TargetFramework>
+    <AssemblyName>Lantern_ShootZombies_Night</AssemblyName>
+    <Version>0.2.1</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <!-- 编译后直接输出到测试环境 plugins 目录（用户手动同步到正式游戏目录） -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\plugins\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- BepInEx and Harmony Core Dependencies -->
+    <Reference Include="BepInEx">
+      <HintPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\core\BepInEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\core\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="pworld">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\pworld.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+
+    <!-- Unity Engine Dependencies -->
+    <Reference Include="UnityEngine">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+
+    <!-- Game-Specific and Mod Dependencies -->
+    <Reference Include="Assembly-CSharp">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Sirenix.Serialization.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zorro.Core.Runtime">
+        <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Zorro.Core.Runtime.dll</HintPath>
+        <Private>False</Private>
+    </Reference>
+    <Reference Include="PhotonRealtime">
+        <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\PhotonRealtime.dll</HintPath>
+        <Private>False</Private>
+    </Reference>
+    <Reference Include="PhotonUnityNetworking">
+        <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\PhotonUnityNetworking.dll</HintPath>
+        <Private>False</Private>
+    </Reference>
+    <Reference Include="Photon3Unity3D">
+        <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Photon3Unity3D.dll</HintPath>
+        <Private>False</Private>
+    </Reference>
+    <Reference Include="BlackPeakRemix">
+      <HintPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\plugins\Hnsk_Noah-BlackPeakRemix\BlackPeakRemix.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Thanks.ShootZombies">
+        <HintPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\plugins\Thanks-ShootZombies\Thanks.ShootZombies.dll</HintPath>
+        <Private>False</Private>
+    </Reference>
+
+  </ItemGroup>
+
+  <!-- PostBuild no longer needed: OutputPath already points to plugins folder -->
+
+</Project>

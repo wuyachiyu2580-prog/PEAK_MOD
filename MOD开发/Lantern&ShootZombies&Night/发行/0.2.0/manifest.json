@@ -1,0 +1,11 @@
+{
+    "name": "Lantern_ShootZombies_Night",
+    "version_number": "0.2.0",
+    "website_url": "",
+    "description": "Lantern survival overhaul. Kill zombies or light a campfire to refuel your lantern, blow the bugle to refill the whole team. Bilingual (CN/EN). Requires ShootZombies 1.3.3.",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.75301",
+        "Thanks-ShootZombies-1.3.3",
+        "Hnsk_Noah-BlackPeakRemix-2.1.8"
+    ]
+}

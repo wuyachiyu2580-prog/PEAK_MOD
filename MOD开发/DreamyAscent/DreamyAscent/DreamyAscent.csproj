@@ -1,0 +1,121 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>DreamyAscent</AssemblyName>
+    <RootNamespace>DreamyAscent</RootNamespace>
+    <Version>0.1.0</Version>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\terrain\BepInEx\plugins\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx">
+      <HintPath>C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\terrain\BepInEx\core\BepInEx.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\terrain\BepInEx\core\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zorro.Core.Runtime">
+      <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Zorro.Core.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Data\DaObjectCatalogData.cs" />
+    <Compile Include="Data\DaObjectRegistryData.cs" />
+    <Compile Include="Data\DaParentChildRegistryData.cs" />
+    <Compile Include="Data\DaSpecialSceneObjectData.cs" />
+    <Compile Include="Data\DaTemplateSnapshotData.cs" />
+    <Compile Include="Data\DaTerrainData.cs" />
+    <Compile Include="Helpers\DaLocalization.cs" />
+    <Compile Include="Helpers\DaLog.cs" />
+    <Compile Include="Helpers\DaPathResolver.cs" />
+    <Compile Include="Plugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DaDiagnosticService.cs" />
+    <Compile Include="Services\DaGeneratedChildrenSnapshotDiagnosticService.cs" />
+    <Compile Include="Services\DaImportExportService.cs" />
+    <Compile Include="Services\DaObjectCatalogDiagnosticService.cs" />
+    <Compile Include="Services\DaObjectCatalogService.cs" />
+    <Compile Include="Services\DaObjectRegistryService.cs" />
+    <Compile Include="Services\DaObjectReferenceDiagnosticService.cs" />
+    <Compile Include="Services\DaParentChildRegistryService.cs" />
+    <Compile Include="Services\DaPlacementRuntimeService.cs" />
+    <Compile Include="Services\DaPreviewPoseService.cs" />
+    <Compile Include="Services\DaCompatibilityPatchService.cs" />
+    <Compile Include="Services\DaTemplateBaselineService.cs" />
+    <Compile Include="Services\DaTemplateSnapshotDiagnosticService.cs" />
+    <Compile Include="Services\DaRuntimeController.cs" />
+    <Compile Include="Services\DaRuntimeEditService.cs" />
+    <Compile Include="Services\DaSaveService.cs" />
+    <Compile Include="Services\DaSpecialSceneObjectService.cs" />
+    <Compile Include="Services\DaTemplateSnapshotService.cs" />
+    <Compile Include="Services\DaTerrainExportService.cs" />
+    <Compile Include="UI\DaCustomiserWindow.cs" />
+    <Compile Include="UI\DaCustomiserWindow.Layout.cs" />
+    <Compile Include="UI\DaMapPreview.cs" />
+    <Compile Include="UI\DaSceneHighlighter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\data\map-data\generated\object-registry-input.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>DreamyAscent Data\object-registry-input.json</TargetPath>
+    </None>
+    <None Include="..\data\map-data\generated\template-snapshots.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>DreamyAscent Data\template-snapshots.json</TargetPath>
+    </None>
+    <None Include="..\data\map-data\generated\parent-child-registry.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>DreamyAscent Data\parent-child-registry.json</TargetPath>
+    </None>
+    <None Include="..\DreamyAscent Data\localization.zh-CN.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>DreamyAscent Data\localization.zh-CN.json</TargetPath>
+    </None>
+    <None Include="..\DreamyAscent PreviewPoses.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>DreamyAscent PreviewPoses.json</TargetPath>
+    </None>
+  </ItemGroup>
+
+</Project>
+
+

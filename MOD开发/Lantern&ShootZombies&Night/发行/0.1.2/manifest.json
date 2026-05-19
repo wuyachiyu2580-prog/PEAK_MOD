@@ -1,0 +1,11 @@
+{
+    "name": "Lantern_ShootZombies_Night",
+    "version_number": "0.1.2",
+    "website_url": "",
+    "description": "Lantern as survival core: configurable fuel, warmth restore from actions, cold resistance, dynamic drain, HUD panel, auto-upgrade system, and multiplayer sync. Bilingual (CN/EN).",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.2403",
+        "Thanks-ShootZombies-1.2.11",
+        "Hnsk_Noah-BlackPeakRemix-2.1.8"
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    "name": "WhySoLaggy",
+    "version_number": "1.0.1",
+    "website_url": "",
+    "description": "Find which mod causes lag and who is bombing your room. FPS tracking, plugin timing, patch profiling, and real-time on-screen alerts.",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.2403"
+    ]
+}
