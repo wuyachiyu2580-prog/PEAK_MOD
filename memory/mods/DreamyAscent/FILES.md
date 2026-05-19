@@ -1,6 +1,6 @@
 ﻿# DreamyAscent Files
 
-更新时间：2026-05-17
+更新时间：2026-05-20
 
 ## 路径
 
@@ -46,7 +46,7 @@ dotnet build "C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\DreamyAscent\Dre
 - `DaLocalization.cs`：UI/结构名称翻译；`TranslateOrOriginal` 用于 catalog 这类大量 prefab/material 名称，避免未翻译素材名刷日志；中文本地化现在外置优先，DLL 字典只保留 fallback；含区段模板库编号 prefab 的规则翻译。
 - `DreamyAscent Data\localization.zh-CN.json`：当前中文本地化主表，后续新增中文优先补这里。
 - `Plugin.cs`：插件启动入口，负责初始化本地化加载流程。
-- `DaRuntimeEditService.cs`：运行时生成、清理、分组刷新。
+- `DaRuntimeEditService.cs`：运行时生成、清理、分组刷新；2026-05-20 官方 `Generate Segment` 逻辑为整段 runtime preclean、grouper Early-before-Late 排序、`RunAll(true)` 后 inactive-safe Late step supplement、整段 runtime postrefresh。Jungle `Pops_Plat` / `Props_Wall` 空段修复点在 `CollectLateStepsForGrouper()` 与手动父链查找最近 `PropGrouper`。
 - `DaRuntimeEditService.cs`：导入时会按 `SegmentName` 复制 `SubArea` / `PlacementRule` 配置；旧 JSON 无字段不清空，新 JSON 空数组可显式清空。
 - `DaTerrainExportService.cs`：运行时扫描、segment root 解析、fallback 变体过滤；也负责生成前按当前场景重绑 `SourceSegment` / `SourceRoots` / `PropGrouper` / `LevelGenStep` / constraint 引用，避免导入或空白清理后生成入口拿到空引用。
 - `DaDiagnostics.cs` 或同类诊断文件：导出扫描、映射、运行状态和异常信息。

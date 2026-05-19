@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
-using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using DreamyAscent.Data;
 using DreamyAscent.Helpers;
@@ -88,6 +87,16 @@ namespace DreamyAscent.Services
 
         private static bool RunGrouper(DaPropGrouperData grouper, DaSegmentData segment, string context)
         {
+            return RunGrouper(grouper, segment, context, true, true);
+        }
+
+        private static bool RunGrouper(
+            DaPropGrouperData grouper,
+            DaSegmentData segment,
+            string context,
+            bool cleanupRuntimeSpawnsBeforeGeneration,
+            bool refreshRuntimeSpawnsAfterGeneration)
+        {
             if (grouper == null || grouper.SourceObject == null)
             {
                 DaLog.Warn("Cannot generate grouper because runtime grouper reference is missing.");
@@ -98,15 +107,23 @@ namespace DreamyAscent.Services
             {
                 GrouperGenerationSnapshot before = BuildGrouperGenerationSnapshot(grouper);
                 LogGrouperGenerationSnapshot("before", segment, grouper, before, context);
-                ClearSpawnedRuntimeItemsBeforeGeneration(segment, grouper, context);
-                ClearSpawnedRuntimeRopesBeforeGeneration(segment, grouper, context);
+                if (cleanupRuntimeSpawnsBeforeGeneration)
+                {
+                    ClearSpawnedRuntimeItemsBeforeGeneration(segment, grouper, context);
+                    ClearSpawnedRuntimeRopesBeforeGeneration(segment, grouper, context);
+                }
+
                 if (!RunGrouperGeneration(grouper.SourceObject))
                 {
                     return false;
                 }
 
                 int assignedViewIds = AssignUnassignedPhotonViewIdsForGrouper(grouper, segment, context);
-                RefreshRuntimeSpawnsAfterGeneration(segment, grouper, context);
+                if (refreshRuntimeSpawnsAfterGeneration)
+                {
+                    RefreshRuntimeSpawnsAfterGeneration(segment, grouper, context);
+                }
+
                 if (assignedViewIds > 0)
                 {
                     TrySendOutgoingPhotonCommands();
@@ -211,6 +228,7 @@ namespace DreamyAscent.Services
                     "/" + (baseline != null ? baseline.SnapshotGrouperCount.ToString(CultureInfo.InvariantCulture) : "0"));
             }
 
+            List<DaPropGrouperData> groupersToGenerate = new List<DaPropGrouperData>();
             for (int index = 0; index < segment.Groupers.Count; index++)
             {
                 DaPropGrouperData grouper = segment.Groupers[index];
@@ -233,13 +251,124 @@ namespace DreamyAscent.Services
                     continue;
                 }
 
-                if (RunGrouper(grouper, segment, "official-segment"))
+                groupersToGenerate.Add(grouper);
+            }
+
+            groupersToGenerate.Sort(CompareGroupersForOfficialSegmentGeneration);
+            LogOfficialSegmentGrouperOrder(segment, groupersToGenerate);
+
+            ClearSegmentRuntimeSpawnsBeforeOfficialGeneration(segment, groupersToGenerate, "official-segment");
+
+            for (int index = 0; index < groupersToGenerate.Count; index++)
+            {
+                DaPropGrouperData grouper = groupersToGenerate[index];
+                if (RunGrouper(grouper, segment, "official-segment", false, false))
                 {
                     generated++;
                 }
             }
 
+            RefreshSegmentRuntimeSpawnsAfterOfficialGeneration(segment, groupersToGenerate, "official-segment");
+
             return generated;
+        }
+
+        private static int CompareGroupersForOfficialSegmentGeneration(DaPropGrouperData left, DaPropGrouperData right)
+        {
+            int leftOrder = GetOfficialSegmentGenerationOrder(left);
+            int rightOrder = GetOfficialSegmentGenerationOrder(right);
+            if (leftOrder != rightOrder)
+            {
+                return leftOrder.CompareTo(rightOrder);
+            }
+
+            return 0;
+        }
+
+        private static int GetOfficialSegmentGenerationOrder(DaPropGrouperData grouper)
+        {
+            PropGrouper source = grouper != null ? grouper.SourceObject : null;
+            if (source == null)
+            {
+                return 2;
+            }
+
+            return source.timing == PropGrouper.PropGrouperTiming.Early ? 0 : 1;
+        }
+
+        private static void LogOfficialSegmentGrouperOrder(DaSegmentData segment, List<DaPropGrouperData> groupers)
+        {
+            StringBuilder builder = new StringBuilder();
+            for (int index = 0; groupers != null && index < groupers.Count; index++)
+            {
+                DaPropGrouperData grouper = groupers[index];
+                if (grouper == null || grouper.SourceObject == null)
+                {
+                    continue;
+                }
+
+                if (builder.Length > 0)
+                {
+                    builder.Append(" -> ");
+                }
+
+                builder.Append(grouper.GrouperName ?? grouper.SourceObject.name);
+                builder.Append("(");
+                builder.Append(grouper.SourceObject.timing);
+                builder.Append(")");
+            }
+
+            DaLog.Info("Generation trace: official segment grouper order. segment=" +
+                (segment != null ? segment.SegmentName ?? string.Empty : string.Empty) +
+                ", order=" + builder);
+        }
+
+        private static void ClearSegmentRuntimeSpawnsBeforeOfficialGeneration(DaSegmentData segment, List<DaPropGrouperData> groupers, string context)
+        {
+            int itemDestroyed = 0;
+            int ropeDestroyed = 0;
+            int grouperCount = 0;
+
+            for (int index = 0; groupers != null && index < groupers.Count; index++)
+            {
+                DaPropGrouperData grouper = groupers[index];
+                if (grouper == null)
+                {
+                    continue;
+                }
+
+                grouperCount++;
+                itemDestroyed += ClearSpawnedRuntimeItemsBeforeGeneration(segment, grouper, context + "-segment-preclean");
+                ropeDestroyed += ClearSpawnedRuntimeRopesBeforeGeneration(segment, grouper, context + "-segment-preclean");
+            }
+
+            DaLog.Info("Generation trace: segment runtime spawns preclean complete." +
+                " context=" + (context ?? string.Empty) +
+                ", segment=" + (segment != null ? segment.SegmentName ?? string.Empty : string.Empty) +
+                ", groupers=" + grouperCount.ToString(CultureInfo.InvariantCulture) +
+                ", itemDestroyed=" + itemDestroyed.ToString(CultureInfo.InvariantCulture) +
+                ", ropeDestroyed=" + ropeDestroyed.ToString(CultureInfo.InvariantCulture));
+        }
+
+        private static void RefreshSegmentRuntimeSpawnsAfterOfficialGeneration(DaSegmentData segment, List<DaPropGrouperData> groupers, string context)
+        {
+            int grouperCount = 0;
+            for (int index = 0; groupers != null && index < groupers.Count; index++)
+            {
+                DaPropGrouperData grouper = groupers[index];
+                if (grouper == null)
+                {
+                    continue;
+                }
+
+                grouperCount++;
+                RefreshRuntimeSpawnsAfterGeneration(segment, grouper, context + "-segment-postrefresh");
+            }
+
+            DaLog.Info("Generation trace: segment runtime spawns postrefresh complete." +
+                " context=" + (context ?? string.Empty) +
+                ", segment=" + (segment != null ? segment.SegmentName ?? string.Empty : string.Empty) +
+                ", groupers=" + grouperCount.ToString(CultureInfo.InvariantCulture));
         }
 
         private static int ClearSpawnedRuntimeItemsBeforeGeneration(DaSegmentData segment, DaPropGrouperData grouper, string context)
@@ -1077,22 +1206,154 @@ namespace DreamyAscent.Services
                 return false;
             }
 
-            grouper.RunAll(true);
-            int lateSteps = RunLateStepsAfterOfficialRunIfNeeded(grouper);
-            DaLog.Info("Generation trace: official grouper pipeline used. grouper=" + grouper.name +
-                ", timing=" + grouper.timing +
-                ", lateSupplementSteps=" + lateSteps.ToString(CultureInfo.InvariantCulture));
-            return true;
+            List<RandomMaterialFreeze> randomMaterialFreezes = FreezeRandomMaterialModifiers(grouper);
+            try
+            {
+                grouper.RunAll(true);
+                int lateSteps = RunLateStepsAfterOfficialRunIfNeeded(grouper);
+                DaLog.Info("Generation trace: official grouper pipeline used. grouper=" + grouper.name +
+                    ", timing=" + grouper.timing +
+                    ", lateSupplementSteps=" + lateSteps.ToString(CultureInfo.InvariantCulture) +
+                    ", frozenRandomMaterials=" + randomMaterialFreezes.Count.ToString(CultureInfo.InvariantCulture));
+                return true;
+            }
+            finally
+            {
+                RestoreRandomMaterialModifiers(randomMaterialFreezes);
+            }
+        }
+
+        private static List<RandomMaterialFreeze> FreezeRandomMaterialModifiers(PropGrouper grouper)
+        {
+            List<RandomMaterialFreeze> freezes = new List<RandomMaterialFreeze>();
+            if (grouper == null)
+            {
+                return freezes;
+            }
+
+            PropSpawner[] spawners = grouper.GetComponentsInChildren<PropSpawner>(true);
+            for (int spawnerIndex = 0; spawners != null && spawnerIndex < spawners.Length; spawnerIndex++)
+            {
+                PropSpawner spawner = spawners[spawnerIndex];
+                if (spawner == null || spawner.modifiers == null)
+                {
+                    continue;
+                }
+
+                for (int modifierIndex = 0; modifierIndex < spawner.modifiers.Count; modifierIndex++)
+                {
+                    PropSpawnerMod modifier = spawner.modifiers[modifierIndex];
+                    if (modifier == null || !IsTypeNamed(modifier.GetType(), "PSM_SetRandomMaterial"))
+                    {
+                        continue;
+                    }
+
+                    FieldInfo matsField = GetFieldInfo(modifier.GetType(), "mats");
+                    Material[] mats = matsField != null ? matsField.GetValue(modifier) as Material[] : null;
+                    if (mats == null || mats.Length <= 1)
+                    {
+                        continue;
+                    }
+
+                    Material[] selectedMaterials = FindCurrentMaterialsForRandomMaterialModifier(spawner, mats);
+                    if (selectedMaterials == null || selectedMaterials.Length == 0)
+                    {
+                        continue;
+                    }
+
+                    freezes.Add(new RandomMaterialFreeze(modifier, matsField, mats));
+                    matsField.SetValue(modifier, selectedMaterials);
+                }
+            }
+
+            if (freezes.Count > 0)
+            {
+                DaLog.Info("Generation trace: froze random material modifiers for official generation. grouper=" +
+                    grouper.name + ", modifiers=" + freezes.Count.ToString(CultureInfo.InvariantCulture));
+            }
+
+            return freezes;
+        }
+
+        private static void RestoreRandomMaterialModifiers(List<RandomMaterialFreeze> freezes)
+        {
+            for (int index = 0; freezes != null && index < freezes.Count; index++)
+            {
+                RandomMaterialFreeze freeze = freezes[index];
+                if (freeze.Modifier == null || freeze.MatsField == null)
+                {
+                    continue;
+                }
+
+                freeze.MatsField.SetValue(freeze.Modifier, freeze.OriginalMaterials);
+            }
+        }
+
+        private static Material[] FindCurrentMaterialsForRandomMaterialModifier(PropSpawner spawner, Material[] candidateMaterials)
+        {
+            if (spawner == null || candidateMaterials == null || candidateMaterials.Length == 0)
+            {
+                return null;
+            }
+
+            Renderer[] renderers = spawner.GetComponentsInChildren<Renderer>(true);
+
+            HashSet<Material> seenMaterials = new HashSet<Material>();
+            for (int rendererIndex = 0; renderers != null && rendererIndex < renderers.Length; rendererIndex++)
+            {
+                Renderer renderer = renderers[rendererIndex];
+                if (renderer == null || renderer.sharedMaterials == null)
+                {
+                    continue;
+                }
+
+                Material[] sharedMaterials = renderer.sharedMaterials;
+                for (int materialIndex = 0; materialIndex < sharedMaterials.Length; materialIndex++)
+                {
+                    Material material = sharedMaterials[materialIndex];
+                    if (material == null || !ArrayContainsMaterial(candidateMaterials, material))
+                    {
+                        continue;
+                    }
+
+                    seenMaterials.Add(material);
+                }
+            }
+
+            if (seenMaterials.Count == 0)
+            {
+                return null;
+            }
+
+            List<Material> selectedMaterials = new List<Material>();
+            for (int index = 0; index < candidateMaterials.Length; index++)
+            {
+                Material candidate = candidateMaterials[index];
+                if (candidate != null && seenMaterials.Contains(candidate))
+                {
+                    selectedMaterials.Add(candidate);
+                }
+            }
+
+            return selectedMaterials.ToArray();
+        }
+
+        private static bool ArrayContainsMaterial(Material[] materials, Material material)
+        {
+            for (int index = 0; materials != null && index < materials.Length; index++)
+            {
+                if (materials[index] == material)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static int RunLateStepsAfterOfficialRunIfNeeded(PropGrouper grouper)
         {
             if (grouper == null)
-            {
-                return 0;
-            }
-
-            if (HasExternalPropGrouperRunAllPostfix())
             {
                 return 0;
             }
@@ -1129,7 +1390,7 @@ namespace DreamyAscent.Services
             for (int index = 0; steps != null && index < steps.Length; index++)
             {
                 LevelGenStep step = steps[index];
-                PropGrouper nearestGrouper = step != null ? step.GetComponentInParent<PropGrouper>() : null;
+                PropGrouper nearestGrouper = step != null ? FindNearestParentPropGrouperIncludingInactive(step.transform) : null;
                 if (nearestGrouper != null && nearestGrouper.timing == PropGrouper.PropGrouperTiming.Late)
                 {
                     result.Add(step);
@@ -1139,34 +1400,18 @@ namespace DreamyAscent.Services
             return result;
         }
 
-        private static bool HasExternalPropGrouperRunAllPostfix()
+        private static PropGrouper FindNearestParentPropGrouperIncludingInactive(Transform transform)
         {
-            try
+            for (Transform current = transform; current != null; current = current.parent)
             {
-                MethodInfo runAll = AccessTools.Method(typeof(PropGrouper), "RunAll");
-                Patches patches = runAll != null ? Harmony.GetPatchInfo(runAll) : null;
-                if (patches == null || patches.Postfixes == null)
+                PropGrouper grouper = current.GetComponent<PropGrouper>();
+                if (grouper != null)
                 {
-                    return false;
-                }
-
-                for (int index = 0; index < patches.Postfixes.Count; index++)
-                {
-                    Patch patch = patches.Postfixes[index];
-                    string owner = patch != null ? patch.owner ?? string.Empty : string.Empty;
-                    if (owner.IndexOf("terraincustomiser", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        owner.IndexOf("terrainrandomiser", StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        return true;
-                    }
+                    return grouper;
                 }
             }
-            catch (Exception ex)
-            {
-                DaLog.OnceWarn("generation-trace-harmony-postfix-check-failed", "Failed to inspect PropGrouper.RunAll patches: " + ex.Message);
-            }
 
-            return false;
+            return null;
         }
 
         private static bool VerifyGrouperForRuntimeRun(PropGrouper grouper)
@@ -4262,6 +4507,22 @@ namespace DreamyAscent.Services
             public DaLevelGenStepData Step { get; set; }
 
             public DaConstraintData Constraint { get; set; }
+        }
+
+        private sealed class RandomMaterialFreeze
+        {
+            public RandomMaterialFreeze(PropSpawnerMod modifier, FieldInfo matsField, Material[] originalMaterials)
+            {
+                Modifier = modifier;
+                MatsField = matsField;
+                OriginalMaterials = originalMaterials;
+            }
+
+            public PropSpawnerMod Modifier { get; }
+
+            public FieldInfo MatsField { get; }
+
+            public Material[] OriginalMaterials { get; }
         }
 
         private sealed class SegmentGenerationSnapshot

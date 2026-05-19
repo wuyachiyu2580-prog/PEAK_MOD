@@ -1,6 +1,6 @@
 ﻿# DreamyAscent Decisions
 
-更新时间：2026-05-15
+更新时间：2026-05-20
 
 ## 已确认决策
 
@@ -55,6 +55,7 @@
 - 当前如果“生成本段”后只剩地形，优先先判断当前编辑模式是不是 `CustomBlank`。`CustomBlank` 本身就不会跑官方 `PropGrouper`，因此只剩地形可能是模式语义而不是生成失败。
 - `CustomBlank` 不能无脑清掉承载地形骨架的生成组。当前先以白名单保留 `Desert_Segment` 的 `Platteau` 底板本体，但会清掉 `Platteau/Start` 子物和内嵌 `Canyon` grouper 生成物；不再保留顶层 `Rocks`，否则空白自定义会留下过多官方岩石。Caldera 按用户要求只保留岩浆机制，`LavaRivers` / `Rocks` 等官方生成组不再保留。后续可继续细分结构岩、装饰岩和机制对象。
 - 官方模板模式调用 `PropGrouper.RunAll(true)` 前不要由 DreamyAscent 先手动 `Destroy` 子物。Desert 的 `DesertRockSpawner.Clear()` 会依赖原有层级状态，提前清理会导致 NRE 和空心化；自定义空白模式才使用 DreamyAscent 的清理逻辑。
+- 1.62.a 当前反编译和实机日志表明，DreamyAscent 的官方生成入口不能只依赖公开 `PropGrouper.RunAll(true)` 完成 Late 内容：它会清理全部 step，但公开路径只稳定执行 Early；Late 必须由 DreamyAscent 在 `RunAll(true)` 后补跑。补跑 step 收集必须手动沿 `Transform.parent` 查找最近 `PropGrouper`，不能依赖 `GetComponentInParent<PropGrouper>()`，否则 inactive 父层级下 Jungle `Pops_Plat` / `Props_Wall` 会收集到 0 个 Late step。
 - Segment fallback 扫描不能导出 inactive 互斥变体下的 `PropGrouper`。Roots/Jungle 这类地图可能没有可直接识别的 active `BiomeVariant`，但 whole segment 下会挂多个 `- xxx Variant` 分支；不要用全局 `activeInHierarchy` 硬过滤，因为会导致 Roots/Jungle 或直接根段扫不到。当前策略是只排除 inactive 且名称匹配 `- xxx Variant` 的分支。
 - 2026-05-13 全量样本审计确认：`Beach / Jungle / Roots / Snow / Desert` 的所有当前已知变体均已有导出样本覆盖；`BiomeVariant` 与 `VariantObject` 都能通过 `normalizedVariantName`、`activeVariantNames`、`activeVariantPaths` 和完整 `hierarchyPath` 判断当前激活分支。后续判断变体污染时，不要只看 step 名。
 - `Desert` 的 `ScorpionsHell`、`TumblerHell` 以及 `Jungle/SkyJungle` 样本中的少量 `Lava/Pillars/Ivy` step 名可以出现在当前激活层级内，它们属于官方共用生成步骤或资源命名；只有未激活 variant root 整支泄漏才应判定为污染。
@@ -63,7 +64,7 @@
 - Snapshot V2 原始 `GeneratedChildrenSnapshot.json` 不做瘦身。它们合计约 8.87GB，但承载官方地形重建所需的已生成子物、关系候选、关键组件字段和脏样本证据；若需要轻量数据，只能从原始诊断离线派生，不能删原始字段后再要求完整重建。
 - 运行时不要在启动或 UI 打开时自动加载开发期离线资产。`template-snapshots.json` / `object-registry-input.json` 只在用户手动打开样本资产或注册表候选时加载；诊断写出和离线 JSON 读取优先使用流式 API，避免大字符串或大文件一次性进内存。
 - Roots 官方整段生成要跳过 `PlateauRocks` / `WallRocks`，否则会生成不该存在的乱石。`CustomBlank` 是运行时清理，不保证能切回 `OfficialTemplate` 后完整恢复原版依赖层级；UI 只提示限制，建议重开或新图复测，不再把自动恢复作为承诺。
-- Jungle 官方整段生成同样要跳过岩石组 `Rocks_Plat` / `Rocks_Wall`，否则在已有地图上重跑会把平台/墙体岩石再次堆叠。当前先保留 `Pops_Plat` / `Props_Wall` 的官方重生成；若后续发现 `Rocks_Wall` 内 `Waterfalls` 需要保留，应改做 step 级白名单，而不是恢复整组岩石生成。
+- Jungle 官方整段生成同样要跳过岩石组 `Rocks_Plat` / `Rocks_Wall`，否则在已有地图上重跑会把平台/墙体岩石再次堆叠。当前先保留 `Pops_Plat` / `Props_Wall` 的官方重生成；若后续发现 `Rocks_Wall` 内 `Waterfalls` 需要保留，应改做 step 级白名单，而不是恢复整组岩石生成。`Pops_Plat` / `Props_Wall` 都是 Late grouper，必须依赖 inactive-safe 的 Late supplement 才能重生灌木、树、藤蔓、蘑菇和 runtime item spawner。
 - 生成入口不能假设 `DaTerrainData` 一定保有 Unity 运行时引用。导入 JSON、重新扫描、预览隐藏/恢复、`CustomBlank` 清理后，都可能让 `SourceObject` 为空或旧引用失效；执行“生成本段/生成本组/参数修改后自动生成”前必须允许按当前场景 segment/grouper/step 名称重新绑定运行时引用。
 - Jungle 是否“不显示”必须以当前地图组合确认；如果日志/诊断中没有 `Jungle_Segment`，不能把 Roots 或 Tropics 组合误判为 Jungle 扫描失败。
 - 若复用游戏内现有物体作为模板，优先从当前场景扫描 prefab-like 原型并建立稳定路径/名称索引；若要加载外部 asset bundle，需要先补 Unity asset bundle 加载和版本兼容资料。
@@ -84,6 +85,8 @@
 - 不要承诺 `CustomBlank -> OfficialTemplate` 能自动恢复官方原状；需要重开或新图验证官方模板。
 - 不要把当前场景 `UnityEngine.Object` instance id 当存档键或模板 ID；换图、重进、客机会失效。
 - 不要把 Roots/Jungle 的岩石组保护性跳过发展成无限特判；长期改为模板快照、稳定 path 和 step 级规则。
+- 不要恢复“发现外部 `PropGrouper.RunAll` postfix 就跳过 DreamyAscent Late supplement”的判断。实测证明外部 postfix 不保证在 DreamyAscent 的“生成本段”路径里补回 Jungle Late 内容。
+- 不要恢复失败的 post-generation material modifier replay 或 custom placement child-scale propagation 作为 Beach 材质修复；用户已要求退回该版本，材质问题需要以后重新基于 renderer/material 诊断设计。
 
 ## 可参考但不能照搬
 

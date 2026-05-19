@@ -1,6 +1,6 @@
 ﻿# Permanent TODO
 
-更新时间：2026-05-17
+更新时间：2026-05-20
 
 这里只记录未完成、待验证、已知风险和后续优化。已经稳定或已经写入各 MOD `RECENT.md` / `DECISIONS.md` 的内容，不再重复放在这里。
 
@@ -11,7 +11,8 @@
 - [ ] 先实机复测 `CustomBlank` 清理边界：按用户最新定义，空白模板只保留起始点过渡，桥、绳子、终点、边缘中段等都应清掉。重点确认普通关卡 `Start` 过渡还在，同时 Beach `Ropes/Bridges/Small_End`、Snow `End/End_L/End_R/Bridges`、Volcano `Edges Start/Middle/End`、Caldera `Rocks/Bridges` 不应残留；Volcano 的 `Mechanics/RisingLava` 和 `Mechanics/Rock_Round.010` 岩浆涨落机制必须保留；Desert/Oasis 与 Snow 中出现的卡皮巴拉对象也必须被空白模板清掉，当前规则按名称 `Capy/Capybara` 或当前 Renderer 材质 `M_Capybara` 兜底删除。
 - [ ] 进游戏复测新版 Snapshot V2 Data 加载：打开 UI 默认不应自动加载样本资产；点击“加载样本资产”后应显示模板快照/注册表状态，`template-snapshots.json` 应是 135 snapshots，`object-registry-input.json` 应是 193 templates / 25 materials；同时确认启动内存和打开 UI 内存没有明显回退。
 - [ ] 实机验证当前变体内置默认模板基线：代码已接入 `HasCurrentVariantDefaultTemplate()` / `GetCurrentVariantDefaultTemplate()`，官方模板生成会按当前 variant snapshot 过滤，UI 样本资产面板会显示“当前变体默认模板”状态；下一轮需进游戏点击加载样本资产并确认各 Segment 显示可用，生成日志出现 `Using current variant default template for segment generation`。
-- [ ] 先确认“生成本段只剩地形”到底是模式语义还是生成失败：如果当前是 `CustomBlank`，只剩地形属于预期；如果当前是 `OfficialTemplate` 但仍只剩地形，再追 `RunOfficialSegment()`、`ContainsRuntimeGrouper()`、`HasCurrentVariantDefaultTemplate()` 和运行时引用重绑日志。
+- [ ] 复测 Jungle 官方 `Generate Segment` 的 Late supplement 修复：2026-05-20 已把 Late step 收集改为手动沿 inactive 父层级查找最近 `PropGrouper`。重启/重新加载游戏后，预期 `Pops_Plat` / `Props_Wall` 出现 `manual late-step supplement used`，`lateSupplementSteps>0`，`Bushes/Trees/Vines/Mushrooms` 不再大面积 `children -> 0`，postrefresh 不再 `itemSpawners=0`。
+- [ ] Beach 地形材质仍未解决：用户确认椰子/物品正常，但 BlueBeach 视觉仍像默认 Beach。已退回失败的 post-generation material modifier replay 和 child-scale sync；后续不要直接恢复旧方案，应先新增 renderer/material 诊断，确认是材质池随机、sharedMaterial 污染、还是非 PropSpawner 静态地形没有被 modifier 覆盖。
 - [ ] 将 Snapshot V2 新版 `data/map-data/generated/template-snapshots.json` 用于稳定模板匹配：重跑后预期覆盖 135 个 segment、536 个 grouper、4194 个 step；把 path/ID 接入运行时匹配，解决 Desert 重复 `Props/Rocks`、Roots/Jungle variant 分支和后续内置模板基线问题。
 - [ ] 将 Snapshot V2 新版 `data/map-data/generated/sample-regression-report.json` 接入常规回归：脚本要求诊断五件套（含 `GeneratedChildrenSnapshot.json`）、schema 3、`relationshipCandidates`、`0 grouper`、未知 variant、覆盖、脏样本和 TR 来源标记；后续新增样本、改导出、改模板匹配或改空白保留规则后必须重跑并保持 `status=pass`。
 - [ ] 复测第一版运行时低风险放置：`CustomBlank` / `Hybrid` 自动应用规则，`OfficialTemplate` 手动应用；确认数量上限 25、生成功能、清理自定义、导出再导入回显、当前变体过滤、诊断失败原因都正常。
@@ -22,7 +23,7 @@
 - [ ] 复测 Roots/Jungle 官方模板生成：2026-05-12 日志显示 Roots fallback 到 whole segment 后把多个互斥变体一起生成，导致不该出现的石头；第一次用 `activeInHierarchy` 过滤过严导致 Roots/Jungle 扫不到，现改为只排除 inactive 的 `- xxx Variant` 分支，需确认能扫到默认组且不叠加禁用变体。
 - [ ] 复测 Roots 官方生成：官方整段生成恢复跳过 `PlateauRocks` / `WallRocks` 以避免异常乱石；`CustomBlank -> OfficialTemplate` 运行时不保证完整恢复，UI 已提示建议重开或新图复测。
 - [ ] 复测 DreamyAscent 生成前运行时引用重绑：旧日志中 Roots 点击“生成本段”时非跳过组全部 `runtime grouper reference is missing`，新 DLL 已在生成本段/生成本组/参数修改自动生成前按当前场景重新绑定引用；需确认日志出现 `Runtime references rebound`，且 Roots 不再 `groupers=0`。
-- [ ] 复测 Jungle 官方整段生成：日志已确认 Jungle 可扫描并显示，问题是“生成本段”重复执行 `Rocks_Plat` / `Rocks_Wall` 导致岩石堆叠。新 DLL 已跳过这两个组，需确认日志显示跳过并且 `Generated segment: Jungle_Segment, groupers=2` 左右，不再新增大量石头。
+- [ ] 复测 Jungle 官方整段生成的岩石组跳过仍正常：日志应继续显示跳过 `Rocks_Plat` / `Rocks_Wall` 且只重跑 `Pops_Plat` / `Props_Wall`，不能为了修灌木/藤蔓恢复整组岩石生成导致重复堆叠。
 - [ ] 后续评估 Jungle `Rocks_Wall` 里的 `Waterfalls` 是否需要单独保留；如果需要，改为 step 级白名单生成，不能恢复整组 `Rocks_Wall`。
 - [ ] 停止把 Roots/Jungle 岩石组问题扩展成无限 per-map skip；短期跳过保持安全，长期用干净模板快照、稳定 path、step 级白名单和子区规则替代。
 - [ ] 补强 `SubArea` 编辑 UI：当前只能创建 `SegmentBounds` 默认子区并查看中心/尺寸；在模板基线稳定后，允许编辑中心 XYZ、形状/范围、ray/layer、落地约束和兼容模板，把 Segment、区段模板库、原版 `PropSpawner.area`、未来山顶/山腰/洞口 XYZ 放置子区分开。

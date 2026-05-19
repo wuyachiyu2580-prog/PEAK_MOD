@@ -1,6 +1,6 @@
 ﻿# DreamyAscent
 
-更新时间：2026-05-17
+更新时间：2026-05-20
 
 ## 项目定位
 
@@ -42,6 +42,7 @@
 - `GeneratedChildrenSnapshot.json` 是后续官方生成结果重建的关键输入；2026-05-17 后要求 `schemaVersion=3`，并带 `relationshipCandidates` 与 `interestingComponentFields`，用于一次样本里检查椰子/椰子树、子生成器、SingleItemSpawner、桥、营火附属物、RisingLava、独立机关等父子/业务关系候选。旧 `RuntimeExport/ObjectCatalog/ObjectReferenceMap` 只能继续支撑模板/对象注册，不能单独用于完整地形重建。
 - `generated/template-snapshots.json` 和 `generated/object-registry-input.json` 已基于 Snapshot V2 重跑并随 Release 构建复制到插件目录；当前统计为 135 segment snapshots、193 模板候选、25 材质候选，`sample-regression-report.json status=pass`。
 - 诊断内存策略：原始 `GeneratedChildrenSnapshot.json` 不瘦身，但运行时写出已改为流式 JSON；UI 左下样本资产和 Catalog 注册表改为手动加载，避免启动/打开 UI 即加载开发期离线资产。
+- 2026-05-20 官方生成链最新状态：Beach 椰子/物品正常；Beach 地形材质仍未解决且失败的材质 replay / 子缩放同步已退回；Jungle 空段问题已二次修复为 inactive-safe Late step 收集，下一次重启/重载后复测 `Pops_Plat` / `Props_Wall` 是否 `lateSupplementSteps>0`。
 
 ## 必读文件
 
@@ -68,5 +69,6 @@
 - 后续优先级不要再只按 UI 入口推进：当前先实机验证新版 Snapshot V2 Data 加载和手动样本资产按钮，再建立当前变体内置默认模板基线，之后才继续扩展放置功能。
 - 明天接着测 DA 时，优先确认空白模板只留下起始点过渡；如果桥、绳子、终点、边缘中段仍残留，继续修清理边界。
 - Snapshot V2 采集和离线产物已完成，不要继续盲目刷图；除非后续改 schema/游戏版本/采集规则，否则下一步是实机验证新版产物并实现内置模板基线。
+- 官方 `Generate Segment` 修复优先看 `DaRuntimeEditService` 当前逻辑：整段 runtime spawn 先统一 preclean，grouper 按 Early-before-Late 排序运行，`RunAll(true)` 后用手动父链识别 Late steps 并 `Go()` 补跑，最后统一 postrefresh。不要恢复外部 postfix guard 或失败的材质 replay。
 
 

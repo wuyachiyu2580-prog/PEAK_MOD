@@ -1,5 +1,16 @@
 ﻿# Memory Changelog
 
+## 2026-05-20
+
+- [DreamyAscent] 修复 Jungle 官方 `Generate Segment` 仍空的问题：最新日志确认新 DLL 已加载但 `Pops_Plat` / `Props_Wall` 仍 `lateSupplementSteps=0`，根因从外部 postfix guard 进一步收窄为 Late step 收集依赖 `GetComponentInParent<PropGrouper>()`，在 inactive 父层级下拿不到最近 grouper。`DaRuntimeEditService` 已改为手动沿 `Transform.parent` 查找最近 `PropGrouper`，官方生成仍保持整段 preclean、Early-before-Late、`RunAll(true)` 后 Late `Go()` supplement、整段 postrefresh。Release 构建 0/0，DLL 更新时间 `2026/5/20 0:09:54`；下次需实机复测 Jungle 日志 `lateSupplementSteps>0` 和 `itemSpawners>0`。
+- [DreamyAscent] 收口今日状态并同步 memory：Beach 椰子/物品正常；Beach 地形材质仍未解决，失败的 post-generation material modifier replay 和 custom placement child-scale sync 已按用户要求退回。更新 `README.md`、`MEMORY_INDEX.md`、`TODO.md`、`mods/DreamyAscent/README.md`、`RECENT.md`、`DECISIONS.md`、`FILES.md` 和 `temp/2026-05-20.md`。
+
+## 2026-05-19
+
+- [规则] 新增每个 MOD 的临时思考记忆规则：`mods/<ModName>/temp/YYYY-MM-DD.md` 记录阶段性判断；每形成 3 次明确判断追加摘要；上下文压缩、会话中断或换 AI 后先读最新临时 MD，再读正式四件套。
+- [新增] 为 `DreamyAscent`、`ItemInfoCN`、`Lantern_ShootZombies_Night`、`PlayersInfo`、`WhySoLaggy` 初始化 `temp/2026-05-19.md`，作为压缩恢复入口。
+- [索引] 同步更新 `README.md`、`MEMORY_INDEX.md`、`common/01_协作与记忆规则.md`，把临时思考记忆区加入读取顺序、目录职责和归类规则。
+
 ## 2026-05-18
 
 - [DreamyAscent] 修复官方模板生成本段清空 Props 组：日志确认 Beach `PlateauProps/WallProps` 在 baseline 命中且 runtime refs 完整时从非 0 变 0，根因是 1.62.a `PropGrouper.RunAll()` 可见路径只执行 Early steps，Late steps 被收集但未执行。`DaRuntimeEditService` 现对 `PropGrouper.timing == Late` 使用替代 Late pipeline（`ClearAll` -> Late `LevelGenStep.Execute` -> `AfterCurrentGroupTiming` deferred -> 可选 validate），Early grouper 仍走原版 `RunAll(true)`；同时生成按钮前释放预览隔离。Release 构建 0 警告 0 错误，DLL 已同步到 terrain profile。复测需新开/新图，旧 DLL 已清成 0 的场景不能作为干净基准。

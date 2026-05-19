@@ -1,6 +1,6 @@
 ﻿# Memory Index
 
-更新时间：2026-05-17
+更新时间：2026-05-20
 
 ## 当前结构
 
@@ -9,12 +9,12 @@
 - `TODO.md`：永久待办和风险。
 - `MEMORY_INDEX.md`：本文件，总览索引。
 - `common/`：跨 MOD 通用规则（00-06 兼共 7 个主题）。
-- `mods/`：每个 MOD 的独立四件套（README + RECENT + DECISIONS + FILES）。
+- `mods/`：每个 MOD 的独立四件套（README + RECENT + DECISIONS + FILES）和 `temp/` 临时思考记忆区。
 
 ## 通用规则（common/）
 
 - `common/00_用户偏好.md`：用户身份、沟通风格、接手基线。
-- `common/01_协作与记忆规则.md`：四同步铁律、接手前检查、日期规则。
+- `common/01_协作与记忆规则.md`：四同步铁律、接手前检查、日期规则、每 3 次阶段性判断写入 MOD 临时 MD 的规则。
 - `common/02_工程与构建规范.md`：OutputPath/HintPath 规约、L&SZ&N 作为重构参照。
 - `common/03_日志与诊断规范.md`：日志分级、FieldProbe DSL、JSON 禁注释。
 - `common/04_联机与同步规范.md`：主客机权限、RPC 校验、中途加入同步。
@@ -22,6 +22,14 @@
 - `common/06_UI与字体规范.md`：CJK 字体四级兜底、FontHelper 标准实现、描边与字号规范。
 
 ## MOD 四件套（mods/）
+
+### 临时思考记忆区
+
+- 每个 MOD 目录下必须有 `temp/`。
+- 当天临时文件命名为 `mods/<ModName>/temp/YYYY-MM-DD.md`。
+- 每形成 3 次明确的阶段性判断、排查结论或方案取舍，就追加一次摘要。
+- 上下文压缩、会话中断或换 AI 后，先读该 MOD 最新临时 MD，再读正式四件套。
+- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-05-19.md`。
 
 ### ItemInfoCN（1.0.0 已发布）
 
@@ -70,7 +78,7 @@
 ## 当前重点
 
 - `Lantern_ShootZombies_Night` 当前重点是实机验证客机本地燃料权威：有备用池时只降备用池、不降灯燃料，且远端 fuel 下降不覆盖本地。
-- `DreamyAscent` 预览主体已可用，7 个主要区段已有源码默认预览位姿；2026-05-10 已新增对象引用诊断、`ObjectCatalog.json`、只读“区段模板库”UI、区段模板库翻译和生成器范围高亮收敛。2026-05-11 `CustomBlank` 第一版也已跑通。2026-05-12 已新增 `MAP_GENERATION.md`、`IMPLEMENTATION_MATRIX.md` 和 `CROSS_SEGMENT_PLACEMENT.md`。2026-05-13 `data/map-data` 样本审计收口并生成第一版离线产物。2026-05-17 进入 Snapshot V2：旧样本已删除，新样本必须包含 `GeneratedChildrenSnapshot.json`，先跑示范样本验字段，再全量重采。
+- `DreamyAscent` 预览主体已可用，7 个主要区段已有源码默认预览位姿；2026-05-10 已新增对象引用诊断、`ObjectCatalog.json`、只读“区段模板库”UI、区段模板库翻译和生成器范围高亮收敛。2026-05-11 `CustomBlank` 第一版也已跑通。2026-05-12 已新增 `MAP_GENERATION.md`、`IMPLEMENTATION_MATRIX.md` 和 `CROSS_SEGMENT_PLACEMENT.md`。2026-05-13 `data/map-data` 样本审计收口并生成第一版离线产物。2026-05-17 Snapshot V2 已完成。2026-05-20 官方生成链最新状态：Beach 物品正常，Beach 材质未解；Jungle Late step 收集已改为 inactive-safe 父链查找，待下次实机复测。
 - 其他 MOD 新增功能前先读对应 `RECENT.md` 和 `DECISIONS.md` 的"禁止回退"条款。
 
 ## 记忆维护规则
@@ -86,11 +94,18 @@
 3. 同步本索引 `MEMORY_INDEX.md`：新增/重命名/删除条目时必改。
 4. 追加 `CHANGELOG.md`：按时间倒序记录。
 
+### 临时思考记忆
+
+- 具体 MOD 的阶段性思考结果写入 `mods/<ModName>/temp/YYYY-MM-DD.md`。
+- 每 3 次明确阶段性判断追加一次摘要。
+- 该文件用于压缩恢复，不替代正式 `RECENT.md` / `DECISIONS.md` / `TODO.md`。
+
 ### 读取流程（接手前检查）
 
 1. `list_dir memory/`：看文件大小/修改时间。
 2. `read_file CHANGELOG.md`：看最近两条时间戳条目。
-3. 有变更 → 按需读对应 MD；无变更 → 直接按内存记忆走。
+3. 处理具体 MOD 时先读该 MOD `temp/` 下最新日期文件，尤其是压缩恢复后。
+4. 有变更 → 按需读对应 MD；无变更 → 直接按内存记忆走。
 
 ### 日期铁律
 
@@ -103,5 +118,3 @@
 - 不要把某个 MOD 的待办写进 `common/`。
 - 不再依赖已删除的历史文件；缺失信息必须重新从源码、日志或用户反馈确认。
 - 不要在 JSON 配置里写注释；用 `_doc`（全局）/ `note`（单条）承载说明。
-
-

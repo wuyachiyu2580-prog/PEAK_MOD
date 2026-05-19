@@ -1,6 +1,17 @@
 ﻿# DreamyAscent Recent
 
-Last updated: 2026-05-18
+Last updated: 2026-05-20
+
+## 2026-05-20 官方生成本段：Beach 物品正常，Jungle 空段二次修复
+
+- 用户确认 Beach 椰子/物品生成已正常；这部分来自官方整段生成改为“按 Early/Late 顺序跑 grouper + 整段统一清理 runtime spawn + 整段统一 postrefresh”。
+- Beach 地形材质仍像默认 Beach；已按用户要求退回失败的“生成后材质 modifier replay”和“放置父子缩放同步”改动。当前只保留较保守的随机材质候选冻结逻辑，材质问题不作为今天继续硬改对象。
+- Jungle `Generate Segment` 仍空的最新日志说明：新 DLL 已加载（不再出现 `replayedMaterialModifiers`），但 `Pops_Plat` / `Props_Wall` 仍是 `lateSupplementSteps=0`，随后 `Bushes/Trees/Vines/Mushrooms` 等 PropSpawner 从非 0 变 0，postrefresh 的 `itemSpawners=0`。
+- 根因从“外部 Harmony postfix 判断跳过 Late 补跑”进一步收窄为“Late step 收集失败”：旧代码用 `GetComponentInParent<PropGrouper>()` 判断 step 最近父 grouper，在 inactive 父级/层级场景下会拿不到，导致明明有 9/18 个 step 却补跑数量为 0。
+- 已修复：`CollectLateStepsForGrouper()` 改为手动沿 `Transform.parent` 向上查找最近 `PropGrouper`，包含 inactive 父层级；官方生成仍先走原版 `RunAll(true)`，再对 Late step 调用 `Go()` 补跑。`Go()` 会清理该 step 自己的子物再生成，避免简单重复叠加。
+- 已删除不用的外部 Harmony postfix 检测，不再把 Jungle Late 生成寄托在其它 MOD 的 `RunAll` postfix 上。
+- Release 构建通过：`dotnet build .\MOD开发\DreamyAscent\DreamyAscent\DreamyAscent.csproj -c Release`，0 warning / 0 error，DLL 已覆盖到 terrain profile，时间 `2026/5/20 0:09:54`。
+- 下一次只需重启/重新加载游戏后复测 Jungle `Generate Segment`：预期日志出现 `manual late-step supplement used`，`Pops_Plat` 的 `lateSupplementSteps` 约 9、`Props_Wall` 约 18，且 postrefresh 不再是 `itemSpawners=0`。
 
 ## 2026-05-18 官方生成链追踪加固
 

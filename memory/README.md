@@ -1,6 +1,6 @@
 ﻿# PEAK MOD Memory
 
-更新时间：2026-05-17
+更新时间：2026-05-20
 
 这是项目记忆的唯一入口。目标是让新的 AI 智能体在 1 到 3 分钟内知道：当前有哪些 MOD、近期做了什么、还有什么没做、哪些规则不能违反。
 
@@ -11,9 +11,10 @@
 3. `TODO.md`：永久待办和风险。
 4. `common/00_用户偏好.md` + `common/01_协作与记忆规则.md`：四同步铁律、Get-Date 日期规则、说人话风格。
 5. `mods/<ModName>/README.md`：当前 MOD 的专属上下文。
-6. `mods/<ModName>/RECENT.md`：近期已经做过什么。
-7. `mods/<ModName>/DECISIONS.md`：已经确认过的技术决策和禁止回退项。
-8. `common/02-05`：只在需要通用规则时读取（工程/日志/联机/发布）。
+6. `mods/<ModName>/temp/`：**压缩恢复后先看**。读取最新 `YYYY-MM-DD.md`，找回最近阶段性判断。
+7. `mods/<ModName>/RECENT.md`：近期已经做过什么。
+8. `mods/<ModName>/DECISIONS.md`：已经确认过的技术决策和禁止回退项。
+9. `common/02-05`：只在需要通用规则时读取（工程/日志/联机/发布）。
 
 ## 接手前检查（必做）
 
@@ -24,6 +25,7 @@
 ## 目录职责
 
 - `mods/`：每个 MOD 一个目录，四件套 `README.md` / `RECENT.md` / `DECISIONS.md` / `FILES.md`。不要把某个 MOD 的细节写进 `common/`。
+- `mods/<ModName>/temp/`：每个 MOD 的临时思考记忆区。当天文件命名为 `YYYY-MM-DD.md`，每形成 3 次阶段性判断就追加摘要；上下文压缩或换 AI 后先读最新临时文件。
 - `common/`：跨 MOD 共享的规则和规范，只写可复用结论，不写某个 MOD 的流水账。
 - `TODO.md`：永久待办。任何未完成、待验证、已知风险都必须同步到这里。
 - `CHANGELOG.md`：只记录 memory 结构或重要内容变更，按时间倒序追加。
@@ -97,5 +99,11 @@
 - `DreamyAscent` 已新增 `GeneratedChildrenSnapshot.json` 诊断，用于记录官方已生成结果、loose/special objects、脏样本原因和 TerrainRandomiser 来源标记。
 - 旧 `data/map-data/1.62.a/` 与 `TerrainRandomiser/` 样本目录已删除；新采集只放 `1.62.a-snapshot-v2/` 和 `TerrainRandomiser-snapshot-v2/`。
 - 下一步必须先跑一份示范样本验字段，不能直接全量重跑；示范通过后再采官方自然样本和 TR 补变体样本。
+
+## 2026-05-20 DreamyAscent 官方生成收尾
+
+- Beach 椰子/物品生成已正常；失败的材质 modifier replay 和 custom placement child-scale sync 已按用户要求退回。Beach 地形材质仍是未解决项，后续先补 renderer/material 诊断。
+- Jungle `Generate Segment` 空段问题二次定位：最新日志已加载新 DLL，但 `Pops_Plat` / `Props_Wall` 仍 `lateSupplementSteps=0`，说明不是外部 postfix guard，而是 Late step 收集没找到 inactive 父层级下的 `PropGrouper`。
+- `DaRuntimeEditService` 已改为手动沿 `Transform.parent` 查找最近 `PropGrouper` 来收集 Late steps；Release 构建 0/0，DLL 已覆盖 terrain profile。下次只需重启/重新加载游戏后复测 Jungle，预期 `lateSupplementSteps>0` 且灌木/藤蔓/蘑菇 runtime spawner 恢复。
 
 
