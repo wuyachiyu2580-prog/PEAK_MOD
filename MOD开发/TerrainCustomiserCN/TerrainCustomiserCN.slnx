@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TerrainCustomiserCN/TerrainCustomiserCN.csproj" />
+  <Project Path="TerrainCustomiserCNCollector/TerrainCustomiserCNCollector.csproj" />
+</Solution>

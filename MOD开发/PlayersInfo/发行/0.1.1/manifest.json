@@ -1,0 +1,9 @@
+{
+    "name": "PlayersInfo",
+    "version_number": "0.1.1",
+    "website_url": "",
+    "description": "Show nearby teammates' stamina, temporary stamina, status, and inventory in a compact HUD.",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.2403"
+    ]
+}

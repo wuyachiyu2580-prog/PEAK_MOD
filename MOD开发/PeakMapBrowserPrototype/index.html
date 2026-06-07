@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PEAK Map Browser Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="game-frame">
+      <section class="map-browser" aria-label="PEAK Map Browser">
+        <header class="topbar">
+          <div class="brand">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <div>
+              <p class="eyebrow">EXPEDITION DATABASE</p>
+              <h1>PEAK 地图库</h1>
+            </div>
+          </div>
+          <div class="toolbar">
+            <label class="search">
+              <span class="icon search-icon" aria-hidden="true"></span>
+              <input value="cook" aria-label="搜索地图" />
+            </label>
+            <button class="select-button" type="button">0.3.0 CN</button>
+            <button class="select-button" type="button">下载量</button>
+            <button class="icon-button" type="button" aria-label="刷新"></button>
+            <button class="primary-button" id="uploadOpen" type="button">
+              <span class="icon upload-icon" aria-hidden="true"></span>
+              上传地图
+            </button>
+            <button class="close-button" type="button" aria-label="关闭">×</button>
+          </div>
+        </header>
+
+        <div class="content">
+          <section class="library">
+            <div class="status-row">
+              <p>共 <strong>24</strong> 张社区地图 · 当前筛选 <strong>0.3.0(CN_0.1.0)</strong></p>
+              <span class="sync-pill">API: peakmap.top</span>
+            </div>
+
+            <div class="cards">
+              <article class="map-card selected" data-map="dont-cook">
+                <div class="thumb thumb-forest">
+                  <span class="route-line"></span>
+                  <span class="version-badge">0.3.0 CN</span>
+                </div>
+                <div class="card-body">
+                  <h2>Don't Cook Dynos</h2>
+                  <p class="meta"><span class="icon user-icon"></span> SteamUser_CN</p>
+                  <p class="desc">高密度道具与路线实验图，适合熟悉基础机制后的队伍。</p>
+                </div>
+                <footer class="card-footer">
+                  <span><span class="icon download-small"></span> 128</span>
+                  <button type="button">下载</button>
+                </footer>
+              </article>
+
+              <article class="map-card" data-map="ridge">
+                <div class="thumb thumb-ridge">
+                  <span class="route-line alt"></span>
+                  <span class="version-badge">1.62.a</span>
+                </div>
+                <div class="card-body">
+                  <h2>Snow Ridge Relay</h2>
+                  <p class="meta"><span class="icon user-icon"></span> AlpineFox</p>
+                  <p class="desc">雪线接力挑战，缩短休息窗口，强调补给管理。</p>
+                </div>
+                <footer class="card-footer">
+                  <span><span class="icon download-small"></span> 93</span>
+                  <button type="button">下载</button>
+                </footer>
+              </article>
+
+              <article class="map-card" data-map="caldera">
+                <div class="thumb thumb-caldera">
+                  <span class="route-line hot"></span>
+                  <span class="version-badge">0.3.0 CN</span>
+                </div>
+                <div class="card-body">
+                  <h2>Caldera Supply Run</h2>
+                  <p class="meta"><span class="icon user-icon"></span> 旅人阿泽</p>
+                  <p class="desc">火山段资源点重排，适合 3-4 人协作冲顶。</p>
+                </div>
+                <footer class="card-footer">
+                  <span><span class="icon download-small"></span> 76</span>
+                  <button type="button">下载</button>
+                </footer>
+              </article>
+
+              <article class="map-card" data-map="roots">
+                <div class="thumb thumb-roots">
+                  <span class="route-line"></span>
+                  <span class="version-badge">0.2.8</span>
+                </div>
+                <div class="card-body">
+                  <h2>Roots Shortcut</h2>
+                  <p class="meta"><span class="icon user-icon"></span> MossRunner</p>
+                  <p class="desc">根系区域捷径路线，偏探索和轻量跳跃。</p>
+                </div>
+                <footer class="card-footer">
+                  <span><span class="icon download-small"></span> 51</span>
+                  <button type="button">下载</button>
+                </footer>
+              </article>
+            </div>
+
+            <footer class="pagination">
+              <button type="button">‹</button>
+              <button class="active" type="button">1</button>
+              <button type="button">2</button>
+              <button type="button">3</button>
+              <button type="button">›</button>
+              <span>第 1 / 6 页</span>
+            </footer>
+          </section>
+
+          <aside class="detail-panel">
+            <div class="detail-thumb thumb-forest">
+              <span class="route-line"></span>
+              <div class="scan-grid"></div>
+            </div>
+            <div class="detail-copy">
+              <p class="eyebrow">SELECTED MAP</p>
+              <h2>Don't Cook Dynos</h2>
+              <div class="info-grid">
+                <div><span>作者</span><strong>SteamUser_CN</strong></div>
+                <div><span>版本</span><strong>0.3.0 CN</strong></div>
+                <div><span>下载</span><strong>128</strong></div>
+                <div><span>上传</span><strong>2026-06-07</strong></div>
+              </div>
+              <p class="description">
+                面向熟练队伍的路线实验图。保留 PEAK 的山地压迫感，同时提高地图变化密度，用于测试多人配合和道具规划。
+              </p>
+              <div class="detail-actions">
+                <button class="primary-button wide" type="button">下载到本地</button>
+                <button class="ghost-button" type="button">复制链接</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="toast">
+          <span class="signal"></span>
+          正在缓存缩略图 · 4 / 12
+        </div>
+      </section>
+    </main>
+
+    <section class="modal-backdrop" id="uploadModal" aria-hidden="true">
+      <form class="upload-modal">
+        <header>
+          <div>
+            <p class="eyebrow">SUBMIT LOCAL SAVE</p>
+            <h2>上传地图</h2>
+          </div>
+          <button id="uploadClose" type="button" aria-label="关闭">×</button>
+        </header>
+        <div class="form-grid">
+          <label>
+            地图名称
+            <input value="Caldera Supply Run" />
+          </label>
+          <label>
+            作者
+            <input value="SteamFriends.GetPersonaName()" />
+          </label>
+          <label>
+            MOD 版本
+            <select>
+              <option>0.3.0(CN_0.1.0)</option>
+              <option>1.62.a-DreamyAscent-Snapshot V2</option>
+            </select>
+          </label>
+          <label>
+            封面图片
+            <button class="file-button" type="button">选择 PNG / JPG</button>
+          </label>
+        </div>
+        <label class="full">
+          描述
+          <textarea>火山段资源点重排，适合 3-4 人协作冲顶。</textarea>
+        </label>
+        <div class="drop-zone">
+          <span class="icon file-icon"></span>
+          <div>
+            <strong>Map Saves / CalderaSupplyRun.json</strong>
+            <p>JSON 文件已准备上传 · 412 KB</p>
+          </div>
+        </div>
+        <footer>
+          <button class="ghost-button" type="button">取消</button>
+          <button class="primary-button" type="button">确认上传</button>
+        </footer>
+      </form>
+    </section>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

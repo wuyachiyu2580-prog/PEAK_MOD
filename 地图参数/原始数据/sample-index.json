@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 3,
+  "generatedAt": "2026-05-17",
+  "purpose": "Machine-readable DreamyAscent Snapshot V2 reconstruction sample index for generated-result snapshots, template snapshots, object registry, and regression tooling.",
+  "requiredDiagnosticFiles": [
+    "RuntimeExport.json",
+    "NameMap.json",
+    "ObjectCatalog.json",
+    "ObjectReferenceMap.json",
+    "GeneratedChildrenSnapshot.json"
+  ],
+  "auditedAdditionalReports": [
+    "TemplateSnapshotMatchReport.json",
+    "TemplateBaselineReport.json"
+  ],
+  "sources": {
+    "official_1_62_a_snapshot_v2": {
+      "role": "official-natural-map-generated-result-samples",
+      "path": "1.62.a-snapshot-v2",
+      "exportJsonFiles": 0,
+      "diagnosticDirectories": 21,
+      "sourceClassification": "official-natural-map-or-unknown",
+      "externalMapModifierCount": 0,
+      "warning": "Only fresh official-map diagnostics with GeneratedChildrenSnapshot.json belong here."
+    },
+    "terrain_randomiser_snapshot_v2": {
+      "role": "forced-variant-generated-result-samples",
+      "path": "TerrainRandomiser-snapshot-v2",
+      "exportJsonFiles": 0,
+      "diagnosticDirectories": 6,
+      "sourceClassification": "terrain-randomiser-forced-map",
+      "externalMapModifierCount": 6,
+      "warning": "Use only for forced variant coverage and keep separate from official natural map samples."
+    }
+  },
+  "validation": {
+    "diagnosticDirectoriesChecked": 27,
+    "missingRequiredFiles": 0,
+    "runtimeExportParseFailures": 0,
+    "zeroGrouperSegments": 0,
+    "unknownVariants": 0,
+    "potentiallyDirtySamples": 0,
+    "generatedChildrenSchemaVersion": 3,
+    "generatedChildrenSnapshotFilesMB": 9084.15,
+    "generatedChildrenSnapshotFilesGB": 8.87,
+    "templateSnapshotMatches": 135,
+    "templateSnapshotWeakMatches": 0,
+    "templateBaselineMatched": 135,
+    "templateBaselineWarnings": 0,
+    "allKnownVariantsCovered": true,
+    "objectReferenceMapPathLengthFailurePresent": false
+  },
+  "selectionTypes": {
+    "Beach_Segment": "BiomeVariant",
+    "Jungle_Segment": "BiomeVariant",
+    "Roots Segment": "VariantObject",
+    "Snow_Segment": "BiomeVariant",
+    "Desert_Segment": "VariantObject",
+    "Caldera_Segment": "DirectSegmentRoot",
+    "Volcano_Segment": "DirectSegmentRoot"
+  },
+  "segmentPresence": {
+    "Beach_Segment": 27,
+    "Jungle_Segment": 14,
+    "Roots Segment": 13,
+    "Snow_Segment": 10,
+    "Desert_Segment": 17,
+    "Caldera_Segment": 27,
+    "Volcano_Segment": 27
+  },
+  "mapKeys": {
+    "Beach-Segment__Jungle-Segment__Desert-Segment__Caldera-Segment__Volcano-Segment": 7,
+    "Beach-Segment__Jungle-Segment__Snow-Segment__Caldera-Segment__Volcano-Segment": 7,
+    "Beach-Segment__Roots-Segment__Desert-Segment__Caldera-Segment__Volcano-Segment": 10,
+    "Beach-Segment__Roots-Segment__Snow-Segment__Caldera-Segment__Volcano-Segment": 3
+  },
+  "variantCoverage": {
+    "Beach_Segment": {
+      "expected": [
+        "Default",
+        "SnakeBeach",
+        "RedBeach",
+        "BlueBeach",
+        "JellyHell",
+        "BlackSand"
+      ],
+      "covered": 6,
+      "missing": [],
+      "variants": {
+        "BlackSand": {
+          "official_1_62_a_snapshot_v2": 2,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 2
+        },
+        "BlueBeach": {
+          "official_1_62_a_snapshot_v2": 3,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 3
+        },
+        "Default": {
+          "official_1_62_a_snapshot_v2": 11,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 11
+        },
+        "JellyHell": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 6,
+          "total": 6
+        },
+        "RedBeach": {
+          "official_1_62_a_snapshot_v2": 3,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 3
+        },
+        "SnakeBeach": {
+          "official_1_62_a_snapshot_v2": 2,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 2
+        }
+      }
+    },
+    "Jungle_Segment": {
+      "expected": [
+        "Default",
+        "Lava",
+        "Pillars",
+        "Thorny",
+        "Bombs",
+        "Ivy",
+        "SkyJungle"
+      ],
+      "covered": 7,
+      "missing": [],
+      "variants": {
+        "Bombs": {
+          "official_1_62_a_snapshot_v2": 3,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 3
+        },
+        "Default": {
+          "official_1_62_a_snapshot_v2": 4,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 4
+        },
+        "Ivy": {
+          "official_1_62_a_snapshot_v2": 1,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 1
+        },
+        "Lava": {
+          "official_1_62_a_snapshot_v2": 1,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 1
+        },
+        "Pillars": {
+          "official_1_62_a_snapshot_v2": 3,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 3
+        },
+        "SkyJungle": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 1,
+          "total": 1
+        },
+        "Thorny": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 1,
+          "total": 1
+        }
+      }
+    },
+    "Roots Segment": {
+      "expected": [
+        "Default",
+        "Cave Mania",
+        "Deep Water",
+        "Bomb Beetle",
+        "Deep Woods",
+        "Clearcut"
+      ],
+      "covered": 6,
+      "missing": [],
+      "variants": {
+        "Bomb Beetle": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 1,
+          "total": 1
+        },
+        "Cave Mania": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 1,
+          "total": 1
+        },
+        "Clearcut": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 1,
+          "total": 1
+        },
+        "Deep Water": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 1,
+          "total": 1
+        },
+        "Deep Woods": {
+          "official_1_62_a_snapshot_v2": 1,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 1
+        },
+        "Default": {
+          "official_1_62_a_snapshot_v2": 8,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 8
+        }
+      }
+    },
+    "Snow_Segment": {
+      "expected": [
+        "Default",
+        "Lava",
+        "Spiky",
+        "GeyserHell"
+      ],
+      "covered": 4,
+      "missing": [],
+      "variants": {
+        "Default": {
+          "official_1_62_a_snapshot_v2": 7,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 7
+        },
+        "GeyserHell": {
+          "official_1_62_a_snapshot_v2": 1,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 1
+        },
+        "Lava": {
+          "official_1_62_a_snapshot_v2": 1,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 1
+        },
+        "Spiky": {
+          "official_1_62_a_snapshot_v2": 1,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 1
+        }
+      }
+    },
+    "Desert_Segment": {
+      "expected": [
+        "NoVariant",
+        "ScorpionsHell",
+        "CacusHell",
+        "CactusForest",
+        "DynamiteHell",
+        "TornadoHell",
+        "TumblerHell"
+      ],
+      "covered": 7,
+      "missing": [],
+      "variants": {
+        "CactusForest": {
+          "official_1_62_a_snapshot_v2": 3,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 3
+        },
+        "CacusHell": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 1,
+          "total": 1
+        },
+        "DynamiteHell": {
+          "official_1_62_a_snapshot_v2": 2,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 2
+        },
+        "NoVariant": {
+          "official_1_62_a_snapshot_v2": 4,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 4
+        },
+        "ScorpionsHell": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 1,
+          "total": 1
+        },
+        "TornadoHell": {
+          "official_1_62_a_snapshot_v2": 2,
+          "terrain_randomiser_snapshot_v2": 0,
+          "total": 2
+        },
+        "TumblerHell": {
+          "official_1_62_a_snapshot_v2": 0,
+          "terrain_randomiser_snapshot_v2": 4,
+          "total": 4
+        }
+      }
+    }
+  },
+  "purityRules": {
+    "primaryFields": [
+      "normalizedVariantName",
+      "activeVariantNames",
+      "activeVariantPaths",
+      "hierarchyPath"
+    ],
+    "doNotUseAlone": [
+      "stepName"
+    ],
+    "knownSharedStepNames": {
+      "Desert_Segment": [
+        "ScorpionsHell",
+        "TumblerHell"
+      ],
+      "Jungle_Segment": [
+        "Lava",
+        "Pillars",
+        "Ivy"
+      ]
+    },
+    "pollutionSignal": "Treat as polluted only when an inactive variant root leaks wholesale, or when hierarchyPath/activeVariantPaths contradict normalizedVariantName."
+  },
+  "nextUses": [
+    "run build_map_data_artifacts.py from Snapshot V2",
+    "generated-result reconstruction artifact extraction",
+    "stable-template-snapshot extraction",
+    "DaObjectRegistry input generation",
+    "variant-purity regression checks",
+    "ObjectCatalog and ObjectReferenceMap statistics"
+  ]
+}

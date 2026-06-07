@@ -1,0 +1,101 @@
+﻿{
+  "_schema": "WhySoLaggy.FieldProbe v1",
+  "_doc": "target=Type.Method (Type 为类名不含命名空间); fields 表达式根可为 __instance/__argN/__args/__result/__exception/TypeName; 运算符 .Member ?.Member [N] .Count .Length; 每规则可选 rateLimit / maxValueLen / includeStack / stackMaxDepth / enabled / note",
+
+  "enabled": true,
+  "rateLimitPerRule": 60,
+  "maxValueLen": 128,
+  "includeStack": false,
+  "stackMaxDepth": 5,
+
+  "rules": [
+    {
+      "note": "Bug1: 若入参 prefab.name 含 Lantern_Faerie 而 __result=null, 证实硬编码精确相等过滤",
+      "target": "LanternHelper.FindLitLanternSlot",
+      "fields": [
+        "__arg0?.name",
+        "__result",
+        "__result?.prefab?.name"
+      ],
+      "includeStack": true,
+      "rateLimit": 30
+    },
+    {
+      "note": "Bug1: 回暖入口命中情况",
+      "target": "LanternHelper.AddPlayerLanternFuel",
+      "fields": [
+        "__args",
+        "__result"
+      ],
+      "rateLimit": 30
+    },
+    {
+      "note": "Bug1 佐证: 仙子提灯也走 UpdateFuel (默认关闭, 避免高频日志)",
+      "target": "Lantern.UpdateFuel",
+      "fields": [
+        "__instance.gameObject.name",
+        "__instance.fuel"
+      ],
+      "rateLimit": 10,
+      "enabled": false
+    },
+    {
+      "note": "Bug2: 无敌期若 result=false 且 isInvincibleMilk=true, 证实原版短路",
+      "target": "CharacterAfflictions.AddStatus",
+      "fields": [
+        "__arg0",
+        "__arg1",
+        "__instance.character.data.isInvincible",
+        "__instance.character.data.isInvincibleMilk",
+        "__result"
+      ],
+      "rateLimit": 120
+    },
+    {
+      "note": "Bug2: 无敌期 SubtractStatus 是否仍被调用",
+      "target": "CharacterAfflictions.SubtractStatus",
+      "fields": [
+        "__arg0",
+        "__arg1",
+        "__instance.character.data.isInvincibleMilk"
+      ],
+      "rateLimit": 120
+    },
+    {
+      "note": "Bug2关键: SetStatus 直接写字段不走无敌检查, 若无敌期有 arg0=Cold 调用则铁证假说A",
+      "target": "CharacterAfflictions.SetStatus",
+      "fields": [
+        "__arg0",
+        "__arg1",
+        "__instance.character.data.isInvincible",
+        "__instance.character.data.isInvincibleMilk",
+        "__instance.currentStatuses"
+      ],
+      "includeStack": true,
+      "stackMaxDepth": 8,
+      "rateLimit": 60
+    },
+    {
+      "note": "Bug2: AdjustStatus 是 StatusField 的分发入口, 用于区分冷墙源与直接 AddStatus 调用链",
+      "target": "CharacterAfflictions.AdjustStatus",
+      "fields": [
+        "__arg0",
+        "__arg1",
+        "__instance.character.data.isInvincibleMilk"
+      ],
+      "includeStack": true,
+      "stackMaxDepth": 6,
+      "rateLimit": 60
+    },
+    {
+      "note": "Bug2: StatusField.Update 每帧触发, 打印 gameObject 名+statusType 确认是不是冷冻场",
+      "target": "StatusField.Update",
+      "fields": [
+        "__instance.gameObject.name",
+        "__instance.statusType",
+        "__instance.statusAmountPerSecond"
+      ],
+      "rateLimit": 10
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Lantern_ShootZombies_Night",
+    "version_number": "0.0.1",
+    "website_url": "",
+    "description": "A mod for PEAK that enhances lantern mechanics with configurable fuel, warmth restore from various actions, cold-resistance tuning, dynamic drain scaling, a visual HUD, and Photon config sync. Bilingual (CN/EN).",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.2403",
+        "Thanks-ShootZombies-1.2.11",
+        "Hnsk_Noah-BlackPeakRemix-2.1.8"
+    ]
+}
