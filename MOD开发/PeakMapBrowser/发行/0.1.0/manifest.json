@@ -1,0 +1,9 @@
+{
+    "name": "PeakMapBrowser",
+    "version_number": "0.1.0",
+    "website_url": "https://peakmap.top",
+    "description": "Browse and manage peakmap.top TerrainCustomiser map JSON files in-game.",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.2403"
+    ]
+}

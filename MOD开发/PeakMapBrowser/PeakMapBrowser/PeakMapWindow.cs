@@ -26,25 +26,39 @@ namespace PeakMapBrowser
         private bool _loadingVersions;
         private bool _downloading;
         private bool _uploading;
+        private bool _liking;
         private bool _uploadOpen;
+        private bool _loginOpen;
+        private bool _accountOpen;
+        private bool _loadingAccountMaps;
+        private bool _savingAccountMap;
+        private bool _deletingAccountMap;
+        private bool _refreshingSession;
         private bool _loadedOnce;
         private int _topLayerOpenedFrame = -1;
+        private float _nextSessionRefreshCheckTime;
 
         private Rect _windowRect;
         private Vector2 _mapScroll;
         private Vector2 _uploadSaveScroll;
         private Vector2 _detailScroll;
+        private Vector2 _accountScroll;
 
         private List<MapEntry> _maps = new List<MapEntry>();
+        private List<MapEntry> _accountMaps = new List<MapEntry>();
         private List<ModVersionEntry> _versions = new List<ModVersionEntry>();
         private PaginationInfo _pagination;
         private int _selectedMapIndex;
+        private int _selectedAccountMapIndex = -1;
         private int _page = 1;
         private string _query = string.Empty;
         private string _sort = "newest";
         private string _versionFilter = string.Empty;
         private string _languageMode;
         private string _language;
+        private string _languageSource;
+        private string _languageRawValue;
+        private string _toggleKeyLabel;
         private float _nextLanguageCheckTime;
         private string _status = string.Empty;
         private string _toast = string.Empty;
@@ -78,6 +92,16 @@ namespace PeakMapBrowser
         private string _uploadName = string.Empty;
         private string _uploadAuthor = string.Empty;
         private string _uploadDescription = string.Empty;
+        private string _loginEmail = string.Empty;
+        private string _loginPassword = string.Empty;
+        private string _editName = string.Empty;
+        private string _editAuthor = string.Empty;
+        private string _editVersion = string.Empty;
+        private string _editDescription = string.Empty;
+        private bool _editReplaceJson;
+        private bool _editReplaceImage;
+        private bool _editRemoveImage;
+        private string _deleteConfirmMapId = string.Empty;
 
         private GUIStyle _rootStyle;
         private GUIStyle _panelStyle;
@@ -108,17 +132,21 @@ namespace PeakMapBrowser
         private Texture2D _placeholderThumb;
         private Font _uiFont;
 
-        public PeakMapWindow(MonoBehaviour runner, ManualLogSource log, string apiBaseUrl, string language, int pageSize)
+        public PeakMapWindow(MonoBehaviour runner, ManualLogSource log, string apiBaseUrl, string language, int pageSize, string toggleKeyLabel)
         {
             _runner = runner;
             _log = log;
+            _toggleKeyLabel = string.IsNullOrWhiteSpace(toggleKeyLabel) ? "/" : toggleKeyLabel;
             _languageMode = language;
-            _language = PeakMapLanguage.Resolve(language, log);
+            PeakMapLanguageResult languageResult = PeakMapLanguage.ResolveDetailed(language, log);
+            _language = languageResult.Language;
+            _languageSource = languageResult.Source;
+            _languageRawValue = languageResult.RawValue;
             _api = new PeakMapApiClient(runner, log, apiBaseUrl, _language);
             _pageSize = pageSize;
             _windowRect = new Rect(0f, 0f, 960f, 640f);
-            _status = T("按 F8 打开或关闭地图库", "Press F8 to open or close the map browser");
-            _log.LogInfo("PEAK Map Browser language: " + _language + " (mode=" + PeakMapLanguage.NormalizeMode(_languageMode) + ")");
+            _status = T("按 " + _toggleKeyLabel + " 打开或关闭地图库", "Press " + _toggleKeyLabel + " to open or close the map browser");
+            _log.LogInfo("PEAK Map Browser language resolved: lang=" + _language + ", mode=" + languageResult.Mode + ", source=" + _languageSource + ", raw=" + _languageRawValue);
         }
 
         public void Toggle()
@@ -151,6 +179,8 @@ namespace PeakMapBrowser
                 SetInputBlockerActive(false);
                 _uploadOpen = false;
                 _imagePickerOpen = false;
+                _loginOpen = false;
+                _accountOpen = false;
                 _uploadVersionDropdownOpen = false;
                 _uploadImageDropdownOpen = false;
             }
@@ -220,6 +250,7 @@ namespace PeakMapBrowser
         public void Update()
         {
             RefreshLanguageIfNeeded();
+            RefreshSessionIfNeeded();
 
             if (!_visible)
             {
@@ -239,17 +270,35 @@ namespace PeakMapBrowser
             }
 
             _nextLanguageCheckTime = Time.unscaledTime + 2f;
-            string next = PeakMapLanguage.Resolve(_languageMode, _log);
-            if (string.Equals(next, _language, StringComparison.OrdinalIgnoreCase))
+            PeakMapLanguageResult nextResult = PeakMapLanguage.ResolveDetailed(_languageMode, _log);
+            bool languageChanged = !string.Equals(nextResult.Language, _language, StringComparison.OrdinalIgnoreCase);
+            bool sourceChanged = !string.Equals(nextResult.Source, _languageSource, StringComparison.Ordinal)
+                || !string.Equals(nextResult.RawValue, _languageRawValue, StringComparison.Ordinal);
+
+            if (!languageChanged && !sourceChanged)
             {
                 return;
             }
 
-            _language = next;
-            _api.SetLanguage(_language);
-            _status = T("语言已切换为中文", "Language switched to English");
-            ShowToast(_status);
-            _log.LogInfo("PEAK Map Browser language changed to " + _language + ".");
+            string oldLanguage = _language;
+            string oldSource = _languageSource;
+            string oldRaw = _languageRawValue;
+            _language = nextResult.Language;
+            _languageSource = nextResult.Source;
+            _languageRawValue = nextResult.RawValue;
+
+            if (languageChanged)
+            {
+                _api.SetLanguage(_language);
+                _status = T("语言已切换为中文", "Language switched to English");
+                ShowToast(_status);
+            }
+
+            _log.LogInfo("PEAK Map Browser language resolved: lang=" + _language
+                + ", mode=" + nextResult.Mode
+                + ", source=" + _languageSource
+                + ", raw=" + _languageRawValue
+                + " (previous lang=" + oldLanguage + ", source=" + oldSource + ", raw=" + oldRaw + ")");
         }
 
         public void Dispose()
@@ -275,10 +324,10 @@ namespace PeakMapBrowser
             GUI.depth = 10;
             DrawDimBackground();
             GUI.Box(_windowRect, GUIContent.none, _rootStyle);
-            if (!_uploadOpen && !_imagePickerOpen)
+            if (!_uploadOpen && !_imagePickerOpen && !_loginOpen && !_accountOpen)
             {
                 DrawHeader();
-                if (!_uploadOpen && !_imagePickerOpen)
+                if (!_uploadOpen && !_imagePickerOpen && !_loginOpen && !_accountOpen)
                 {
                     DrawContent();
                 }
@@ -287,6 +336,14 @@ namespace PeakMapBrowser
             if (_uploadOpen && !_imagePickerOpen)
             {
                 DrawUploadModal();
+            }
+            if (_loginOpen)
+            {
+                DrawLoginModal();
+            }
+            if (_accountOpen)
+            {
+                DrawAccountModal();
             }
             if (_imagePickerOpen)
             {
@@ -352,11 +409,12 @@ namespace PeakMapBrowser
             float y = header.y + 23f;
             float closeW = 38f;
             float uploadW = 118f;
+            float accountW = 112f;
             float refreshW = 38f;
             float sortW = 76f;
             float versionW = 96f;
             float gap = 8f;
-            float searchW = Mathf.Max(170f, header.xMax - x - closeW - uploadW - refreshW - sortW - versionW - gap * 6f - 18f);
+            float searchW = Mathf.Max(140f, header.xMax - x - closeW - uploadW - accountW - refreshW - sortW - versionW - gap * 7f - 18f);
 
             GUI.SetNextControlName("PeakMapSearch");
             string nextQuery = GUI.TextField(new Rect(x, y, searchW, 38f), _query, _inputStyle);
@@ -391,6 +449,20 @@ namespace PeakMapBrowser
                 OpenUpload();
             }
             x += uploadW + gap;
+
+            string accountLabel = _api.IsSignedIn ? ShortAccountName(_api.Session.DisplayName) : T("登录", "Sign in");
+            if (GUI.Button(new Rect(x, y, accountW, 38f), accountLabel, _buttonStyle))
+            {
+                if (_api.IsSignedIn)
+                {
+                    OpenAccount();
+                }
+                else
+                {
+                    OpenLogin();
+                }
+            }
+            x += accountW + gap;
 
             if (GUI.Button(new Rect(x, y, closeW, 38f), "×", _iconButtonStyle))
             {
@@ -481,7 +553,12 @@ namespace PeakMapBrowser
             GUI.Label(new Rect(inner.x + 11f, textY + 35f, inner.width - 22f, 19f), "○ " + CleanUiText(Safe(map.author, "Unknown")), _mutedStyle);
             GUI.Label(new Rect(inner.x + 11f, textY + 60f, inner.width - 22f, 42f), CleanUiText(Safe(map.description, T("没有描述", "No description"))), _cardDescStyle);
 
-            GUI.Label(new Rect(inner.x + 11f, inner.yMax - 34f, 72f, 26f), "↓ " + map.downloads, _mutedStyle);
+            string stats = "↓ " + map.downloads + "  " + (map.liked_by_me ? "♥ " : "♡ ") + map.likes;
+            if (map.revision > 1)
+            {
+                stats += "  v" + map.revision;
+            }
+            GUI.Label(new Rect(inner.x + 11f, inner.yMax - 34f, inner.width - 92f, 26f), stats, _mutedStyle);
             if (GUI.Button(new Rect(inner.xMax - 74f, inner.yMax - 38f, 60f, 30f), T("下载", "Get"), _primaryButtonStyle))
             {
                 SelectMap(index);
@@ -547,7 +624,10 @@ namespace PeakMapBrowser
             float titleX = thumb.xMax + 12f;
             GUI.Label(new Rect(titleX, rect.y + 16f, rect.xMax - titleX - 14f, 16f), "SELECTED MAP", _tinyStyle);
             GUI.Label(new Rect(titleX, rect.y + 34f, rect.xMax - titleX - 14f, 28f), CleanUiText(Safe(map.name, T("未命名地图", "Untitled map"))), _detailTitleStyle);
-            GUI.Label(new Rect(titleX, rect.y + 64f, rect.xMax - titleX - 14f, 18f), T("下载 ", "Downloads ") + map.downloads + " · " + DateOnly(map.created_at), _mutedStyle);
+            string dateText = map.revision > 1
+                ? T("更新 ", "Updated ") + DateOnly(Safe(map.updated_at, map.created_at)) + " · v" + map.revision
+                : T("上传 ", "Uploaded ") + DateOnly(map.created_at);
+            GUI.Label(new Rect(titleX, rect.y + 64f, rect.xMax - titleX - 14f, 18f), T("下载 ", "Downloads ") + map.downloads + " · " + T("点赞 ", "Likes ") + map.likes + " · " + dateText, _mutedStyle);
 
             float y = thumb.yMax + 14f;
 
@@ -559,9 +639,15 @@ namespace PeakMapBrowser
             DrawScrollableDescription(descRect, FormatDetailDescription(CleanUiText(Safe(map.description, T("没有描述", "No description")))));
 
             GUI.enabled = !_downloading;
-            if (GUI.Button(new Rect(rect.x + 16f, buttonY, rect.width - 126f, 36f), _downloading ? T("下载中...", "Downloading...") : T("下载到本地", "Download"), _primaryButtonStyle))
+            if (GUI.Button(new Rect(rect.x + 16f, buttonY, rect.width - 192f, 36f), _downloading ? T("下载中...", "Downloading...") : T("下载到本地", "Download"), _primaryButtonStyle))
             {
                 DownloadSelected();
+            }
+            GUI.enabled = true;
+            GUI.enabled = !_liking;
+            if (GUI.Button(new Rect(rect.xMax - 174f, buttonY, 66f, 36f), map.liked_by_me ? T("已赞", "Liked") : T("点赞", "Like"), _buttonStyle))
+            {
+                ToggleLikeSelected();
             }
             GUI.enabled = true;
             if (GUI.Button(new Rect(rect.xMax - 102f, buttonY, 86f, 36f), T("刷新", "Refresh"), _buttonStyle))
@@ -578,7 +664,7 @@ namespace PeakMapBrowser
             GUI.Label(new Rect(rect.x + 10f, rect.y + 7f, leftW - 10f, 16f), T("作者", "AUTHOR"), _tinyStyle);
             GUI.Label(new Rect(rect.x + 10f, rect.y + 27f, leftW - 10f, 20f), CleanUiText(Safe(map.author, "Unknown")), _labelStyle);
             GUI.Label(new Rect(rightX, rect.y + 7f, rect.xMax - rightX - 10f, 16f), T("版本", "VERSION"), _tinyStyle);
-            GUI.Label(new Rect(rightX, rect.y + 27f, rect.xMax - rightX - 10f, 20f), CleanUiText(Safe(map.mod_version, "-")), _labelStyle);
+            GUI.Label(new Rect(rightX, rect.y + 27f, rect.xMax - rightX - 10f, 20f), CleanUiText(Safe(map.mod_version, "-")) + (map.revision > 1 ? " · v" + map.revision : ""), _labelStyle);
         }
 
         private void DrawScrollableDescription(Rect rect, string text)
@@ -619,6 +705,211 @@ namespace PeakMapBrowser
                 ? T("第 ", "Page ") + _pagination.page + " / " + Mathf.Max(1, _pagination.total_pages) + T(" 页", "")
                 : T("第 ", "Page ") + _page + T(" 页", "");
             GUI.Label(new Rect(rect.xMax - 110f, rect.y + 7f, 110f, 22f), pageInfo, _mutedStyle);
+        }
+
+        private void DrawLoginModal()
+        {
+            GUI.depth = 0;
+            GUI.Box(new Rect(0f, 0f, Screen.width, Screen.height), GUIContent.none, _modalBackdropStyle);
+
+            Rect modal = new Rect(Mathf.Round((Screen.width - 460f) * 0.5f), Mathf.Round((Screen.height - 330f) * 0.5f), 460f, 330f);
+            GUI.Box(modal, GUIContent.none, _rootStyle);
+            GUI.Label(new Rect(modal.x + 18f, modal.y + 16f, 220f, 16f), "PEAKMAP ACCOUNT", _tinyStyle);
+            GUI.Label(new Rect(modal.x + 18f, modal.y + 32f, 220f, 34f), T("登录账号", "Sign in"), _titleStyle);
+            if (GUI.Button(new Rect(modal.xMax - 54f, modal.y + 22f, 36f, 36f), "×", _iconButtonStyle))
+            {
+                _loginOpen = false;
+            }
+
+            float x = modal.x + 24f;
+            float y = modal.y + 90f;
+            DrawFieldLabel(x, y, T("邮箱", "Email"));
+            _loginEmail = GUI.TextField(new Rect(x, y + 20f, modal.width - 48f, 38f), _loginEmail, _inputStyle);
+            y += 72f;
+            DrawFieldLabel(x, y, T("密码", "Password"));
+            _loginPassword = GUI.PasswordField(new Rect(x, y + 20f, modal.width - 48f, 38f), _loginPassword, '*', _inputStyle);
+            y += 70f;
+            GUI.Label(new Rect(x, y, modal.width - 48f, 24f), _status, _mutedStyle);
+
+            bool previous = GUI.enabled;
+            GUI.enabled = previous && !_refreshingSession;
+            if (GUI.Button(new Rect(modal.xMax - 196f, modal.yMax - 58f, 82f, 38f), T("网页注册", "Account"), _buttonStyle))
+            {
+                OpenAccountWebsite();
+            }
+            if (GUI.Button(new Rect(modal.xMax - 104f, modal.yMax - 58f, 86f, 38f), T("登录", "Sign in"), _primaryButtonStyle))
+            {
+                SignInSelected();
+            }
+            GUI.enabled = previous;
+        }
+
+        private void DrawAccountModal()
+        {
+            GUI.depth = 0;
+            GUI.Box(new Rect(0f, 0f, Screen.width, Screen.height), GUIContent.none, _modalBackdropStyle);
+
+            float modalHeight = Mathf.Min(620f, Screen.height - 48f);
+            Rect modal = new Rect(Mathf.Round((Screen.width - 760f) * 0.5f), Mathf.Round((Screen.height - modalHeight) * 0.5f), 760f, Mathf.Round(modalHeight));
+            GUI.Box(modal, GUIContent.none, _rootStyle);
+
+            GUI.Label(new Rect(modal.x + 18f, modal.y + 16f, 260f, 16f), "MY PEAKMAPS", _tinyStyle);
+            GUI.Label(new Rect(modal.x + 18f, modal.y + 32f, 360f, 34f), T("我的地图", "My Maps"), _titleStyle);
+            GUI.Label(new Rect(modal.x + 250f, modal.y + 40f, 260f, 22f), ShortAccountName(_api.Session.DisplayName), _mutedStyle);
+
+            if (GUI.Button(new Rect(modal.xMax - 258f, modal.y + 22f, 72f, 36f), T("刷新", "Refresh"), _buttonStyle))
+            {
+                FetchAccountMaps();
+            }
+            if (GUI.Button(new Rect(modal.xMax - 178f, modal.y + 22f, 72f, 36f), T("退出", "Sign out"), _buttonStyle))
+            {
+                _api.SignOut();
+                _accountOpen = false;
+                _status = T("已退出登录", "Signed out");
+                ShowToast(_status);
+                FetchMaps();
+            }
+            if (GUI.Button(new Rect(modal.xMax - 98f, modal.y + 22f, 36f, 36f), "↗", _iconButtonStyle))
+            {
+                OpenAccountWebsite();
+            }
+            if (GUI.Button(new Rect(modal.xMax - 54f, modal.y + 22f, 36f, 36f), "×", _iconButtonStyle))
+            {
+                _accountOpen = false;
+            }
+
+            if (Time.unscaledTime >= _nextLocalSaveScanTime)
+            {
+                RefreshLocalSaves();
+            }
+
+            Rect listRect = new Rect(modal.x + 18f, modal.y + 82f, 278f, modal.height - 156f);
+            Rect editRect = new Rect(listRect.xMax + 14f, listRect.y, modal.xMax - listRect.xMax - 32f, listRect.height);
+            GUI.Box(listRect, GUIContent.none, _panelStrongStyle);
+            DrawAccountMapList(listRect);
+            GUI.Box(editRect, GUIContent.none, _panelStrongStyle);
+            DrawAccountEditor(editRect);
+
+            GUI.Label(new Rect(modal.x + 18f, modal.yMax - 66f, modal.width - 250f, 24f), _status, _mutedStyle);
+            MapEntry selected = SelectedAccountMap;
+            bool previous = GUI.enabled;
+            GUI.enabled = previous && selected != null && !_savingAccountMap && !_deletingAccountMap;
+            if (GUI.Button(new Rect(modal.xMax - 238f, modal.yMax - 58f, 72f, 38f), T("删除", "Delete"), _buttonStyle))
+            {
+                _deleteConfirmMapId = selected.id;
+            }
+            if (GUI.Button(new Rect(modal.xMax - 156f, modal.yMax - 58f, 138f, 38f), _savingAccountMap ? T("保存中", "Saving") : T("保存修改", "Save"), _primaryButtonStyle))
+            {
+                SaveAccountMap();
+            }
+            GUI.enabled = previous;
+
+            if (selected != null && string.Equals(_deleteConfirmMapId, selected.id, StringComparison.Ordinal))
+            {
+                DrawDeleteConfirm(modal, selected);
+            }
+        }
+
+        private void DrawAccountMapList(Rect rect)
+        {
+            Rect inner = new Rect(rect.x + 10f, rect.y + 10f, rect.width - 20f, rect.height - 20f);
+            if (_loadingAccountMaps)
+            {
+                GUI.Label(inner, T("正在获取我的地图...", "Loading my maps..."), _mutedStyle);
+                return;
+            }
+            if (_accountMaps.Count == 0)
+            {
+                GUI.Label(inner, T("当前账号还没有地图。登录后上传的地图会出现在这里。", "This account has no maps yet. Maps uploaded while signed in appear here."), _mutedStyle);
+                return;
+            }
+
+            const float rowH = 54f;
+            Rect view = new Rect(0f, 0f, inner.width - 18f, _accountMaps.Count * rowH);
+            _accountScroll = GUI.BeginScrollView(inner, _accountScroll, view, false, true);
+            for (int i = 0; i < _accountMaps.Count; i++)
+            {
+                MapEntry map = _accountMaps[i];
+                GUIStyle style = i == _selectedAccountMapIndex ? _primaryButtonStyle : _buttonStyle;
+                string label = CleanUiText(Safe(map.name, T("未命名地图", "Untitled map"))) + "\n" + ShortVersion(map.mod_version) + " · ♥ " + map.likes + " · ↓ " + map.downloads;
+                if (GUI.Button(new Rect(0f, i * rowH, view.width, rowH - 4f), label, style))
+                {
+                    SelectAccountMap(i);
+                }
+            }
+            GUI.EndScrollView();
+        }
+
+        private void DrawAccountEditor(Rect rect)
+        {
+            MapEntry map = SelectedAccountMap;
+            if (map == null)
+            {
+                GUI.Label(new Rect(rect.x + 14f, rect.y + 14f, rect.width - 28f, 60f), T("选择一张自己的地图进行编辑。", "Select one of your maps to edit."), _mutedStyle);
+                return;
+            }
+
+            float x = rect.x + 14f;
+            float y = rect.y + 12f;
+            float w = rect.width - 28f;
+            DrawFieldLabel(x, y, T("地图名称", "Map name"));
+            _editName = GUI.TextField(new Rect(x, y + 20f, w, 34f), _editName, _inputStyle);
+            y += 60f;
+            DrawFieldLabel(x, y, T("作者", "Author"));
+            _editAuthor = GUI.TextField(new Rect(x, y + 20f, (w - 12f) * 0.5f, 34f), _editAuthor, _inputStyle);
+            DrawFieldLabel(x + (w + 12f) * 0.5f, y, T("MOD 版本", "MOD version"));
+            _editVersion = GUI.TextField(new Rect(x + (w + 12f) * 0.5f, y + 20f, (w - 12f) * 0.5f, 34f), _editVersion, _inputStyle);
+            y += 60f;
+            DrawFieldLabel(x, y, T("描述", "Description"));
+            _editDescription = GUI.TextArea(new Rect(x, y + 20f, w, 70f), _editDescription, _inputStyle);
+            y += 98f;
+
+            _editReplaceJson = GUI.Toggle(new Rect(x, y, w, 22f), _editReplaceJson, T("替换 JSON：", "Replace JSON: ") + (SelectedLocalSavePath == null ? T("未选择", "none") : MapSaveService.DisplayName(SelectedLocalSavePath)));
+            y += 26f;
+            Rect savesRect = new Rect(x, y, w, 86f);
+            GUI.Box(savesRect, GUIContent.none, _detailMetaStyle);
+            if (_filteredLocalSaveIndexes.Count > 0)
+            {
+                DrawLocalSaveList(savesRect);
+            }
+            else
+            {
+                GUI.Label(new Rect(savesRect.x + 10f, savesRect.y + 10f, savesRect.width - 20f, 40f), T("未找到本地 JSON", "No local JSON found"), _mutedStyle);
+            }
+            y = savesRect.yMax + 8f;
+
+            _editReplaceImage = GUI.Toggle(new Rect(x, y, w, 22f), _editReplaceImage, T("替换封面：", "Replace cover: ") + (SelectedLocalImagePath == null ? T("未选择", "none") : MapSaveService.DisplayName(SelectedLocalImagePath)));
+            y += 24f;
+            _editRemoveImage = GUI.Toggle(new Rect(x, y, w, 22f), _editRemoveImage, T("移除当前封面", "Remove current cover"));
+            y += 28f;
+            if (GUI.Button(new Rect(x, y, 86f, 32f), T("选封面", "Pick"), _buttonStyle))
+            {
+                OpenImagePicker();
+            }
+            if (GUI.Button(new Rect(x + 94f, y, 86f, 32f), T("自动匹配", "Auto"), _buttonStyle))
+            {
+                AutoSelectMatchingImage(true);
+            }
+            if (GUI.Button(new Rect(x + 188f, y, 86f, 32f), T("清除", "Clear"), _buttonStyle))
+            {
+                _selectedLocalImage = -1;
+            }
+        }
+
+        private void DrawDeleteConfirm(Rect modal, MapEntry map)
+        {
+            Rect confirm = new Rect(modal.x + 180f, modal.y + 210f, modal.width - 360f, 170f);
+            GUI.Box(confirm, GUIContent.none, _rootStyle);
+            GUI.Label(new Rect(confirm.x + 18f, confirm.y + 18f, confirm.width - 36f, 48f), T("确定删除这张地图？此操作不可恢复。", "Delete this map? This cannot be undone."), _dangerStyle);
+            GUI.Label(new Rect(confirm.x + 18f, confirm.y + 70f, confirm.width - 36f, 28f), CleanUiText(Safe(map.name, "-")), _labelStyle);
+            if (GUI.Button(new Rect(confirm.xMax - 188f, confirm.yMax - 52f, 78f, 34f), T("取消", "Cancel"), _buttonStyle))
+            {
+                _deleteConfirmMapId = string.Empty;
+            }
+            if (GUI.Button(new Rect(confirm.xMax - 100f, confirm.yMax - 52f, 82f, 34f), T("删除", "Delete"), _primaryButtonStyle))
+            {
+                DeleteAccountMap(map);
+            }
         }
 
         private void DrawUploadModal()
@@ -1155,6 +1446,31 @@ namespace PeakMapBrowser
             _loadedOnce = true;
             FetchModVersions();
             FetchMaps();
+            if (_api.IsSignedIn && _accountOpen)
+            {
+                FetchAccountMaps();
+            }
+        }
+
+        private void RefreshSessionIfNeeded()
+        {
+            if (Time.unscaledTime < _nextSessionRefreshCheckTime || !_api.ShouldRefreshSession || _refreshingSession)
+            {
+                return;
+            }
+
+            _nextSessionRefreshCheckTime = Time.unscaledTime + 30f;
+            _refreshingSession = true;
+            _api.RefreshSession((ok, error) =>
+            {
+                _refreshingSession = false;
+                if (!ok && !string.IsNullOrEmpty(error))
+                {
+                    _status = error;
+                    ShowToast(error);
+                    FetchMaps();
+                }
+            });
         }
 
         private void FetchMaps()
@@ -1181,6 +1497,34 @@ namespace PeakMapBrowser
                 _selectedMapIndex = Mathf.Clamp(_selectedMapIndex, 0, Mathf.Max(0, _maps.Count - 1));
                 _mapScroll = Vector2.zero;
                 _status = T("地图列表已更新", "Map list updated");
+            });
+        }
+
+        private void FetchAccountMaps()
+        {
+            if (_loadingAccountMaps || !_api.IsSignedIn)
+            {
+                return;
+            }
+
+            _loadingAccountMaps = true;
+            _api.FetchAccountMaps((response, error) =>
+            {
+                _loadingAccountMaps = false;
+                if (!string.IsNullOrEmpty(error))
+                {
+                    _status = error;
+                    ShowToast(error);
+                    return;
+                }
+
+                _accountMaps = response.data ?? new List<MapEntry>();
+                _selectedAccountMapIndex = Mathf.Clamp(_selectedAccountMapIndex, 0, Mathf.Max(0, _accountMaps.Count - 1));
+                if (_accountMaps.Count > 0)
+                {
+                    SelectAccountMap(_selectedAccountMapIndex);
+                }
+                _status = T("我的地图已更新", "My maps updated");
             });
         }
 
@@ -1232,6 +1576,30 @@ namespace PeakMapBrowser
             });
         }
 
+        private void ToggleLikeSelected()
+        {
+            MapEntry map = SelectedMap;
+            if (map == null || _liking)
+            {
+                return;
+            }
+
+            _liking = true;
+            _api.ToggleLike(map, (response, error) =>
+            {
+                _liking = false;
+                if (!string.IsNullOrEmpty(error))
+                {
+                    _status = error;
+                    ShowToast(error);
+                    return;
+                }
+
+                _status = response.liked ? T("已点赞", "Liked") : T("已取消点赞", "Unliked");
+                ShowToast(_status);
+            });
+        }
+
         private void UploadSelected()
         {
             if (_uploading)
@@ -1267,6 +1635,145 @@ namespace PeakMapBrowser
                 ShowToast(T("上传成功", "Upload succeeded"));
                 _uploadOpen = false;
                 FetchMaps();
+                if (_api.IsSignedIn)
+                {
+                    FetchAccountMaps();
+                }
+            });
+        }
+
+        private void SignInSelected()
+        {
+            if (_refreshingSession)
+            {
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(_loginEmail) || string.IsNullOrEmpty(_loginPassword))
+            {
+                ShowToast(T("请输入邮箱和密码", "Enter email and password"));
+                return;
+            }
+
+            _refreshingSession = true;
+            _status = T("正在登录...", "Signing in...");
+            _api.SignIn(_loginEmail, _loginPassword, (response, error) =>
+            {
+                _refreshingSession = false;
+                if (!string.IsNullOrEmpty(error))
+                {
+                    _status = error;
+                    ShowToast(error);
+                    return;
+                }
+
+                _loginPassword = string.Empty;
+                _loginOpen = false;
+                _status = T("登录成功", "Signed in");
+                ShowToast(_status);
+                FetchMaps();
+                OpenAccount();
+            });
+        }
+
+        private void OpenLogin()
+        {
+            _loginOpen = true;
+            _accountOpen = false;
+            _uploadOpen = false;
+            _imagePickerOpen = false;
+            BlockTopLayerInputThisFrame();
+        }
+
+        private void OpenAccount()
+        {
+            if (!_api.IsSignedIn)
+            {
+                OpenLogin();
+                return;
+            }
+
+            _accountOpen = true;
+            _loginOpen = false;
+            _uploadOpen = false;
+            _imagePickerOpen = false;
+            BlockTopLayerInputThisFrame();
+            RefreshLocalSaves(true);
+            FetchAccountMaps();
+        }
+
+        private void SelectAccountMap(int index)
+        {
+            _selectedAccountMapIndex = Mathf.Clamp(index, 0, Mathf.Max(0, _accountMaps.Count - 1));
+            MapEntry map = SelectedAccountMap;
+            if (map == null)
+            {
+                return;
+            }
+
+            _editName = map.name ?? string.Empty;
+            _editAuthor = map.author ?? string.Empty;
+            _editVersion = map.mod_version ?? string.Empty;
+            _editDescription = map.description ?? string.Empty;
+            _editReplaceJson = false;
+            _editReplaceImage = false;
+            _editRemoveImage = false;
+            _deleteConfirmMapId = string.Empty;
+        }
+
+        private void SaveAccountMap()
+        {
+            MapEntry map = SelectedAccountMap;
+            if (map == null || _savingAccountMap)
+            {
+                return;
+            }
+
+            string jsonPath = _editReplaceJson ? SelectedLocalSavePath : null;
+            string imagePath = _editReplaceImage ? SelectedLocalImagePath : null;
+            _savingAccountMap = true;
+            _status = T("正在保存地图...", "Saving map...");
+            _api.UpdateMap(map.id, _editName, _editAuthor, _editVersion, _editDescription, jsonPath, imagePath, _editRemoveImage, error =>
+            {
+                _savingAccountMap = false;
+                if (!string.IsNullOrEmpty(error))
+                {
+                    _status = error;
+                    ShowToast(error);
+                    return;
+                }
+
+                _status = T("地图已保存", "Map saved");
+                ShowToast(_status);
+                FetchMaps();
+                FetchAccountMaps();
+            });
+        }
+
+        private void DeleteAccountMap(MapEntry map)
+        {
+            if (map == null || _deletingAccountMap)
+            {
+                return;
+            }
+
+            _deletingAccountMap = true;
+            _status = T("正在删除地图...", "Deleting map...");
+            _api.DeleteMap(map.id, error =>
+            {
+                _deletingAccountMap = false;
+                _deleteConfirmMapId = string.Empty;
+                if (!string.IsNullOrEmpty(error))
+                {
+                    _status = error;
+                    ShowToast(error);
+                    return;
+                }
+
+                _status = T("地图已删除", "Map deleted");
+                ShowToast(_status);
+                _selectedAccountMapIndex = 0;
+                FetchMaps();
+                FetchAccountMaps();
             });
         }
 
@@ -1278,7 +1785,7 @@ namespace PeakMapBrowser
             _uploadVersionDropdownOpen = false;
             _uploadImageDropdownOpen = false;
             RefreshLocalSaves(true);
-            _uploadAuthor = GetSteamName();
+            _uploadAuthor = _api.IsSignedIn && !string.IsNullOrEmpty(_api.Session.DisplayName) ? _api.Session.DisplayName : GetSteamName();
             if (_versions.Count == 0)
             {
                 FetchModVersions();
@@ -1467,6 +1974,32 @@ namespace PeakMapBrowser
                     ? _maps[_selectedMapIndex]
                     : null;
             }
+        }
+
+        private MapEntry SelectedAccountMap
+        {
+            get
+            {
+                return _accountMaps != null && _accountMaps.Count > 0 && _selectedAccountMapIndex >= 0 && _selectedAccountMapIndex < _accountMaps.Count
+                    ? _accountMaps[_selectedAccountMapIndex]
+                    : null;
+            }
+        }
+
+        private static string ShortAccountName(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return "Account";
+            }
+
+            string clean = CleanUiText(value.Trim());
+            return clean.Length <= 14 ? clean : clean.Substring(0, 13) + "...";
+        }
+
+        private void OpenAccountWebsite()
+        {
+            Application.OpenURL("https://peakmap.top/account");
         }
 
         private string GetSteamName()

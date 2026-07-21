@@ -1,0 +1,11 @@
+{
+    "name": "TerrainCustomiserCN",
+    "version_number": "0.1.2",
+    "website_url": "",
+    "description": "TerrainCustomiser 的中文界面版本，仅汉化 UI，保留原版地图和联机兼容性。",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.75301",
+        "Snosz-PhotonCustomPropsUtils-1.1.0",
+        "Snosz-UBImGui-1.0.0"
+    ]
+}
