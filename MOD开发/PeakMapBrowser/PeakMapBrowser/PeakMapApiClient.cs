@@ -37,7 +37,9 @@ namespace PeakMapBrowser
         {
             get
             {
-                if (!IsSignedIn || Session.expires_at <= 0) return false;
+                if (Session == null || !Session.HasRefreshToken) return false;
+                if (string.IsNullOrEmpty(Session.access_token)) return true;
+                if (Session.expires_at <= 0) return false;
                 long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 return Session.expires_at - now < 300;
             }
@@ -51,6 +53,11 @@ namespace PeakMapBrowser
         public void SignOut()
         {
             PeakMapSessionStore.ClearUser(Session, _log);
+        }
+
+        public void SignOut(Action<bool, string> done)
+        {
+            _runner.StartCoroutine(SignOutRoutine(done));
         }
 
         public void SignIn(string email, string password, Action<AuthResponse, string> done)
@@ -85,7 +92,17 @@ namespace PeakMapBrowser
 
         public void DownloadMap(MapEntry map, Action<string, string> done)
         {
-            _runner.StartCoroutine(DownloadMapRoutine(map, done));
+            DownloadMap(map, false, done);
+        }
+
+        public void DownloadMap(MapEntry map, bool allowOverwriteLocalChanges, Action<string, string> done)
+        {
+            _runner.StartCoroutine(DownloadMapRoutine(map, allowOverwriteLocalChanges, done));
+        }
+
+        public MapDownloadInfo GetDownloadInfo(MapEntry map)
+        {
+            return MapSaveService.GetDownloadInfo(map);
         }
 
         public void UploadMap(string mapName, string author, string version, string description, string jsonPath, string imagePath, Action<string> done)
@@ -105,6 +122,13 @@ namespace PeakMapBrowser
 
         public void DownloadTexture(string url, Action<Texture2D> done)
         {
+            string cachedPath = MapImageCache.GetExistingPath(url);
+            if (!string.IsNullOrEmpty(cachedPath))
+            {
+                _runner.StartCoroutine(LoadCachedTextureRoutine(url, cachedPath, done));
+                return;
+            }
+
             _runner.StartCoroutine(DownloadTextureRoutine(url, done));
         }
 
@@ -149,6 +173,33 @@ namespace PeakMapBrowser
                 ApplyAuthResponse(response);
                 done(true, null);
             }
+        }
+
+        private IEnumerator SignOutRoutine(Action<bool, string> done)
+        {
+            bool serverRevoked = false;
+            string error = null;
+            if (Session != null && !string.IsNullOrEmpty(Session.access_token))
+            {
+                using (UnityWebRequest request = JsonRequest(_baseUrl + "/api/auth/sign-out", "POST", "{}"))
+                {
+                    ApplySessionHeaders(request);
+                    yield return request.SendWebRequest();
+                    BasicResponse response = Parse<BasicResponse>(Body(request));
+                    serverRevoked = !HasError(request) && response != null && response.success;
+                    if (!serverRevoked)
+                    {
+                        error = ResponseError(response, Text("服务端退出登录失败", "Server sign-out failed"));
+                    }
+                }
+            }
+            else
+            {
+                serverRevoked = true;
+            }
+
+            PeakMapSessionStore.ClearUser(Session, _log);
+            done(serverRevoked, error);
         }
 
         private IEnumerator FetchMapsRoutine(int page, int pageSize, string query, string sort, string modVersion, Action<MapsResponse, string> done)
@@ -263,11 +314,26 @@ namespace PeakMapBrowser
             }
         }
 
-        private IEnumerator DownloadMapRoutine(MapEntry map, Action<string, string> done)
+        private IEnumerator DownloadMapRoutine(MapEntry map, bool allowOverwriteLocalChanges, Action<string, string> done)
         {
             if (map == null || string.IsNullOrEmpty(map.download_url))
             {
                 done(null, Text("地图缺少下载地址", "Map is missing a download URL"));
+                yield break;
+            }
+
+            MapDownloadInfo localInfo = MapSaveService.GetDownloadInfo(map);
+            if (localInfo.Status == MapDownloadStatus.UpToDate)
+            {
+                done(null, Text("地图已经是最新版本", "This map is already up to date"));
+                yield break;
+            }
+            if ((localInfo.Status == MapDownloadStatus.LocalModified || localInfo.Status == MapDownloadStatus.UpdateAvailable)
+                && !allowOverwriteLocalChanges)
+            {
+                done(null, localInfo.Status == MapDownloadStatus.LocalModified
+                    ? Text("本地 JSON 已被修改，请确认覆盖", "The local JSON was modified; confirm overwrite")
+                    : Text("发现地图新版本，请确认更新", "A newer map version is available; confirm update"));
                 yield break;
             }
 
@@ -282,8 +348,14 @@ namespace PeakMapBrowser
 
                 try
                 {
-                    string saved = MapSaveService.SaveDownloadedMap(map, request.downloadHandler.data);
+                    string saved = MapSaveService.SaveDownloadedMap(map, request.downloadHandler.data, allowOverwriteLocalChanges);
                     done(saved, null);
+                }
+                catch (MapSaveException ex)
+                {
+                    done(null, ex.Status == MapDownloadStatus.LocalModified
+                        ? Text("本地 JSON 已被修改，请确认覆盖", "The local JSON was modified; confirm overwrite")
+                        : Text("保存失败: ", "Save failed: ") + ex.Message);
                 }
                 catch (Exception ex)
                 {
@@ -399,6 +471,41 @@ namespace PeakMapBrowser
                 {
                     _log.LogWarning("Thumbnail failed: " + request.error);
                     done(null);
+                    yield break;
+                }
+
+                MapImageCache.Save(url, request.downloadHandler.data);
+                done(DownloadHandlerTexture.GetContent(request));
+            }
+        }
+
+        private IEnumerator LoadCachedTextureRoutine(string url, string path, Action<Texture2D> done)
+        {
+            string fileUrl;
+            try
+            {
+                fileUrl = new Uri(path).AbsoluteUri;
+            }
+            catch
+            {
+                MapImageCache.Remove(url);
+                fileUrl = null;
+            }
+
+            if (string.IsNullOrEmpty(fileUrl))
+            {
+                yield return _runner.StartCoroutine(DownloadTextureRoutine(url, done));
+                yield break;
+            }
+
+            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(fileUrl))
+            {
+                yield return request.SendWebRequest();
+                if (HasError(request))
+                {
+                    _log.LogWarning("Cached thumbnail failed, downloading again: " + request.error);
+                    MapImageCache.Remove(url);
+                    yield return _runner.StartCoroutine(DownloadTextureRoutine(url, done));
                     yield break;
                 }
 
@@ -542,6 +649,13 @@ namespace PeakMapBrowser
         }
 
         private static string ResponseError(AuthResponse response, string fallback)
+        {
+            return response != null && !string.IsNullOrEmpty(response.error_message) ? response.error_message
+                : response != null && !string.IsNullOrEmpty(response.error) ? response.error
+                : fallback;
+        }
+
+        private static string ResponseError(BasicResponse response, string fallback)
         {
             return response != null && !string.IsNullOrEmpty(response.error_message) ? response.error_message
                 : response != null && !string.IsNullOrEmpty(response.error) ? response.error

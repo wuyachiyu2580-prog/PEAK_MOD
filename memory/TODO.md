@@ -1,6 +1,6 @@
 ﻿# Permanent TODO
 
-更新时间：2026-06-04
+更新时间：2026-07-23
 
 这里只记录未完成、待验证、已知风险和后续优化。已经稳定或已经写入各 MOD `RECENT.md` / `DECISIONS.md` 的内容，不再重复放在这里。
 
@@ -120,5 +120,14 @@
 - [ ] 若用户反馈 0.1.2 后旧地图找不到，先检查新持久化目录 `%USERPROFILE%\AppData\LocalLow\LandCrab\PEAK\TerrainCustomiser\Map Saves` 和旧插件目录 `Map Saves`；不要自动迁移、复制、删除或恢复地图文件。
 - [ ] 第四关相关问题：`0.1.2` 已同步原版 `0.3.2` 的 Caldera/Volcano 自定义变体修复；若仍出现预览和游玩不一致，应先对照原版行为判断，除非用户明确转为功能修复任务，否则不要在 CN 版里单独改原版地形生成逻辑。
 - [ ] 每次发布前检查 zip 内不得包含 `.deps.json` 或 `.OLD`，并确认 `TerrainCustomiserCNCollector.dll` 是否仍按发布策略随包上传。
+
+## PeakMapBrowser
+
+- [ ] 进游戏实机验证登录、自动刷新 token、退出登录和 guest cookie 点赞。
+- [ ] 进游戏验证上传地图的账号归属、我的地图编辑/删除、JSON 替换、封面选择和 MOD 版本下拉列表。
+- [ ] 进游戏验证社区地图详情弹窗的下载/点赞行为，以及弹窗打开时没有点击穿透到底层按钮。
+- [ ] 确认线上 Supabase 已应用 `20260720120000_add_accounts_map_ownership_and_likes.sql` 和 `20260720130000_add_map_json_revisions.sql`，并确认 `SUPABASE_SERVICE_ROLE_KEY` 配置存在。
+- [ ] 若准备发布账号功能，更新 `MOD开发\PeakMapBrowser\发行\0.1.0` 的 DLL、README、CHANGELOG、manifest 和 zip；当前测试环境 DLL 不等于已更新发行包。
+- [ ] UI 美化/框架重构后置：用户暂不要求从 IMGUI 改为 uGUI 或 UI Toolkit；恢复任务前先重新确认范围和视觉目标。
 
 

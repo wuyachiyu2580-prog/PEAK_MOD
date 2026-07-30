@@ -15,6 +15,7 @@ namespace PeakMapBrowser
         private readonly PeakMapApiClient _api;
         private readonly int _pageSize;
         private readonly Dictionary<string, Texture2D> _thumbnails = new Dictionary<string, Texture2D>();
+        private readonly Dictionary<string, MapDownloadInfo> _downloadInfoCache = new Dictionary<string, MapDownloadInfo>();
 
         private bool _visible;
         private bool _cursorCaptured;
@@ -30,6 +31,8 @@ namespace PeakMapBrowser
         private bool _uploadOpen;
         private bool _loginOpen;
         private bool _accountOpen;
+        private bool _communityDetailOpen;
+        private bool _downloadConfirmOpen;
         private bool _loadingAccountMaps;
         private bool _savingAccountMap;
         private bool _deletingAccountMap;
@@ -43,6 +46,7 @@ namespace PeakMapBrowser
         private Vector2 _uploadSaveScroll;
         private Vector2 _detailScroll;
         private Vector2 _accountScroll;
+        private Vector2 _accountDescriptionScroll;
 
         private List<MapEntry> _maps = new List<MapEntry>();
         private List<MapEntry> _accountMaps = new List<MapEntry>();
@@ -63,6 +67,7 @@ namespace PeakMapBrowser
         private string _status = string.Empty;
         private string _toast = string.Empty;
         private float _toastUntil;
+        private float _downloadInfoCacheUntil;
 
         private string[] _localSaves = new string[0];
         private readonly List<int> _filteredLocalSaveIndexes = new List<int>();
@@ -73,6 +78,7 @@ namespace PeakMapBrowser
         private int _selectedUploadVersion;
         private bool _uploadVersionDropdownOpen;
         private Vector2 _uploadVersionScroll;
+        private bool _uploadSaveDropdownOpen;
         private string[] _localImages = new string[0];
         private readonly List<int> _filteredLocalImageIndexes = new List<int>();
         private int _selectedLocalImage = -1;
@@ -99,9 +105,13 @@ namespace PeakMapBrowser
         private string _editVersion = string.Empty;
         private string _editDescription = string.Empty;
         private bool _editReplaceJson;
+        private bool _accountJsonDropdownOpen;
+        private bool _accountVersionDropdownOpen;
+        private Vector2 _accountVersionScroll;
         private bool _editReplaceImage;
         private bool _editRemoveImage;
         private string _deleteConfirmMapId = string.Empty;
+        private string _downloadConfirmMapId = string.Empty;
 
         private GUIStyle _rootStyle;
         private GUIStyle _panelStyle;
@@ -109,14 +119,17 @@ namespace PeakMapBrowser
         private GUIStyle _detailMetaStyle;
         private GUIStyle _detailDescriptionStyle;
         private GUIStyle _cardStyle;
-        private GUIStyle _cardSelectedStyle;
         private GUIStyle _buttonStyle;
         private GUIStyle _primaryButtonStyle;
         private GUIStyle _iconButtonStyle;
         private GUIStyle _inputStyle;
+        private GUIStyle _textAreaStyle;
         private GUIStyle _titleStyle;
         private GUIStyle _h2Style;
         private GUIStyle _labelStyle;
+        private GUIStyle _statLabelStyle;
+        private GUIStyle _statValueStyle;
+        private GUIStyle _cardStatsStyle;
         private GUIStyle _mutedStyle;
         private GUIStyle _cardDescStyle;
         private GUIStyle _detailTextStyle;
@@ -127,6 +140,9 @@ namespace PeakMapBrowser
         private GUIStyle _pagePillStyle;
         private GUIStyle _toastStyle;
         private GUIStyle _thumbStyle;
+        private GUIStyle _sidebarButtonStyle;
+        private GUIStyle _sidebarSelectedStyle;
+        private GUIStyle _statBoxStyle;
         private GUIStyle _modalBackdropStyle;
         private GUIStyle _dangerStyle;
         private Texture2D _placeholderThumb;
@@ -181,8 +197,10 @@ namespace PeakMapBrowser
                 _imagePickerOpen = false;
                 _loginOpen = false;
                 _accountOpen = false;
+                _communityDetailOpen = false;
                 _uploadVersionDropdownOpen = false;
                 _uploadImageDropdownOpen = false;
+                _uploadSaveDropdownOpen = false;
             }
         }
 
@@ -318,40 +336,82 @@ namespace PeakMapBrowser
                 return;
             }
 
-            EnsureStyles();
-            CenterWindow();
+            Color previousColor = GUI.color;
+            Color previousContentColor = GUI.contentColor;
+            Color previousBackgroundColor = GUI.backgroundColor;
+            bool previousEnabled = GUI.enabled;
+            int previousDepth = GUI.depth;
+            GUI.color = Color.white;
+            GUI.contentColor = Color.white;
+            GUI.backgroundColor = Color.white;
+            GUI.enabled = true;
 
-            GUI.depth = 10;
-            DrawDimBackground();
-            GUI.Box(_windowRect, GUIContent.none, _rootStyle);
-            if (!_uploadOpen && !_imagePickerOpen && !_loginOpen && !_accountOpen)
+            try
             {
-                DrawHeader();
-                if (!_uploadOpen && !_imagePickerOpen && !_loginOpen && !_accountOpen)
+                EnsureStyles();
+                CenterWindow();
+
+                GUI.depth = -100;
+                DrawDimBackground();
+                DrawSolidBackground(_windowRect, new Color(0.010f, 0.016f, 0.012f, 1f));
+                GUI.Box(_windowRect, GUIContent.none, _rootStyle);
+                bool modalLayerOpen = _communityDetailOpen || _downloadConfirmOpen;
+                bool guiEnabledBeforeModal = GUI.enabled;
+                if (modalLayerOpen)
                 {
-                    DrawContent();
+                    GUI.enabled = false;
                 }
-            }
 
-            if (_uploadOpen && !_imagePickerOpen)
-            {
-                DrawUploadModal();
-            }
-            if (_loginOpen)
-            {
-                DrawLoginModal();
-            }
-            if (_accountOpen)
-            {
-                DrawAccountModal();
-            }
-            if (_imagePickerOpen)
-            {
-                DrawImagePickerModal();
-            }
-            DrawToast();
+                if (!_uploadOpen && !_imagePickerOpen && !_loginOpen)
+                {
+                    DrawHeader();
+                    DrawSidebar();
+                    if (_accountOpen)
+                    {
+                        DrawAccountPage();
+                    }
+                    else
+                    {
+                        DrawContent();
+                    }
+                    DrawFooter();
+                }
+                GUI.enabled = guiEnabledBeforeModal;
 
-            ConsumeOverlayEvents();
+                if (_communityDetailOpen && !_downloadConfirmOpen && !_imagePickerOpen && !_loginOpen && !_uploadOpen)
+                {
+                    DrawCommunityDetailModal();
+                }
+
+                if (_downloadConfirmOpen && !_imagePickerOpen && !_loginOpen && !_uploadOpen)
+                {
+                    DrawDownloadConfirmModal();
+                }
+
+                if (_uploadOpen && !_imagePickerOpen)
+                {
+                    DrawUploadModal();
+                }
+                if (_loginOpen && !_imagePickerOpen)
+                {
+                    DrawLoginModal();
+                }
+                if (_imagePickerOpen)
+                {
+                    DrawImagePickerModal();
+                }
+                DrawToast();
+
+                ConsumeOverlayEvents();
+            }
+            finally
+            {
+                GUI.color = previousColor;
+                GUI.contentColor = previousContentColor;
+                GUI.backgroundColor = previousBackgroundColor;
+                GUI.enabled = previousEnabled;
+                GUI.depth = previousDepth;
+            }
         }
 
         private void ConsumeOverlayEvents()
@@ -380,8 +440,8 @@ namespace PeakMapBrowser
 
         private void CenterWindow()
         {
-            float width = Mathf.Round(Mathf.Min(960f, Screen.width - 48f));
-            float height = Mathf.Round(Mathf.Min(640f, Screen.height - 48f));
+            float width = Mathf.Round(Mathf.Min(1160f, Screen.width - 24f));
+            float height = Mathf.Round(Mathf.Min(720f, Screen.height - 24f));
             _windowRect = new Rect(Mathf.Round((Screen.width - width) * 0.5f), Mathf.Round((Screen.height - height) * 0.5f), width, height);
         }
 
@@ -393,65 +453,48 @@ namespace PeakMapBrowser
             GUI.color = old;
         }
 
+        private void DrawSolidBackground(Rect rect, Color color)
+        {
+            Color old = GUI.color;
+            GUI.color = color;
+            GUI.DrawTexture(rect, Texture2D.whiteTexture, ScaleMode.StretchToFill);
+            GUI.color = old;
+        }
+
         private void DrawHeader()
         {
-            Rect header = new Rect(_windowRect.x, _windowRect.y, _windowRect.width, 82f);
+            Rect header = new Rect(_windowRect.x, _windowRect.y, _windowRect.width, 64f);
             GUI.Box(header, GUIContent.none, _panelStrongStyle);
 
-            Rect mark = new Rect(header.x + 18f, header.y + 18f, 44f, 44f);
+            Rect mark = new Rect(header.x + 22f, header.y + 17f, 30f, 30f);
             GUI.Box(mark, GUIContent.none, _badgeStyle);
-            GUI.Label(new Rect(mark.x + 11f, mark.y + 2f, 28f, 36f), "/", _titleStyle);
+            GUI.Label(new Rect(mark.x + 8f, mark.y - 2f, 22f, 28f), "/", _titleStyle);
 
-            GUI.Label(new Rect(header.x + 72f, header.y + 18f, 180f, 16f), "EXPEDITION DATABASE", _tinyStyle);
-            GUI.Label(new Rect(header.x + 72f, header.y + 32f, 190f, 34f), T("PEAK 地图库", "PEAK Maps"), _titleStyle);
+            GUI.Label(new Rect(header.x + 62f, header.y + 11f, 190f, 16f), T("远征数据库", "EXPEDITION DATABASE"), _tinyStyle);
+            GUI.Label(new Rect(header.x + 62f, header.y + 27f, 210f, 30f), T("PEAK 地图库", "PEAK Maps"), _titleStyle);
 
-            float x = header.x + 276f;
-            float y = header.y + 23f;
+            float y = header.y + 17f;
             float closeW = 38f;
             float uploadW = 118f;
             float accountW = 112f;
             float refreshW = 38f;
-            float sortW = 76f;
-            float versionW = 96f;
             float gap = 8f;
-            float searchW = Mathf.Max(140f, header.xMax - x - closeW - uploadW - accountW - refreshW - sortW - versionW - gap * 7f - 18f);
+            float x = header.xMax - closeW - accountW - uploadW - refreshW - gap * 4f - 22f;
 
-            GUI.SetNextControlName("PeakMapSearch");
-            string nextQuery = GUI.TextField(new Rect(x, y, searchW, 38f), _query, _inputStyle);
-            if (nextQuery != _query)
-            {
-                _query = nextQuery;
-            }
-            x += searchW + gap;
-
-            if (GUI.Button(new Rect(x, y, versionW, 38f), ShortVersion(_versionFilter), _buttonStyle))
-            {
-                CycleVersionFilter();
-            }
-            x += versionW + gap;
-
-            if (GUI.Button(new Rect(x, y, sortW, 38f), _sort == "downloads" ? T("下载量", "Popular") : T("最新", "Newest"), _buttonStyle))
-            {
-                _sort = _sort == "downloads" ? "newest" : "downloads";
-                _page = 1;
-                FetchMaps();
-            }
-            x += sortW + gap;
-
-            if (GUI.Button(new Rect(x, y, refreshW, 38f), "↻", _iconButtonStyle))
-            {
-                RefreshAll();
-            }
-            x += refreshW + gap;
-
-            if (GUI.Button(new Rect(x, y, uploadW, 38f), T("↑ 上传地图", "↑ Upload"), _primaryButtonStyle))
+            if (GUI.Button(new Rect(x, y, uploadW, 34f), T("上传地图", "Upload"), _primaryButtonStyle))
             {
                 OpenUpload();
             }
             x += uploadW + gap;
 
+            if (GUI.Button(new Rect(x, y, refreshW, 34f), "↻", _iconButtonStyle))
+            {
+                RefreshAll();
+            }
+            x += refreshW + gap;
+
             string accountLabel = _api.IsSignedIn ? ShortAccountName(_api.Session.DisplayName) : T("登录", "Sign in");
-            if (GUI.Button(new Rect(x, y, accountW, 38f), accountLabel, _buttonStyle))
+            if (GUI.Button(new Rect(x, y, accountW, 34f), accountLabel, _buttonStyle))
             {
                 if (_api.IsSignedIn)
                 {
@@ -464,7 +507,7 @@ namespace PeakMapBrowser
             }
             x += accountW + gap;
 
-            if (GUI.Button(new Rect(x, y, closeW, 38f), "×", _iconButtonStyle))
+            if (GUI.Button(new Rect(x, y, closeW, 34f), "×", _iconButtonStyle))
             {
                 SetVisible(false);
             }
@@ -478,15 +521,67 @@ namespace PeakMapBrowser
             }
         }
 
+        private void DrawSidebar()
+        {
+            Rect sidebar = new Rect(_windowRect.x, _windowRect.y + 64f, 230f, _windowRect.height - 92f);
+            GUI.Box(sidebar, GUIContent.none, _panelStyle);
+
+            GUI.Label(new Rect(sidebar.x + 24f, sidebar.y + 22f, 160f, 16f), T("导航", "NAVIGATION"), _tinyStyle);
+            float y = sidebar.y + 58f;
+            DrawNavButton(new Rect(sidebar.x + 22f, y, sidebar.width - 44f, 42f), T("⌂  主页", "⌂  Home"), !_accountOpen, () => _accountOpen = false);
+            y += 50f;
+            DrawNavButton(new Rect(sidebar.x + 22f, y, sidebar.width - 44f, 42f), T("▣  我的地图", "▣  My Maps"), _accountOpen, () =>
+            {
+                if (_api.IsSignedIn) OpenAccount();
+                else OpenLogin();
+            });
+            y += 50f;
+            DrawNavButton(new Rect(sidebar.x + 22f, y, sidebar.width - 44f, 42f), T("◎  社区地图", "◎  Database"), !_accountOpen, () => _accountOpen = false);
+            y += 50f;
+            DrawNavButton(new Rect(sidebar.x + 22f, y, sidebar.width - 44f, 42f), T("⚙  设置", "⚙  Settings"), false, OpenAccountWebsite);
+
+            if (GUI.Button(new Rect(sidebar.x + 22f, sidebar.yMax - 84f, sidebar.width - 44f, 40f), T("上传地图", "Upload Map"), _primaryButtonStyle))
+            {
+                OpenUpload();
+            }
+
+            if (_api.IsSignedIn)
+            {
+                if (GUI.Button(new Rect(sidebar.x + 22f, sidebar.yMax - 38f, sidebar.width - 44f, 30f), T("退出登录", "Logout"), _buttonStyle))
+                {
+                    _accountOpen = false;
+                    _api.SignOut((serverRevoked, error) =>
+                    {
+                        _status = string.IsNullOrEmpty(error)
+                            ? T("已退出登录", "Signed out")
+                            : T("已退出本地登录，但服务端撤销失败", "Signed out locally, but server revocation failed");
+                        ShowToast(_status);
+                        FetchMaps();
+                    });
+                }
+            }
+        }
+
+        private void DrawNavButton(Rect rect, string label, bool selected, Action clicked)
+        {
+            if (GUI.Button(rect, label, selected ? _sidebarSelectedStyle : _sidebarButtonStyle))
+            {
+                clicked();
+            }
+        }
+
+        private void DrawFooter()
+        {
+            Rect footer = new Rect(_windowRect.x, _windowRect.yMax - 28f, _windowRect.width, 28f);
+            GUI.Box(footer, GUIContent.none, _panelStrongStyle);
+            GUI.Label(new Rect(footer.x + 16f, footer.y + 7f, 360f, 16f), T("● 在线   © 2024 PEAK 地图库", "● ONLINE   © 2024 PEAK MAP DATABASE"), _tinyStyle);
+            GUI.Label(new Rect(footer.xMax - 360f, footer.y + 7f, 340f, 16f), "API: peakmap.top", _mutedStyle);
+        }
+
         private void DrawContent()
         {
-            Rect content = new Rect(_windowRect.x + 14f, _windowRect.y + 96f, _windowRect.width - 28f, _windowRect.height - 110f);
-            float detailW = Mathf.Min(336f, content.width * 0.38f);
-            Rect listRect = new Rect(content.x, content.y, content.width - detailW - 14f, content.height);
-            Rect detailRect = new Rect(listRect.xMax + 14f, content.y, detailW, content.height);
-
-            DrawMapList(listRect);
-            DrawDetail(detailRect);
+            Rect content = new Rect(_windowRect.x + 248f, _windowRect.y + 84f, _windowRect.width - 270f, _windowRect.height - 128f);
+            DrawMapList(content);
         }
 
         private void DrawMapList(Rect rect)
@@ -494,13 +589,39 @@ namespace PeakMapBrowser
             GUI.Box(rect, GUIContent.none, _panelStyle);
 
             string total = _pagination != null ? _pagination.total.ToString() : (_maps != null ? _maps.Count.ToString() : "0");
-            GUI.Label(new Rect(rect.x + 14f, rect.y + 14f, rect.width - 160f, 22f),
-                T("共 ", "") + total + T(" 张社区地图 · 当前筛选 ", " community maps · Filter ")
-                    + (string.IsNullOrEmpty(_versionFilter) ? T("全部版本", "All versions") : _versionFilter),
-                _mutedStyle);
-            GUI.Label(new Rect(rect.xMax - 142f, rect.y + 10f, 128f, 26f), "API: peakmap.top", _apiBadgeStyle);
+            GUI.Label(new Rect(rect.x + 18f, rect.y + 16f, 260f, 16f), T("共 " + total + " 张地图", "TOTAL " + total + " MAPS FOUND"), _tinyStyle);
+            GUI.Label(new Rect(rect.x + 18f, rect.y + 32f, 260f, 34f), T("社区地图", "Community Maps"), _titleStyle);
+            GUI.Label(new Rect(rect.xMax - 142f, rect.y + 18f, 124f, 26f), "API: peakmap.top", _apiBadgeStyle);
 
-            Rect cardsRect = new Rect(rect.x + 14f, rect.y + 50f, rect.width - 28f, rect.height - 104f);
+            float toolbarY = rect.y + 72f;
+            float gap = 8f;
+            float searchW = Mathf.Max(180f, rect.width - 18f * 2f - 96f - 92f - 104f - gap * 3f);
+            GUI.SetNextControlName("PeakMapSearch");
+            string nextQuery = GUI.TextField(new Rect(rect.x + 18f, toolbarY, searchW, 34f), _query, _inputStyle);
+            if (nextQuery != _query)
+            {
+                _query = nextQuery;
+            }
+            float x = rect.x + 18f + searchW + gap;
+            if (GUI.Button(new Rect(x, toolbarY, 96f, 34f), ShortVersion(_versionFilter), _buttonStyle))
+            {
+                CycleVersionFilter();
+            }
+            x += 96f + gap;
+            if (GUI.Button(new Rect(x, toolbarY, 92f, 34f), _sort == "downloads" ? T("下载量", "Popular") : T("最新", "Newest"), _buttonStyle))
+            {
+                _sort = _sort == "downloads" ? "newest" : "downloads";
+                _page = 1;
+                FetchMaps();
+            }
+            x += 92f + gap;
+            if (GUI.Button(new Rect(x, toolbarY, 104f, 34f), T("搜索", "Search"), _primaryButtonStyle))
+            {
+                _page = 1;
+                FetchMaps();
+            }
+
+            Rect cardsRect = new Rect(rect.x + 18f, rect.y + 118f, rect.width - 36f, rect.height - 174f);
             if (_loadingMaps)
             {
                 GUI.Label(cardsRect, T("正在从 peakmap.top 获取地图列表...", "Fetching maps from peakmap.top..."), _labelStyle);
@@ -514,15 +635,15 @@ namespace PeakMapBrowser
                 DrawCards(cardsRect);
             }
 
-            DrawPagination(new Rect(rect.x + 14f, rect.yMax - 44f, rect.width - 28f, 34f));
+            DrawPagination(new Rect(rect.x + 18f, rect.yMax - 46f, rect.width - 36f, 34f));
         }
 
         private void DrawCards(Rect rect)
         {
-            int columns = rect.width > 440f ? 2 : 1;
-            float gap = 12f;
+            int columns = rect.width > 560f ? 2 : 1;
+            float gap = 14f;
             float cardW = (rect.width - (columns - 1) * gap - 10f) / columns;
-            float cardH = 270f;
+            float cardH = 290f;
             int rows = Mathf.CeilToInt(_maps.Count / (float)columns);
             Rect view = new Rect(0f, 0f, rect.width - 18f, rows * (cardH + gap));
             _mapScroll = GUI.BeginScrollView(rect, _mapScroll, view, false, true);
@@ -541,41 +662,68 @@ namespace PeakMapBrowser
         private void DrawCard(Rect rect, int index, MapEntry map)
         {
             bool selected = index == _selectedMapIndex;
-            GUI.Box(rect, GUIContent.none, selected ? _cardSelectedStyle : _cardStyle);
+            GUI.Box(rect, GUIContent.none, _cardStyle);
+            if (selected)
+            {
+                DrawCardSelectionOutline(rect);
+            }
 
             Rect inner = new Rect(rect.x + 1f, rect.y + 1f, rect.width - 2f, rect.height - 2f);
-            Rect thumb = new Rect(inner.x, inner.y, inner.width, 108f);
+            Rect thumb = new Rect(inner.x, inner.y, inner.width, 130f);
             DrawThumbnail(thumb, map);
             GUI.Label(new Rect(thumb.x + 10f, thumb.y + 10f, 86f, 22f), ShortVersion(map.mod_version), _badgeStyle);
-
-            float textY = inner.y + 124f;
-            GUI.Label(new Rect(inner.x + 11f, textY, inner.width - 22f, 32f), CleanUiText(Safe(map.name, T("未命名地图", "Untitled map"))), _h2Style);
-            GUI.Label(new Rect(inner.x + 11f, textY + 35f, inner.width - 22f, 19f), "○ " + CleanUiText(Safe(map.author, "Unknown")), _mutedStyle);
-            GUI.Label(new Rect(inner.x + 11f, textY + 60f, inner.width - 22f, 42f), CleanUiText(Safe(map.description, T("没有描述", "No description"))), _cardDescStyle);
-
-            string stats = "↓ " + map.downloads + "  " + (map.liked_by_me ? "♥ " : "♡ ") + map.likes;
             if (map.revision > 1)
             {
-                stats += "  v" + map.revision;
+                GUI.Label(new Rect(thumb.xMax - 78f, thumb.y + 10f, 66f, 22f), "v" + map.revision, _badgeStyle);
             }
-            GUI.Label(new Rect(inner.x + 11f, inner.yMax - 34f, inner.width - 92f, 26f), stats, _mutedStyle);
-            if (GUI.Button(new Rect(inner.xMax - 74f, inner.yMax - 38f, 60f, 30f), T("下载", "Get"), _primaryButtonStyle))
+
+            float textY = inner.y + 146f;
+            GUI.Label(new Rect(inner.x + 14f, textY, inner.width - 28f, 30f), CleanUiText(Safe(map.name, T("未命名地图", "Untitled map"))), _h2Style);
+            GUI.Label(new Rect(inner.x + 14f, textY + 34f, inner.width - 28f, 18f), "♙ " + CleanUiText(Safe(map.author, T("未知", "Unknown"))), _mutedStyle);
+            float statsY = inner.yMax - 42f;
+            float descriptionHeight = Mathf.Max(28f, statsY - (textY + 58f) - 6f);
+            string cardDescription = CompactCardDescription(CleanUiText(Safe(map.description, T("没有描述", "No description"))), inner.width - 28f);
+            GUI.Label(new Rect(inner.x + 14f, textY + 58f, inner.width - 28f, descriptionHeight), cardDescription, _cardDescStyle);
+
+            string stats = T("下载 " + map.downloads + "    点赞 " + map.likes, "Downloads " + map.downloads + "    Likes " + map.likes);
+            GUI.Label(new Rect(inner.x + 14f, statsY, inner.width - 104f, 26f), stats, _cardStatsStyle);
+            Rect getRect = new Rect(inner.xMax - 82f, inner.yMax - 46f, 68f, 34f);
+            if (GUI.Button(getRect, DownloadButtonLabel(map), _primaryButtonStyle))
             {
                 SelectMap(index);
                 DownloadSelected();
             }
 
-            if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
+            if (GUI.enabled && Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition) && !getRect.Contains(Event.current.mousePosition))
             {
                 SelectMap(index);
+                _communityDetailOpen = true;
+                BlockTopLayerInputThisFrame();
                 Event.current.Use();
             }
         }
 
+        private void DrawCardSelectionOutline(Rect rect)
+        {
+            Color old = GUI.color;
+            GUI.color = new Color(0.20f, 0.86f, 0.46f, 1f);
+            const float thickness = 2f;
+            GUI.DrawTexture(new Rect(rect.x, rect.y, rect.width, thickness), Texture2D.whiteTexture);
+            GUI.DrawTexture(new Rect(rect.x, rect.yMax - thickness, rect.width, thickness), Texture2D.whiteTexture);
+            GUI.DrawTexture(new Rect(rect.x, rect.y, thickness, rect.height), Texture2D.whiteTexture);
+            GUI.DrawTexture(new Rect(rect.xMax - thickness, rect.y, thickness, rect.height), Texture2D.whiteTexture);
+            GUI.color = old;
+        }
+
         private void DrawThumbnail(Rect rect, MapEntry map)
         {
+            DrawThumbnail(rect, map, ScaleMode.ScaleAndCrop);
+        }
+
+        private void DrawThumbnail(Rect rect, MapEntry map, ScaleMode scaleMode)
+        {
             Texture2D tex = GetThumbnail(map);
-            GUI.DrawTexture(rect, tex != null ? tex : _placeholderThumb, ScaleMode.ScaleAndCrop);
+            GUI.DrawTexture(rect, tex != null ? tex : _placeholderThumb, scaleMode);
             Color old = GUI.color;
             GUI.color = new Color(0f, 0f, 0f, 0.20f);
             GUI.DrawTexture(rect, Texture2D.whiteTexture);
@@ -619,52 +767,128 @@ namespace PeakMapBrowser
                 return;
             }
 
-            Rect thumb = new Rect(rect.x + 14f, rect.y + 14f, 118f, 74f);
+            Rect thumb = new Rect(rect.x + 14f, rect.y + 14f, rect.width - 28f, 150f);
             DrawThumbnail(thumb, map);
-            float titleX = thumb.xMax + 12f;
-            GUI.Label(new Rect(titleX, rect.y + 16f, rect.xMax - titleX - 14f, 16f), "SELECTED MAP", _tinyStyle);
-            GUI.Label(new Rect(titleX, rect.y + 34f, rect.xMax - titleX - 14f, 28f), CleanUiText(Safe(map.name, T("未命名地图", "Untitled map"))), _detailTitleStyle);
-            string dateText = map.revision > 1
-                ? T("更新 ", "Updated ") + DateOnly(Safe(map.updated_at, map.created_at)) + " · v" + map.revision
-                : T("上传 ", "Uploaded ") + DateOnly(map.created_at);
-            GUI.Label(new Rect(titleX, rect.y + 64f, rect.xMax - titleX - 14f, 18f), T("下载 ", "Downloads ") + map.downloads + " · " + T("点赞 ", "Likes ") + map.likes + " · " + dateText, _mutedStyle);
+            GUI.Label(new Rect(thumb.x + 12f, thumb.yMax - 58f, thumb.width - 24f, 16f), T("当前地图", "SELECTED MAP"), _tinyStyle);
+            GUI.Label(new Rect(thumb.x + 12f, thumb.yMax - 40f, thumb.width - 24f, 34f), CleanUiText(Safe(map.name, T("未命名地图", "Untitled map"))), _detailTitleStyle);
+            float y = thumb.yMax + 16f;
 
-            float y = thumb.yMax + 14f;
+            DrawDetailMeta(new Rect(rect.x + 14f, y, rect.width - 28f, 88f), map);
+            y += 102f;
 
-            DrawDetailMeta(new Rect(rect.x + 14f, y, rect.width - 28f, 58f), map);
-            y += 68f;
+            GUI.Label(new Rect(rect.x + 16f, y, rect.width - 32f, 18f), T("描述", "DESCRIPTION"), _tinyStyle);
+            y += 24f;
 
             float buttonY = rect.yMax - 48f;
             Rect descRect = new Rect(rect.x + 14f, y, rect.width - 28f, Mathf.Max(110f, buttonY - y - 12f));
             DrawScrollableDescription(descRect, FormatDetailDescription(CleanUiText(Safe(map.description, T("没有描述", "No description")))));
 
+            float buttonGap = 8f;
+            float buttonW = (rect.width - 32f - buttonGap * 2f) / 3f;
             GUI.enabled = !_downloading;
-            if (GUI.Button(new Rect(rect.x + 16f, buttonY, rect.width - 192f, 36f), _downloading ? T("下载中...", "Downloading...") : T("下载到本地", "Download"), _primaryButtonStyle))
+            if (GUI.Button(new Rect(rect.x + 16f, buttonY, buttonW, 36f), _downloading ? T("下载中", "Loading") : DownloadButtonLabel(map), _primaryButtonStyle))
             {
                 DownloadSelected();
             }
             GUI.enabled = true;
             GUI.enabled = !_liking;
-            if (GUI.Button(new Rect(rect.xMax - 174f, buttonY, 66f, 36f), map.liked_by_me ? T("已赞", "Liked") : T("点赞", "Like"), _buttonStyle))
+            if (GUI.Button(new Rect(rect.x + 16f + buttonW + buttonGap, buttonY, buttonW, 36f), map.liked_by_me ? T("已赞", "Liked") : T("点赞", "Like"), _buttonStyle))
             {
                 ToggleLikeSelected();
             }
             GUI.enabled = true;
-            if (GUI.Button(new Rect(rect.xMax - 102f, buttonY, 86f, 36f), T("刷新", "Refresh"), _buttonStyle))
+            if (GUI.Button(new Rect(rect.x + 16f + (buttonW + buttonGap) * 2f, buttonY, buttonW, 36f), T("刷新", "Refresh"), _buttonStyle))
             {
                 RefreshAll();
             }
         }
 
+        private void DrawCommunityDetailModal()
+        {
+            MapEntry map = SelectedMap;
+            if (map == null)
+            {
+                _communityDetailOpen = false;
+                return;
+            }
+
+            GUI.depth = -101;
+            GUI.Box(new Rect(0f, 0f, Screen.width, Screen.height), GUIContent.none, _modalBackdropStyle);
+
+            float modalWidth = Mathf.Min(820f, Screen.width - 32f);
+            float modalHeight = Mathf.Min(680f, Screen.height - 26f);
+            Rect modal = new Rect(Mathf.Round((Screen.width - modalWidth) * 0.5f),
+                Mathf.Round((Screen.height - modalHeight) * 0.5f), modalWidth, modalHeight);
+            GUI.Box(modal, GUIContent.none, _rootStyle);
+
+            Rect thumb = new Rect(modal.x + 14f, modal.y + 14f, modal.width - 28f, 238f);
+            DrawThumbnail(thumb, map, ScaleMode.ScaleToFit);
+            GUI.Label(new Rect(thumb.x + 14f, thumb.y + 12f, 118f, 24f), ShortVersion(map.mod_version), _badgeStyle);
+            if (GUI.Button(new Rect(modal.xMax - 52f, modal.y + 18f, 34f, 34f), "×", _iconButtonStyle))
+            {
+                _communityDetailOpen = false;
+            }
+
+            float y = thumb.yMax + 16f;
+            GUI.Label(new Rect(modal.x + 24f, y, modal.width - 48f, 38f),
+                CleanUiText(Safe(map.name, T("未命名地图", "Untitled map"))), _titleStyle);
+            y += 48f;
+
+            float gap = 10f;
+            float statW = (modal.width - 48f - gap * 3f) / 4f;
+            DrawStatBox(new Rect(modal.x + 24f, y, statW, 64f), T("作者", "AUTHOR"), CleanUiText(Safe(map.author, T("未知", "Unknown"))));
+            DrawStatBox(new Rect(modal.x + 24f + statW + gap, y, statW, 64f), T("MOD 版本", "MOD VERSION"), CleanUiText(Safe(map.mod_version, "-")));
+            DrawStatBox(new Rect(modal.x + 24f + (statW + gap) * 2f, y, statW, 64f), T("下载次数", "DOWNLOADS"), map.downloads.ToString());
+            DrawStatBox(new Rect(modal.x + 24f + (statW + gap) * 3f, y, statW, 64f), T("点赞", "LIKES"), map.likes.ToString());
+            y += 78f;
+
+            GUI.Label(new Rect(modal.x + 24f, y, modal.width - 48f, 20f),
+                T("上传时间：", "Uploaded: ") + DateOnly(Safe(map.updated_at, map.created_at)), _mutedStyle);
+            y += 28f;
+            GUI.Label(new Rect(modal.x + 24f, y, modal.width - 48f, 20f), T("介绍", "DESCRIPTION"), _tinyStyle);
+            y += 26f;
+
+            float buttonY = modal.yMax - 58f;
+            Rect descriptionRect = new Rect(modal.x + 24f, y, modal.width - 48f, Mathf.Max(80f, buttonY - y - 12f));
+            DrawScrollableDescription(descriptionRect, FormatDetailDescription(CleanUiText(Safe(map.description, T("没有描述", "No description")))));
+
+            bool previous = GUI.enabled;
+            GUI.enabled = previous && !_downloading;
+            if (GUI.Button(new Rect(modal.x + 24f, buttonY, 108f, 38f), _downloading ? T("下载中", "Loading") : DownloadButtonLabel(map), _primaryButtonStyle))
+            {
+                DownloadSelected();
+            }
+            GUI.enabled = previous && !_liking;
+            if (GUI.Button(new Rect(modal.x + 144f, buttonY, 108f, 38f), map.liked_by_me ? T("已赞", "Liked") : T("点赞", "Like"), _buttonStyle))
+            {
+                ToggleLikeSelected();
+            }
+            GUI.enabled = previous;
+            if (GUI.Button(new Rect(modal.xMax - 132f, buttonY, 108f, 38f), T("关闭", "Close"), _buttonStyle))
+            {
+                _communityDetailOpen = false;
+            }
+            GUI.enabled = previous;
+        }
+
         private void DrawDetailMeta(Rect rect, MapEntry map)
         {
-            GUI.Box(rect, GUIContent.none, _detailMetaStyle);
-            float leftW = (rect.width - 20f) * 0.50f;
-            float rightX = rect.x + leftW + 10f;
-            GUI.Label(new Rect(rect.x + 10f, rect.y + 7f, leftW - 10f, 16f), T("作者", "AUTHOR"), _tinyStyle);
-            GUI.Label(new Rect(rect.x + 10f, rect.y + 27f, leftW - 10f, 20f), CleanUiText(Safe(map.author, "Unknown")), _labelStyle);
-            GUI.Label(new Rect(rightX, rect.y + 7f, rect.xMax - rightX - 10f, 16f), T("版本", "VERSION"), _tinyStyle);
-            GUI.Label(new Rect(rightX, rect.y + 27f, rect.xMax - rightX - 10f, 20f), CleanUiText(Safe(map.mod_version, "-")) + (map.revision > 1 ? " · v" + map.revision : ""), _labelStyle);
+            float gap = 10f;
+            float topW = (rect.width - gap) * 0.5f;
+            DrawStatBox(new Rect(rect.x, rect.y, topW, 52f), T("作者", "AUTHOR"), CleanUiText(Safe(map.author, "Unknown")));
+            DrawStatBox(new Rect(rect.x + topW + gap, rect.y, topW, 52f), T("版本", "VERSION"), CleanUiText(Safe(map.mod_version, "-")) + (map.revision > 1 ? " · v" + map.revision : ""));
+
+            string stats = T("下载 ", "Downloads ") + map.downloads
+                + "     " + T("点赞 ", "Likes ") + map.likes
+                + "     " + DateOnly(Safe(map.updated_at, map.created_at));
+            GUI.Label(new Rect(rect.x + 2f, rect.y + 62f, rect.width - 4f, 22f), stats, _mutedStyle);
+        }
+
+        private void DrawStatBox(Rect rect, string label, string value)
+        {
+            GUI.Box(rect, GUIContent.none, _statBoxStyle);
+            GUI.Label(new Rect(rect.x + 10f, rect.y + 6f, rect.width - 20f, 20f), label, _statLabelStyle);
+            GUI.Label(new Rect(rect.x + 10f, rect.y + 25f, rect.width - 20f, Mathf.Max(18f, rect.height - 29f)), value, _statValueStyle);
         }
 
         private void DrawScrollableDescription(Rect rect, string text)
@@ -709,12 +933,12 @@ namespace PeakMapBrowser
 
         private void DrawLoginModal()
         {
-            GUI.depth = 0;
+            GUI.depth = -101;
             GUI.Box(new Rect(0f, 0f, Screen.width, Screen.height), GUIContent.none, _modalBackdropStyle);
 
             Rect modal = new Rect(Mathf.Round((Screen.width - 460f) * 0.5f), Mathf.Round((Screen.height - 330f) * 0.5f), 460f, 330f);
             GUI.Box(modal, GUIContent.none, _rootStyle);
-            GUI.Label(new Rect(modal.x + 18f, modal.y + 16f, 220f, 16f), "PEAKMAP ACCOUNT", _tinyStyle);
+            GUI.Label(new Rect(modal.x + 18f, modal.y + 16f, 220f, 16f), T("PEAKMAP 账号", "PEAKMAP ACCOUNT"), _tinyStyle);
             GUI.Label(new Rect(modal.x + 18f, modal.y + 32f, 220f, 34f), T("登录账号", "Sign in"), _titleStyle);
             if (GUI.Button(new Rect(modal.xMax - 54f, modal.y + 22f, 36f, 36f), "×", _iconButtonStyle))
             {
@@ -744,36 +968,34 @@ namespace PeakMapBrowser
             GUI.enabled = previous;
         }
 
-        private void DrawAccountModal()
+        private void DrawAccountPage()
         {
-            GUI.depth = 0;
-            GUI.Box(new Rect(0f, 0f, Screen.width, Screen.height), GUIContent.none, _modalBackdropStyle);
+            Rect page = new Rect(_windowRect.x + 248f, _windowRect.y + 84f, _windowRect.width - 270f, _windowRect.height - 128f);
+            GUI.Label(new Rect(page.x, page.y, 260f, 16f), T("我的地图 (" + _accountMaps.Count + ")", "ACTIVE REPOSITORIES (" + _accountMaps.Count + ")"), _tinyStyle);
+            GUI.Label(new Rect(page.x, page.y + 18f, 260f, 34f), T("我的地图", "My Maps"), _titleStyle);
+            GUI.Label(new Rect(page.x + 270f, page.y + 24f, 300f, 22f), T("登录账号：", "Logged in as ") + ShortAccountName(_api.Session.DisplayName), _mutedStyle);
 
-            float modalHeight = Mathf.Min(620f, Screen.height - 48f);
-            Rect modal = new Rect(Mathf.Round((Screen.width - 760f) * 0.5f), Mathf.Round((Screen.height - modalHeight) * 0.5f), 760f, Mathf.Round(modalHeight));
-            GUI.Box(modal, GUIContent.none, _rootStyle);
-
-            GUI.Label(new Rect(modal.x + 18f, modal.y + 16f, 260f, 16f), "MY PEAKMAPS", _tinyStyle);
-            GUI.Label(new Rect(modal.x + 18f, modal.y + 32f, 360f, 34f), T("我的地图", "My Maps"), _titleStyle);
-            GUI.Label(new Rect(modal.x + 250f, modal.y + 40f, 260f, 22f), ShortAccountName(_api.Session.DisplayName), _mutedStyle);
-
-            if (GUI.Button(new Rect(modal.xMax - 258f, modal.y + 22f, 72f, 36f), T("刷新", "Refresh"), _buttonStyle))
+            if (GUI.Button(new Rect(page.xMax - 246f, page.y + 8f, 72f, 34f), T("刷新", "Refresh"), _buttonStyle))
             {
                 FetchAccountMaps();
             }
-            if (GUI.Button(new Rect(modal.xMax - 178f, modal.y + 22f, 72f, 36f), T("退出", "Sign out"), _buttonStyle))
+            if (GUI.Button(new Rect(page.xMax - 166f, page.y + 8f, 72f, 34f), T("退出", "Sign out"), _buttonStyle))
             {
-                _api.SignOut();
                 _accountOpen = false;
-                _status = T("已退出登录", "Signed out");
-                ShowToast(_status);
-                FetchMaps();
+                _api.SignOut((serverRevoked, error) =>
+                {
+                    _status = string.IsNullOrEmpty(error)
+                        ? T("已退出登录", "Signed out")
+                        : T("已退出本地登录，但服务端撤销失败", "Signed out locally, but server revocation failed");
+                    ShowToast(_status);
+                    FetchMaps();
+                });
             }
-            if (GUI.Button(new Rect(modal.xMax - 98f, modal.y + 22f, 36f, 36f), "↗", _iconButtonStyle))
+            if (GUI.Button(new Rect(page.xMax - 86f, page.y + 8f, 34f, 34f), "↗", _iconButtonStyle))
             {
                 OpenAccountWebsite();
             }
-            if (GUI.Button(new Rect(modal.xMax - 54f, modal.y + 22f, 36f, 36f), "×", _iconButtonStyle))
+            if (GUI.Button(new Rect(page.xMax - 44f, page.y + 8f, 34f, 34f), "×", _iconButtonStyle))
             {
                 _accountOpen = false;
             }
@@ -783,22 +1005,23 @@ namespace PeakMapBrowser
                 RefreshLocalSaves();
             }
 
-            Rect listRect = new Rect(modal.x + 18f, modal.y + 82f, 278f, modal.height - 156f);
-            Rect editRect = new Rect(listRect.xMax + 14f, listRect.y, modal.xMax - listRect.xMax - 32f, listRect.height);
+            Rect listRect = new Rect(page.x, page.y + 66f, Mathf.Min(320f, page.width * 0.36f), page.height - 118f);
+            Rect editRect = new Rect(listRect.xMax + 18f, listRect.y, page.xMax - listRect.xMax - 18f, listRect.height);
             GUI.Box(listRect, GUIContent.none, _panelStrongStyle);
             DrawAccountMapList(listRect);
             GUI.Box(editRect, GUIContent.none, _panelStrongStyle);
             DrawAccountEditor(editRect);
 
-            GUI.Label(new Rect(modal.x + 18f, modal.yMax - 66f, modal.width - 250f, 24f), _status, _mutedStyle);
+            GUI.Label(new Rect(page.x, page.yMax - 36f, page.width - 260f, 24f), _status, _mutedStyle);
             MapEntry selected = SelectedAccountMap;
             bool previous = GUI.enabled;
-            GUI.enabled = previous && selected != null && !_savingAccountMap && !_deletingAccountMap;
-            if (GUI.Button(new Rect(modal.xMax - 238f, modal.yMax - 58f, 72f, 38f), T("删除", "Delete"), _buttonStyle))
+            GUI.enabled = previous && selected != null && !_savingAccountMap && !_deletingAccountMap
+                && !_accountVersionDropdownOpen && !_accountJsonDropdownOpen;
+            if (GUI.Button(new Rect(page.xMax - 214f, page.yMax - 44f, 72f, 38f), T("删除", "Delete"), _buttonStyle))
             {
                 _deleteConfirmMapId = selected.id;
             }
-            if (GUI.Button(new Rect(modal.xMax - 156f, modal.yMax - 58f, 138f, 38f), _savingAccountMap ? T("保存中", "Saving") : T("保存修改", "Save"), _primaryButtonStyle))
+            if (GUI.Button(new Rect(page.xMax - 132f, page.yMax - 44f, 132f, 38f), _savingAccountMap ? T("保存中", "Saving") : T("保存修改", "Save"), _primaryButtonStyle))
             {
                 SaveAccountMap();
             }
@@ -806,7 +1029,7 @@ namespace PeakMapBrowser
 
             if (selected != null && string.Equals(_deleteConfirmMapId, selected.id, StringComparison.Ordinal))
             {
-                DrawDeleteConfirm(modal, selected);
+                DrawDeleteConfirm(page, selected);
             }
         }
 
@@ -857,26 +1080,80 @@ namespace PeakMapBrowser
             y += 60f;
             DrawFieldLabel(x, y, T("作者", "Author"));
             _editAuthor = GUI.TextField(new Rect(x, y + 20f, (w - 12f) * 0.5f, 34f), _editAuthor, _inputStyle);
-            DrawFieldLabel(x + (w + 12f) * 0.5f, y, T("MOD 版本", "MOD version"));
-            _editVersion = GUI.TextField(new Rect(x + (w + 12f) * 0.5f, y + 20f, (w - 12f) * 0.5f, 34f), _editVersion, _inputStyle);
+            float versionX = x + (w + 12f) * 0.5f;
+            float versionW = (w - 12f) * 0.5f;
+            Rect versionButtonRect = new Rect(versionX, y + 20f, versionW, 34f);
+            Rect versionDropdownRect = _accountVersionDropdownOpen
+                ? new Rect(versionButtonRect.x, versionButtonRect.yMax + 4f, versionButtonRect.width,
+                    Mathf.Min(150f, Mathf.Max(38f, _versions.Count * 30f + 10f)))
+                : Rect.zero;
+            if (_accountVersionDropdownOpen)
+            {
+                ConsumeAccountVersionDropdownOutsideClick(versionButtonRect, versionDropdownRect);
+            }
+            DrawFieldLabel(versionX, y, T("MOD 版本", "MOD version"));
+            string editVersionLabel = string.IsNullOrEmpty(_editVersion)
+                ? T("选择版本  ▾", "Select version  ▾")
+                : _editVersion + "  ▾";
+            if (GUI.Button(versionButtonRect, editVersionLabel, _buttonStyle))
+            {
+                _accountVersionDropdownOpen = !_accountVersionDropdownOpen;
+                _accountJsonDropdownOpen = false;
+                if (_accountVersionDropdownOpen)
+                {
+                    if (_versions.Count == 0)
+                    {
+                        FetchModVersions();
+                    }
+                    BlockTopLayerInputThisFrame();
+                }
+            }
+            bool guiEnabledBeforeVersionDropdown = GUI.enabled;
+            GUI.enabled = guiEnabledBeforeVersionDropdown && !_accountVersionDropdownOpen;
             y += 60f;
             DrawFieldLabel(x, y, T("描述", "Description"));
-            _editDescription = GUI.TextArea(new Rect(x, y + 20f, w, 70f), _editDescription, _inputStyle);
-            y += 98f;
+            Rect descriptionRect = new Rect(x, y + 20f, w, 112f);
+            GUI.Box(descriptionRect, GUIContent.none, _detailMetaStyle);
+            Rect descScrollRect = new Rect(descriptionRect.x + 8f, descriptionRect.y + 8f, descriptionRect.width - 16f, descriptionRect.height - 16f);
+            float descTextWidth = descScrollRect.width - 18f;
+            float descTextHeight = Mathf.Max(descScrollRect.height, _textAreaStyle.CalcHeight(new GUIContent(_editDescription + "\n "), descTextWidth) + 18f);
+            Rect descView = new Rect(0f, 0f, descTextWidth, descTextHeight);
+            _accountDescriptionScroll = GUI.BeginScrollView(descScrollRect, _accountDescriptionScroll, descView, false, true);
+            _editDescription = GUI.TextArea(new Rect(0f, 0f, descTextWidth, descTextHeight), _editDescription, _textAreaStyle);
+            GUI.EndScrollView();
+            y += 140f;
 
-            _editReplaceJson = GUI.Toggle(new Rect(x, y, w, 22f), _editReplaceJson, T("替换 JSON：", "Replace JSON: ") + (SelectedLocalSavePath == null ? T("未选择", "none") : MapSaveService.DisplayName(SelectedLocalSavePath)));
-            y += 26f;
-            Rect savesRect = new Rect(x, y, w, 86f);
-            GUI.Box(savesRect, GUIContent.none, _detailMetaStyle);
-            if (_filteredLocalSaveIndexes.Count > 0)
+            GUI.Label(new Rect(x, y, w, 18f), T("替换 JSON", "REPLACE JSON"), _tinyStyle);
+            y += 22f;
+            Rect jsonRow = new Rect(x, y, w, 42f);
+            Rect jsonDropdownRect = _accountJsonDropdownOpen
+                ? new Rect(jsonRow.x, jsonRow.yMax + 4f, jsonRow.width, Mathf.Min(150f, Mathf.Max(42f, _filteredLocalSaveIndexes.Count * 30f + 12f)))
+                : Rect.zero;
+            if (_accountJsonDropdownOpen)
             {
-                DrawLocalSaveList(savesRect);
+                ConsumeAccountJsonDropdownOutsideClick(jsonRow, jsonDropdownRect);
             }
-            else
+            GUI.Box(jsonRow, GUIContent.none, _detailMetaStyle);
+            string jsonLabel = _editReplaceJson && SelectedLocalSavePath != null ? MapSaveService.DisplayName(SelectedLocalSavePath) : T("不替换 JSON", "Keep current JSON");
+            if (GUI.Button(new Rect(jsonRow.x + 8f, jsonRow.y + 6f, jsonRow.width - 78f, 30f), jsonLabel + "  ▾", _buttonStyle))
             {
-                GUI.Label(new Rect(savesRect.x + 10f, savesRect.y + 10f, savesRect.width - 20f, 40f), T("未找到本地 JSON", "No local JSON found"), _mutedStyle);
+                _accountJsonDropdownOpen = !_accountJsonDropdownOpen;
+                if (_accountJsonDropdownOpen)
+                {
+                    RefreshLocalSaves(false);
+                    BlockTopLayerInputThisFrame();
+                }
             }
-            y = savesRect.yMax + 8f;
+            if (GUI.Button(new Rect(jsonRow.xMax - 62f, jsonRow.y + 6f, 54f, 30f), T("清除", "Clear"), _buttonStyle))
+            {
+                _editReplaceJson = false;
+                _accountJsonDropdownOpen = false;
+            }
+            if (_accountJsonDropdownOpen)
+            {
+                DrawAccountJsonDropdown(jsonDropdownRect);
+            }
+            y = (_accountJsonDropdownOpen ? jsonDropdownRect.yMax : jsonRow.yMax) + 12f;
 
             _editReplaceImage = GUI.Toggle(new Rect(x, y, w, 22f), _editReplaceImage, T("替换封面：", "Replace cover: ") + (SelectedLocalImagePath == null ? T("未选择", "none") : MapSaveService.DisplayName(SelectedLocalImagePath)));
             y += 24f;
@@ -893,6 +1170,12 @@ namespace PeakMapBrowser
             if (GUI.Button(new Rect(x + 188f, y, 86f, 32f), T("清除", "Clear"), _buttonStyle))
             {
                 _selectedLocalImage = -1;
+            }
+
+            GUI.enabled = guiEnabledBeforeVersionDropdown;
+            if (_accountVersionDropdownOpen)
+            {
+                DrawAccountVersionDropdown(versionDropdownRect);
             }
         }
 
@@ -912,16 +1195,170 @@ namespace PeakMapBrowser
             }
         }
 
+        private void DrawDownloadConfirmModal()
+        {
+            MapEntry map = FindMapById(_downloadConfirmMapId);
+            if (map == null)
+            {
+                _downloadConfirmOpen = false;
+                _downloadConfirmMapId = string.Empty;
+                return;
+            }
+
+            MapDownloadInfo info = _api.GetDownloadInfo(map);
+            if (info.Status != MapDownloadStatus.UpdateAvailable && info.Status != MapDownloadStatus.LocalModified)
+            {
+                _downloadConfirmOpen = false;
+                _downloadConfirmMapId = string.Empty;
+                return;
+            }
+
+            GUI.depth = -101;
+            GUI.Box(new Rect(0f, 0f, Screen.width, Screen.height), GUIContent.none, _modalBackdropStyle);
+            float width = Mathf.Min(560f, Screen.width - 32f);
+            float height = 230f;
+            Rect modal = new Rect(Mathf.Round((Screen.width - width) * 0.5f), Mathf.Round((Screen.height - height) * 0.5f), width, height);
+            GUI.Box(modal, GUIContent.none, _rootStyle);
+            GUI.Label(new Rect(modal.x + 22f, modal.y + 20f, modal.width - 44f, 32f),
+                info.Status == MapDownloadStatus.LocalModified ? T("本地文件已修改", "Local file was modified") : T("发现地图新版本", "New map version available"), _titleStyle);
+            GUI.Label(new Rect(modal.x + 22f, modal.y + 64f, modal.width - 44f, 34f),
+                CleanUiText(Safe(map.name, T("未命名地图", "Untitled map"))), _labelStyle);
+            string message = info.Status == MapDownloadStatus.LocalModified
+                ? T("本地 JSON 与上次下载内容不同。继续更新会覆盖当前文件，并先备份旧文件。", "The local JSON differs from the downloaded copy. Updating will replace it after backing up the old file.")
+                : T("服务器版本 v" + info.CurrentRevision + " 高于本地 v" + info.LocalRevision + "。继续更新会先备份旧文件。", "Server version v" + info.CurrentRevision + " is newer than local v" + info.LocalRevision + ". The old file will be backed up first.");
+            GUI.Label(new Rect(modal.x + 22f, modal.y + 104f, modal.width - 44f, 52f), message, _mutedStyle);
+
+            bool previous = GUI.enabled;
+            GUI.enabled = previous && !_downloading;
+            if (GUI.Button(new Rect(modal.xMax - 194f, modal.yMax - 52f, 82f, 34f), T("取消", "Cancel"), _buttonStyle))
+            {
+                _downloadConfirmOpen = false;
+                _downloadConfirmMapId = string.Empty;
+            }
+            if (GUI.Button(new Rect(modal.xMax - 102f, modal.yMax - 52f, 84f, 34f), _downloading ? T("更新中", "Updating") : T("确认更新", "Update"), _primaryButtonStyle))
+            {
+                _downloadConfirmOpen = false;
+                _downloadConfirmMapId = string.Empty;
+                StartDownload(map, true);
+            }
+            GUI.enabled = previous;
+        }
+
+        private void ConsumeAccountJsonDropdownOutsideClick(Rect rowRect, Rect dropdownRect)
+        {
+            Event e = Event.current;
+            if (e == null || e.type != EventType.MouseDown)
+            {
+                return;
+            }
+
+            if (rowRect.Contains(e.mousePosition) || dropdownRect.Contains(e.mousePosition))
+            {
+                return;
+            }
+
+            _accountJsonDropdownOpen = false;
+            GUI.FocusControl(null);
+            e.Use();
+        }
+
+        private void DrawAccountJsonDropdown(Rect rect)
+        {
+            GUI.Box(rect, GUIContent.none, _panelStrongStyle);
+            Rect filterRect = new Rect(rect.x + 8f, rect.y + 8f, rect.width - 16f, 30f);
+            string nextFilter = GUI.TextField(filterRect, _localSaveFilter, _inputStyle);
+            if (!string.Equals(nextFilter, _localSaveFilter, StringComparison.Ordinal))
+            {
+                _localSaveFilter = nextFilter;
+                ApplyLocalSaveFilter(true);
+            }
+
+            Rect listRect = new Rect(rect.x + 8f, filterRect.yMax + 6f, rect.width - 16f, rect.height - 50f);
+            if (_filteredLocalSaveIndexes.Count == 0)
+            {
+                GUI.Label(listRect, T("没有可用的 JSON。", "No JSON files available."), _mutedStyle);
+                return;
+            }
+
+            const float rowH = 30f;
+            Rect view = new Rect(0f, 0f, listRect.width - 18f, _filteredLocalSaveIndexes.Count * rowH);
+            _uploadSaveScroll = GUI.BeginScrollView(listRect, _uploadSaveScroll, view, false, true);
+            int first = Mathf.Max(0, Mathf.FloorToInt(_uploadSaveScroll.y / rowH) - 1);
+            int last = Mathf.Min(_filteredLocalSaveIndexes.Count, first + Mathf.CeilToInt(listRect.height / rowH) + 2);
+            for (int visibleIndex = first; visibleIndex < last; visibleIndex++)
+            {
+                int saveIndex = _filteredLocalSaveIndexes[visibleIndex];
+                GUIStyle style = saveIndex == _selectedLocalSave ? _primaryButtonStyle : _buttonStyle;
+                if (GUI.Button(new Rect(0f, visibleIndex * rowH, view.width, rowH - 3f),
+                    MapSaveService.DisplayName(_localSaves[saveIndex]), style))
+                {
+                    _selectedLocalSave = saveIndex;
+                    _editReplaceJson = true;
+                    _accountJsonDropdownOpen = false;
+                    _log.LogInfo("JSON selected from account editor: " + _localSaves[saveIndex]);
+                }
+            }
+            GUI.EndScrollView();
+        }
+
+        private void ConsumeAccountVersionDropdownOutsideClick(Rect buttonRect, Rect dropdownRect)
+        {
+            Event e = Event.current;
+            if (e == null || e.type != EventType.MouseDown)
+            {
+                return;
+            }
+
+            if (buttonRect.Contains(e.mousePosition) || dropdownRect.Contains(e.mousePosition))
+            {
+                return;
+            }
+
+            _accountVersionDropdownOpen = false;
+            GUI.FocusControl(null);
+            e.Use();
+        }
+
+        private void DrawAccountVersionDropdown(Rect rect)
+        {
+            GUI.Box(rect, GUIContent.none, _panelStrongStyle);
+            if (_versions.Count == 0)
+            {
+                GUI.Label(new Rect(rect.x + 10f, rect.y + 10f, rect.width - 20f, 22f),
+                    T("正在获取版本...", "Loading versions..."), _mutedStyle);
+                return;
+            }
+
+            const float rowH = 30f;
+            Rect scrollRect = new Rect(rect.x + 6f, rect.y + 6f, rect.width - 12f, rect.height - 12f);
+            Rect view = new Rect(0f, 0f, scrollRect.width - 18f, _versions.Count * rowH);
+            _accountVersionScroll = GUI.BeginScrollView(scrollRect, _accountVersionScroll, view, false, true);
+            int selectedIndex = _versions.FindIndex(v => string.Equals(v.version_name, _editVersion, StringComparison.Ordinal));
+            int first = Mathf.Max(0, Mathf.FloorToInt(_accountVersionScroll.y / rowH) - 1);
+            int last = Mathf.Min(_versions.Count, first + Mathf.CeilToInt(scrollRect.height / rowH) + 2);
+            for (int i = first; i < last; i++)
+            {
+                GUIStyle style = i == selectedIndex ? _primaryButtonStyle : _buttonStyle;
+                if (GUI.Button(new Rect(0f, i * rowH, view.width, rowH - 3f), _versions[i].version_name, style))
+                {
+                    _editVersion = _versions[i].version_name;
+                    _accountVersionDropdownOpen = false;
+                    _log.LogInfo("Account map version selected: " + _editVersion);
+                }
+            }
+            GUI.EndScrollView();
+        }
+
         private void DrawUploadModal()
         {
-            GUI.depth = 0;
+            GUI.depth = -101;
             GUI.Box(new Rect(0f, 0f, Screen.width, Screen.height), GUIContent.none, _modalBackdropStyle);
 
             float modalHeight = Mathf.Min(620f, Screen.height - 48f);
             Rect modal = new Rect(Mathf.Round((Screen.width - 680f) * 0.5f), Mathf.Round((Screen.height - modalHeight) * 0.5f), 680f, Mathf.Round(modalHeight));
             GUI.Box(modal, GUIContent.none, _rootStyle);
 
-            GUI.Label(new Rect(modal.x + 18f, modal.y + 16f, 220f, 16f), "SUBMIT LOCAL SAVE", _tinyStyle);
+            GUI.Label(new Rect(modal.x + 18f, modal.y + 16f, 220f, 16f), T("提交本地存档", "SUBMIT LOCAL SAVE"), _tinyStyle);
             GUI.Label(new Rect(modal.x + 18f, modal.y + 32f, 220f, 34f), T("上传地图", "Upload Map"), _titleStyle);
             bool closeEnabledBeforeUpload = GUI.enabled;
             GUI.enabled = closeEnabledBeforeUpload && !IsTopLayerInputBlocked();
@@ -941,9 +1378,10 @@ namespace PeakMapBrowser
             float fieldW = (modal.width - 54f) / 2f;
             Rect versionDropdownRect = Rect.zero;
             Rect imageDropdownRect = Rect.zero;
+            Rect saveDropdownRect = Rect.zero;
             float versionY = y + 72f;
             Rect versionButtonRect = new Rect(left, versionY + 20f, fieldW, 38f);
-            Rect imageButtonRect = new Rect(left + fieldW + 18f, versionY + 20f, fieldW - 136f, 38f);
+            Rect imageButtonRect = new Rect(left + fieldW + 18f, versionY + 20f, fieldW - 184f, 38f);
             if (_uploadVersionDropdownOpen)
             {
                 versionDropdownRect = new Rect(versionButtonRect.x, versionButtonRect.yMax + 4f, versionButtonRect.width, Mathf.Min(150f, Mathf.Max(38f, _versions.Count * 30f + 10f)));
@@ -952,12 +1390,19 @@ namespace PeakMapBrowser
             {
                 imageDropdownRect = new Rect(imageButtonRect.x, imageButtonRect.yMax + 4f, fieldW, 150f);
             }
+            Rect saveButtonRect = new Rect(left, modal.y + 354f, modal.width - 36f, 38f);
+            if (_uploadSaveDropdownOpen)
+            {
+                saveDropdownRect = new Rect(saveButtonRect.x, saveButtonRect.yMax + 4f, saveButtonRect.width, 184f);
+            }
 
-            bool dropdownOpen = _uploadVersionDropdownOpen || _uploadImageDropdownOpen;
+            bool dropdownOpen = _uploadVersionDropdownOpen || _uploadImageDropdownOpen || _uploadSaveDropdownOpen;
             bool topLayerInputBlocked = IsTopLayerInputBlocked();
             if (dropdownOpen)
             {
-                ConsumeUploadDropdownOutsideClick(_uploadVersionDropdownOpen ? versionDropdownRect : imageDropdownRect);
+                Rect activeDropdown = _uploadVersionDropdownOpen ? versionDropdownRect
+                    : (_uploadImageDropdownOpen ? imageDropdownRect : saveDropdownRect);
+                ConsumeUploadDropdownOutsideClick(activeDropdown);
             }
 
             bool guiEnabledBeforeUpload = GUI.enabled;
@@ -994,19 +1439,19 @@ namespace PeakMapBrowser
                     BlockTopLayerInputThisFrame();
                 }
             }
-            if (GUI.Button(new Rect(imageButtonRect.xMax + 6f, imageButtonRect.y, 42f, 38f), T("浏览", "Pick"), _buttonStyle))
+            if (GUI.Button(new Rect(imageButtonRect.xMax + 6f, imageButtonRect.y, 54f, 38f), T("选图", "Pick"), _buttonStyle))
             {
                 _log.LogInfo("Image browser button clicked.");
                 CloseUploadDropdowns();
                 OpenImagePicker();
             }
-            if (GUI.Button(new Rect(imageButtonRect.xMax + 52f, imageButtonRect.y, 40f, 38f), T("自动", "Auto"), _buttonStyle))
+            if (GUI.Button(new Rect(imageButtonRect.xMax + 66f, imageButtonRect.y, 54f, 38f), T("自动", "Auto"), _buttonStyle))
             {
                 _log.LogInfo("Auto image match button clicked. Json: " + (SelectedLocalSavePath ?? "<none>"));
                 CloseUploadDropdowns();
                 AutoSelectMatchingImage(true);
             }
-            if (GUI.Button(new Rect(imageButtonRect.xMax + 96f, imageButtonRect.y, 36f, 38f), T("清除", "Clear"), _buttonStyle))
+            if (GUI.Button(new Rect(imageButtonRect.xMax + 126f, imageButtonRect.y, 54f, 38f), T("清空", "Clear"), _buttonStyle))
             {
                 _log.LogInfo("Upload cover image cleared.");
                 CloseUploadDropdowns();
@@ -1018,40 +1463,28 @@ namespace PeakMapBrowser
             _uploadDescription = GUI.TextArea(new Rect(left, y + 20f, modal.width - 36f, 72f), _uploadDescription, _inputStyle);
             y += 104f;
 
-            DrawFieldLabel(left, y, T("本地地图 JSON", "Local map JSON"));
-            string nextFilter = GUI.TextField(new Rect(left + 110f, y - 4f, modal.width - 146f, 30f), _localSaveFilter, _inputStyle);
-            if (!string.Equals(nextFilter, _localSaveFilter, StringComparison.Ordinal))
+            DrawFieldLabel(left, modal.y + 324f, T("本地地图 JSON", "Local map JSON"));
+            GUI.enabled = guiEnabledBeforeUpload && !topLayerInputBlocked && !_uploading;
+            string saveLabel = string.IsNullOrEmpty(SelectedLocalSavePath)
+                ? T("选择本地 JSON  ▾", "Select local JSON  ▾")
+                : MapSaveService.DisplayName(SelectedLocalSavePath) + "  ▾";
+            if (GUI.Button(saveButtonRect, saveLabel, _buttonStyle))
             {
-                _localSaveFilter = nextFilter;
-                ApplyLocalSaveFilter(true);
+                _uploadSaveDropdownOpen = !_uploadSaveDropdownOpen;
+                _uploadVersionDropdownOpen = false;
+                _uploadImageDropdownOpen = false;
+                if (_uploadSaveDropdownOpen)
+                {
+                    RefreshLocalSaves(false);
+                    BlockTopLayerInputThisFrame();
+                }
             }
+            GUI.enabled = guiEnabledBeforeUpload;
 
-            float footerTop = modal.yMax - 74f;
-            Rect savesRect = new Rect(left, y + 34f, modal.width - 36f, Mathf.Max(76f, footerTop - y - 42f));
-            GUI.Box(savesRect, GUIContent.none, _panelStrongStyle);
-            if (!string.IsNullOrEmpty(_localSaveError))
-            {
-                GUI.Label(new Rect(savesRect.x + 14f, savesRect.y + 14f, savesRect.width - 28f, 42f), _localSaveError, _dangerStyle);
-            }
-            else if (_localSaves.Length == 0)
-            {
-                GUI.Label(new Rect(savesRect.x + 14f, savesRect.y + 14f, savesRect.width - 28f, 42f), T("未找到本地 JSON。目录已自动创建：\n", "No local JSON found. Directory was created:\n") + MapSaveService.SavePath, _mutedStyle);
-            }
-            else if (_filteredLocalSaveIndexes.Count == 0)
-            {
-                GUI.Label(new Rect(savesRect.x + 14f, savesRect.y + 14f, savesRect.width - 28f, 42f), T("没有匹配筛选条件的 JSON。", "No JSON matches the filter."), _mutedStyle);
-            }
-            else
-            {
-                DrawLocalSaveList(savesRect);
-            }
-
-            string scanInfo = T("扫描到 ", "Found ") + _localSaves.Length + T(" 个 JSON", " JSON files");
-            if (!string.IsNullOrWhiteSpace(_localSaveFilter))
-            {
-                scanInfo += T(" · 匹配 ", " · Matched ") + _filteredLocalSaveIndexes.Count + T(" 个", "");
-            }
-            GUI.Label(new Rect(left, savesRect.yMax + 4f, modal.width - 36f, 18f), scanInfo, _mutedStyle);
+            string scanInfo = _localSaves.Length == 0
+                ? T("未找到本地 JSON。目录：", "No local JSON found. Directory: ") + MapSaveService.SavePath
+                : T("已扫描 ", "Found ") + _localSaves.Length + T(" 个 JSON，点击上方选择", " JSON files. Use the selector above");
+            GUI.Label(new Rect(left, saveButtonRect.yMax + 6f, modal.width - 36f, 18f), scanInfo, _mutedStyle);
 
             GUI.Label(new Rect(left, modal.yMax - 66f, modal.width - 280f, 24f), _uploading ? T("上传中，请稍候...", "Uploading, please wait...") : _status, _mutedStyle);
             if (GUI.Button(new Rect(modal.xMax - 186f, modal.yMax - 58f, 76f, 38f), T("刷新", "Refresh"), _buttonStyle))
@@ -1074,6 +1507,11 @@ namespace PeakMapBrowser
             {
                 GUI.enabled = guiEnabledBeforeUpload && !topLayerInputBlocked;
                 DrawUploadImageDropdown(imageDropdownRect);
+            }
+            if (_uploadSaveDropdownOpen)
+            {
+                GUI.enabled = guiEnabledBeforeUpload && !topLayerInputBlocked;
+                DrawUploadSaveDropdown(saveDropdownRect);
             }
             GUI.enabled = guiEnabledBeforeUpload;
         }
@@ -1100,6 +1538,61 @@ namespace PeakMapBrowser
         {
             _uploadVersionDropdownOpen = false;
             _uploadImageDropdownOpen = false;
+            _uploadSaveDropdownOpen = false;
+        }
+
+        private void DrawUploadSaveDropdown(Rect rect)
+        {
+            GUI.Box(rect, GUIContent.none, _panelStrongStyle);
+
+            Rect filterRect = new Rect(rect.x + 8f, rect.y + 8f, rect.width - 16f, 30f);
+            string nextFilter = GUI.TextField(filterRect, _localSaveFilter, _inputStyle);
+            if (!string.Equals(nextFilter, _localSaveFilter, StringComparison.Ordinal))
+            {
+                _localSaveFilter = nextFilter;
+                ApplyLocalSaveFilter(true);
+            }
+
+            Rect listRect = new Rect(rect.x + 8f, filterRect.yMax + 6f, rect.width - 16f, rect.height - 50f);
+            if (!string.IsNullOrEmpty(_localSaveError))
+            {
+                GUI.Label(listRect, _localSaveError, _dangerStyle);
+                return;
+            }
+            if (_localSaves.Length == 0)
+            {
+                GUI.Label(listRect, T("未找到本地 JSON。", "No local JSON files found."), _mutedStyle);
+                return;
+            }
+            if (_filteredLocalSaveIndexes.Count == 0)
+            {
+                GUI.Label(listRect, T("没有匹配的 JSON。", "No matching JSON files."), _mutedStyle);
+                return;
+            }
+
+            const float rowH = 30f;
+            Rect view = new Rect(0f, 0f, listRect.width - 18f, _filteredLocalSaveIndexes.Count * rowH);
+            _uploadSaveScroll = GUI.BeginScrollView(listRect, _uploadSaveScroll, view, false, true);
+            int first = Mathf.Max(0, Mathf.FloorToInt(_uploadSaveScroll.y / rowH) - 1);
+            int last = Mathf.Min(_filteredLocalSaveIndexes.Count, first + Mathf.CeilToInt(listRect.height / rowH) + 2);
+            for (int visibleIndex = first; visibleIndex < last; visibleIndex++)
+            {
+                int saveIndex = _filteredLocalSaveIndexes[visibleIndex];
+                GUIStyle style = saveIndex == _selectedLocalSave ? _primaryButtonStyle : _buttonStyle;
+                if (GUI.Button(new Rect(0f, visibleIndex * rowH, view.width, rowH - 3f),
+                    MapSaveService.DisplayName(_localSaves[saveIndex]), style))
+                {
+                    _selectedLocalSave = saveIndex;
+                    if (string.IsNullOrWhiteSpace(_uploadName))
+                    {
+                        _uploadName = Path.GetFileNameWithoutExtension(_localSaves[saveIndex]);
+                    }
+                    AutoSelectMatchingImage(false);
+                    _uploadSaveDropdownOpen = false;
+                    _log.LogInfo("JSON selected from upload dropdown: " + _localSaves[saveIndex]);
+                }
+            }
+            GUI.EndScrollView();
         }
 
         private void DrawUploadImageDropdown(Rect rect)
@@ -1152,7 +1645,7 @@ namespace PeakMapBrowser
 
         private void DrawImagePickerModal()
         {
-            GUI.depth = -1;
+            GUI.depth = -102;
             GUI.Box(new Rect(0f, 0f, Screen.width, Screen.height), GUIContent.none, _modalBackdropStyle);
             bool guiEnabledBeforePicker = GUI.enabled;
             bool pickerInputEnabled = guiEnabledBeforePicker && !IsTopLayerInputBlocked();
@@ -1161,7 +1654,7 @@ namespace PeakMapBrowser
             Rect modal = new Rect(Mathf.Round((Screen.width - 760f) * 0.5f), Mathf.Round((Screen.height - 540f) * 0.5f), 760f, 540f);
             GUI.Box(modal, GUIContent.none, _rootStyle);
 
-            GUI.Label(new Rect(modal.x + 18f, modal.y + 16f, 240f, 16f), "SAFE IMAGE PICKER", _tinyStyle);
+            GUI.Label(new Rect(modal.x + 18f, modal.y + 16f, 240f, 16f), T("选择封面图片", "SAFE IMAGE PICKER"), _tinyStyle);
             GUI.Label(new Rect(modal.x + 18f, modal.y + 32f, 240f, 34f), T("选择封面图片", "Pick Cover"), _titleStyle);
             if (GUI.Button(new Rect(modal.xMax - 54f, modal.y + 22f, 36f, 36f), "×", _iconButtonStyle))
             {
@@ -1347,6 +1840,11 @@ namespace PeakMapBrowser
             }
 
             _selectedLocalImage = index;
+            if (_accountOpen)
+            {
+                _editReplaceImage = true;
+                _editRemoveImage = false;
+            }
             _imagePickerOpen = false;
             _uploadImageDropdownOpen = false;
             _log.LogInfo("Cover image applied: " + normalized);
@@ -1437,7 +1935,8 @@ namespace PeakMapBrowser
                 return;
             }
 
-            Rect rect = new Rect(_windowRect.xMax - 230f, _windowRect.yMax - 54f, 210f, 34f);
+            float width = Mathf.Min(340f, _windowRect.width - 80f);
+            Rect rect = new Rect(_windowRect.x + (_windowRect.width - width) * 0.5f, _windowRect.y + 74f, width, 34f);
             GUI.Label(rect, "● " + _toast, _toastStyle);
         }
 
@@ -1553,6 +2052,31 @@ namespace PeakMapBrowser
         private void DownloadSelected()
         {
             MapEntry map = SelectedMap;
+            if (map == null || _downloading || _downloadConfirmOpen)
+            {
+                return;
+            }
+
+            MapDownloadInfo info = _api.GetDownloadInfo(map);
+            if (info.Status == MapDownloadStatus.UpToDate)
+            {
+                _status = T("这张地图已经下载，且本地文件没有变化。", "This map is already downloaded and unchanged locally.");
+                ShowToast(_status);
+                return;
+            }
+            if (info.Status == MapDownloadStatus.UpdateAvailable || info.Status == MapDownloadStatus.LocalModified)
+            {
+                _downloadConfirmMapId = map.id;
+                _downloadConfirmOpen = true;
+                BlockTopLayerInputThisFrame();
+                return;
+            }
+
+            StartDownload(map, false);
+        }
+
+        private void StartDownload(MapEntry map, bool allowOverwriteLocalChanges)
+        {
             if (map == null || _downloading)
             {
                 return;
@@ -1561,7 +2085,7 @@ namespace PeakMapBrowser
             _downloading = true;
             _status = T("正在下载 ", "Downloading ") + map.name + "...";
             ShowToast(T("正在下载地图...", "Downloading map..."));
-            _api.DownloadMap(map, (savedPath, error) =>
+            _api.DownloadMap(map, allowOverwriteLocalChanges, (savedPath, error) =>
             {
                 _downloading = false;
                 if (!string.IsNullOrEmpty(error))
@@ -1572,8 +2096,72 @@ namespace PeakMapBrowser
                 }
 
                 _status = T("已保存：", "Saved: ") + savedPath;
+                _downloadInfoCache.Remove(map.id);
+                _downloadInfoCacheUntil = 0f;
                 ShowToast(T("下载完成", "Download complete"));
             });
+        }
+
+        private string DownloadButtonLabel(MapEntry map)
+        {
+            if (map == null)
+            {
+                return T("下载", "Get");
+            }
+
+            MapDownloadInfo info = GetDownloadInfoForDisplay(map);
+            switch (info.Status)
+            {
+                case MapDownloadStatus.UpToDate:
+                    return T("已下载", "Saved");
+                case MapDownloadStatus.UpdateAvailable:
+                    return T("有更新", "Update");
+                case MapDownloadStatus.LocalModified:
+                    return T("本地已改", "Changed");
+                default:
+                    return T("下载", "Get");
+            }
+        }
+
+        private MapEntry FindMapById(string mapId)
+        {
+            if (string.IsNullOrEmpty(mapId))
+            {
+                return null;
+            }
+
+            for (int i = 0; i < _maps.Count; i++)
+            {
+                if (string.Equals(_maps[i].id, mapId, System.StringComparison.Ordinal))
+                {
+                    return _maps[i];
+                }
+            }
+
+            return null;
+        }
+
+        private MapDownloadInfo GetDownloadInfoForDisplay(MapEntry map)
+        {
+            if (map == null || string.IsNullOrEmpty(map.id))
+            {
+                return _api.GetDownloadInfo(map);
+            }
+
+            if (Time.unscaledTime >= _downloadInfoCacheUntil)
+            {
+                _downloadInfoCache.Clear();
+                _downloadInfoCacheUntil = Time.unscaledTime + 1.0f;
+            }
+
+            MapDownloadInfo info;
+            if (!_downloadInfoCache.TryGetValue(map.id, out info))
+            {
+                info = _api.GetDownloadInfo(map);
+                _downloadInfoCache[map.id] = info;
+            }
+
+            return info;
         }
 
         private void ToggleLikeSelected()
@@ -1703,6 +2291,11 @@ namespace PeakMapBrowser
 
         private void SelectAccountMap(int index)
         {
+            // Each map reuses the same IMGUI editor controls; clear the previous text selection before loading new values.
+            GUI.FocusControl(null);
+            GUIUtility.keyboardControl = 0;
+            GUIUtility.hotControl = 0;
+
             _selectedAccountMapIndex = Mathf.Clamp(index, 0, Mathf.Max(0, _accountMaps.Count - 1));
             MapEntry map = SelectedAccountMap;
             if (map == null)
@@ -1715,6 +2308,9 @@ namespace PeakMapBrowser
             _editVersion = map.mod_version ?? string.Empty;
             _editDescription = map.description ?? string.Empty;
             _editReplaceJson = false;
+            _accountJsonDropdownOpen = false;
+            _accountVersionDropdownOpen = false;
+            _accountVersionScroll = Vector2.zero;
             _editReplaceImage = false;
             _editRemoveImage = false;
             _deleteConfirmMapId = string.Empty;
@@ -1784,6 +2380,7 @@ namespace PeakMapBrowser
             BlockTopLayerInputThisFrame();
             _uploadVersionDropdownOpen = false;
             _uploadImageDropdownOpen = false;
+            _uploadSaveDropdownOpen = false;
             RefreshLocalSaves(true);
             _uploadAuthor = _api.IsSignedIn && !string.IsNullOrEmpty(_api.Session.DisplayName) ? _api.Session.DisplayName : GetSteamName();
             if (_versions.Count == 0)
@@ -1873,6 +2470,21 @@ namespace PeakMapBrowser
             {
                 return _selectedLocalSave >= 0 && _selectedLocalSave < _localSaves.Length ? _localSaves[_selectedLocalSave] : null;
             }
+        }
+
+        private void CycleSelectedLocalSave()
+        {
+            RefreshLocalSaves(false);
+            if (_filteredLocalSaveIndexes.Count == 0)
+            {
+                ShowToast(T("未找到本地 JSON", "No local JSON found"));
+                return;
+            }
+
+            int currentVisible = _filteredLocalSaveIndexes.IndexOf(_selectedLocalSave);
+            int nextVisible = currentVisible < 0 ? 0 : (currentVisible + 1) % _filteredLocalSaveIndexes.Count;
+            _selectedLocalSave = _filteredLocalSaveIndexes[nextVisible];
+            ShowToast(T("已选择 JSON：", "JSON selected: ") + MapSaveService.DisplayName(SelectedLocalSavePath));
         }
 
         private void ApplyLocalImageFilter(bool resetScroll)
@@ -2036,21 +2648,39 @@ namespace PeakMapBrowser
                 _log.LogWarning("Failed to create Chinese UI font: " + ex.Message);
             }
 
-            _rootStyle = Box(new Color(0.045f, 0.052f, 0.049f, 0.995f), new Color(0.22f, 0.27f, 0.24f, 0.80f));
-            _panelStyle = Box(new Color(0.024f, 0.028f, 0.026f, 0.985f), new Color(0.16f, 0.19f, 0.17f, 0.90f));
-            _panelStrongStyle = Box(new Color(0.035f, 0.040f, 0.038f, 0.99f), new Color(0.18f, 0.21f, 0.19f, 0.90f));
-            _detailMetaStyle = Box(new Color(0.028f, 0.032f, 0.030f, 0.94f), new Color(0.12f, 0.15f, 0.14f, 0.72f));
-            _detailDescriptionStyle = Box(new Color(0.032f, 0.036f, 0.034f, 0.92f), new Color(0.12f, 0.15f, 0.14f, 0.65f));
-            _cardStyle = Box(new Color(0.045f, 0.052f, 0.049f, 0.995f), new Color(0.18f, 0.22f, 0.20f, 0.95f));
-            _cardSelectedStyle = Box(new Color(0.048f, 0.058f, 0.053f, 0.995f), new Color(0.17f, 0.36f, 0.25f, 0.95f));
-            _buttonStyle = Button(new Color(0.042f, 0.048f, 0.046f, 0.995f), new Color(0.80f, 0.86f, 0.80f, 1f), false);
-            _primaryButtonStyle = Button(new Color(0.15f, 0.53f, 0.34f, 1f), Color.white, true);
-            _iconButtonStyle = Button(new Color(0.042f, 0.048f, 0.046f, 0.995f), new Color(0.86f, 0.92f, 0.86f, 1f), false);
+            _rootStyle = Box(new Color(0.020f, 0.032f, 0.026f, 0.995f), new Color(0.18f, 0.26f, 0.20f, 0.82f));
+            _panelStyle = Box(new Color(0.014f, 0.025f, 0.019f, 0.985f), new Color(0.13f, 0.20f, 0.16f, 0.90f));
+            _panelStrongStyle = Box(new Color(0.022f, 0.036f, 0.028f, 0.99f), new Color(0.16f, 0.24f, 0.18f, 0.90f));
+            _detailMetaStyle = Box(new Color(0.030f, 0.048f, 0.038f, 0.94f), new Color(0.15f, 0.23f, 0.17f, 0.72f));
+            _detailDescriptionStyle = Box(new Color(0.025f, 0.040f, 0.032f, 0.92f), new Color(0.14f, 0.22f, 0.17f, 0.65f));
+            _cardStyle = Box(new Color(0.028f, 0.044f, 0.034f, 0.995f), new Color(0.15f, 0.23f, 0.17f, 0.95f));
+            _buttonStyle = Button(new Color(0.044f, 0.060f, 0.050f, 0.995f), new Color(0.80f, 0.88f, 0.82f, 1f), false);
+            _primaryButtonStyle = Button(new Color(0.18f, 0.78f, 0.42f, 1f), new Color(0.02f, 0.10f, 0.06f, 1f), true);
+            _iconButtonStyle = Button(new Color(0.044f, 0.060f, 0.050f, 0.995f), new Color(0.86f, 0.94f, 0.86f, 1f), false);
+            _sidebarButtonStyle = Button(new Color(0.018f, 0.030f, 0.024f, 0.995f), new Color(0.76f, 0.84f, 0.78f, 1f), false);
+            _sidebarButtonStyle.alignment = TextAnchor.MiddleLeft;
+            _sidebarButtonStyle.padding = new RectOffset(16, 8, 0, 0);
+            _sidebarSelectedStyle = Button(new Color(0.12f, 0.20f, 0.14f, 0.995f), new Color(0.30f, 0.98f, 0.58f, 1f), false);
+            _sidebarSelectedStyle.alignment = TextAnchor.MiddleLeft;
+            _sidebarSelectedStyle.padding = new RectOffset(16, 8, 0, 0);
+            _statBoxStyle = Box(new Color(0.040f, 0.060f, 0.048f, 0.98f), new Color(0.16f, 0.25f, 0.18f, 0.90f));
             _inputStyle = Input();
+            _textAreaStyle = Input();
+            _textAreaStyle.wordWrap = true;
+            _textAreaStyle.alignment = TextAnchor.UpperLeft;
             _titleStyle = Label(24, FontStyle.Bold, Color.white);
             _h2Style = Label(18, FontStyle.Bold, Color.white);
             _h2Style.alignment = TextAnchor.UpperLeft;
             _labelStyle = Label(13, FontStyle.Bold, new Color(0.93f, 0.98f, 0.92f, 1f));
+            _statLabelStyle = Label(11, FontStyle.Bold, new Color(0.98f, 0.64f, 0.24f, 1f));
+            _statLabelStyle.wordWrap = false;
+            _statLabelStyle.clipping = TextClipping.Overflow;
+            _statValueStyle = Label(15, FontStyle.Bold, new Color(0.91f, 0.98f, 0.90f, 1f));
+            _statValueStyle.wordWrap = false;
+            _statValueStyle.clipping = TextClipping.Overflow;
+            _cardStatsStyle = Label(13, FontStyle.Bold, new Color(0.86f, 0.96f, 0.86f, 1f));
+            _cardStatsStyle.wordWrap = false;
+            _cardStatsStyle.clipping = TextClipping.Clip;
             _mutedStyle = Label(12, FontStyle.Normal, new Color(0.72f, 0.78f, 0.72f, 1f));
             _cardDescStyle = Label(12, FontStyle.Normal, new Color(0.72f, 0.78f, 0.72f, 1f));
             _cardDescStyle.wordWrap = true;
@@ -2190,6 +2820,35 @@ namespace PeakMapBrowser
         private static string Safe(string value, string fallback)
         {
             return string.IsNullOrWhiteSpace(value) ? fallback : value;
+        }
+
+        private static string SingleLine(string value, int maxLength)
+        {
+            string result = (value ?? string.Empty).Replace("\r", " ").Replace("\n", " ").Trim();
+            if (result.Length <= maxLength)
+            {
+                return result;
+            }
+
+            return result.Substring(0, Mathf.Max(0, maxLength - 3)) + "...";
+        }
+
+        private static string CompactCardDescription(string value, float width)
+        {
+            string result = (value ?? string.Empty).Replace("\r", " ").Replace("\n", " ").Trim();
+            if (string.IsNullOrEmpty(result))
+            {
+                return result;
+            }
+
+            int charactersPerLine = Mathf.Max(24, Mathf.FloorToInt(width / 8f));
+            int maxLength = Mathf.Max(48, charactersPerLine * 2);
+            if (result.Length <= maxLength)
+            {
+                return result;
+            }
+
+            return result.Substring(0, Mathf.Max(0, maxLength - 3)).TrimEnd() + "...";
         }
 
         private static string CleanUiText(string value)

@@ -1,6 +1,6 @@
 ﻿# PEAK MOD Memory
 
-更新时间：2026-06-04
+更新时间：2026-07-23
 
 这是项目记忆的唯一入口。目标是让新的 AI 智能体在 1 到 3 分钟内知道：当前有哪些 MOD、近期做了什么、还有什么没做、哪些规则不能违反。
 
@@ -41,6 +41,13 @@
 - `发行/0.1.1/PlayersInfo.dll` 已包含 2026-05-24 队友临时体力数字裁切修复；2026-05-30 已同步 README / CHANGELOG。
 - `发行/0.1.1/wuyachiyu-PlayersInfo-0.1.1.zip` 已存在，大小 `158802`，zip 内 README/CHANGELOG 含临时体力裁切修复说明，发布 DLL 与测试环境 DLL 哈希一致。
 - 下次接手 PlayersInfo 先读 `mods/PlayersInfo/temp/2026-06-04.md`，再读 `RECENT.md`。
+
+## 2026-07-23 PeakMapBrowser 状态
+
+- `PeakMapBrowser` 已补齐独立 memory 四件套和当天临时恢复入口。
+- 当前账号、个人地图管理、上传归属和点赞同步功能已接入源码；点赞仍保持账号/guest cookie 身份，IP 只限频。
+- 用户明确暂缓 UI 框架重构；当前继续使用 IMGUI，后续若重启 UI 任务再评估 uGUI + TextMeshPro。
+- 下次接手 PeakMapBrowser 先读 `mods/PeakMapBrowser/temp/2026-07-23.md`，再读该项目 `RECENT.md` / `DECISIONS.md`。
 
 ## 2026-05-21 收口状态
 

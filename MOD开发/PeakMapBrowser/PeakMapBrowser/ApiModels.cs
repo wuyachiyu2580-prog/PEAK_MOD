@@ -73,6 +73,11 @@ namespace PeakMapBrowser
             get { return !string.IsNullOrEmpty(access_token) && !string.IsNullOrEmpty(refresh_token); }
         }
 
+        public bool HasRefreshToken
+        {
+            get { return !string.IsNullOrEmpty(refresh_token); }
+        }
+
         public string DisplayName
         {
             get

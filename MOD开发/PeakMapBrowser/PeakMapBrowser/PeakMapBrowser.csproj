@@ -61,6 +61,7 @@
       <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="com.rlabrecque.steamworks.net">
       <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\com.rlabrecque.steamworks.net.dll</HintPath>
       <Private>False</Private>

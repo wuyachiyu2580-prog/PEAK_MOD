@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace PeakMapBrowser
@@ -15,6 +18,16 @@ namespace PeakMapBrowser
         public static string CoverPath
         {
             get { return Path.Combine(SavePath, "Covers"); }
+        }
+
+        public static string BackupPath
+        {
+            get { return Path.Combine(SavePath, "Backups"); }
+        }
+
+        private static string IndexPath
+        {
+            get { return Path.Combine(Application.persistentDataPath, "PeakMapBrowser", "map-index.json"); }
         }
 
         public static string PicturesPath
@@ -62,6 +75,7 @@ namespace PeakMapBrowser
         {
             Directory.CreateDirectory(SavePath);
             Directory.CreateDirectory(CoverPath);
+            Directory.CreateDirectory(BackupPath);
         }
 
         public static string[] GetImageRootPaths()
@@ -211,7 +225,31 @@ namespace PeakMapBrowser
 
         public static string SaveDownloadedMap(MapEntry map, byte[] bytes)
         {
+            return SaveDownloadedMap(map, bytes, false);
+        }
+
+        public static string SaveDownloadedMap(MapEntry map, byte[] bytes, bool allowOverwriteLocalChanges)
+        {
+            if (map == null)
+            {
+                throw new ArgumentNullException("map");
+            }
+            if (bytes == null)
+            {
+                throw new ArgumentNullException("bytes");
+            }
+
             EnsureSaveDirectory();
+            MapDownloadInfo info = GetDownloadInfo(map);
+            if (info.Status == MapDownloadStatus.UpToDate)
+            {
+                return info.Path;
+            }
+            if (info.Status == MapDownloadStatus.LocalModified && !allowOverwriteLocalChanges)
+            {
+                throw new MapSaveException(MapDownloadStatus.LocalModified, "LOCAL_MODIFIED");
+            }
+
             string baseName = string.IsNullOrWhiteSpace(map.name) ? "peak-map" : map.name.Trim();
             string safeName = SanitizeFileName(baseName);
             if (string.IsNullOrEmpty(safeName))
@@ -219,16 +257,204 @@ namespace PeakMapBrowser
                 safeName = "peak-map";
             }
 
-            string target = Path.Combine(SavePath, safeName + ".json");
-            int suffix = 2;
-            while (File.Exists(target))
+            LocalMapRecord record = FindRecord(map.id);
+            string target = record == null ? null : record.path;
+            if (string.IsNullOrEmpty(target) || !IsInsideRoot(target, SavePath))
             {
-                target = Path.Combine(SavePath, safeName + "-" + suffix + ".json");
-                suffix++;
+                target = Path.Combine(SavePath, safeName + ".json");
+                int suffix = 2;
+                while (File.Exists(target))
+                {
+                    target = Path.Combine(SavePath, safeName + "-" + suffix + ".json");
+                    suffix++;
+                }
             }
 
-            File.WriteAllBytes(target, bytes);
+            string temp = target + ".tmp-" + Guid.NewGuid().ToString("N");
+            try
+            {
+                File.WriteAllBytes(temp, bytes);
+                if (File.Exists(target))
+                {
+                    string backup = Path.Combine(BackupPath,
+                        Path.GetFileNameWithoutExtension(target) + "-" + DateTime.UtcNow.ToString("yyyyMMddHHmmssfff") + ".json");
+                    File.Copy(target, backup, false);
+                    File.Replace(temp, target, null);
+                }
+                else
+                {
+                    File.Move(temp, target);
+                }
+
+                SaveRecord(map, target, ComputeSha256(bytes));
+            }
+            finally
+            {
+                if (File.Exists(temp))
+                {
+                    File.Delete(temp);
+                }
+            }
+
             return target;
+        }
+
+        public static MapDownloadInfo GetDownloadInfo(MapEntry map)
+        {
+            MapDownloadInfo info = new MapDownloadInfo();
+            if (map == null || string.IsNullOrEmpty(map.id))
+            {
+                info.Status = MapDownloadStatus.New;
+                return info;
+            }
+
+            LocalMapRecord record = FindRecord(map.id);
+            if (record == null || string.IsNullOrEmpty(record.path) || !File.Exists(record.path))
+            {
+                info.Status = MapDownloadStatus.New;
+                info.CurrentRevision = map.revision;
+                return info;
+            }
+
+            info.Path = record.path;
+            info.LocalRevision = record.revision;
+            info.CurrentRevision = map.revision;
+            info.LocalHash = record.sha256;
+            string currentHash = ComputeSha256(record.path);
+            if (!string.Equals(currentHash, record.sha256, StringComparison.OrdinalIgnoreCase))
+            {
+                info.Status = MapDownloadStatus.LocalModified;
+            }
+            else if (map.revision > record.revision)
+            {
+                info.Status = MapDownloadStatus.UpdateAvailable;
+            }
+            else
+            {
+                info.Status = MapDownloadStatus.UpToDate;
+            }
+
+            return info;
+        }
+
+        private static LocalMapRecord FindRecord(string mapId)
+        {
+            if (string.IsNullOrEmpty(mapId))
+            {
+                return null;
+            }
+
+            LocalMapIndex index = LoadIndex();
+            for (int i = 0; i < index.maps.Count; i++)
+            {
+                if (string.Equals(index.maps[i].map_id, mapId, StringComparison.Ordinal))
+                {
+                    return index.maps[i];
+                }
+            }
+
+            return null;
+        }
+
+        private static void SaveRecord(MapEntry map, string path, string sha256)
+        {
+            LocalMapIndex index = LoadIndex();
+            LocalMapRecord record = null;
+            for (int i = 0; i < index.maps.Count; i++)
+            {
+                if (string.Equals(index.maps[i].map_id, map.id, StringComparison.Ordinal))
+                {
+                    record = index.maps[i];
+                    break;
+                }
+            }
+
+            if (record == null)
+            {
+                record = new LocalMapRecord();
+                record.map_id = map.id;
+                index.maps.Add(record);
+            }
+
+            record.path = path;
+            record.name = map.name ?? string.Empty;
+            record.revision = map.revision;
+            record.sha256 = sha256;
+            SaveIndex(index);
+        }
+
+        private static LocalMapIndex LoadIndex()
+        {
+            try
+            {
+                if (!File.Exists(IndexPath))
+                {
+                    return new LocalMapIndex();
+                }
+
+                LocalMapIndex index = JsonConvert.DeserializeObject<LocalMapIndex>(File.ReadAllText(IndexPath));
+                return index ?? new LocalMapIndex();
+            }
+            catch
+            {
+                return new LocalMapIndex();
+            }
+        }
+
+        private static void SaveIndex(LocalMapIndex index)
+        {
+            string directory = Path.GetDirectoryName(IndexPath);
+            Directory.CreateDirectory(directory);
+            string temp = IndexPath + ".tmp-" + Guid.NewGuid().ToString("N");
+            try
+            {
+                File.WriteAllText(temp, JsonConvert.SerializeObject(index, Formatting.Indented), new UTF8Encoding(false));
+                if (File.Exists(IndexPath))
+                {
+                    File.Replace(temp, IndexPath, null);
+                }
+                else
+                {
+                    File.Move(temp, IndexPath);
+                }
+            }
+            finally
+            {
+                if (File.Exists(temp))
+                {
+                    File.Delete(temp);
+                }
+            }
+        }
+
+        private static string ComputeSha256(string path)
+        {
+            using (FileStream stream = File.OpenRead(path))
+            {
+                using (SHA256 sha = SHA256.Create())
+                {
+                    return ToHex(sha.ComputeHash(stream));
+                }
+            }
+        }
+
+        private static string ComputeSha256(byte[] bytes)
+        {
+            using (SHA256 sha = SHA256.Create())
+            {
+                return ToHex(sha.ComputeHash(bytes));
+            }
+        }
+
+        private static string ToHex(byte[] bytes)
+        {
+            StringBuilder sb = new StringBuilder(bytes.Length * 2);
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                sb.Append(bytes[i].ToString("x2"));
+            }
+
+            return sb.ToString();
         }
 
         public static string SanitizeFileName(string value)
@@ -321,6 +547,48 @@ namespace PeakMapBrowser
             }
 
             return null;
+        }
+    }
+
+    internal enum MapDownloadStatus
+    {
+        New,
+        UpToDate,
+        UpdateAvailable,
+        LocalModified
+    }
+
+    internal sealed class MapDownloadInfo
+    {
+        public MapDownloadStatus Status;
+        public string Path;
+        public int LocalRevision;
+        public int CurrentRevision;
+        public string LocalHash;
+    }
+
+    internal sealed class LocalMapIndex
+    {
+        public List<LocalMapRecord> maps = new List<LocalMapRecord>();
+    }
+
+    internal sealed class LocalMapRecord
+    {
+        public string map_id;
+        public string path;
+        public string name;
+        public int revision;
+        public string sha256;
+    }
+
+    internal sealed class MapSaveException : Exception
+    {
+        public readonly MapDownloadStatus Status;
+
+        public MapSaveException(MapDownloadStatus status, string message)
+            : base(message)
+        {
+            Status = status;
         }
     }
 }

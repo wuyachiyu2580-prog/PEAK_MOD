@@ -1,6 +1,6 @@
 ﻿# Memory Index
 
-更新时间：2026-06-04
+更新时间：2026-07-23
 
 ## 当前结构
 
@@ -29,7 +29,7 @@
 - 当天临时文件命名为 `mods/<ModName>/temp/YYYY-MM-DD.md`。
 - 每形成 3 次明确的阶段性判断、排查结论或方案取舍，就追加一次摘要。
 - 上下文压缩、会话中断或换 AI 后，先读该 MOD 最新临时 MD，再读正式四件套。
-- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`WhySoLaggy/temp/2026-05-19.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`。
+- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`WhySoLaggy/temp/2026-05-19.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`。
 
 ### ItemInfoCN（1.0.0 已发布）
 
@@ -83,6 +83,14 @@
 - `mods/TerrainCustomiserCN/RECENT.md`：0.1.2 发布状态、原版 0.3.2 同步、`.json.old` 只读列表、Collector 状态和已知风险。
 - `mods/TerrainCustomiserCN/DECISIONS.md`：中文 UI 边界、原版联机/存档兼容、版本对应、翻译策略、发布决策和禁止回退项。
 - `mods/TerrainCustomiserCN/FILES.md`：源码路径、构建命令、输出目录、关键文件、保存路径和发布包内容。
+
+### PeakMapBrowser（0.1.0，账号功能已接入）
+
+- `mods/PeakMapBrowser/README.md`：地图库客户端概览、账号功能和接手入口。
+- `mods/PeakMapBrowser/RECENT.md`：账号/个人地图/点赞同步、当前 IMGUI 页面状态、构建结果和待实机验证。
+- `mods/PeakMapBrowser/DECISIONS.md`：点赞身份规则、session 安全边界、UI 暂缓决策和禁止回退项。
+- `mods/PeakMapBrowser/FILES.md`：客户端/服务端路径、关键源码、API 文档和构建命令。
+- `mods/PeakMapBrowser/temp/2026-07-23.md`：最近一次 UI 取舍和后续接手摘要。
 
 ## 当前重点
 

@@ -1,5 +1,12 @@
 ﻿# Memory Changelog
 
+## 2026-07-23
+
+- [新增] `mods/PeakMapBrowser/`：补齐 README / RECENT / DECISIONS / FILES 和 `temp/2026-07-23.md`，同步账号、个人地图、上传归属、点赞规则、当前 UI 状态和构建输出。
+- [规则] `PeakMapBrowser`：记录用户明确暂缓 UI 框架重构，当前继续使用 IMGUI；后续 UI 方案只作为待评估的 uGUI + TextMeshPro，不得自动实施。
+- [修改] `memory/README.md` / `mods/README.md` / `MEMORY_INDEX.md`：加入 PeakMapBrowser 入口、读取顺序和最新临时记忆路径。
+- [修改] `TODO.md`：新增 PeakMapBrowser 的实机验证、线上迁移确认和后续发布待办。
+
 ## 2026-06-04
 
 - [PlayersInfo] 更新记忆状态快照：新增 `mods/PlayersInfo/temp/2026-06-04.md`，记录 0.1.1 当前 DLL 已含 2026-05-24 临时体力数字裁切修复、2026-05-30 发布文档已同步。
