@@ -1,12 +1,23 @@
 # PeakMapBrowser Recent
 
-更新时间：2026-07-23
+更新时间：2026-07-30
+
+## 2026-07-30 - 0.1.1 安全改动与发布包
+
+- 版本号已同步为 `0.1.1`：`PeakMapBrowser.csproj`、`Plugin.cs`、发行 `manifest.json`、README 和 CHANGELOG。
+- `PeakMapSessionStore` 改为 Windows DPAPI `ProtectedData` + `DataProtectionScope.CurrentUser` 保存 refresh token；`session.json` 不再保存明文 access token 或 refresh token。
+- access token 只存在当前进程内存；启动后若只有 refresh token，会自动刷新；access token 剩余时间少于 5 分钟时后台检查刷新，每次检查间隔 30 秒。
+- 保留旧版明文 session 的一次性迁移逻辑；解密失败不会回退写入明文 token。
+- 两处退出登录按钮统一调用 `POST /api/auth/sign-out`，服务端撤销失败时仍清理本地 session 并提示用户。
+- 线上 `https://peakmap.top/api/auth/sign-out` 已部署；空 JSON 且无 Bearer token 返回 `401`、`{"success":false,"error":"Missing or invalid Bearer token"}` 和 `Cache-Control: no-store`。本地 `PEAK-MAP` checkout 是否同步该路由仍需单独确认。
+- 发布包已生成：`MOD开发\PeakMapBrowser\发行\0.1.1\wuyachiyu-PeakMapBrowser-0.1.1.zip`；zip 内含 `PeakMapBrowser.dll`、`manifest.json`、`README.md`、`CHANGELOG.md`、`icon.png` 和 API 文档。
+- 编译通过：`0` warnings，`0` errors；源码和发行文档按 UTF-8 检查通过。
 
 ## 账号与地图管理
 
 - 客户端已经接入 `/api/auth/sign-in`、`/api/auth/refresh` 和 `/api/account/maps`。
 - `PeakMapApiClient` 统一发送 Bearer token，并保存/发送 `peak_guest_id` cookie。
-- `PeakMapSessionStore` 保存 access token、refresh token、过期时间、用户基础信息和 guest id，不保存密码；令牌即将过期时自动刷新，刷新失败清除登录态。
+- `PeakMapSessionStore` 内存中维护 access token、加密持久化 refresh token、过期时间、用户基础信息和 guest id，不保存密码；令牌即将过期时自动刷新，刷新失败清除登录态。
 - 登录后上传自动携带账号归属；当前账号可以编辑或删除自己拥有的地图。
 - `MapEntry` 已包含 `likes`、`updated_at`、`revision` 和 `liked_by_me` 等字段。
 
@@ -37,4 +48,3 @@
 
 - 需要用户进游戏手动验证登录、token 刷新、上传归属、我的地图编辑/删除、版本下拉、封面选择、详情弹窗和点赞状态。
 - 需要确认线上 Supabase 已应用账号归属、点赞和 revision 相关迁移；源码迁移文件在 `PEAK-MAP\supabase\migrations`。
-

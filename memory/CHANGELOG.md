@@ -1,5 +1,10 @@
 ﻿# Memory Changelog
 
+## 2026-07-30
+
+- [PeakMapBrowser] 发布 `0.1.1`：同步 `.csproj`、BepInEx 插件版本、发行 manifest、README、CHANGELOG 和 API 文档；构建 `0` warnings / `0` errors，生成 `wuyachiyu-PeakMapBrowser-0.1.1.zip`。
+- [PeakMapBrowser] 记录 DPAPI 加密 refresh token、内存 access token、自动刷新和服务端退出接口；线上 `https://peakmap.top/api/auth/sign-out` 已验证存在，空请求返回 `401` 和 `Cache-Control: no-store`。
+
 ## 2026-07-23
 
 - [新增] `mods/PeakMapBrowser/`：补齐 README / RECENT / DECISIONS / FILES 和 `temp/2026-07-23.md`，同步账号、个人地图、上传归属、点赞规则、当前 UI 状态和构建输出。

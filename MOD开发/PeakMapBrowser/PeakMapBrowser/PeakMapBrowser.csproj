@@ -4,7 +4,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net4.7.2</TargetFramework>
     <AssemblyName>PeakMapBrowser</AssemblyName>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RootNamespace>PeakMapBrowser</RootNamespace>

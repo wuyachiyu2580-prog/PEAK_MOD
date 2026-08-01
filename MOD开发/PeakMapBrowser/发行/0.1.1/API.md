@@ -196,15 +196,32 @@ The success response has the same shape as `/api/auth/sign-in`.
 
 ### POST /api/auth/sign-out
 
-Revokes the current refresh session for a native client. Requires:
+This endpoint is used by native clients to revoke the current refresh session.
+It requires the current access token and does not accept a refresh token in the request body.
+
+Request:
 
 ```http
+POST /api/auth/sign-out HTTP/1.1
+Host: peakmap.top
 Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{}
 ```
 
-The request body may be `{}`. The endpoint is deployed on `https://peakmap.top` and
-returns `{ "success": true }` on success. It returns `401` when the Bearer token is
-missing or invalid and uses `Cache-Control: no-store`.
+Success response:
+
+```json
+{
+  "success": true
+}
+```
+
+The production endpoint is deployed on `https://peakmap.top`. It returns
+`Cache-Control: no-store` and must not log access tokens, refresh tokens, or complete
+Authorization headers. The client clears its local session even when the endpoint is
+temporarily unavailable, but reports the remote revocation failure.
 
 ### GET /api/account/maps
 

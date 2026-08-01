@@ -19,7 +19,7 @@
 - `DreamyAscent/`：永久暂停/归档。除标准四件套外，另有 `MAP_GENERATION.md`、`IMPLEMENTATION_MATRIX.md`、`MAP_GENERATION_RESEARCH_NOTES.md` 和 `CROSS_SEGMENT_PLACEMENT.md`，仅作为历史资料；除非用户明确恢复，否则不要继续 DA 工作。
 - `WhySoLaggy/`
 - `TerrainCustomiserCN/`：当前发布 `0.1.2`，对应原版 `TerrainCustomiser 0.3.2`；详情以该目录四件套为准。
-- `PeakMapBrowser/`：当前插件版本 `0.1.0`，账号/个人地图/点赞同步已接入；UI 重构暂缓，详情以该目录四件套为准。
+- `PeakMapBrowser/`：当前插件版本 `0.1.1`，已完成账号安全改动和发布包；UI 重构暂缓，详情以该目录四件套为准。
 
 ## 命名说明
 

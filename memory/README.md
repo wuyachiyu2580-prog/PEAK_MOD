@@ -42,12 +42,13 @@
 - `发行/0.1.1/wuyachiyu-PlayersInfo-0.1.1.zip` 已存在，大小 `158802`，zip 内 README/CHANGELOG 含临时体力裁切修复说明，发布 DLL 与测试环境 DLL 哈希一致。
 - 下次接手 PlayersInfo 先读 `mods/PlayersInfo/temp/2026-06-04.md`，再读 `RECENT.md`。
 
-## 2026-07-23 PeakMapBrowser 状态
+## 2026-07-30 PeakMapBrowser 状态
 
 - `PeakMapBrowser` 已补齐独立 memory 四件套和当天临时恢复入口。
-- 当前账号、个人地图管理、上传归属和点赞同步功能已接入源码；点赞仍保持账号/guest cookie 身份，IP 只限频。
+- 当前版本为 `0.1.1`，账号、个人地图管理、上传归属、点赞同步和图片缓存已打包；session 使用 DPAPI 加密 refresh token，access token 只在内存中存在。
+- 点赞仍保持账号/guest cookie 身份，IP 只限频；网页端服务端退出接口 `/api/auth/sign-out` 已在线部署并通过无 token 拒绝测试。
 - 用户明确暂缓 UI 框架重构；当前继续使用 IMGUI，后续若重启 UI 任务再评估 uGUI + TextMeshPro。
-- 下次接手 PeakMapBrowser 先读 `mods/PeakMapBrowser/temp/2026-07-23.md`，再读该项目 `RECENT.md` / `DECISIONS.md`。
+- 下次接手 PeakMapBrowser 先读 `mods/PeakMapBrowser/temp/2026-07-30.md`，再读该项目 `RECENT.md` / `DECISIONS.md`。
 
 ## 2026-05-21 收口状态
 

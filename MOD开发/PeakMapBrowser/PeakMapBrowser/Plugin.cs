@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PeakMapBrowser
 {
-    [BepInPlugin("com.wuyachiyu.peakmapbrowser", "PEAK Map Browser", "0.1.0")]
+    [BepInPlugin("com.wuyachiyu.peakmapbrowser", "PEAK Map Browser", "0.1.1")]
     public sealed class Plugin : BaseUnityPlugin
     {
         private PeakMapWindow _window;
