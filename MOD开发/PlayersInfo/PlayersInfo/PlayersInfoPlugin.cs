@@ -17,9 +17,10 @@ namespace PlayersInfo
     {
         public const string PluginGuid = "com.players.info";
         public const string PluginName = "PlayersInfo";
-        public const string PluginVersion = "0.1.1";
+        public const string PluginVersion = "0.2.0";
 
         public enum HudAnchor { TopLeft, TopRight, BottomLeft, BottomRight }
+        public enum TeammateSortMode { Stable, Distance }
 
         // ========== Config Entries（全局共享） ==========
         public static ConfigEntry<bool> CfgModEnabled;
@@ -36,6 +37,7 @@ namespace PlayersInfo
         // 附近玩家过滤
         public static ConfigEntry<float> CfgNearbyRange;
         public static ConfigEntry<int> CfgMaxNearbyCount;
+        public static ConfigEntry<TeammateSortMode> CfgTeammateSortMode;
         public static ConfigEntry<bool> CfgRoundStamina;
         public static ConfigEntry<bool> CfgDebugLogging;
 
@@ -102,7 +104,7 @@ namespace PlayersInfo
                                  "显示队友物品栏（主 3 + 临时 + 背包槽 + 背包内部 4 格）。"));
 
             CfgAnchor = Config.Bind(DisplaySection,
-                "Anchor", ReadLegacyValue("Layout", "Anchor", HudAnchor.TopLeft),
+                "Anchor", ReadLegacyValue("Layout", "Anchor", HudAnchor.BottomLeft),
                 LanguageHelper.L("HUD anchor corner on screen.",
                                  "HUD 屏幕锚点位置。"));
 
@@ -130,7 +132,12 @@ namespace PlayersInfo
                 new ConfigDescription(
                     LanguageHelper.L("Max number of nearest teammates to show bars for.",
                                      "最多显示几个最近的队友体力条。"),
-                    new AcceptableValueRange<int>(0, 8)));
+                new AcceptableValueRange<int>(0, 8)));
+
+            CfgTeammateSortMode = Config.Bind(DisplaySection,
+                "TeammateSortMode", TeammateSortMode.Stable,
+                LanguageHelper.L("Order teammate bars by first appearance, or by current distance.",
+                                 "队友条按首次出现顺序或当前距离排序。"));
 
             CfgRoundStamina = Config.Bind(DisplaySection,
                 "RoundStaminaValue", ReadLegacyValue("Features", "RoundStaminaValue", true),
@@ -144,15 +151,34 @@ namespace PlayersInfo
 
             ModConfigLocalization.ApplyLocalizedDescriptions();
             RemoveLegacyConfigEntries();
+            MigrateDefaultHudAnchor();
 
             // 只订阅真正影响"克隆体结构"的配置项变化，避免任意配置改动（OffsetX 拖滑块、
             // BepInEx 启动回写、ConfigurationManager 实时事件）触发 ClearAll → 全部体力条一起跳。
-            // 运行时数值类（NearbyRange/MaxNearbyCount/RoundStamina/DebugLogging/Anchor/Offset）
+            // 运行时数值类（NearbyRange/MaxNearbyCount/TeammateSortMode/RoundStamina/DebugLogging/Anchor/Offset）
             // 由 Update 直接读 Cfg.Value 生效，无需事件。
             CfgModEnabled.SettingChanged += OnStructuralConfigChanged;
             CfgEnableStaminaBar.SettingChanged += OnStructuralConfigChanged;
             CfgShowStaminaValue.SettingChanged += OnStructuralConfigChanged;
             CfgEnableInventoryRow.SettingChanged += OnStructuralConfigChanged;
+        }
+
+        private void MigrateDefaultHudAnchor()
+        {
+            // 0.1.1 and earlier used TopLeft as the default. Convert that old default
+            // on upgrade while preserving users who explicitly chose another corner.
+            if (CfgAnchor == null || CfgAnchor.Value != HudAnchor.TopLeft) return;
+
+            CfgAnchor.Value = HudAnchor.BottomLeft;
+            try
+            {
+                Config.Save();
+                PluginLogger.Info("Migrated the default HUD anchor from TopLeft to BottomLeft.");
+            }
+            catch (Exception ex)
+            {
+                PluginLogger.ThrottleWarn("anchor_migrate_save", "HUD anchor migration save failed: " + ex.Message);
+            }
         }
 
         private T ReadLegacyValue<T>(string section, string key, T fallback)

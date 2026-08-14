@@ -54,14 +54,15 @@ namespace PlayersInfo.Patches
 
                 // 从 local.data 读 normalized 值，乘 100 得到游戏体力数值（分辨率无关）
                 // sizeDelta.x 只用来判断宽度足够不足显示，避免文字溢出
+                Character localCharacterForStamina = null;
                 float mainStam01 = 0f, extraStam01 = 0f;
                 try
                 {
-                    var local = Character.localCharacter;
-                    if (local != null && local.data != null)
+                    localCharacterForStamina = Character.localCharacter;
+                    if (localCharacterForStamina != null && localCharacterForStamina.data != null)
                     {
-                        mainStam01 = local.data.currentStamina;
-                        extraStam01 = local.data.extraStamina;
+                        mainStam01 = localCharacterForStamina.data.currentStamina;
+                        extraStam01 = localCharacterForStamina.data.extraStamina;
                     }
                 }
                 catch { }
@@ -79,19 +80,24 @@ namespace PlayersInfo.Patches
                 {
                     bool extraActive = __instance.extraBar != null && __instance.extraBar.gameObject.activeSelf;
                     if (showValue && extraActive && __instance.extraBarStamina != null)
-                        UpdateValueText(_extraValueText, extraStam01 * 100f, __instance.extraBarStamina.sizeDelta.x);
+                    {
+                        float extraCap01 = ExtraStaminaValueHelper.GetCap01(localCharacterForStamina);
+                        UpdateExtraValueText(_extraValueText, extraStam01 * 100f, extraCap01 * 100f,
+                            __instance.extraBarStamina.sizeDelta.x);
+                    }
                     else SetActive(_extraValueText, false);
                 }
 
                 // 异常百分比
                 if (__instance.afflictions != null && _afflictionTexts != null)
                 {
+                    Character localCharacter = null;
                     CharacterAfflictions ca = null;
                     try
                     {
-                        var local = Character.localCharacter;
-                        if (local != null && local.refs != null)
-                            ca = local.refs.afflictions;
+                        localCharacter = Character.localCharacter;
+                        if (localCharacter != null && localCharacter.refs != null)
+                            ca = localCharacter.refs.afflictions;
                     }
                     catch { }
 
@@ -102,8 +108,7 @@ namespace PlayersInfo.Patches
                         var txt = _afflictionTexts[i];
                         if (a == null || txt == null) continue;
 
-                        float s = 0f;
-                        try { if (ca != null) s = ca.GetCurrentStatus(a.afflictionType); } catch { }
+                        float s = AfflictionValueHelper.GetValue(localCharacter, a);
 
                         bool show = showValue && s > 0.01f && a.width > 18f;
                         if (show)
@@ -189,6 +194,20 @@ namespace PlayersInfo.Patches
                 txt.text = Mathf.Round(value01Mul100).ToString();
             else
                 txt.text = value01Mul100.ToString("F1");
+            SetActive(txt, true);
+        }
+
+        private static void UpdateExtraValueText(TMP_Text txt, float currentPercent, float capPercent, float widthPx)
+        {
+            if (widthPx < 15f)
+            {
+                SetActive(txt, false);
+                return;
+            }
+
+            int current = Mathf.Clamp(Mathf.RoundToInt(currentPercent), 0, 100);
+            int cap = Mathf.Clamp(Mathf.RoundToInt(capPercent), 0, 100);
+            txt.text = "+" + current.ToString() + "/" + cap.ToString();
             SetActive(txt, true);
         }
 

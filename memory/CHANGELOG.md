@@ -1,5 +1,12 @@
 ﻿# Memory Changelog
 
+## 2026-08-14
+
+- [新增] `common/07_PEAK版本与反编译基线.md`：记录 PEAK 2.1.a 相对 2.0.a 的 16 个业务级变化、现有 MOD 兼容结论和 AntiSphere/邀请/存档待验证风险；同步入口、索引和根 TODO。
+- [PlayersInfo] Changed local and teammate extra-stamina text to show current/cap (`+current/cap`), using the game's petrify-aware cap formula. Release build passed 0/0; release package awaits in-game verification.
+- [PlayersInfo] Reviewed PEAK 2.1.a source and the installed game assembly. HUD, stamina, petrify, character sync, and inventory APIs used by PlayersInfo remain compatible; baseline Release build passed 0/0, with no source change required.
+- [PlayersInfo] Reviewed PEAK 2.0.a decompiled changes and updated compatibility: petrify bars read `CharacterData.petrifyAmount`, extra stamina keeps the game's petrify-clamped value, teammate inventory uses the new `BackpackSlot.IsEmpty()` API, and a default stable teammate-bar ordering mode was added. Release build passed 0/0; release package awaits in-game verification.
+
 ## 2026-07-30
 
 - [PeakMapBrowser] 发布 `0.1.1`：同步 `.csproj`、BepInEx 插件版本、发行 manifest、README、CHANGELOG 和 API 文档；构建 `0` warnings / `0` errors，生成 `wuyachiyu-PeakMapBrowser-0.1.1.zip`。

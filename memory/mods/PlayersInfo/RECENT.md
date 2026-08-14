@@ -1,5 +1,34 @@
 # PlayersInfo Recent
 
+## 2026-08-14 Extra stamina current/cap display
+
+- Updated local and teammate extra-stamina text from `+current` to `+current/cap`, for example `+45/70` when 30% petrified.
+- The current value still comes from the game's `CharacterData.extraStamina`; the cap is calculated with the game's 2.1.a rule `1 - petrifyAmount * 0.01`.
+- Added `Helpers\ExtraStaminaValueHelper.cs` to keep the cap calculation shared. This is presentation-only and does not modify gameplay state.
+- Release build passed with 0 warnings / 0 errors. Updated DLL: `测试环境/BepInEx/plugins/PlayersInfo.dll`; release package remains unchanged pending in-game verification.
+
+## 2026-08-14 PEAK 2.1.a compatibility review
+
+- Reviewed the new `引用参考代码\反编译\2.1.a\Assembly-CSharp` source and the installed `Assembly-CSharp.dll` (1,562,112 bytes, timestamp 2026-08-14 17:56:17).
+- `StaminaBar`, `BarAffliction`, `CharacterData.petrifyAmount`, `Character.GetMaxStamina()`, `Character.SetExtraStamina()`, and `CharacterData.extraStamina` remain compatible with the current PlayersInfo implementation.
+- `CharacterSyncer` still synchronizes current stamina, extra stamina, and petrify for remote teammates.
+- `Player.SyncInventoryRPC` still synchronizes the three main slots, temporary slot, backpack type, and backpack instance data. `BackpackData.itemSlots` remains four slots.
+- Baseline `dotnet build PlayersInfo.csproj -c Release --no-restore` passed with 0 warnings / 0 errors against the installed 2.1.a assembly. No source change is required from this review; in-game verification remains pending.
+
+## 2026-08-14 PEAK 2.0.a compatibility fixes
+
+- Reviewed the 2.0.a decompiled `Assembly-CSharp` changes and updated the PlayersInfo source.
+- Petrify is now read from `CharacterData.petrifyAmount` when `BarAffliction.isPetrify` is true. Ordinary afflictions still use `CharacterAfflictions.GetCurrentStatus()`.
+- The game now clamps `CharacterData.extraStamina` against petrify when extra stamina is set or added. PlayersInfo continues to display the already-clamped value and does not subtract petrify a second time.
+- 2.0.a removed `BackpackSlot.hasBackpack`; teammate inventory now uses `!backpackSlot.IsEmpty()`. The backpack instance data path remains `backpackSlot.data -> BackpackData.itemSlots`.
+- Added `Display.TeammateSortMode`: `Stable` is the default and preserves the current bar order while filtering by distance; `Distance` keeps the previous distance-based order.
+- Release build passed with 0 warnings / 0 errors. The rebuilt DLL is at `测试环境/BepInEx/plugins/PlayersInfo.dll`; the 0.1.1 release package was not replaced pending in-game verification.
+
+## 2026-08-14 build verification
+
+- A baseline `dotnet build --no-restore` reproduced the 2.0.a compile failure at `BackpackSlot.hasBackpack`.
+- After the compatibility changes, `dotnet build PlayersInfo.csproj -c Release --no-restore` passed with 0 warnings / 0 errors.
+
 ## 2026-06-04 Memory Refresh
 
 - No PlayersInfo source, DLL, or release file was changed in this step; this was a memory synchronization and verification pass.

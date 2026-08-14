@@ -10,7 +10,7 @@ namespace PlayersInfo.MonoBehaviours
     /// 队友物品栏行：主 3 格 + 临时 1 格 + 背包内部 4 格（共 8 格，动态隐藏）。
     /// 自建 Image，不克隆原版 InventoryItemUI（HUDBuddy 克隆时回收 icon 导致消失）。
     /// 图标通过 IconSpriteCache 一次性把 Texture2D 转 Sprite 并缓存。
-    /// 背包内部格子仅在 backpackSlot.hasBackpack == true 时可见。
+    /// 背包内部格子仅在 backpackSlot.IsEmpty() == false 时可见。
     /// </summary>
     internal class TeammateInventoryRow : MonoBehaviour
     {
@@ -159,7 +159,7 @@ namespace PlayersInfo.MonoBehaviours
             UpdateSlot(MainSlotCount, temp, BgEmpty, BgFilled);
 
             var bpSlot = SafeGetBackpackSlot(p);
-            bool hasBackpack = bpSlot != null && bpSlot.hasBackpack;
+            bool hasBackpack = bpSlot != null && !bpSlot.IsEmpty();
 
             // 背包内部 4 格：仅 hasBackpack 时可见
             for (int j = 0; j < BackpackInnerCount; j++)

@@ -1,8 +1,14 @@
 ﻿# Permanent TODO
 
-更新时间：2026-07-30
+更新时间：2026-08-14
 
 这里只记录未完成、待验证、已知风险和后续优化。已经稳定或已经写入各 MOD `RECENT.md` / `DECISIONS.md` 的内容，不再重复放在这里。
+
+## PEAK 2.1.a
+
+- [ ] 实机验证 `AntiSphere` 清理空物品时是否触发 `InvalidOperationException`；若出现，后续 MOD/兼容补丁只记录并绕开该路径，不把游戏逻辑改写成未授权的玩法修复。
+- [ ] 实机验证 2.1.a 邀请加入时 quicksave 是否会被直接消费/覆盖，确认 `GameBooter` 移除 `SAVE_DESTROY_ON_JOIN` 确认页后的存档行为。
+- [ ] 实机验证 checkpoint、青蛙 10 秒全局冷却、滑翔机 ascent 体力倍率和仪式匕首延迟消耗；异常时以 `引用参考代码\反编译\2.1.a` 为当前基线。
 
 ## DreamyAscent
 

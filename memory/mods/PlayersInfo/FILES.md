@@ -1,6 +1,6 @@
 # PlayersInfo Files
 
-Last updated: 2026-06-04
+Last updated: 2026-08-14
 
 ## Paths
 
@@ -35,9 +35,12 @@ dotnet build "C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\Play
 - `Helpers\TeamRosterTracker.cs`: teammate tracking and ordering.
 - `Helpers\TmpOutlineHelper.cs`: centralized TMP outline styling.
 - `Helpers\FontHelper.cs`: shared CJK-capable TMP_FontAsset accessor with 4-tier fallback.
+- `Helpers\AfflictionValueHelper.cs`: shared PEAK 2.0.a-aware normal affliction/petrify value reader.
+- `Helpers\ExtraStaminaValueHelper.cs`: shared petrify-aware extra-stamina cap calculation for displayed current/cap values.
 - `Helpers\IconSpriteCache.cs`: inventory icon sprite cache.
 - `MonoBehaviours\TeammateBarsCoordinator.cs`: teammate HUD coordinator.
 - `MonoBehaviours\TeammateBarDriver.cs`: per-teammate stamina and status driver.
 - `MonoBehaviours\TeammateInventoryRow.cs`: teammate inventory row.
+- `MonoBehaviours\TeammateBarsCoordinator.cs`: teammate HUD coordinator, including stable/distance ordering.
 - `Patches\GUIManagerReadyPatch.cs`: GUI readiness guard.
 - `Patches\LocalStaminaBarPatch.cs`: local stamina HUD patch.

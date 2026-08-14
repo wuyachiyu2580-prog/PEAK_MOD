@@ -1,6 +1,6 @@
 ﻿# Memory Index
 
-更新时间：2026-07-23
+更新时间：2026-08-14
 
 ## 当前结构
 
@@ -8,7 +8,7 @@
 - `CHANGELOG.md`：memory 变更履历（按时间倒序追加）。
 - `TODO.md`：永久待办和风险。
 - `MEMORY_INDEX.md`：本文件，总览索引。
-- `common/`：跨 MOD 通用规则（00-06 兼共 7 个主题）。
+- `common/`：跨 MOD 通用规则（00-07 共 8 个主题）。
 - `mods/`：每个 MOD 的独立四件套（README + RECENT + DECISIONS + FILES）和 `temp/` 临时思考记忆区。
 
 ## 通用规则（common/）
@@ -20,6 +20,7 @@
 - `common/04_联机与同步规范.md`：主客机权限、RPC 校验、中途加入同步。
 - `common/05_发布与版本规范.md`：README/CHANGELOG/manifest 三文件协同、135 字符限制。
 - `common/06_UI与字体规范.md`：CJK 字体四级兜底、FontHelper 标准实现、描边与字号规范。
+- `common/07_PEAK版本与反编译基线.md`：PEAK 2.1.a 相对 2.0.a 的业务级变化、MOD 兼容结论和待验证风险。
 
 ## MOD 四件套（mods/）
 
@@ -48,7 +49,7 @@
 ### PlayersInfo（0.1.1）
 
 - `mods/PlayersInfo/README.md`：队友 HUD 聚合概览与功能轮廓。
-- `mods/PlayersInfo/RECENT.md`：0.1.0 首发状态、HUD 聚合、本地体力显示、TMP 描边、2026-05-17 性能优化（脏检查+反射降频+Sprite 销毁）、发布 0.1.1 维护版、三类体力条闪烁修复、2026-05-21 配置审查修复（`EnableStaminaBar`/HUD 位置真实生效、配置分区合并为 `Display` / `Advanced`、旧配置迁移、可选中文 ModConfig 本地化）、2026-05-24 队友临时体力数字裁切修复、2026-05-30 发行文档同步、2026-06-04 已验证 0.1.1 zip 存在且内容包含最新文档/DLL。
+- `mods/PlayersInfo/RECENT.md`：0.1.0 首发状态、HUD 聚合、本地体力显示、TMP 描边、2026-05-17 性能优化（脏检查+反射降频+Sprite 销毁）、发布 0.1.1 维护版、三类体力条闪烁修复、2026-05-21 配置审查修复（`EnableStaminaBar`/HUD 位置真实生效、配置分区合并为 `Display` / `Advanced`、旧配置迁移、可选中文 ModConfig 本地化）、2026-05-24 队友临时体力数字裁切修复、2026-05-30 发行文档同步、2026-06-04 已验证 0.1.1 zip 存在且内容包含最新文档/DLL）、2026-08-14 PEAK 2.0.a 石化值、背包 API 和队友条稳定排序兼容修复，以及 2.1.a API 复核和基线构建通过。
 - `mods/PlayersInfo/DECISIONS.md`：只读展示不发 RPC、HUD 架构、首发发布口径和跨 MOD 数据边界。
 - `mods/PlayersInfo/FILES.md`：源码路径、项目文件、版本和关键文件（含 `Helpers/FontHelper.cs` CJK 字体四级兜底）。
 
@@ -95,7 +96,7 @@
 ## 当前重点
 
 - `Lantern_ShootZombies_Night` 当前重点是实机验证客机本地燃料权威：有备用池时只降备用池、不降灯燃料，且远端 fuel 下降不覆盖本地。
-- `PlayersInfo` 当前不是源码修复任务；`0.1.1` DLL、发行文档和 `wuyachiyu-PlayersInfo-0.1.1.zip` 已同步。后续若再改 DLL 或文档，必须重新打包 zip。
+- `PlayersInfo` 当前已完成 PEAK 2.0.a/2.1.a 兼容复核，额外体力文本已改为显示当前/上限（如 `+45/70`），测试环境 DLL 已重建；待实机验证石化值、队友物品、稳定排序和新数字格式，确认后再决定是否发 0.1.2 并重打 zip。
 - `DreamyAscent` 已于 2026-05-24 永久暂停/归档。此前预览、模板库、Snapshot V2、官方生成链和 zero-output 恢复等资料仅作为历史记录，不作为当前重点推进。
 - `TerrainCustomiserCN` 已发布 0.1.2，对应原版 0.3.2。当前重点是后续玩家反馈漏翻时补 `DisplayNameTranslator.cs`、重建 Release、更新发布包；若玩家反馈旧地图缺失，先核对新持久化目录和旧插件目录，不要自动迁移；任何功能改动前先读 `DECISIONS.md` 的联机/存档兼容禁止回退项。
 - 其他 MOD 新增功能前先读对应 `RECENT.md` 和 `DECISIONS.md` 的"禁止回退"条款。

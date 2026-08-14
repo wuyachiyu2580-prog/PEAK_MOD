@@ -96,6 +96,9 @@ namespace PlayersInfo.Helpers
                 SetDescription(PlayersInfoPlugin.CfgMaxNearbyCount,
                     LanguageHelper.L("Maximum number of nearest teammates shown.",
                         "最多显示几个最近的队友。"));
+                SetDescription(PlayersInfoPlugin.CfgTeammateSortMode,
+                    LanguageHelper.L("Stable keeps bars in first-seen order; Distance follows current distance.",
+                        "Stable 按首次出现顺序固定队友条；Distance 按当前距离排序。"));
                 SetDescription(PlayersInfoPlugin.CfgRoundStamina,
                     LanguageHelper.L("Round stamina values to whole numbers. Off = one decimal place.",
                         "体力数字四舍五入为整数。关闭后显示一位小数。"));
@@ -219,12 +222,15 @@ namespace PlayersInfo.Helpers
                 case "OffsetY": return zh ? "垂直偏移" : "Offset Y";
                 case "NearbyRange": return zh ? "显示距离" : "Nearby Range";
                 case "MaxNearbyCount": return zh ? "最多显示人数" : "Max Teammates";
+                case "TeammateSortMode": return zh ? "队友条排序" : "Teammate Bar Order";
                 case "RoundStaminaValue": return zh ? "体力取整" : "Round Stamina";
                 case "DebugLogging": return zh ? "诊断日志" : "Debug Logging";
                 case "TopLeft": return zh ? "左上" : "Top Left";
                 case "TopRight": return zh ? "右上" : "Top Right";
                 case "BottomLeft": return zh ? "左下" : "Bottom Left";
                 case "BottomRight": return zh ? "右下" : "Bottom Right";
+                case "Stable": return zh ? "固定顺序" : "Stable";
+                case "Distance": return zh ? "按距离" : "Distance";
                 default: return null;
             }
         }

@@ -47,6 +47,7 @@ namespace PlayersInfo.MonoBehaviours
 
         private readonly List<int> _displayOrder = new List<int>();
         private readonly List<int> _pendingOrder = new List<int>();
+        private readonly List<int> _stableOrderScratch = new List<int>();
         private float _pendingOrderSince = -1f;
 
         // 缓存排序 Comparison，避免每次 RefreshNearby 都新建委托产生 GC
@@ -108,7 +109,7 @@ namespace PlayersInfo.MonoBehaviours
         {
             var anchor = PlayersInfoPlugin.CfgAnchor != null
                 ? PlayersInfoPlugin.CfgAnchor.Value
-                : PlayersInfoPlugin.HudAnchor.TopLeft;
+                : PlayersInfoPlugin.HudAnchor.BottomLeft;
             float offsetX = PlayersInfoPlugin.CfgOffsetX != null ? PlayersInfoPlugin.CfgOffsetX.Value : 0f;
             float offsetY = PlayersInfoPlugin.CfgOffsetY != null ? PlayersInfoPlugin.CfgOffsetY.Value : 0f;
             const float Margin = 20f;
@@ -469,7 +470,7 @@ namespace PlayersInfo.MonoBehaviours
         {
             var anchor = PlayersInfoPlugin.CfgAnchor != null
                 ? PlayersInfoPlugin.CfgAnchor.Value
-                : PlayersInfoPlugin.HudAnchor.TopLeft;
+                : PlayersInfoPlugin.HudAnchor.BottomLeft;
             return anchor == PlayersInfoPlugin.HudAnchor.TopLeft
                 || anchor == PlayersInfoPlugin.HudAnchor.BottomLeft;
         }
@@ -950,6 +951,12 @@ namespace PlayersInfo.MonoBehaviours
                 if (stableId != int.MinValue) desiredIds.Add(stableId);
             }
 
+            if (PlayersInfoPlugin.CfgTeammateSortMode == null
+                || PlayersInfoPlugin.CfgTeammateSortMode.Value == PlayersInfoPlugin.TeammateSortMode.Stable)
+            {
+                ApplyStableOrder(desiredIds);
+            }
+
             if (!HasSameMembers(_displayOrder, desiredIds))
             {
                 ApplyDisplayOrder(desiredIds);
@@ -979,6 +986,28 @@ namespace PlayersInfo.MonoBehaviours
 
             if (Time.unscaledTime - _pendingOrderSince >= ReorderDelay)
                 ApplyDisplayOrder(desiredIds);
+        }
+
+        private void ApplyStableOrder(List<int> desiredIds)
+        {
+            if (desiredIds.Count < 2 || _displayOrder.Count == 0) return;
+
+            _stableOrderScratch.Clear();
+            for (int i = 0; i < _displayOrder.Count; i++)
+            {
+                int id = _displayOrder[i];
+                if (!desiredIds.Contains(id)) continue;
+                _stableOrderScratch.Add(id);
+            }
+
+            for (int i = 0; i < desiredIds.Count; i++)
+            {
+                int id = desiredIds[i];
+                if (!_stableOrderScratch.Contains(id)) _stableOrderScratch.Add(id);
+            }
+
+            desiredIds.Clear();
+            desiredIds.AddRange(_stableOrderScratch);
         }
 
         private void ApplyDisplayOrder(List<int> desiredIds)

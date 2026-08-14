@@ -1,6 +1,6 @@
 # PlayersInfo Decisions
 
-Last updated: 2026-05-21
+Last updated: 2026-08-14
 
 ## Architecture
 
@@ -28,6 +28,10 @@ Last updated: 2026-05-21
 - `EnableStaminaBar` is a real teammate HUD switch. `Enabled` disables all PlayersInfo HUD features, while `EnableStaminaBar=false` hides only teammate bars and leaves local stamina value overlay governed by `ShowStaminaValue`.
 - `Anchor`, `OffsetX`, and `OffsetY` must be wired to actual HUD placement, not just config file entries.
 - PEAKLib.ModConfig localization is optional. PlayersInfo may patch ModConfig display names when the plugin exists, but must run normally when ModConfig is absent.
+- In PEAK 2.0.a, petrify is a separate `CharacterData.petrifyAmount` value. Any bar marked `BarAffliction.isPetrify` must use that value instead of `CharacterAfflictions.GetCurrentStatus()`.
+- In PEAK 2.0.a, `CharacterData.extraStamina` is already clamped by petrify. PlayersInfo must display it as supplied and must not apply the petrify reduction again.
+- Teammate bar ordering defaults to `Stable`: distance selects the nearest teammates, while the existing displayed order determines their vertical positions. `Distance` remains available for users who explicitly want distance order.
+- PEAK 2.1.a review found no breaking changes in PlayersInfo's referenced HUD, stamina, affliction, character sync, or inventory APIs. Do not add compatibility code until an in-game regression is observed.
 
 ## Diagnostics
 

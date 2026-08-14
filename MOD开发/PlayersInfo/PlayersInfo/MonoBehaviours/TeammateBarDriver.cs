@@ -72,6 +72,7 @@ namespace PlayersInfo.MonoBehaviours
         private int _lastStaminaShownTenth = int.MinValue;   // F1 模式下缓存 value*10 取整
         private bool _lastStaminaWasFloat;
         private int _lastExtraShownInt = int.MinValue;
+        private int _lastExtraCapShownInt = int.MinValue;
 
         // 反射结果缓存：CharacterData.isInvincible 每帧反射 GetValue 会装箱产生 GC，
         // shield 显隐对延迟不敏感，0.25s 探一次足够。
@@ -94,6 +95,7 @@ namespace PlayersInfo.MonoBehaviours
             _lastStaminaShownTenth = int.MinValue;
             _lastStaminaWasFloat = false;
             _lastExtraShownInt = int.MinValue;
+            _lastExtraCapShownInt = int.MinValue;
             // 默认字段正序：强制重置 extraBar 显隐，避免克隆时残留 active=true 导致特殊分支
             try
             {
@@ -252,15 +254,14 @@ namespace PlayersInfo.MonoBehaviours
             staminaBar.gameObject.SetActive(staminaBar.sizeDelta.x > minStaminaBarWidth);
 
             // === Afflictions 数值条（原版 BarAffliction） ===
-            if (afflictions != null && Target.refs != null && Target.refs.afflictions != null)
+            if (afflictions != null && Target.data != null)
             {
-                var ca = Target.refs.afflictions;
+                var ca = Target.refs != null ? Target.refs.afflictions : null;
                 for (int i = 0; i < afflictions.Length; i++)
                 {
                     var a = afflictions[i];
                     if (a == null) continue;
-                    float s = 0f;
-                    try { s = ca.GetCurrentStatus(a.afflictionType); } catch { }
+                    float s = AfflictionValueHelper.GetValue(Target, a);
                     float target = fullWidth * s;
                     if (s > 0.01f)
                     {
@@ -394,6 +395,7 @@ namespace PlayersInfo.MonoBehaviours
             // 直接用 normalized 数值 × 100，分辨率无关（避免 2K/4K 下 size/6 算出两倍数）
             float mainStam = Target.data.currentStamina * 100f;
             float extraStam = Target.data.extraStamina * 100f;
+            float extraCap = ExtraStaminaValueHelper.GetCap01(Target) * 100f;
 
             if (staminaValueText != null)
             {
@@ -440,10 +442,12 @@ namespace PlayersInfo.MonoBehaviours
                 else
                 {
                     int v = Mathf.RoundToInt(extraStam);
-                    if (v != _lastExtraShownInt)
+                    int cap = Mathf.Clamp(Mathf.RoundToInt(extraCap), 0, 100);
+                    if (v != _lastExtraShownInt || cap != _lastExtraCapShownInt)
                     {
-                        extraValueText.text = "+" + v.ToString();
+                        extraValueText.text = "+" + v.ToString() + "/" + cap.ToString();
                         _lastExtraShownInt = v;
+                        _lastExtraCapShownInt = cap;
                     }
                     if (!extraValueText.gameObject.activeSelf) extraValueText.gameObject.SetActive(true);
                     // 量纲诊断：打出真实 raw 值 vs 显示数字，方便骨石问题是代码算错还是道具描述差倽
@@ -455,7 +459,7 @@ namespace PlayersInfo.MonoBehaviours
                             float rawMain = Target.data.currentStamina;
                             float rawExtra = Target.data.extraStamina;
                             string nm = SafeGetName(Target);
-                            PluginLogger.Debug("[ExtraVal] mate=" + nm + " rawExtra=" + rawExtra.ToString("F4") + " shown=+" + Mathf.Round(rawExtra * 100f) + " rawMain=" + rawMain.ToString("F4"));
+                            PluginLogger.Debug("[ExtraVal] mate=" + nm + " rawExtra=" + rawExtra.ToString("F4") + " shown=+" + Mathf.Round(rawExtra * 100f) + "/" + cap + " rawMain=" + rawMain.ToString("F4"));
                         }
                         catch { }
                     }
