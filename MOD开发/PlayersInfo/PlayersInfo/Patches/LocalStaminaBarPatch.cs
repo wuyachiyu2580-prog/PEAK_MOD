@@ -96,11 +96,11 @@ namespace PlayersInfo.Patches
                 if (_extraValueText != null)
                 {
                     bool extraActive = __instance.extraBar != null && __instance.extraBar.gameObject.activeSelf;
-                    if (refreshValues && showValue && displayCharacter != null && !displayDead && extraActive && __instance.extraBarStamina != null)
+                    if (refreshValues && showValue && displayCharacter != null && !displayDead && extraActive && __instance.extraBar != null)
                     {
                         float extraCap01 = ExtraStaminaValueHelper.GetCap01(displayCharacter);
                         UpdateExtraValueText(_extraValueText, extraStam01 * 100f, extraCap01 * 100f,
-                            __instance.extraBarStamina.sizeDelta.x);
+                            __instance.extraBar.sizeDelta.x);
                     }
                     else if (!showValue || displayCharacter == null || displayDead || !extraActive)
                         SetActive(_extraValueText, false);
@@ -188,8 +188,10 @@ namespace PlayersInfo.Patches
                 if (bar.staminaBar != null && _staminaValueText == null)
                     _staminaValueText = AddStretchText(bar.staminaBar.gameObject, "PI_LocalStaminaValue", 20f, false);
 
-                if (bar.extraBarStamina != null && _extraValueText == null)
-                    _extraValueText = AddStretchText(bar.extraBarStamina.gameObject, "PI_LocalExtraStaminaValue", 20f, false);
+                // 挂在外层 extraBar，避免原版在当前额外体力为 0 时隐藏 extraBarStamina，
+                // 导致 0/上限无法显示。extraBar 本身在石化或有额外体力上限时仍保持激活。
+                if (bar.extraBar != null && _extraValueText == null)
+                    _extraValueText = AddStretchText(bar.extraBar.gameObject, "PI_LocalExtraStaminaValue", 20f, false);
 
                 if (bar.fullBar != null && _hungerCountdownText == null)
                     _hungerCountdownText = AddFloatingText(bar.fullBar.gameObject, "PI_LocalHungerCountdown", 14f);
@@ -247,7 +249,7 @@ namespace PlayersInfo.Patches
 
             int current = Mathf.Clamp(Mathf.RoundToInt(currentPercent), 0, 100);
             int cap = Mathf.Clamp(Mathf.RoundToInt(capPercent), 0, 100);
-            txt.text = "+" + current.ToString() + "/" + cap.ToString();
+            txt.text = current.ToString() + "/" + cap.ToString();
             SetActive(txt, true);
         }
 

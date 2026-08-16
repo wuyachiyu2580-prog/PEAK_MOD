@@ -358,7 +358,7 @@ namespace WhereIsThing
                 }
             }
 
-            if ((_locationScopes.Value & ThingLocationScope.Luggage) != 0 && _selectedLuggageTypes.Count > 0)
+            if (_selectedLuggageTypes.Count > 0)
             {
                 foreach (Luggage luggage in Luggage.ALL_LUGGAGE.ToList())
                 {
@@ -382,8 +382,8 @@ namespace WhereIsThing
                         {
                             return captured != null && captured.gameObject.activeInHierarchy && !captured.IsOpen &&
                                 _selectedLuggageTypes.Contains(ThingCatalog.GetLuggageType(captured)) &&
-                                (_locationScopes.Value & ThingLocationScope.Luggage) != 0;
-                        });
+                                _selectedLuggageTypes.Count > 0;
+                        }, delegate { return captured.Center(); });
                 }
             }
 
@@ -418,6 +418,7 @@ namespace WhereIsThing
                         }
 
                         MushroomZombie captured = zombie;
+                        Character zombieCharacter = captured.GetComponent<Character>();
                         AddSceneLabel(seen, ThingSceneTargetType.MushroomZombie, captured,
                             delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.MushroomZombie, _nameLanguage.Value); },
                             delegate
@@ -425,6 +426,9 @@ namespace WhereIsThing
                                 return captured != null && captured.gameObject.activeInHierarchy &&
                                     captured.currentState != MushroomZombie.State.Dead &&
                                     _selectedSceneTargetTypes.Contains(ThingSceneTargetType.MushroomZombie);
+                            }, delegate
+                            {
+                                return zombieCharacter != null ? zombieCharacter.Center : captured.transform.position;
                             });
                     }
                 }
@@ -609,7 +613,7 @@ namespace WhereIsThing
         }
 
         private void AddSceneLabel(HashSet<string> seen, ThingSceneTargetType sceneTargetType, Component target,
-            Func<string> titleProvider, Func<bool> isValid)
+            Func<string> titleProvider, Func<bool> isValid, Func<Vector3> positionProvider = null)
         {
             if (target == null || target.gameObject == null)
             {
@@ -618,17 +622,24 @@ namespace WhereIsThing
 
             string key = "scene:" + sceneTargetType + ":" + target.GetInstanceID();
             seen.Add(key);
-            AddLabel(key, target.transform, titleProvider, isValid);
+            AddLabel(key, target.transform, titleProvider, isValid, positionProvider);
         }
 
         private void AddLabel(string key, Transform target, Func<string> titleProvider, Func<bool> isValid)
+        {
+            AddLabel(key, target, titleProvider, isValid, null);
+        }
+
+        private void AddLabel(string key, Transform target, Func<string> titleProvider, Func<bool> isValid,
+            Func<Vector3> positionProvider)
         {
             if (_labels.ContainsKey(key))
             {
                 return;
             }
 
-            _labels.Add(key, new ThingLabel(key, _canvas.transform, target, titleProvider, isValid, _font, _fontSize.Value));
+            _labels.Add(key, new ThingLabel(key, _canvas.transform, target, titleProvider, isValid,
+                positionProvider, _font, _fontSize.Value));
         }
 
         private void ApplyWindowChanges(HashSet<ushort> selection, HashSet<ThingLuggageType> selectedLuggageTypes,
@@ -642,6 +653,11 @@ namespace WhereIsThing
             _selectedSceneTargetTypes.UnionWith(selectedSceneTargetTypes ?? new HashSet<ThingSceneTargetType>());
             _selectedLuggage.Value = _selectedLuggageTypes.Count > 0;
             _nameLanguage.Value = language;
+            scopes &= ~ThingLocationScope.Luggage;
+            if (_selectedLuggageTypes.Count > 0)
+            {
+                scopes |= ThingLocationScope.Luggage;
+            }
             _locationScopes.Value = scopes;
             _selectedItemIds.Value = string.Join(",", _selectedIds.OrderBy(id => id).Select(id => id.ToString()).ToArray());
             _selectedLuggageTypesConfig.Value = SerializeLuggageTypes(_selectedLuggageTypes);
@@ -723,6 +739,14 @@ namespace WhereIsThing
                 }
                 _selectedLuggageTypesConfig.Value = SerializeLuggageTypes(_selectedLuggageTypes);
             }
+
+            // Keep old configs readable, while deriving luggage scanning from the selected types.
+            ThingLocationScope scopes = _locationScopes.Value & ~ThingLocationScope.Luggage;
+            if (_selectedLuggageTypes.Count > 0)
+            {
+                scopes |= ThingLocationScope.Luggage;
+            }
+            _locationScopes.Value = scopes;
 
             _selectedSceneTargetTypes.Clear();
             foreach (string value in (_selectedSceneTargetTypesConfig.Value ?? string.Empty).Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))

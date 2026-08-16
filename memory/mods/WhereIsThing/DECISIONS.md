@@ -17,7 +17,7 @@
 - `ScanMode=Persistent` 保持标签；`ScanMode=Timed` 使用 `DisplayDurationSeconds` 自动隐藏。
 - 选择窗口先编辑工作副本，点击 `Apply` 才写回选择 ID 和语言配置；取消或 Escape 放弃本次窗口修改。
 - 标签只读显示，不改变物品、背包、网络状态或生成逻辑。
-- 位置范围通过 `ThingLocationScope` 控制：`Ground`、`Held`、`Backpack`、`Luggage`；默认启用地面、背包和未打开行李箱，手持可在窗口中开启。
+- 位置范围窗口只提供 `Ground`、`Held`、`Backpack` 三个复选框；`ThingLocationScope.Luggage` 保留用于旧配置兼容，但扫描是否包含行李箱完全由 `SelectedLuggageTypes` 是否为空自动决定。至少选择一种行李箱类型时自动加入该范围，全部取消时自动清除。
 
 ## UI
 
@@ -26,6 +26,7 @@
 - 打开窗口时保存 `Cursor.visible`/`Cursor.lockState`，窗口存续期间持续显示并解锁鼠标，关闭时恢复保存值。
 - 所有 TMP 文本都必须显式指派游戏字体；优先 `AscentUI.text.font`，再按通用字体规范兜底。
 - 类别是筛选辅助，不是游戏正式分类。能用游戏 `ItemTags` 时优先使用，名称关键词只作为补充，未命中的物品仍归入“其他”。
+- 分类补充规则：`Peak.EarlyWorm` 组件优先归入生物；食物/可食用素材、医疗、武器、玩具与运动使用精确名称关键词；Checkpoint Flag、Conch、Magic Bean、Megaphone、Portable Stove、Stick、Stone 使用“生存工具”类别；AK 使用完整名称判断，避免命中 Snake 中的 `ak` 子串。
 
 ## 禁止回退
 
@@ -53,7 +54,7 @@
 - 保留 BepInEx 原始 section/key 和枚举值，避免现有配置失效；只通过 Harmony 和 ModConfig UI 文本替换修改玩家看到的名称。
 - ModConfig `GetDisplayName` 后缀必须按配置文件名限制为 WhereIsThing，不能改写其他 MOD 的配置项名称。
 - `ThingScanMode`、`ThingNameLanguage` 使用枚举配置，由 ModConfig 自动提供下拉菜单；中文只替换下拉显示文本，不改变序列化值。
-- `ThingLocationScope` 是 `[Flags]` 多选值，不改成普通下拉菜单；正式入口仍是选择窗口中的四个复选框。
+- `ThingLocationScope` 是 `[Flags]` 多选值，不改成普通下拉菜单；正式入口是选择窗口中的 Ground、Held、Backpack 三个复选框，Luggage 由行李箱类型自动维护。
 - 游戏语言变化时重新写入 `ConfigDescription` 并刷新 ModConfig 缓存；ModConfig 未安装或初始化尚未完成时必须静默降级，不影响位置显示主体。
 
 ## 场景目标调研
@@ -68,6 +69,12 @@
 
 - “仅显示已选”是窗口工作态筛选，不写入配置；每次打开窗口默认关闭。
 - 该筛选与类别、搜索取交集；筛选开启时取消勾选的项目应立即消失，点击 Apply 前仍遵守窗口工作副本语义。
+
+## 杂项审计
+
+- 初始审计中的 33 个 `Misc` 显示名组已按用户选择的 B1/B2/B3 方案重新分类；按英文显示名合并后，2.1.a 资源快照的 194 个物品 ID 当前剩余 `Misc` 为 0 组。
+- 变体合并仍然以英文显示名为键，莓蕉皮、王莓和棋子不会因分类变化而重复出现；运行时名称表、标签和实机用途仍需验证。
+- 资源中的 `itemTags` 对部分物品变体并不完整，杂项重分类不能只依据资源快照；最终修改应结合运行时 `ItemDatabase` 对象和实机显示用途验证。
 
 ## 已接入场景目标
 

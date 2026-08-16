@@ -297,7 +297,7 @@ namespace WhereIsThing
                 case "SelectedLuggage": return chinese ? "旧版配置兼容项，请使用选择窗口设置行李箱类型。" : "Legacy compatibility setting. Choose luggage types in the selection window.";
                 case "SelectedLuggageTypes": return chinese ? "由 Alt+C 选择窗口维护的行李箱类型，请勿手动编辑。" : "Luggage types managed by the Alt+C selection window. Do not edit manually.";
                 case "SelectedSceneTargetTypes": return chinese ? "由 Alt+C 选择窗口维护的动态危险和钟塔类型，请勿手动编辑。" : "Scene target types managed by the Alt+C selection window. Do not edit manually.";
-                case "LocationScopes": return chinese ? "目标位置范围。建议在 Alt+C 窗口中使用地面、手持、背包和行李箱复选框修改。" : "Target location scopes. Use the Ground, Held, Backpack, and Luggage checkboxes in the Alt+C window.";
+                case "LocationScopes": return chinese ? "目标位置范围。行李箱是否扫描由 Alt+C 窗口中已选的行李箱类型自动控制。" : "Target location scopes. Luggage scanning is controlled automatically by the luggage types selected in the Alt+C window.";
                 default: return string.Empty;
             }
         }

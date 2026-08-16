@@ -1,5 +1,11 @@
 # PlayersInfo Recent
 
+## 2026-08-16 Local extra-bar layout and value format
+
+- Fixed the local player's extra-stamina bar being placed to the left/right of the main stamina bar. `ConfigureLocalExtraBar()` now anchors the original local `extraBar` below `fullBar`; teammate bar layout is unchanged.
+- Local extra-stamina text now uses `current/cap` without the old `+` prefix. It reads the outer `extraBar` width and is attached to the outer node so `0/cap` can remain visible when the vanilla inner fill is hidden at zero current stamina.
+- Release build passed with 0 warnings / 0 errors. DLL output: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`, version `0.2.1.0`, size `80384`, timestamp `2026-08-16 13:02:56`.
+
 ## 2026-08-16 PlayersInfo 0.2.1 implementation sync
 
 - PlayersInfo source is now version `0.2.1`; the verified profile DLL reports file/product version `0.2.1.0`.

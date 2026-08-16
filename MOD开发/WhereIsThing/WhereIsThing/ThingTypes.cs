@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Zorro.Core;
 
 namespace WhereIsThing
@@ -277,15 +278,19 @@ namespace WhereIsThing
             ThingSceneTargetType.GloomBellTower
         };
 
-        private static readonly string[] MedicineWords = { "bandage", "medkit", "medicine", "medic", "antidote", "cure", "remedy", "gauze", "sunscreen" };
+        private static readonly string[] SpecialWords = { "scoutmaster's soul", "scoutmastersoul" };
+        private static readonly string[] FoodWords = { "airplane food", "berrynana", "coconut", "crispberry", "fungus", "kingberry", "mandrake", "marshmallow", "hot dog" };
+        private static readonly string[] MedicineWords = { "aloe vera", "first aid kit", "bandage", "medkit", "medicine", "medic", "antidote", "cure", "remedy", "gauze", "sunscreen" };
         private static readonly string[] ClimbingWords = { "rope", "piton", "climbing", "grip", "spike", "hook", "grapple" };
         private static readonly string[] MobilityWords = { "parachute", "parasol", "glider", "rocketpack", "jetpack", "balloon", "spring" };
         private static readonly string[] LightWords = { "lantern", "torch", "candle", "flare", "flashlight" };
         private static readonly string[] NavigationWords = { "compass", "binocular", "bugle", "guidebook", "passport", "map" };
-        private static readonly string[] CombatWords = { "dagger", "dart", "cannon", "dynamite", "gun", "weapon", "sword", "bomb", "spear", "blowgun" };
+        private static readonly string[] CombatWords = { "chain launcher", "chainshooter", "dagger", "dart", "cannon", "dynamite", "gun", "weapon", "sword", "bomb", "spear", "blowgun" };
         private static readonly string[] ContainerWords = { "backpack", "back pack", "bag", "pack", "luggage", "chest", "case" };
-        private static readonly string[] CreatureWords = { "bird", "beetle", "scorpion", "spider", "frog", "bug", "egg", "moth", "snake" };
-        private static readonly string[] ToyWords = { "basketball", "ball", "toy", "bingbong", "boombox", "record" };
+        private static readonly string[] CreatureWords = { "beehive", "bird", "beetle", "scorpion", "spider", "frog", "bug", "egg", "moth", "snake" };
+        private static readonly string[] SurvivalToolWords = { "checkpoint flag", "conch", "magic bean", "megaphone", "portable stove", "firewood", "stick", "stone" };
+        private static readonly string[] ToyWords = { "bishop", "basketball", "ball", "frisbee", "king", "knight", "pawn", "queen", "rook", "toy", "bingbong", "boombox", "record" };
+        private static readonly MethodInfo GetSpawnPoolMethod = typeof(Spawner).GetMethod("GetSpawnPool", BindingFlags.Instance | BindingFlags.NonPublic);
 
         public static List<ThingTargetDefinition> Load()
         {
@@ -498,11 +503,19 @@ namespace WhereIsThing
             {
                 return ThingLuggageType.RespawnChest;
             }
-            if (luggage is LuggageCursed || luggage.spawnPool.HasFlag(SpawnPool.LuggageCursed))
+
+            string objectName = luggage.gameObject == null ? string.Empty : luggage.gameObject.name.ToLowerInvariant();
+            if (luggage is LuggageCursed || objectName.Contains("cursed"))
             {
                 return ThingLuggageType.Cursed;
             }
-            if (luggage.gameObject.CompareTag("ClownLuggage") || luggage.spawnPool.HasFlag(SpawnPool.LuggageClown))
+            if (objectName.Contains("ancient"))
+            {
+                return ThingLuggageType.Ancient;
+            }
+
+            SpawnPool effectiveSpawnPool = GetEffectiveLuggageSpawnPool(luggage);
+            if (luggage.gameObject.CompareTag("ClownLuggage") || objectName.Contains("clown") || effectiveSpawnPool.HasFlag(SpawnPool.LuggageClown))
             {
                 return ThingLuggageType.Clown;
             }
@@ -535,12 +548,33 @@ namespace WhereIsThing
             };
             for (int i = 0; i < pools.Length; i++)
             {
-                if (luggage.spawnPool.HasFlag(pools[i]))
+                if (effectiveSpawnPool.HasFlag(pools[i]))
                 {
                     return orderedTypes[i];
                 }
             }
             return ThingLuggageType.Other;
+        }
+
+        private static SpawnPool GetEffectiveLuggageSpawnPool(Luggage luggage)
+        {
+            if (GetSpawnPoolMethod != null)
+            {
+                try
+                {
+                    object value = GetSpawnPoolMethod.Invoke(luggage, null);
+                    if (value is SpawnPool)
+                    {
+                        return (SpawnPool)value;
+                    }
+                }
+                catch
+                {
+                    // Fall back to the serialized pool if the game changes this method.
+                }
+            }
+
+            return luggage.spawnPool;
         }
 
         public static string GetLuggageDisplayName(ThingNameLanguage language)
@@ -641,20 +675,29 @@ namespace WhereIsThing
             {
                 return "Mystical";
             }
+
+            if (item.GetComponent<Peak.EarlyWorm>() != null || ContainsAny(item.gameObject.name.ToLowerInvariant(), new[] { "earlyworm" }))
+            {
+                return "Creatures";
+            }
+
             if ((tags & (Item.ItemTags.PackagedFood | Item.ItemTags.Berry | Item.ItemTags.Mushroom | Item.ItemTags.GourmandRequirement)) != 0)
             {
                 return "Food";
             }
 
             string name = (item.gameObject.name + " " + item.UIData.itemName + " " + GetDisplayName(item, ThingNameLanguage.English)).ToLowerInvariant();
+            if (ContainsAny(name, SpecialWords)) return "Special";
+            if (ContainsAny(name, FoodWords)) return "Food";
             if (ContainsAny(name, MedicineWords)) return "Medicine";
             if (ContainsAny(name, ContainerWords)) return "Containers";
             if (ContainsAny(name, ClimbingWords)) return "Climbing Gear";
             if (ContainsAny(name, MobilityWords)) return "Mobility";
             if (ContainsAny(name, LightWords)) return "Lighting";
             if (ContainsAny(name, NavigationWords)) return "Navigation";
-            if (ContainsAny(name, CombatWords)) return "Weapons and Explosives";
+            if (IsNamed(item, "AK") || ContainsAny(name, CombatWords)) return "Weapons and Explosives";
             if ((tags & Item.ItemTags.Bird) != 0 || ContainsAny(name, CreatureWords)) return "Creatures";
+            if (ContainsAny(name, SurvivalToolWords)) return "Survival Tools";
             if (ContainsAny(name, ToyWords)) return "Toys and Sports";
             return "Misc";
         }
@@ -672,6 +715,7 @@ namespace WhereIsThing
                 case "Food": return "食物";
                 case "Medicine": return "医疗与状态";
                 case "Containers": return "容器与背包";
+                case "Survival Tools": return "生存工具";
                 case "Climbing Gear": return "攀爬装备";
                 case "Mobility": return "移动装备";
                 case "Lighting": return "照明";
@@ -718,26 +762,34 @@ namespace WhereIsThing
                 case "Food": return 2;
                 case "Medicine": return 3;
                 case "Containers": return 4;
-                case "Luggage": return 5;
-                case "Hostile Creatures": return 6;
-                case "Natural Hazards": return 7;
-                case "Mechanical Traps": return 8;
-                case "Hazards": return 9;
-                case "Landmarks": return 10;
-                case "Climbing Gear": return 11;
-                case "Mobility": return 12;
-                case "Lighting": return 13;
-                case "Navigation": return 14;
-                case "Weapons and Explosives": return 15;
-                case "Creatures": return 16;
-                case "Toys and Sports": return 17;
-                default: return 18;
+                case "Survival Tools": return 5;
+                case "Luggage": return 6;
+                case "Hostile Creatures": return 7;
+                case "Natural Hazards": return 8;
+                case "Mechanical Traps": return 9;
+                case "Hazards": return 10;
+                case "Landmarks": return 11;
+                case "Climbing Gear": return 12;
+                case "Mobility": return 13;
+                case "Lighting": return 14;
+                case "Navigation": return 15;
+                case "Weapons and Explosives": return 16;
+                case "Creatures": return 17;
+                case "Toys and Sports": return 18;
+                default: return 19;
             }
         }
 
         private static bool ContainsAny(string value, IEnumerable<string> words)
         {
             return words.Any(value.Contains);
+        }
+
+        private static bool IsNamed(Item item, string expectedName)
+        {
+            return string.Equals(item.gameObject.name, expectedName, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(item.UIData.itemName, expectedName, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(GetDisplayName(item, ThingNameLanguage.English), expectedName, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

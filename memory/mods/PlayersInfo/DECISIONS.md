@@ -39,6 +39,7 @@ Last updated: 2026-08-16
 - Teammate inventory display is an ordered enum: `Disabled` (do not show the row), `ContentsOnly` (show actual backpack contents), and `ContentsAndJetpackFuel` (also show jetpack fuel). The old boolean config key is intentionally reused: `true` migrates to `ContentsOnly`, `false` to `Disabled`, and unrelated config entries are untouched.
 - Backpack inner-slot count comes from the backpack visual/type, with explicit support for no contents, two-slot fanny packs, and four-slot normal backpacks. The data model may still contain four serialized item slots; unused capacity must remain hidden.
 - Durability is rendered as a bottom horizontal progress bar, with the icon above it; cooked-food icon color follows `ItemCooking.GetCookColor()`. Dynamic text placement uses TMP preferred width to avoid overlapping stamina, names, and countdowns.
+- The local player's extra-stamina bar is intentionally anchored below the local main stamina bar. The teammate extra-stamina value remains on its existing HUD-safe side layout. Local extra-stamina text is `current/cap` without `+`, and an active extra-bar state may show `0/cap` when current extra stamina is empty.
 
 ## Diagnostics
 

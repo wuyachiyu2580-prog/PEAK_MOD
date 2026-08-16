@@ -8,6 +8,7 @@ Last updated: 2026-08-16
 - [ ] In PEAK 2.1.a, verify extra-stamina text shows current/cap correctly, for example `+45/70` at 30% petrify.
 - [ ] In PEAK 2.1.a, verify local petrify percentage follows the in-game petrify bar.
 - [ ] In PEAK 2.1.a, verify the local extra-stamina bar stays beside the local stamina bar when extra stamina appears/disappears and when the HUD anchor changes.
+- [ ] In PEAK 2.1.a, verify the local extra-stamina bar is below the main bar for all HUD anchors, the teammate side layout is unchanged, and local values show `current/cap` including `0/cap`.
 - [ ] In PEAK 2.1.a, verify local and teammate numeric overlays disappear cleanly on death and reappear without overlap after revival.
 - [ ] In PEAK 2.1.a, verify teammate petrify percentage and extra stamina display when petrify reduces the available extra-stamina cap.
 - [ ] In PEAK 2.1.a, verify teammate main slots, temporary slot, backpack type, actual backpack capacity (none/two/four), and contents update after inventory changes.

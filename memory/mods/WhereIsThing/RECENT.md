@@ -41,7 +41,7 @@
 
 - 新增仅作用于 `com.wuyachiyu.WhereIsThing.cfg` 的 ModConfig 本地化补丁，分组、配置项名称、说明和枚举选项会跟随游戏中英文切换。
 - `ScanMode` 和 `NameLanguage` 保持 ModConfig 枚举下拉菜单，并分别显示“常驻/定时”和“跟随游戏/English/简体中文”。
-- `LocationScopes` 是可组合的标志值，主要通过 `Alt+C` 窗口里的地面、手持、背包、行李箱复选框修改；ModConfig 说明中明确这一点。
+- `LocationScopes` 是可组合的标志值，主要通过 `Alt+C` 窗口里的地面、手持、背包复选框修改；行李箱位由已选行李箱类型自动维护，ModConfig 说明中明确这一点。
 - 选择 ID、旧行李箱布尔值和行李箱类型字符串标明为窗口维护/兼容配置，避免用户误以为需要手填。
 - 监听 `LocalizedText.OnLangugageChanged` 更新说明并刷新 ModConfig 缓存；Release 构建通过 `0 warnings / 0 errors`，DLL 已覆盖到 r2modman `2.0.a` profile。
 
@@ -77,6 +77,24 @@
 - 联合条目勾选/取消时同步更新 itemID 和 `ThingSceneTargetType`；旧配置中任一侧已选都会在目录加载时补齐另一侧并持久化。
 - 地面 `MobItem` 在对应场景目标已选时跳过普通物品标签，由 `MobManager` 统一显示；手持和背包形态仍走原物品范围逻辑，解决同一只蝎子叠加两层文字的问题。
 - Release 构建通过：`0 warnings / 0 errors`，DLL 已覆盖到 r2modman `2.0.a` profile。
+
+## 2026-08-16 行李箱范围自动化与杂项审计
+
+- 移除选择窗口中的“Luggage / 行李箱”范围复选框，保留 Ground、Held、Backpack 三项手动范围。
+- 行李箱扫描入口和标签有效性不再读取手动 `LocationScopes.Luggage` 位；只要 `SelectedLuggageTypes` 非空就扫描，全部取消后自动停止。
+- 应用窗口配置和加载旧配置时都会自动同步 `LocationScopes.Luggage` 位；该枚举值及旧 `SelectedLuggage` 配置仍保留，避免旧配置失效，但不再作为新的手动入口。
+- ModConfig 的 `LocationScopes` 中英文说明已改为提示：行李箱范围由已选行李箱类型自动控制。
+- 使用 UnityPy 读取 2.1.a `resources.assets` 和 `SerializedTermsData`，发现当前目录按英文显示名合并后有 33 个 `Misc` 组（194 个物品 ID）；已将完整清单和建议写入 `README.md`，当前未未经用户确认直接重分类。
+- Release 构建通过：`0 warnings / 0 errors`；DLL `76800` 字节，已覆盖 `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\WhereIsThing.dll`。
+
+## 2026-08-16 A1+A2+B1+B2+B3
+
+- 森蕈僵尸标签不再使用僵尸根节点位置，改为通过同一 GameObject 上的 `Character.Center` 提供躯干坐标。
+- 普通行李箱标签改用 `Luggage.Center()` 的 bounds 中心；行李箱分类通过反射调用游戏 `Spawner.GetSpawnPool()`，正确处理 `LuggageBig`/`LuggageSmall` 的高度池，而不是直接读取始终为 `None` 的序列化 `spawnPool`。
+- 行李箱额外按 prefab 名称识别 Ancient、Cursed、Clown，保留 RespawnChest 类型判断；无法识别的运行时对象仍归入 Other，避免漏标。
+- 分类新增“生存工具”，并完成 B1/B2/B3：早起虫儿、生物蜂巢、医疗、武器、棋类/运动、食物/菌类和生存工具均脱离 Misc；AK 使用完整名称判断，避免与 Snake 的字串重叠。
+- 2.1.a 资源级回归：194 个物品 ID，分类后 `Misc=0`，同名变体仍保持合并。
+- Release 构建通过：`0 warnings / 0 errors`；DLL 已覆盖到 `2.0.a` profile。
 
 ## 尚未完成
 

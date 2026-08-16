@@ -94,7 +94,6 @@ namespace WhereIsThing
             CreateScopeToggle(panel.transform, "Ground / 地面", ThingLocationScope.Ground, 32f);
             CreateScopeToggle(panel.transform, "Held / 手持", ThingLocationScope.Held, 224f);
             CreateScopeToggle(panel.transform, "Backpack / 背包", ThingLocationScope.Backpack, 416f);
-            CreateScopeToggle(panel.transform, "Luggage / 行李箱", ThingLocationScope.Luggage, 608f);
 
             GameObject viewportObject = CreateRect("Viewport", panel.transform);
             _viewport = viewportObject.GetComponent<RectTransform>();
@@ -162,7 +161,12 @@ namespace WhereIsThing
             _workingLuggageTypes = new HashSet<ThingLuggageType>(selectedLuggageTypes ?? Enumerable.Empty<ThingLuggageType>());
             _workingSceneTargetTypes = new HashSet<ThingSceneTargetType>(selectedSceneTargetTypes ?? Enumerable.Empty<ThingSceneTargetType>());
             _workingLanguage = language;
-            _workingScopes = scopes;
+            // Luggage is controlled by the selected luggage types, not by a separate scope toggle.
+            _workingScopes = scopes & ~ThingLocationScope.Luggage;
+            if (_workingLuggageTypes.Count > 0)
+            {
+                _workingScopes |= ThingLocationScope.Luggage;
+            }
             _workingCategory = "All";
             _selectedOnly = false;
             _searchInput.text = string.Empty;

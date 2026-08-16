@@ -10,6 +10,7 @@ namespace WhereIsThing
     {
         private readonly string _key;
         private readonly Transform _target;
+        private readonly Func<Vector3> _positionProvider;
         private readonly Func<bool> _isValid;
         private readonly Func<string> _titleProvider;
         private readonly GameObject _root;
@@ -20,9 +21,16 @@ namespace WhereIsThing
         private readonly float _fontSize;
 
         public ThingLabel(string key, Transform canvas, Transform target, Func<string> titleProvider, Func<bool> isValid, TMP_FontAsset font, float fontSize)
+            : this(key, canvas, target, titleProvider, isValid, null, font, fontSize)
+        {
+        }
+
+        public ThingLabel(string key, Transform canvas, Transform target, Func<string> titleProvider, Func<bool> isValid,
+            Func<Vector3> positionProvider, TMP_FontAsset font, float fontSize)
         {
             _key = key;
             _target = target;
+            _positionProvider = positionProvider;
             _titleProvider = titleProvider;
             _isValid = isValid;
             _fontSize = fontSize;
@@ -71,9 +79,10 @@ namespace WhereIsThing
                 return;
             }
 
-            Vector3 worldPosition = _target.position + Vector3.up * 0.8f;
+            Vector3 targetPosition = _positionProvider == null ? _target.position : _positionProvider();
+            Vector3 worldPosition = targetPosition + Vector3.up * 0.8f;
             Vector3 viewport = camera.WorldToViewportPoint(worldPosition);
-            float distance = Vector3.Distance(camera.transform.position, _target.position);
+            float distance = Vector3.Distance(camera.transform.position, targetPosition);
             bool withinDistance = maxDistance <= 0f || distance <= maxDistance;
             bool inFront = viewport.z > 0f;
             bool onScreen = inFront && viewport.x >= 0f && viewport.x <= 1f && viewport.y >= 0f && viewport.y <= 1f;

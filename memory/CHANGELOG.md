@@ -2,6 +2,7 @@
 
 ## 2026-08-16
 
+- [PlayersInfo] 修复本地额外体力条仍位于主力条左右的问题：本地条固定放到主力条下方，队友条布局保持不变；本地数值去掉 `+`，改为 `当前/上限`，额外条激活但当前为 0 时允许显示 `0/上限`。
 - [PlayersInfo] 同步 0.2.1 最新实现到 memory：稳定 ID 固定绑定队友体力条、统一 `observedCharacter -> localCharacter` 显示目标、独立 `TeammateBarAffliction`、本地饥饿倒计时、队友耐久进度条、熟食图标颜色和 TMP 实际宽度布局。
 - [PlayersInfo] 同步队友背包类型显示：根据实际容量显示无背包/两格滑稽背包/四格普通背包，新增可选喷气背包燃料显示；沿用 `Display.EnableInventoryRow` 配置键，将旧布尔值迁移为 `Disabled` / `ContentsOnly` / `ContentsAndJetpackFuel`，不影响其他配置。
 - [PlayersInfo] 更正并落实 DLL 输出规则：`PlayersInfo.csproj <OutputPath>` 已改为 `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\`，后续 PlayersInfo 编译直接写入 profile，不再输出到测试环境或依赖手动复制。

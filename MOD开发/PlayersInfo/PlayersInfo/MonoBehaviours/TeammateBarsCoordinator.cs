@@ -120,7 +120,7 @@ namespace PlayersInfo.MonoBehaviours
         /// <summary>
         /// PEAK 的本地 extraBar 原本是 BarGroup 的兄弟节点。BarGroup 被 PlayersInfo
         /// 改成可容纳队友条后，VerticalLayoutGroup 会把它排成额外的一行。将它挂到
-        /// 本地 fullBar 上，并按 HUD 锚点放到安全侧，避免额外条跳到布局底部。
+        /// 本地 fullBar 下方，避免它被排到右侧或布局底部。队友条不使用这段布局。
         /// </summary>
         private void ConfigureLocalExtraBar()
         {
@@ -133,21 +133,10 @@ namespace PlayersInfo.MonoBehaviours
                 if (extra.parent != _origBar.fullBar)
                     extra.SetParent(_origBar.fullBar, false);
 
-                bool rightSide = ShouldPlaceExtraTextOnRight();
-                if (rightSide)
-                {
-                    extra.anchorMin = new Vector2(1f, 0.5f);
-                    extra.anchorMax = new Vector2(1f, 0.5f);
-                    extra.pivot = new Vector2(0f, 0.5f);
-                    extra.anchoredPosition = new Vector2(8f, 0f);
-                }
-                else
-                {
-                    extra.anchorMin = new Vector2(0f, 0.5f);
-                    extra.anchorMax = new Vector2(0f, 0.5f);
-                    extra.pivot = new Vector2(1f, 0.5f);
-                    extra.anchoredPosition = new Vector2(-8f, 0f);
-                }
+                extra.anchorMin = new Vector2(0.5f, 0f);
+                extra.anchorMax = new Vector2(0.5f, 0f);
+                extra.pivot = new Vector2(0.5f, 1f);
+                extra.anchoredPosition = new Vector2(0f, -6f);
             }
             catch (Exception ex)
             {
