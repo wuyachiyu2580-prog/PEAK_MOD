@@ -55,3 +55,37 @@
 - `ThingScanMode`、`ThingNameLanguage` 使用枚举配置，由 ModConfig 自动提供下拉菜单；中文只替换下拉显示文本，不改变序列化值。
 - `ThingLocationScope` 是 `[Flags]` 多选值，不改成普通下拉菜单；正式入口仍是选择窗口中的四个复选框。
 - 游戏语言变化时重新写入 `ConfigDescription` 并刷新 ModConfig 缓存；ModConfig 未安装或初始化尚未完成时必须静默降级，不影响位置显示主体。
+
+## 场景目标调研
+
+- 僵尸、甲虫、风滚草、GhostBall 和 GhostFire 钟塔都不是普通 `Item`，后续必须新增独立场景目标定义，不能分配虚构 itemID 或塞进 `ItemDatabase`。
+- 优先使用原版稳定注册表：僵尸用 `ZombieManager.zombies`，甲虫用 `MobManager.mobs`，GhostBall 用 `GhostBallSpawner.currentGhostBall`，钟塔用 `GloomSafeZone.ALL_GLOOM_SAFE_ZONES.OfType<GhostFire>()`。
+- 风滚草没有原版全局列表，允许复用标签刷新周期执行 `FindObjectsByType<TumbleWeed>`；不要每帧全场景扫描。
+- 钟塔以 `GhostFire` 组件识别，不依赖 `ClockTower` 对象名。后续可显示全部五座，并在标签中附加已点亮/未点亮状态；是否默认只显示未点亮塔由实机体验决定。
+- 动态目标标签必须跟随各自真实 Transform，并以死亡、销毁、禁用或管理器移除作为失效条件；不改变 Photon 所有权、AI、生成和建筑交互状态。
+
+## 选择整理
+
+- “仅显示已选”是窗口工作态筛选，不写入配置；每次打开窗口默认关闭。
+- 该筛选与类别、搜索取交集；筛选开启时取消勾选的项目应立即消失，点击 Apply 前仍遵守窗口工作副本语义。
+
+## 已接入场景目标
+
+- 场景目标配置键为 `SelectedSceneTargetTypes`，按 `ThingSceneTargetType` 枚举名保存；默认不自动选择，用户需在“危险”或“地标”窗口分类中勾选。
+- 僵尸、甲虫和 GhostBall 使用原版管理器引用，避免全场景扫描；风滚草是唯一没有管理器的类型，限定为现有 0.5 秒刷新周期扫描。
+- GhostFire 是雾沼钟塔的正式标记对象；标签锚定 GhostFire Transform，标题优先使用 `GhostFire.GetName()`，并额外显示亮灭状态。
+- 场景目标不受物品的 Ground/Held/Backpack/Luggage 范围限制，因为它们始终是场景对象；取消其类型选择后，现有标签在下一次刷新立即移除。
+
+## 第一批危险目标
+
+- 场景目标按玩家面对的威胁形式分类：会追击或攻击的实体归“危险生物”，固定或自然形成的威胁归“自然危险”，明确的机械装置归“机关陷阱”；钟塔继续单列为地标。
+- 蝎子与甲虫都继承 `Mob`，因此共用 `MobManager.mobs` 一次遍历；蜘蛛、蜂群、Scoutmaster 和各类自然/机关组件使用受用户选择门控的 `FindObjectsByType<T>`，不改变游戏 AI、机关或 Photon 状态。
+- 用户明确排除青蛙舌，即使它在原版属于危险项，也不建立 `ThingSceneTargetType`、窗口条目或扫描分支。
+- 全局天气/状态类危险没有单一可标记位置；高密度静态地形会造成标签刷屏；仙人掌球、炸药、曼德拉草和蜂巢可走普通物品追踪。因此以上目标不纳入本批场景危险。
+
+## 物品与场景目标合并
+
+- 同一概念同时存在普通 `Item` 和场景实体时，选择窗口只保留一个联合条目；当前按英文游戏显示名的标准化键匹配，不为蝎子、甲虫等对象显示两份同名入口。
+- 联合条目使用场景行为分类，例如蝎子归“危险生物”，勾选一次同时维护组内全部 itemID 和对应 `ThingSceneTargetType`；取消时也同时清除两侧选择。
+- 旧配置若只选择了 itemID 或场景目标枚举，目录加载时自动扩展为联合选择并写回两份配置，避免升级后只追踪一种形态。
+- `MobItem` 落地时由场景实体扫描负责标签，普通 Item 扫描跳过同一对象，避免一只蝎子叠两层标签；手持或进入背包后改回物品扫描，并继续受 Held/Backpack 范围开关控制。

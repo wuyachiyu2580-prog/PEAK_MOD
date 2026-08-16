@@ -31,7 +31,8 @@ namespace WhereIsThing
     internal enum ThingTargetKind
     {
         ItemGroup,
-        Luggage
+        Luggage,
+        SceneTarget
     }
 
     internal enum ThingLuggageType
@@ -52,11 +53,34 @@ namespace WhereIsThing
         Other
     }
 
+    internal enum ThingSceneTargetType
+    {
+        MushroomZombie,
+        Beetle,
+        Scorpion,
+        Spider,
+        BeeSwarm,
+        Scoutmaster,
+        TumbleWeed,
+        GhostBall,
+        SpikeTrap,
+        Antlion,
+        VenusFlyTrap,
+        Tornado,
+        NapberryHypnoOrb,
+        ArrowShooter,
+        MovingSawBlade,
+        SpikeRoller,
+        SwingingAxe,
+        GloomBellTower
+    }
+
     internal sealed class ThingTargetDefinition
     {
         private readonly List<Item> _prefabs;
         private readonly List<ushort> _itemIds;
         private readonly ThingLuggageType _luggageType;
+        private readonly ThingSceneTargetType _sceneTargetType;
 
         public ThingTargetDefinition(IEnumerable<Item> prefabs)
         {
@@ -79,24 +103,63 @@ namespace WhereIsThing
             Category = "Luggage";
         }
 
+        private ThingTargetDefinition(ThingSceneTargetType sceneTargetType, IEnumerable<Item> prefabs)
+        {
+            _prefabs = (prefabs ?? Enumerable.Empty<Item>())
+                .Where(item => item != null && item.gameObject != null && item.UIData != null)
+                .GroupBy(item => item.itemID)
+                .Select(group => group.First())
+                .ToList();
+            _itemIds = _prefabs.Select(item => item.itemID).ToList();
+            _sceneTargetType = sceneTargetType;
+            Kind = ThingTargetKind.SceneTarget;
+            Category = ThingCatalog.GetSceneTargetCategory(sceneTargetType);
+        }
+
         public static ThingTargetDefinition CreateLuggage(ThingLuggageType luggageType)
         {
             return new ThingTargetDefinition(luggageType);
         }
 
+        public static ThingTargetDefinition CreateSceneTarget(ThingSceneTargetType sceneTargetType)
+        {
+            return new ThingTargetDefinition(sceneTargetType, null);
+        }
+
+        public static ThingTargetDefinition CreateSceneTarget(ThingSceneTargetType sceneTargetType, IEnumerable<Item> prefabs)
+        {
+            return new ThingTargetDefinition(sceneTargetType, prefabs);
+        }
+
         public ThingTargetKind Kind { get; private set; }
         public bool IsLuggage { get { return Kind == ThingTargetKind.Luggage; } }
+        public bool IsSceneTarget { get { return Kind == ThingTargetKind.SceneTarget; } }
         public Item Prefab { get { return _prefabs.FirstOrDefault(); } }
         public ushort ItemId { get { return _itemIds.Count == 0 ? ushort.MaxValue : _itemIds[0]; } }
         public IReadOnlyList<ushort> ItemIds { get { return _itemIds; } }
+        public IReadOnlyList<Item> Prefabs { get { return _prefabs; } }
         public ThingLuggageType LuggageType { get { return _luggageType; } }
-        public string PrefabName { get { return IsLuggage ? _luggageType.ToString() : string.Join(" / ", _prefabs.Select(item => item.gameObject.name).Distinct().ToArray()); } }
+        public ThingSceneTargetType SceneTargetType { get { return _sceneTargetType; } }
+        public string PrefabName
+        {
+            get
+            {
+                if (IsLuggage) return _luggageType.ToString();
+                if (IsSceneTarget)
+                {
+                    return _sceneTargetType + " " + string.Join(" / ", _prefabs.Select(item => item.gameObject.name).Distinct().ToArray());
+                }
+                return string.Join(" / ", _prefabs.Select(item => item.gameObject.name).Distinct().ToArray());
+            }
+        }
         public string Category { get; private set; }
         public int VariantCount { get { return _itemIds.Count; } }
 
         public string GetDisplayName(ThingNameLanguage language)
         {
-            return IsLuggage ? ThingCatalog.GetLuggageDisplayName(_luggageType, language) : ThingCatalog.GetDisplayName(Prefab, language);
+            if (IsLuggage) return ThingCatalog.GetLuggageDisplayName(_luggageType, language);
+            if (IsSceneTarget) return ThingCatalog.GetSceneTargetDisplayName(_sceneTargetType, language);
+            return ThingCatalog.GetDisplayName(Prefab, language);
         }
 
         public string GetSearchText(ThingNameLanguage language)
@@ -116,16 +179,22 @@ namespace WhereIsThing
                 : string.Format(" ({0} 个变体)", VariantCount);
         }
 
-        public bool IsSelected(HashSet<ushort> selectedIds, HashSet<ThingLuggageType> selectedLuggageTypes)
+        public bool IsSelected(HashSet<ushort> selectedIds, HashSet<ThingLuggageType> selectedLuggageTypes,
+            HashSet<ThingSceneTargetType> selectedSceneTargetTypes)
         {
             if (IsLuggage)
             {
                 return selectedLuggageTypes.Contains(_luggageType);
             }
+            if (IsSceneTarget)
+            {
+                return selectedSceneTargetTypes.Contains(_sceneTargetType) || _itemIds.Any(selectedIds.Contains);
+            }
             return _itemIds.Any(selectedIds.Contains);
         }
 
-        public void SetSelected(HashSet<ushort> selectedIds, HashSet<ThingLuggageType> selectedLuggageTypes, bool selected)
+        public void SetSelected(HashSet<ushort> selectedIds, HashSet<ThingLuggageType> selectedLuggageTypes,
+            HashSet<ThingSceneTargetType> selectedSceneTargetTypes, bool selected)
         {
             if (IsLuggage)
             {
@@ -138,6 +207,18 @@ namespace WhereIsThing
                     selectedLuggageTypes.Remove(_luggageType);
                 }
                 return;
+            }
+
+            if (IsSceneTarget)
+            {
+                if (selected)
+                {
+                    selectedSceneTargetTypes.Add(_sceneTargetType);
+                }
+                else
+                {
+                    selectedSceneTargetTypes.Remove(_sceneTargetType);
+                }
             }
 
             foreach (ushort itemId in _itemIds)
@@ -174,6 +255,28 @@ namespace WhereIsThing
             ThingLuggageType.Other
         };
 
+        private static readonly ThingSceneTargetType[] SceneTargetTypes =
+        {
+            ThingSceneTargetType.MushroomZombie,
+            ThingSceneTargetType.Beetle,
+            ThingSceneTargetType.Scorpion,
+            ThingSceneTargetType.Spider,
+            ThingSceneTargetType.BeeSwarm,
+            ThingSceneTargetType.Scoutmaster,
+            ThingSceneTargetType.TumbleWeed,
+            ThingSceneTargetType.GhostBall,
+            ThingSceneTargetType.SpikeTrap,
+            ThingSceneTargetType.Antlion,
+            ThingSceneTargetType.VenusFlyTrap,
+            ThingSceneTargetType.Tornado,
+            ThingSceneTargetType.NapberryHypnoOrb,
+            ThingSceneTargetType.ArrowShooter,
+            ThingSceneTargetType.MovingSawBlade,
+            ThingSceneTargetType.SpikeRoller,
+            ThingSceneTargetType.SwingingAxe,
+            ThingSceneTargetType.GloomBellTower
+        };
+
         private static readonly string[] MedicineWords = { "bandage", "medkit", "medicine", "medic", "antidote", "cure", "remedy", "gauze", "sunscreen" };
         private static readonly string[] ClimbingWords = { "rope", "piton", "climbing", "grip", "spike", "hook", "grapple" };
         private static readonly string[] MobilityWords = { "parachute", "parasol", "glider", "rocketpack", "jetpack", "balloon", "spring" };
@@ -202,12 +305,28 @@ namespace WhereIsThing
                 return new List<ThingTargetDefinition>();
             }
 
-            List<ThingTargetDefinition> result = items
+            List<ThingTargetDefinition> itemDefinitions = items
                 .GroupBy(GetMergeKey, StringComparer.OrdinalIgnoreCase)
                 .Select(group => new ThingTargetDefinition(group))
                 .Where(definition => definition.Prefab != null)
                 .ToList();
+            List<ThingTargetDefinition> result = new List<ThingTargetDefinition>(itemDefinitions);
             result.AddRange(LuggageTypes.Select(ThingTargetDefinition.CreateLuggage));
+            foreach (ThingSceneTargetType sceneTargetType in SceneTargetTypes)
+            {
+                string sceneMergeKey = NormalizeMergeKey(GetSceneTargetDisplayName(sceneTargetType, ThingNameLanguage.English));
+                ThingTargetDefinition matchingItem = itemDefinitions.FirstOrDefault(definition =>
+                    string.Equals(GetMergeKey(definition.Prefab), sceneMergeKey, StringComparison.OrdinalIgnoreCase));
+                if (matchingItem != null)
+                {
+                    result.Remove(matchingItem);
+                    result.Add(ThingTargetDefinition.CreateSceneTarget(sceneTargetType, matchingItem.Prefabs));
+                }
+                else
+                {
+                    result.Add(ThingTargetDefinition.CreateSceneTarget(sceneTargetType));
+                }
+            }
 
             return result
                 .OrderBy(item => GetCategoryOrder(item.Category))
@@ -248,7 +367,7 @@ namespace WhereIsThing
 
         public static string GetLuggageDisplayName(ThingLuggageType luggageType, ThingNameLanguage language)
         {
-            if (UseChineseLuggageNames(language))
+            if (UseChineseNames(language))
             {
                 switch (luggageType)
                 {
@@ -286,6 +405,87 @@ namespace WhereIsThing
                 case ThingLuggageType.Clown: return "Clown Luggage";
                 default: return "Other Luggage";
             }
+        }
+
+        public static string GetSceneTargetDisplayName(ThingSceneTargetType sceneTargetType, ThingNameLanguage language)
+        {
+            if (UseChineseNames(language))
+            {
+                switch (sceneTargetType)
+                {
+                    case ThingSceneTargetType.MushroomZombie: return "森蕈僵尸";
+                    case ThingSceneTargetType.Beetle: return "甲虫";
+                    case ThingSceneTargetType.Scorpion: return "蝎子";
+                    case ThingSceneTargetType.Spider: return "蜘蛛";
+                    case ThingSceneTargetType.BeeSwarm: return "蜂群";
+                    case ThingSceneTargetType.Scoutmaster: return "童军领队";
+                    case ThingSceneTargetType.TumbleWeed: return "风滚草";
+                    case ThingSceneTargetType.GhostBall: return "鬼球";
+                    case ThingSceneTargetType.SpikeTrap: return "地刺";
+                    case ThingSceneTargetType.Antlion: return "蚁狮";
+                    case ThingSceneTargetType.VenusFlyTrap: return "捕蝇草";
+                    case ThingSceneTargetType.Tornado: return "龙卷风";
+                    case ThingSceneTargetType.NapberryHypnoOrb: return "催眠浆果幻象球";
+                    case ThingSceneTargetType.ArrowShooter: return "箭矢发射器";
+                    case ThingSceneTargetType.MovingSawBlade: return "移动锯刃";
+                    case ThingSceneTargetType.SpikeRoller: return "滚刺机关";
+                    case ThingSceneTargetType.SwingingAxe: return "摆斧机关";
+                    default: return "雾沼钟塔";
+                }
+            }
+
+            switch (sceneTargetType)
+            {
+                case ThingSceneTargetType.MushroomZombie: return "Mushroom Zombie";
+                case ThingSceneTargetType.Beetle: return "Beetle";
+                case ThingSceneTargetType.Scorpion: return "Scorpion";
+                case ThingSceneTargetType.Spider: return "Spider";
+                case ThingSceneTargetType.BeeSwarm: return "Bee Swarm";
+                case ThingSceneTargetType.Scoutmaster: return "Scoutmaster";
+                case ThingSceneTargetType.TumbleWeed: return "Tumbleweed";
+                case ThingSceneTargetType.GhostBall: return "Ghost Ball";
+                case ThingSceneTargetType.SpikeTrap: return "Spike Trap";
+                case ThingSceneTargetType.Antlion: return "Antlion";
+                case ThingSceneTargetType.VenusFlyTrap: return "Venus Flytrap";
+                case ThingSceneTargetType.Tornado: return "Tornado";
+                case ThingSceneTargetType.NapberryHypnoOrb: return "Napberry Hypno Orb";
+                case ThingSceneTargetType.ArrowShooter: return "Arrow Shooter";
+                case ThingSceneTargetType.MovingSawBlade: return "Moving Sawblade";
+                case ThingSceneTargetType.SpikeRoller: return "Spike Roller";
+                case ThingSceneTargetType.SwingingAxe: return "Swinging Axe";
+                default: return "Gloom Bell Tower";
+            }
+        }
+
+        public static string GetGloomBellTowerLabelName(GhostFire ghostFire, ThingNameLanguage language)
+        {
+            string name = GetSceneTargetDisplayName(ThingSceneTargetType.GloomBellTower, language);
+            try
+            {
+                if (language == ThingNameLanguage.Game)
+                {
+                    string gameName = ghostFire.GetName();
+                    if (!string.IsNullOrEmpty(gameName)) name = gameName;
+                }
+                else
+                {
+                    LocalizedText.Language gameLanguage = language == ThingNameLanguage.English
+                        ? LocalizedText.Language.English
+                        : LocalizedText.Language.SimplifiedChinese;
+                    string localized = LocalizedText.GetText(ghostFire.displayNameIndex, gameLanguage);
+                    if (!string.IsNullOrEmpty(localized) && !localized.StartsWith("LOC: ", StringComparison.OrdinalIgnoreCase))
+                    {
+                        name = localized;
+                    }
+                }
+            }
+            catch
+            {
+                // The GhostFire localization table may not be available during early scene loading.
+            }
+
+            bool chinese = UseChineseNames(language);
+            return name + (ghostFire.isLit ? (chinese ? "\n已点亮" : "\nLit") : (chinese ? "\n未点亮" : "\nUnlit"));
         }
 
         public static ThingLuggageType GetLuggageType(Luggage luggage)
@@ -345,10 +545,10 @@ namespace WhereIsThing
 
         public static string GetLuggageDisplayName(ThingNameLanguage language)
         {
-            return UseChineseLuggageNames(language) ? "行李箱" : "Luggage";
+            return UseChineseNames(language) ? "行李箱" : "Luggage";
         }
 
-        private static bool UseChineseLuggageNames(ThingNameLanguage language)
+        private static bool UseChineseNames(ThingNameLanguage language)
         {
             if (language == ThingNameLanguage.SimplifiedChinese)
             {
@@ -394,6 +594,37 @@ namespace WhereIsThing
             return GetLuggageDisplayName(language);
         }
 
+        public static string GetSceneTargetCategory(ThingSceneTargetType sceneTargetType)
+        {
+            switch (sceneTargetType)
+            {
+                case ThingSceneTargetType.MushroomZombie:
+                case ThingSceneTargetType.Beetle:
+                case ThingSceneTargetType.Scorpion:
+                case ThingSceneTargetType.Spider:
+                case ThingSceneTargetType.BeeSwarm:
+                case ThingSceneTargetType.Scoutmaster:
+                    return "Hostile Creatures";
+                case ThingSceneTargetType.TumbleWeed:
+                case ThingSceneTargetType.GhostBall:
+                case ThingSceneTargetType.SpikeTrap:
+                case ThingSceneTargetType.Antlion:
+                case ThingSceneTargetType.VenusFlyTrap:
+                case ThingSceneTargetType.Tornado:
+                case ThingSceneTargetType.NapberryHypnoOrb:
+                    return "Natural Hazards";
+                case ThingSceneTargetType.ArrowShooter:
+                case ThingSceneTargetType.MovingSawBlade:
+                case ThingSceneTargetType.SpikeRoller:
+                case ThingSceneTargetType.SwingingAxe:
+                    return "Mechanical Traps";
+                case ThingSceneTargetType.GloomBellTower:
+                    return "Landmarks";
+                default:
+                    return "Misc";
+            }
+        }
+
         public static string GetCategory(Item item)
         {
             if (item == null)
@@ -430,9 +661,9 @@ namespace WhereIsThing
 
         public static string GetCategoryDisplay(string category, ThingNameLanguage language)
         {
-            if (category == "Luggage") return language == ThingNameLanguage.English ? "Luggage" : "行李箱";
-            if (category == "All") return language == ThingNameLanguage.English ? "All" : "全部";
-            if (language == ThingNameLanguage.English) return category;
+            if (category == "Luggage") return UseChineseNames(language) ? "行李箱" : "Luggage";
+            if (category == "All") return UseChineseNames(language) ? "全部" : "All";
+            if (!UseChineseNames(language)) return category;
 
             switch (category)
             {
@@ -448,6 +679,11 @@ namespace WhereIsThing
                 case "Weapons and Explosives": return "武器与爆炸物";
                 case "Creatures": return "生物";
                 case "Toys and Sports": return "玩具与运动";
+                case "Hostile Creatures": return "危险生物";
+                case "Natural Hazards": return "自然危险";
+                case "Mechanical Traps": return "机关陷阱";
+                case "Hazards": return "危险";
+                case "Landmarks": return "地标";
                 default: return "其他";
             }
         }
@@ -483,14 +719,19 @@ namespace WhereIsThing
                 case "Medicine": return 3;
                 case "Containers": return 4;
                 case "Luggage": return 5;
-                case "Climbing Gear": return 6;
-                case "Mobility": return 7;
-                case "Lighting": return 8;
-                case "Navigation": return 9;
-                case "Weapons and Explosives": return 10;
-                case "Creatures": return 11;
-                case "Toys and Sports": return 12;
-                default: return 13;
+                case "Hostile Creatures": return 6;
+                case "Natural Hazards": return 7;
+                case "Mechanical Traps": return 8;
+                case "Hazards": return 9;
+                case "Landmarks": return 10;
+                case "Climbing Gear": return 11;
+                case "Mobility": return 12;
+                case "Lighting": return 13;
+                case "Navigation": return 14;
+                case "Weapons and Explosives": return 15;
+                case "Creatures": return 16;
+                case "Toys and Sports": return 17;
+                default: return 18;
             }
         }
 

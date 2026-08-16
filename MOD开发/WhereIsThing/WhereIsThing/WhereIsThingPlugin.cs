@@ -24,6 +24,7 @@ namespace WhereIsThing
         private readonly List<ThingTargetDefinition> _catalog = new List<ThingTargetDefinition>();
         private readonly HashSet<ushort> _selectedIds = new HashSet<ushort>();
         private readonly HashSet<ThingLuggageType> _selectedLuggageTypes = new HashSet<ThingLuggageType>();
+        private readonly HashSet<ThingSceneTargetType> _selectedSceneTargetTypes = new HashSet<ThingSceneTargetType>();
         private ManualLogSource _log;
         private Canvas _canvas;
         private ThingSelectionWindow _window;
@@ -47,6 +48,7 @@ namespace WhereIsThing
         private ConfigEntry<string> _selectedItemIds;
         private ConfigEntry<bool> _selectedLuggage;
         private ConfigEntry<string> _selectedLuggageTypesConfig;
+        private ConfigEntry<string> _selectedSceneTargetTypesConfig;
 
         private void Awake()
         {
@@ -63,6 +65,7 @@ namespace WhereIsThing
             _selectedItemIds = Config.Bind("Selection", "SelectedItemIds", string.Empty, "Comma-separated item IDs selected in the window.");
             _selectedLuggage = Config.Bind("Selection", "SelectedLuggage", false, "Track unopened luggage targets.");
             _selectedLuggageTypesConfig = Config.Bind("Selection", "SelectedLuggageTypes", string.Empty, "Comma-separated luggage types selected in the window.");
+            _selectedSceneTargetTypesConfig = Config.Bind("Selection", "SelectedSceneTargetTypes", string.Empty, "Comma-separated scene target types selected in the window.");
             _locationScopes = Config.Bind("Selection", "LocationScopes", ThingLocationScope.Ground | ThingLocationScope.Backpack | ThingLocationScope.Luggage,
                 "Locations to scan: ground, held, backpack contents, or unopened luggage.");
             LoadSelection();
@@ -203,6 +206,7 @@ namespace WhereIsThing
                 _selectedItemIds,
                 _selectedLuggage,
                 _selectedLuggageTypesConfig,
+                _selectedSceneTargetTypesConfig,
                 _locationScopes
             };
         }
@@ -260,7 +264,8 @@ namespace WhereIsThing
             {
                 _window = new ThingSelectionWindow(_canvas, _font, ApplyWindowChanges, null);
             }
-            _window.Open(_catalog, _selectedIds, _selectedLuggageTypes, _nameLanguage.Value, _locationScopes.Value);
+            _window.Open(_catalog, _selectedIds, _selectedLuggageTypes, _selectedSceneTargetTypes,
+                _nameLanguage.Value, _locationScopes.Value);
         }
 
         private void BeginScan()
@@ -270,11 +275,11 @@ namespace WhereIsThing
                 return;
             }
 
-            if (_selectedIds.Count == 0 && _selectedLuggageTypes.Count == 0)
+            if (_selectedIds.Count == 0 && _selectedLuggageTypes.Count == 0 && _selectedSceneTargetTypes.Count == 0)
             {
                 _displayActive = false;
                 ClearLabels();
-                _log.LogInfo("No items selected. Hold Alt and press " + _windowKey.Value + " to choose targets.");
+                _log.LogInfo("No targets selected. Hold Alt and press " + _windowKey.Value + " to choose targets.");
                 return;
             }
 
@@ -288,7 +293,7 @@ namespace WhereIsThing
 
         private void RefreshLabels()
         {
-            if (_canvas == null || (_selectedIds.Count == 0 && _selectedLuggageTypes.Count == 0))
+            if (_canvas == null || (_selectedIds.Count == 0 && _selectedLuggageTypes.Count == 0 && _selectedSceneTargetTypes.Count == 0))
             {
                 ClearLabels();
                 return;
@@ -305,6 +310,11 @@ namespace WhereIsThing
             foreach (Item item in items)
             {
                 if (item == null || item.gameObject == null || !item.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                if (ShouldPreferMobSceneLabel(item))
                 {
                     continue;
                 }
@@ -377,6 +387,8 @@ namespace WhereIsThing
                 }
             }
 
+            RefreshSceneLabels(seen);
+
             foreach (string key in _labels.Keys.ToList())
             {
                 if (!seen.Contains(key))
@@ -384,6 +396,229 @@ namespace WhereIsThing
                     RemoveLabel(key);
                 }
             }
+        }
+
+        private void RefreshSceneLabels(HashSet<string> seen)
+        {
+            if (_selectedSceneTargetTypes.Count == 0)
+            {
+                return;
+            }
+
+            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.MushroomZombie))
+            {
+                ZombieManager zombieManager = ZombieManager.Instance;
+                if (zombieManager != null && zombieManager.zombies != null)
+                {
+                    foreach (MushroomZombie zombie in zombieManager.zombies.ToList())
+                    {
+                        if (zombie == null || !zombie.gameObject.activeInHierarchy || zombie.currentState == MushroomZombie.State.Dead)
+                        {
+                            continue;
+                        }
+
+                        MushroomZombie captured = zombie;
+                        AddSceneLabel(seen, ThingSceneTargetType.MushroomZombie, captured,
+                            delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.MushroomZombie, _nameLanguage.Value); },
+                            delegate
+                            {
+                                return captured != null && captured.gameObject.activeInHierarchy &&
+                                    captured.currentState != MushroomZombie.State.Dead &&
+                                    _selectedSceneTargetTypes.Contains(ThingSceneTargetType.MushroomZombie);
+                            });
+                    }
+                }
+            }
+
+            RefreshMobLabels(seen);
+
+            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.TumbleWeed))
+            {
+                foreach (TumbleWeed tumbleWeed in FindObjectsByType<TumbleWeed>(FindObjectsSortMode.None))
+                {
+                    if (tumbleWeed == null || !tumbleWeed.gameObject.activeInHierarchy)
+                    {
+                        continue;
+                    }
+
+                    TumbleWeed captured = tumbleWeed;
+                    AddSceneLabel(seen, ThingSceneTargetType.TumbleWeed, captured,
+                        delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.TumbleWeed, _nameLanguage.Value); },
+                        delegate
+                        {
+                            return captured != null && captured.gameObject.activeInHierarchy &&
+                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.TumbleWeed);
+                        });
+                }
+            }
+
+            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.GhostBall))
+            {
+                Peak.GhostBallSpawner ghostBallSpawner = Peak.GhostBallSpawner.Instance;
+                Peak.GhostBall ghostBall = ghostBallSpawner == null ? null : ghostBallSpawner.currentGhostBall;
+                if (ghostBall != null && ghostBall.gameObject.activeInHierarchy)
+                {
+                    Peak.GhostBall captured = ghostBall;
+                    AddSceneLabel(seen, ThingSceneTargetType.GhostBall, captured,
+                        delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.GhostBall, _nameLanguage.Value); },
+                        delegate
+                        {
+                            return captured != null && captured.gameObject.activeInHierarchy &&
+                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.GhostBall);
+                        });
+                }
+            }
+
+            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.GloomBellTower))
+            {
+                foreach (GhostFire ghostFire in Peak.GloomSafeZone.ALL_GLOOM_SAFE_ZONES.OfType<GhostFire>().ToList())
+                {
+                    if (ghostFire == null || !ghostFire.gameObject.activeInHierarchy)
+                    {
+                        continue;
+                    }
+
+                    GhostFire captured = ghostFire;
+                    AddSceneLabel(seen, ThingSceneTargetType.GloomBellTower, captured,
+                        delegate { return ThingCatalog.GetGloomBellTowerLabelName(captured, _nameLanguage.Value); },
+                        delegate
+                        {
+                            return captured != null && captured.gameObject.activeInHierarchy &&
+                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.GloomBellTower);
+                    });
+                }
+            }
+
+            RefreshActiveSceneTargets<Spider>(seen, ThingSceneTargetType.Spider);
+            RefreshActiveSceneTargets<BeeSwarm>(seen, ThingSceneTargetType.BeeSwarm);
+            RefreshActiveSceneTargets<Scoutmaster>(seen, ThingSceneTargetType.Scoutmaster);
+            RefreshActiveSceneTargets<Peak.SpikeTrap>(seen, ThingSceneTargetType.SpikeTrap);
+            RefreshActiveSceneTargets<Antlion>(seen, ThingSceneTargetType.Antlion);
+            RefreshActiveSceneTargets<VenusFlyTrap>(seen, ThingSceneTargetType.VenusFlyTrap);
+            RefreshActiveSceneTargets<Tornado>(seen, ThingSceneTargetType.Tornado);
+            RefreshActiveSceneTargets<OrbThatMakesYouSleepy>(seen, ThingSceneTargetType.NapberryHypnoOrb);
+            RefreshActiveSceneTargets<ArrowShooter>(seen, ThingSceneTargetType.ArrowShooter);
+            RefreshActiveSceneTargets<Peak.MovingSawBlade>(seen, ThingSceneTargetType.MovingSawBlade);
+            RefreshActiveSceneTargets<Peak.SpikeRoller>(seen, ThingSceneTargetType.SpikeRoller);
+            RefreshActiveSceneTargets<SwingingAxe>(seen, ThingSceneTargetType.SwingingAxe);
+        }
+
+        private void RefreshMobLabels(HashSet<string> seen)
+        {
+            if (!_selectedSceneTargetTypes.Contains(ThingSceneTargetType.Beetle) &&
+                !_selectedSceneTargetTypes.Contains(ThingSceneTargetType.Scorpion))
+            {
+                return;
+            }
+
+            MobManager mobManager = MobManager.instance;
+            if (mobManager == null || mobManager.mobs == null)
+            {
+                return;
+            }
+
+            foreach (Mob mob in mobManager.mobs.ToList())
+            {
+                if (mob == null || !mob.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                ThingSceneTargetType sceneTargetType;
+                if (!TryGetMobSceneTargetType(mob, out sceneTargetType))
+                {
+                    continue;
+                }
+
+                if (!_selectedSceneTargetTypes.Contains(sceneTargetType))
+                {
+                    continue;
+                }
+
+                MobItem mobItem = mob.GetComponent<MobItem>();
+                if (mobItem != null && mobItem.itemState != ItemState.Ground)
+                {
+                    continue;
+                }
+
+                Mob captured = mob;
+                ThingSceneTargetType capturedType = sceneTargetType;
+                AddSceneLabel(seen, capturedType, captured,
+                    delegate { return ThingCatalog.GetSceneTargetDisplayName(capturedType, _nameLanguage.Value); },
+                    delegate
+                    {
+                        return captured != null && captured.gameObject.activeInHierarchy &&
+                            _selectedSceneTargetTypes.Contains(capturedType);
+                    });
+            }
+        }
+
+        private bool ShouldPreferMobSceneLabel(Item item)
+        {
+            if (item.itemState != ItemState.Ground || !(item is MobItem))
+            {
+                return false;
+            }
+
+            ThingSceneTargetType sceneTargetType;
+            Mob mob = item.GetComponent<Mob>();
+            return TryGetMobSceneTargetType(mob, out sceneTargetType) &&
+                _selectedSceneTargetTypes.Contains(sceneTargetType);
+        }
+
+        private static bool TryGetMobSceneTargetType(Mob mob, out ThingSceneTargetType sceneTargetType)
+        {
+            if (mob is Beetle)
+            {
+                sceneTargetType = ThingSceneTargetType.Beetle;
+                return true;
+            }
+            if (mob is Scorpion)
+            {
+                sceneTargetType = ThingSceneTargetType.Scorpion;
+                return true;
+            }
+
+            sceneTargetType = default(ThingSceneTargetType);
+            return false;
+        }
+
+        private void RefreshActiveSceneTargets<T>(HashSet<string> seen, ThingSceneTargetType sceneTargetType) where T : Component
+        {
+            if (!_selectedSceneTargetTypes.Contains(sceneTargetType))
+            {
+                return;
+            }
+
+            foreach (T target in FindObjectsByType<T>(FindObjectsSortMode.None))
+            {
+                if (target == null || !target.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                T captured = target;
+                AddSceneLabel(seen, sceneTargetType, captured,
+                    delegate { return ThingCatalog.GetSceneTargetDisplayName(sceneTargetType, _nameLanguage.Value); },
+                    delegate
+                    {
+                        return captured != null && captured.gameObject.activeInHierarchy &&
+                            _selectedSceneTargetTypes.Contains(sceneTargetType);
+                    });
+            }
+        }
+
+        private void AddSceneLabel(HashSet<string> seen, ThingSceneTargetType sceneTargetType, Component target,
+            Func<string> titleProvider, Func<bool> isValid)
+        {
+            if (target == null || target.gameObject == null)
+            {
+                return;
+            }
+
+            string key = "scene:" + sceneTargetType + ":" + target.GetInstanceID();
+            seen.Add(key);
+            AddLabel(key, target.transform, titleProvider, isValid);
         }
 
         private void AddLabel(string key, Transform target, Func<string> titleProvider, Func<bool> isValid)
@@ -397,17 +632,20 @@ namespace WhereIsThing
         }
 
         private void ApplyWindowChanges(HashSet<ushort> selection, HashSet<ThingLuggageType> selectedLuggageTypes,
-            ThingNameLanguage language, ThingLocationScope scopes)
+            HashSet<ThingSceneTargetType> selectedSceneTargetTypes, ThingNameLanguage language, ThingLocationScope scopes)
         {
             _selectedIds.Clear();
             _selectedIds.UnionWith(selection);
             _selectedLuggageTypes.Clear();
             _selectedLuggageTypes.UnionWith(selectedLuggageTypes ?? new HashSet<ThingLuggageType>());
+            _selectedSceneTargetTypes.Clear();
+            _selectedSceneTargetTypes.UnionWith(selectedSceneTargetTypes ?? new HashSet<ThingSceneTargetType>());
             _selectedLuggage.Value = _selectedLuggageTypes.Count > 0;
             _nameLanguage.Value = language;
             _locationScopes.Value = scopes;
             _selectedItemIds.Value = string.Join(",", _selectedIds.OrderBy(id => id).Select(id => id.ToString()).ToArray());
             _selectedLuggageTypesConfig.Value = SerializeLuggageTypes(_selectedLuggageTypes);
+            _selectedSceneTargetTypesConfig.Value = SerializeSceneTargetTypes(_selectedSceneTargetTypes);
             if (_displayActive)
             {
                 RefreshLabels();
@@ -430,21 +668,24 @@ namespace WhereIsThing
             _catalog.AddRange(loaded);
             foreach (ThingTargetDefinition definition in _catalog)
             {
-                if (definition.IsLuggage || !definition.ItemIds.Any(_selectedIds.Contains))
+                if (definition.IsLuggage)
                 {
                     continue;
                 }
 
-                foreach (ushort itemId in definition.ItemIds)
+                bool selected = definition.ItemIds.Any(_selectedIds.Contains) ||
+                    (definition.IsSceneTarget && _selectedSceneTargetTypes.Contains(definition.SceneTargetType));
+                if (selected)
                 {
-                    _selectedIds.Add(itemId);
+                    definition.SetSelected(_selectedIds, _selectedLuggageTypes, _selectedSceneTargetTypes, true);
                 }
             }
             _selectedItemIds.Value = string.Join(",", _selectedIds.OrderBy(id => id).Select(id => id.ToString()).ToArray());
+            _selectedSceneTargetTypesConfig.Value = SerializeSceneTargetTypes(_selectedSceneTargetTypes);
             if (!_catalogLogged)
             {
                 _catalogLogged = true;
-                _log.LogInfo("Loaded " + _catalog.Count + " selectable item definitions from ItemDatabase. Categories: " +
+                _log.LogInfo("Loaded " + _catalog.Count + " selectable targets from ItemDatabase and scene target definitions. Categories: " +
                     string.Join(", ", _catalog.Select(item => item.Category).Distinct().OrderBy(value => value).ToArray()));
             }
             return true;
@@ -482,6 +723,16 @@ namespace WhereIsThing
                 }
                 _selectedLuggageTypesConfig.Value = SerializeLuggageTypes(_selectedLuggageTypes);
             }
+
+            _selectedSceneTargetTypes.Clear();
+            foreach (string value in (_selectedSceneTargetTypesConfig.Value ?? string.Empty).Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                ThingSceneTargetType sceneTargetType;
+                if (Enum.TryParse(value, true, out sceneTargetType) && Enum.IsDefined(typeof(ThingSceneTargetType), sceneTargetType))
+                {
+                    _selectedSceneTargetTypes.Add(sceneTargetType);
+                }
+            }
         }
 
         private static string SerializeLuggageTypes(IEnumerable<ThingLuggageType> luggageTypes)
@@ -490,6 +741,15 @@ namespace WhereIsThing
                 .Cast<ThingLuggageType>()
                 .Where(luggageType => luggageTypes != null && luggageTypes.Contains(luggageType))
                 .Select(luggageType => luggageType.ToString())
+                .ToArray());
+        }
+
+        private static string SerializeSceneTargetTypes(IEnumerable<ThingSceneTargetType> sceneTargetTypes)
+        {
+            return string.Join(",", Enum.GetValues(typeof(ThingSceneTargetType))
+                .Cast<ThingSceneTargetType>()
+                .Where(sceneTargetType => sceneTargetTypes != null && sceneTargetTypes.Contains(sceneTargetType))
+                .Select(sceneTargetType => sceneTargetType.ToString())
                 .ToArray());
         }
 

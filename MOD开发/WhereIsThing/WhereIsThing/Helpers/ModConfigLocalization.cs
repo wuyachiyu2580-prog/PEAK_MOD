@@ -245,7 +245,26 @@ namespace WhereIsThing
                 case "SelectedItemIds": return chinese ? "已选物品 ID" : "Selected Item IDs";
                 case "SelectedLuggage": return chinese ? "兼容行李箱开关" : "Legacy Luggage Toggle";
                 case "SelectedLuggageTypes": return chinese ? "已选行李箱类型" : "Selected Luggage Types";
+                case "SelectedSceneTargetTypes": return chinese ? "已选场景目标" : "Selected Scene Targets";
                 case "LocationScopes": return chinese ? "位置范围" : "Location Scopes";
+                case "MushroomZombie": return chinese ? "森蕈僵尸" : "Mushroom Zombie";
+                case "Beetle": return chinese ? "甲虫" : "Beetle";
+                case "Scorpion": return chinese ? "蝎子" : "Scorpion";
+                case "Spider": return chinese ? "蜘蛛" : "Spider";
+                case "BeeSwarm": return chinese ? "蜂群" : "Bee Swarm";
+                case "Scoutmaster": return chinese ? "童军领队" : "Scoutmaster";
+                case "TumbleWeed": return chinese ? "风滚草" : "Tumbleweed";
+                case "GhostBall": return chinese ? "鬼球" : "Ghost Ball";
+                case "SpikeTrap": return chinese ? "地刺" : "Spike Trap";
+                case "Antlion": return chinese ? "蚁狮" : "Antlion";
+                case "VenusFlyTrap": return chinese ? "捕蝇草" : "Venus Flytrap";
+                case "Tornado": return chinese ? "龙卷风" : "Tornado";
+                case "NapberryHypnoOrb": return chinese ? "催眠浆果幻象球" : "Napberry Hypno Orb";
+                case "ArrowShooter": return chinese ? "箭矢发射器" : "Arrow Shooter";
+                case "MovingSawBlade": return chinese ? "移动锯刃" : "Moving Sawblade";
+                case "SpikeRoller": return chinese ? "滚刺机关" : "Spike Roller";
+                case "SwingingAxe": return chinese ? "摆斧机关" : "Swinging Axe";
+                case "GloomBellTower": return chinese ? "雾沼钟塔" : "Gloom Bell Tower";
                 case "Persistent": return chinese ? "常驻" : "Persistent";
                 case "Timed": return chinese ? "定时" : "Timed";
                 case "Game": return chinese ? "跟随游戏" : "Follow Game";
@@ -277,6 +296,7 @@ namespace WhereIsThing
                 case "SelectedItemIds": return chinese ? "由 Alt+C 选择窗口维护的物品 ID，请勿手动编辑。" : "Item IDs managed by the Alt+C selection window. Do not edit manually.";
                 case "SelectedLuggage": return chinese ? "旧版配置兼容项，请使用选择窗口设置行李箱类型。" : "Legacy compatibility setting. Choose luggage types in the selection window.";
                 case "SelectedLuggageTypes": return chinese ? "由 Alt+C 选择窗口维护的行李箱类型，请勿手动编辑。" : "Luggage types managed by the Alt+C selection window. Do not edit manually.";
+                case "SelectedSceneTargetTypes": return chinese ? "由 Alt+C 选择窗口维护的动态危险和钟塔类型，请勿手动编辑。" : "Scene target types managed by the Alt+C selection window. Do not edit manually.";
                 case "LocationScopes": return chinese ? "目标位置范围。建议在 Alt+C 窗口中使用地面、手持、背包和行李箱复选框修改。" : "Target location scopes. Use the Ground, Held, Backpack, and Luggage checkboxes in the Alt+C window.";
                 default: return string.Empty;
             }
