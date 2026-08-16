@@ -46,7 +46,7 @@ namespace PlayersInfo.MonoBehaviours
         public TMP_Text extraValueText;
 
         // 异常（Afflictions）
-        public BarAffliction[] afflictions;
+        public TeammateBarAffliction[] afflictions;
         public TMP_Text[] afflictionTexts;
         public float minAfflictionWidth = 15f;
 
@@ -73,11 +73,25 @@ namespace PlayersInfo.MonoBehaviours
         private bool _lastStaminaWasFloat;
         private int _lastExtraShownInt = int.MinValue;
         private int _lastExtraCapShownInt = int.MinValue;
+        private float _nextValueRefreshTime;
+        private const float ValueRefreshInterval = 0.15f;
+        private float _nextAfflictionTextRefreshTime;
+        private const float AfflictionTextRefreshInterval = 0.5f;
+        private float _nextIdentityRefreshTime;
 
         // 反射结果缓存：CharacterData.isInvincible 每帧反射 GetValue 会装箱产生 GC，
         // shield 显隐对延迟不敏感，0.25s 探一次足够。
         private bool _cachedInvincible;
         private float _nextInvincibleProbeTime;
+        private bool _lastShieldActive;
+        private bool _lastCampfireActive;
+        private bool _hasShieldState;
+        private bool _hasCampfireState;
+
+        private void OnEnable()
+        {
+            SyncTargetVisualsImmediate();
+        }
 
         /// <summary>切换到新目标时重置内部平滑量，避免从上一个玩家的尺寸插值过去。</summary>
         public void BindTarget(Character c)
@@ -91,11 +105,16 @@ namespace PlayersInfo.MonoBehaviours
             // 切换目标后立即重新探一次反射 + 强刷一次数值文本，避免显示上一个玩家的状态
             _cachedInvincible = false;
             _nextInvincibleProbeTime = 0f;
+            _hasShieldState = false;
+            _hasCampfireState = false;
             _lastStaminaShownInt = int.MinValue;
             _lastStaminaShownTenth = int.MinValue;
             _lastStaminaWasFloat = false;
             _lastExtraShownInt = int.MinValue;
             _lastExtraCapShownInt = int.MinValue;
+            _nextValueRefreshTime = 0f;
+            _nextAfflictionTextRefreshTime = 0f;
+            _nextIdentityRefreshTime = 0f;
             // 默认字段正序：强制重置 extraBar 显隐，避免克隆时残留 active=true 导致特殊分支
             try
             {
@@ -128,25 +147,10 @@ namespace PlayersInfo.MonoBehaviours
                 {
                     var a = afflictions[i];
                     if (a == null) continue;
-                    a.size = 0f;
-                    try { a.width = 0f; } catch { }
-                    if (a.gameObject != null) a.gameObject.SetActive(false);
+                    a.ResetVisual();
                 }
             }
-            // 新目标当前的满幅值预算，便于有 extra 时立即同步，不从 0 lerp
-            try
-            {
-                if (c != null && c.data != null && fullBar != null)
-                {
-                    float fw = fullBar.sizeDelta.x;
-                    desiredStaminaSize = Mathf.Max(0f, c.data.currentStamina * fw + staminaBarOffset);
-                    desiredExtraStaminaSize = Mathf.Max(0f, c.data.extraStamina * fw);
-                    // 如果克隆 bar 的 extraBar 当前还在显示，把 cachedExtraStam 直接置为新值，避免从 0 爬起
-                    if (extraBar != null && extraBar.gameObject.activeSelf)
-                        cachedExtraStam = desiredExtraStaminaSize;
-                }
-            }
-            catch { }
+            SyncTargetVisualsImmediate();
             if (nameLabel != null && c != null)
             {
                 nameLabel.text = SafeGetName(c);
@@ -187,11 +191,17 @@ namespace PlayersInfo.MonoBehaviours
             if (Target == null || Target.Equals(null) || Target.data == null) return;
             if (fullBar == null || staminaBar == null) return;
 
-            // 名字 + 颜色低频刷新（避免每帧 alloc）
-            if (nameLabel != null && Target.refs != null && Target.refs.customization != null)
+            // 玩家名与颜色很少变化，低频刷新即可。
+            if (nameLabel != null && Time.unscaledTime >= _nextIdentityRefreshTime)
             {
-                var color = Target.refs.customization.PlayerColor;
-                if (nameLabel.color != color) nameLabel.color = color;
+                _nextIdentityRefreshTime = Time.unscaledTime + 0.5f;
+                string playerName = SafeGetName(Target);
+                if (nameLabel.text != playerName) nameLabel.text = playerName;
+                if (Target.refs != null && Target.refs.customization != null)
+                {
+                    var color = Target.refs.customization.PlayerColor;
+                    if (nameLabel.color != color) nameLabel.color = color;
+                }
             }
 
             float fullWidth = fullBar.sizeDelta.x;
@@ -229,7 +239,7 @@ namespace PlayersInfo.MonoBehaviours
                 var m = maxStaminaBar.sizeDelta;
                 m.x = Mathf.Lerp(m.x, desiredMaxStaminaSize, dt10);
                 maxStaminaBar.sizeDelta = m;
-                maxStaminaBar.gameObject.SetActive(m.x > minStaminaBarWidth);
+                SetActiveIfChanged(maxStaminaBar.gameObject, m.x > minStaminaBarWidth);
             }
 
             // === Afflictions Outline ===
@@ -243,42 +253,37 @@ namespace PlayersInfo.MonoBehaviours
             if (staminaBarOutline != null)
             {
                 var o = staminaBarOutline.sizeDelta;
-                o.x = 14f + Mathf.Max(1f, statusSum) * fullWidth;
-                staminaBarOutline.sizeDelta = o;
+                float outlineWidth = 14f + Mathf.Max(1f, statusSum) * fullWidth;
+                if (Mathf.Abs(o.x - outlineWidth) > 0.01f)
+                {
+                    o.x = outlineWidth;
+                    staminaBarOutline.sizeDelta = o;
+                }
             }
             if (staminaBarOutlineOverflowBar != null)
             {
-                staminaBarOutlineOverflowBar.gameObject.SetActive(statusSum > 1.005);
+                SetActiveIfChanged(staminaBarOutlineOverflowBar.gameObject, statusSum > 1.005);
             }
 
-            staminaBar.gameObject.SetActive(staminaBar.sizeDelta.x > minStaminaBarWidth);
+            SetActiveIfChanged(staminaBar.gameObject, staminaBar.sizeDelta.x > minStaminaBarWidth);
 
             // === Afflictions 数值条（原版 BarAffliction） ===
             if (afflictions != null && Target.data != null)
             {
-                var ca = Target.refs != null ? Target.refs.afflictions : null;
+                CharacterAfflictions ca = null;
+                try { ca = Target.refs != null ? Target.refs.afflictions : null; } catch { }
+                bool refreshText = Time.unscaledTime >= _nextAfflictionTextRefreshTime;
+                if (refreshText)
+                    _nextAfflictionTextRefreshTime = Time.unscaledTime + AfflictionTextRefreshInterval;
                 for (int i = 0; i < afflictions.Length; i++)
                 {
                     var a = afflictions[i];
                     if (a == null) continue;
-                    float s = AfflictionValueHelper.GetValue(Target, a);
-                    float target = fullWidth * s;
-                    if (s > 0.01f)
-                    {
-                        if (target < minAfflictionWidth) target = minAfflictionWidth;
-                        a.size = target;
-                        if (!a.gameObject.activeSelf) a.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        a.size = 0f;
-                        if (a.gameObject.activeSelf) a.gameObject.SetActive(false);
-                    }
-                    // 复刻 BarAffliction.UpdateAffliction 的 lerp（它只用自己的 width/size，可安全调用）
-                    try { a.width = Mathf.Lerp(a.width, a.size, Mathf.Min(Time.deltaTime * 10f, 0.1f)); } catch { }
+                    a.UpdateVisual(Target, fullWidth, minAfflictionWidth);
+                    float s = AfflictionValueHelper.GetValue(Target, a.afflictionType, a.isPetrify);
 
                     // 数值文本：百分比+消除时间（≥1% 才展示；太窄就隐藏避免溢出）
-                    if (afflictionTexts != null && i < afflictionTexts.Length)
+                    if (refreshText && afflictionTexts != null && i < afflictionTexts.Length)
                     {
                         var txt = afflictionTexts[i];
                         if (txt != null)
@@ -287,11 +292,24 @@ namespace PlayersInfo.MonoBehaviours
                             if (showTxt)
                             {
                                 int pct = Mathf.Clamp(Mathf.RoundToInt(s * 100f), 0, 999);
-                                string tm = (a.width > 60f)
-                                    ? AfflictionTimeHelper.FormatTime(AfflictionTimeHelper.GetReductionTimeRemaining(ca, a.afflictionType))
-                                    : string.Empty;
-                                txt.text = string.IsNullOrEmpty(tm) ? pct.ToString() : (pct + "(" + tm + ")");
-                                if (!txt.gameObject.activeSelf) txt.gameObject.SetActive(true);
+                                string percentText = pct.ToString();
+                                string timeText = AfflictionTimeHelper.FormatTime(
+                                    AfflictionTimeHelper.GetReductionTimeRemaining(ca, a.afflictionType));
+                                string candidate = string.IsNullOrEmpty(timeText)
+                                    ? percentText
+                                    : percentText + "(" + timeText + ")";
+                                if (txt.GetPreferredValues(candidate).x > a.width)
+                                    candidate = percentText;
+                                showTxt = txt.GetPreferredValues(candidate).x <= a.width;
+                                if (showTxt)
+                                {
+                                    if (txt.text != candidate) txt.text = candidate;
+                                    if (!txt.gameObject.activeSelf) txt.gameObject.SetActive(true);
+                                }
+                                else if (txt.gameObject.activeSelf)
+                                {
+                                    txt.gameObject.SetActive(false);
+                                }
                             }
                             else
                             {
@@ -365,7 +383,12 @@ namespace PlayersInfo.MonoBehaviours
                     try { _cachedInvincible = GetIsInvincible(Target.data); }
                     catch { _cachedInvincible = false; }
                 }
-                try { shield.SetActive(_cachedInvincible); } catch { }
+                if (!_hasShieldState || _lastShieldActive != _cachedInvincible)
+                {
+                    try { shield.SetActive(_cachedInvincible); } catch { }
+                    _lastShieldActive = _cachedInvincible;
+                    _hasShieldState = true;
+                }
             }
             if (campfire != null)
             {
@@ -374,15 +397,102 @@ namespace PlayersInfo.MonoBehaviours
                     bool canHunger = Target.refs != null && Target.refs.afflictions != null
                         ? Target.refs.afflictions.canGetHungry
                         : true;
-                    campfire.SetActive(!canHunger);
+                    bool campfireActive = !canHunger;
+                    if (!_hasCampfireState || _lastCampfireActive != campfireActive)
+                    {
+                        campfire.SetActive(campfireActive);
+                        _lastCampfireActive = campfireActive;
+                        _hasCampfireState = true;
+                    }
                 }
                 catch { }
             }
 
             if (sinTime > TAU) sinTime -= TAU;
 
-            // === 数值文本（仿 StaminaInfo） ===
-            UpdateValueTexts();
+            // 死亡状态下 CharacterData 可能仍保留上一帧的体力/临时体力数值。
+            // 保留灰暗的队友条，但清理数值文字，避免死亡过渡时旧值与 0/新值重叠。
+            if (Target.data.dead)
+                HideValueTexts();
+            else if (Time.unscaledTime >= _nextValueRefreshTime)
+            {
+                _nextValueRefreshTime = Time.unscaledTime + ValueRefreshInterval;
+                UpdateValueTexts();
+            }
+        }
+
+        private void HideValueTexts()
+        {
+            if (staminaValueText != null)
+            {
+                if (staminaValueText.text != string.Empty) staminaValueText.text = string.Empty;
+                if (staminaValueText.gameObject.activeSelf) staminaValueText.gameObject.SetActive(false);
+            }
+            if (extraValueText != null)
+            {
+                if (extraValueText.text != string.Empty) extraValueText.text = string.Empty;
+                if (extraValueText.gameObject.activeSelf) extraValueText.gameObject.SetActive(false);
+            }
+            if (afflictionTexts == null) return;
+            for (int i = 0; i < afflictionTexts.Length; i++)
+            {
+                var text = afflictionTexts[i];
+                if (text == null) continue;
+                if (text.text != string.Empty) text.text = string.Empty;
+                if (text.gameObject.activeSelf) text.gameObject.SetActive(false);
+            }
+        }
+
+        private static void SetWidthImmediate(RectTransform rect, float width)
+        {
+            if (rect == null) return;
+            var delta = rect.sizeDelta;
+            if (Mathf.Abs(delta.x - width) < 0.01f) return;
+            delta.x = Mathf.Max(0f, width);
+            rect.sizeDelta = delta;
+        }
+
+        private void SyncTargetVisualsImmediate()
+        {
+            try
+            {
+                if (Target == null || Target.Equals(null) || Target.data == null || fullBar == null)
+                    return;
+
+                float fullWidth = fullBar.sizeDelta.x;
+                desiredStaminaSize = Mathf.Max(0f, Target.data.currentStamina * fullWidth + staminaBarOffset);
+                desiredMaxStaminaSize = Mathf.Max(0f, Target.GetMaxStamina() * fullWidth + staminaBarOffset);
+                desiredExtraStaminaSize = Mathf.Max(0f, Target.data.extraStamina * fullWidth);
+                cachedExtraStam = desiredExtraStaminaSize;
+                SetWidthImmediate(staminaBar, desiredStaminaSize);
+                SetWidthImmediate(maxStaminaBar, desiredMaxStaminaSize);
+
+                if (afflictions != null)
+                {
+                    for (int i = 0; i < afflictions.Length; i++)
+                        if (afflictions[i] != null)
+                            afflictions[i].SyncVisualImmediate(Target, fullWidth, minAfflictionWidth);
+                }
+
+                if (staminaBarOutline != null)
+                {
+                    float statusSum = 1f;
+                    try
+                    {
+                        if (Target.refs != null && Target.refs.afflictions != null)
+                            statusSum = Target.refs.afflictions.statusSum;
+                    }
+                    catch { }
+                    SetWidthImmediate(staminaBarOutline, 14f + Mathf.Max(1f, statusSum) * fullWidth);
+                }
+            }
+            catch { }
+        }
+
+        private static void SetActiveIfChanged(GameObject target, bool active)
+        {
+            if (target != null && target.activeSelf != active)
+                target.SetActive(active);
         }
 
         private void UpdateValueTexts()
@@ -448,6 +558,13 @@ namespace PlayersInfo.MonoBehaviours
                         extraValueText.text = "+" + v.ToString() + "/" + cap.ToString();
                         _lastExtraShownInt = v;
                         _lastExtraCapShownInt = cap;
+                        float preferredWidth = extraValueText.GetPreferredValues(extraValueText.text).x + 6f;
+                        var textSize = extraValueText.rectTransform.sizeDelta;
+                        if (Mathf.Abs(textSize.x - preferredWidth) > 0.1f)
+                        {
+                            textSize.x = preferredWidth;
+                            extraValueText.rectTransform.sizeDelta = textSize;
+                        }
                     }
                     if (!extraValueText.gameObject.activeSelf) extraValueText.gameObject.SetActive(true);
                     // 量纲诊断：打出真实 raw 值 vs 显示数字，方便骨石问题是代码算错还是道具描述差倽

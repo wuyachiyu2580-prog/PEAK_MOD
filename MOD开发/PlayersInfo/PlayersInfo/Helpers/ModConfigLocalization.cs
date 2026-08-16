@@ -78,9 +78,9 @@ namespace PlayersInfo.Helpers
                 SetDescription(PlayersInfoPlugin.CfgShowStaminaValue,
                     LanguageHelper.L("Show numeric stamina values on local and teammate bars.",
                         "在本地和队友体力条上显示数字。"));
-                SetDescription(PlayersInfoPlugin.CfgEnableInventoryRow,
-                    LanguageHelper.L("Show teammate inventory row: main slots, temp slot, backpack, and backpack contents.",
-                        "显示队友物品栏：主槽、临时槽、背包和背包内部物品。"));
+                SetDescription(PlayersInfoPlugin.CfgInventoryDisplayMode,
+                    LanguageHelper.L("Choose whether teammate inventory is hidden, shows contents only, or also shows jetpack fuel.",
+                        "选择隐藏队友物品栏、仅显示物品内容，或同时显示喷气背包燃料。"));
                 SetDescription(PlayersInfoPlugin.CfgAnchor,
                     LanguageHelper.L("HUD anchor corner on screen.",
                         "HUD 在屏幕上的锚点角落。"));
@@ -99,6 +99,9 @@ namespace PlayersInfo.Helpers
                 SetDescription(PlayersInfoPlugin.CfgTeammateSortMode,
                     LanguageHelper.L("Stable keeps bars in first-seen order; Distance follows current distance.",
                         "Stable 按首次出现顺序固定队友条；Distance 按当前距离排序。"));
+                SetDescription(PlayersInfoPlugin.CfgSpectatorNearbyCenter,
+                    LanguageHelper.L("While spectating, use the local character or the observed character as the nearby-player center.",
+                        "观战时，选择以本机角色或被观看角色作为附近玩家中心。"));
                 SetDescription(PlayersInfoPlugin.CfgRoundStamina,
                     LanguageHelper.L("Round stamina values to whole numbers. Off = one decimal place.",
                         "体力数字四舍五入为整数。关闭后显示一位小数。"));
@@ -216,13 +219,20 @@ namespace PlayersInfo.Helpers
                 case "Enabled": return zh ? "启用 MOD" : "Enabled";
                 case "EnableStaminaBar": return zh ? "队友体力条" : "Teammate Bars";
                 case "ShowStaminaValue": return zh ? "显示体力数字" : "Stamina Values";
-                case "EnableInventoryRow": return zh ? "队友物品栏" : "Inventory Row";
+                case "EnableInventoryRow": return zh ? "队友物品栏显示" : "Teammate Inventory Display";
                 case "Anchor": return zh ? "HUD 锚点" : "HUD Anchor";
                 case "OffsetX": return zh ? "水平偏移" : "Offset X";
                 case "OffsetY": return zh ? "垂直偏移" : "Offset Y";
                 case "NearbyRange": return zh ? "显示距离" : "Nearby Range";
                 case "MaxNearbyCount": return zh ? "最多显示人数" : "Max Teammates";
                 case "TeammateSortMode": return zh ? "队友条排序" : "Teammate Bar Order";
+                case "SpectatorNearbyCenter": return zh ? "观战附近中心" : "Spectator Nearby Center";
+                case "LocalCharacter": return zh ? "本机角色" : "Local Character";
+                case "ObservedCharacter": return zh ? "被观看角色" : "Observed Character";
+                case "Disabled": return zh ? "不显示" : "Disabled";
+                case "ContentsOnly": return zh ? "仅显示物品内容" : "Contents Only";
+                case "ContentsAndJetpackFuel": return zh ? "物品内容与喷气背包燃料" : "Contents and Jetpack Fuel";
+                case "ContentsandJetpackFuel": return zh ? "物品内容与喷气背包燃料" : "Contents and Jetpack Fuel";
                 case "RoundStaminaValue": return zh ? "体力取整" : "Round Stamina";
                 case "DebugLogging": return zh ? "诊断日志" : "Debug Logging";
                 case "TopLeft": return zh ? "左上" : "Top Left";

@@ -5,11 +5,13 @@ PlayersInfo gives you a teammate panel in PEAK. It shows nearby teammates' stami
 ## What's new in 0.2.0
 
 - Default teammate HUD position is now the bottom-left corner.
-- Existing 0.1.1 and earlier configurations using the old default top-left position are migrated to bottom-left on upgrade.
+- Existing 0.1.1 and earlier configurations using the old top-left position are migrated to bottom-left on upgrade; other anchor positions are preserved.
 - Extra stamina now shows both current amount and the petrify-aware cap, such as `+45/70`.
 - Added stable teammate bar ordering to prevent bars from moving up and down as teammates move. Distance ordering remains available in configuration.
 - Updated PEAK 2.1.a compatibility.
 - Fixed petrify value display and teammate inventory compatibility with the newer backpack API.
+- Fixed the local extra-stamina bar jumping to a separate layout row.
+- Numeric stamina and status overlays are cleared during the death state to prevent stale text overlap.
 
 ## Installation
 

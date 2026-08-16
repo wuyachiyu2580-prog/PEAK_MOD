@@ -21,8 +21,15 @@ namespace PlayersInfo.Patches
     {
         private static TMP_Text _staminaValueText;
         private static TMP_Text _extraValueText;
+        private static TMP_Text _hungerCountdownText;
         private static TMP_Text[] _afflictionTexts;
         private static StaminaBar _initedFor;
+        private static float _nextValueRefreshTime;
+        private static float _nextAfflictionRefreshTime;
+        private static float _nextHungerCalculationTime;
+        private static string _cachedHungerTime = string.Empty;
+        private const float ValueRefreshInterval = 0.15f;
+        private const float AfflictionRefreshInterval = 0.5f;
 
         [HarmonyPostfix]
         private static void Postfix(StaminaBar __instance)
@@ -52,52 +59,65 @@ namespace PlayersInfo.Patches
                 bool showValue = PlayersInfoPlugin.CfgShowStaminaValue == null
                                  || PlayersInfoPlugin.CfgShowStaminaValue.Value;
 
-                // 从 local.data 读 normalized 值，乘 100 得到游戏体力数值（分辨率无关）
+                // 原版 StaminaBar 使用 observedCharacter；文字也必须读取同一角色。
                 // sizeDelta.x 只用来判断宽度足够不足显示，避免文字溢出
-                Character localCharacterForStamina = null;
+                Character displayCharacter = DisplayCharacterHelper.GetObservedOrLocal();
                 float mainStam01 = 0f, extraStam01 = 0f;
                 try
                 {
-                    localCharacterForStamina = Character.localCharacter;
-                    if (localCharacterForStamina != null && localCharacterForStamina.data != null)
+                    if (displayCharacter != null && displayCharacter.data != null)
                     {
-                        mainStam01 = localCharacterForStamina.data.currentStamina;
-                        extraStam01 = localCharacterForStamina.data.extraStamina;
+                        mainStam01 = displayCharacter.data.currentStamina;
+                        extraStam01 = displayCharacter.data.extraStamina;
                     }
                 }
                 catch { }
 
+                bool displayDead = displayCharacter != null
+                                 && displayCharacter.data != null
+                                 && displayCharacter.data.dead;
+                bool refreshValues = Time.unscaledTime >= _nextValueRefreshTime;
+                if (refreshValues)
+                    _nextValueRefreshTime = Time.unscaledTime + ValueRefreshInterval;
+
                 // 主体力
                 if (_staminaValueText != null)
                 {
-                    if (showValue && __instance.staminaBar != null)
+                    if (refreshValues && showValue && displayCharacter != null && !displayDead && __instance.staminaBar != null)
                         UpdateValueText(_staminaValueText, mainStam01 * 100f, __instance.staminaBar.sizeDelta.x);
-                    else SetActive(_staminaValueText, false);
+                    else if (!showValue || displayCharacter == null || displayDead)
+                        SetActive(_staminaValueText, false);
                 }
+
+                if (refreshValues || displayDead || displayCharacter == null)
+                    UpdateHungerCountdown(__instance, displayCharacter, displayDead);
 
                 // 临时体力
                 if (_extraValueText != null)
                 {
                     bool extraActive = __instance.extraBar != null && __instance.extraBar.gameObject.activeSelf;
-                    if (showValue && extraActive && __instance.extraBarStamina != null)
+                    if (refreshValues && showValue && displayCharacter != null && !displayDead && extraActive && __instance.extraBarStamina != null)
                     {
-                        float extraCap01 = ExtraStaminaValueHelper.GetCap01(localCharacterForStamina);
+                        float extraCap01 = ExtraStaminaValueHelper.GetCap01(displayCharacter);
                         UpdateExtraValueText(_extraValueText, extraStam01 * 100f, extraCap01 * 100f,
                             __instance.extraBarStamina.sizeDelta.x);
                     }
-                    else SetActive(_extraValueText, false);
+                    else if (!showValue || displayCharacter == null || displayDead || !extraActive)
+                        SetActive(_extraValueText, false);
                 }
 
                 // 异常百分比
-                if (__instance.afflictions != null && _afflictionTexts != null)
+                bool refreshAfflictions = Time.unscaledTime >= _nextAfflictionRefreshTime;
+                if (refreshAfflictions)
+                    _nextAfflictionRefreshTime = Time.unscaledTime + AfflictionRefreshInterval;
+                if (refreshAfflictions && __instance.afflictions != null && _afflictionTexts != null)
                 {
-                    Character localCharacter = null;
+                    Character displayStatusCharacter = displayCharacter;
                     CharacterAfflictions ca = null;
                     try
                     {
-                        localCharacter = Character.localCharacter;
-                        if (localCharacter != null && localCharacter.refs != null)
-                            ca = localCharacter.refs.afflictions;
+                        if (displayStatusCharacter != null && displayStatusCharacter.refs != null)
+                            ca = displayStatusCharacter.refs.afflictions;
                     }
                     catch { }
 
@@ -108,18 +128,30 @@ namespace PlayersInfo.Patches
                         var txt = _afflictionTexts[i];
                         if (a == null || txt == null) continue;
 
-                        float s = AfflictionValueHelper.GetValue(localCharacter, a);
+                        float s = AfflictionValueHelper.GetValue(displayStatusCharacter, a);
 
-                        bool show = showValue && s > 0.01f && a.width > 18f;
+                        bool show = showValue && displayStatusCharacter != null && !displayDead
+                                  && s > 0.01f && a.width > 18f;
                         if (show)
                         {
                             int pct = Mathf.Clamp(Mathf.RoundToInt(s * 100f), 0, 999);
-                            // 宽度够宽时，追加消除时间 "35(1:23)"
-                            string tm = (a.width > 60f)
-                                ? AfflictionTimeHelper.FormatTime(AfflictionTimeHelper.GetReductionTimeRemaining(ca, a.afflictionType))
-                                : string.Empty;
-                            txt.text = string.IsNullOrEmpty(tm) ? pct.ToString() : (pct + "(" + tm + ")");
-                            SetActive(txt, true);
+                            string percentText = pct.ToString();
+                            string tm = AfflictionTimeHelper.FormatTime(
+                                AfflictionTimeHelper.GetReductionTimeRemaining(ca, a.afflictionType));
+                            string candidate = string.IsNullOrEmpty(tm)
+                                ? percentText
+                                : percentText + "(" + tm + ")";
+                            if (txt.GetPreferredValues(candidate).x > a.width)
+                                candidate = percentText;
+                            if (txt.GetPreferredValues(candidate).x <= a.width)
+                            {
+                                if (txt.text != candidate) txt.text = candidate;
+                                SetActive(txt, true);
+                            }
+                            else
+                            {
+                                SetActive(txt, false);
+                            }
                         }
                         else
                         {
@@ -139,8 +171,13 @@ namespace PlayersInfo.Patches
         {
             _staminaValueText = null;
             _extraValueText = null;
+            _hungerCountdownText = null;
             _afflictionTexts = null;
             _initedFor = null;
+            _nextValueRefreshTime = 0f;
+            _nextAfflictionRefreshTime = 0f;
+            _nextHungerCalculationTime = 0f;
+            _cachedHungerTime = string.Empty;
         }
 
         private static void EnsureInit(StaminaBar bar)
@@ -153,6 +190,9 @@ namespace PlayersInfo.Patches
 
                 if (bar.extraBarStamina != null && _extraValueText == null)
                     _extraValueText = AddStretchText(bar.extraBarStamina.gameObject, "PI_LocalExtraStaminaValue", 20f, false);
+
+                if (bar.fullBar != null && _hungerCountdownText == null)
+                    _hungerCountdownText = AddFloatingText(bar.fullBar.gameObject, "PI_LocalHungerCountdown", 14f);
 
                 if (bar.afflictions != null && _afflictionTexts == null)
                 {
@@ -211,6 +251,54 @@ namespace PlayersInfo.Patches
             SetActive(txt, true);
         }
 
+        private static void UpdateHungerCountdown(StaminaBar bar, Character displayCharacter, bool displayDead)
+        {
+            if (_hungerCountdownText == null || _staminaValueText == null || bar == null
+                || displayCharacter == null || displayDead
+                || !DisplayCharacterHelper.IsLocalDisplay(displayCharacter))
+            {
+                SetActive(_hungerCountdownText, false);
+                return;
+            }
+
+            if (Time.unscaledTime >= _nextHungerCalculationTime)
+            {
+                _nextHungerCalculationTime = Time.unscaledTime + AfflictionRefreshInterval;
+                float seconds = AfflictionTimeHelper.GetHungerTickTimeRemaining(displayCharacter);
+                _cachedHungerTime = seconds > 0f ? AfflictionTimeHelper.FormatTime(seconds) : string.Empty;
+            }
+
+            if (string.IsNullOrEmpty(_cachedHungerTime) || !_staminaValueText.gameObject.activeSelf)
+            {
+                SetActive(_hungerCountdownText, false);
+                return;
+            }
+
+            string suffix = " (" + _cachedHungerTime + ")";
+            float width = bar.staminaBar != null ? bar.staminaBar.sizeDelta.x : 0f;
+            float preferred = _staminaValueText.GetPreferredValues(_staminaValueText.text + suffix).x;
+            if (preferred <= width)
+            {
+                string combined = _staminaValueText.text + suffix;
+                if (_staminaValueText.text != combined) _staminaValueText.text = combined;
+                SetActive(_hungerCountdownText, false);
+            }
+            else
+            {
+                string floating = "(" + _cachedHungerTime + ")";
+                if (_hungerCountdownText.text != floating) _hungerCountdownText.text = floating;
+                float floatingWidth = _hungerCountdownText.GetPreferredValues(floating).x + 8f;
+                var rt = _hungerCountdownText.rectTransform;
+                var size = rt.sizeDelta;
+                if (Mathf.Abs(size.x - floatingWidth) > 0.1f)
+                {
+                    size.x = floatingWidth;
+                    rt.sizeDelta = size;
+                }
+                SetActive(_hungerCountdownText, true);
+            }
+        }
+
         private static void SetActive(TMP_Text txt, bool active)
         {
             if (txt == null) return;
@@ -222,6 +310,7 @@ namespace PlayersInfo.Patches
         {
             SetActive(_staminaValueText, false);
             SetActive(_extraValueText, false);
+            SetActive(_hungerCountdownText, false);
             if (_afflictionTexts != null)
             {
                 for (int i = 0; i < _afflictionTexts.Length; i++) SetActive(_afflictionTexts[i], false);
@@ -263,6 +352,19 @@ namespace PlayersInfo.Patches
                 PluginLogger.ThrottleWarn("local_bar_text", "LocalStaminaBarPatch.AddStretchText failed: " + ex.Message);
                 return null;
             }
+        }
+
+        private static TMP_Text AddFloatingText(GameObject host, string name, float fontSize)
+        {
+            var text = AddStretchText(host, name, fontSize, false);
+            if (text == null) return null;
+            var rt = text.rectTransform;
+            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = new Vector2(120f, 20f);
+            rt.anchoredPosition = new Vector2(0f, -20f);
+            text.color = new Color(1f, 0.9f, 0.25f, 1f);
+            return text;
         }
 
     }

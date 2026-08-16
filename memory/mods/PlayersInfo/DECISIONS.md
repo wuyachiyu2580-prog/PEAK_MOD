@@ -1,6 +1,6 @@
 # PlayersInfo Decisions
 
-Last updated: 2026-08-14
+Last updated: 2026-08-16
 
 ## Architecture
 
@@ -32,6 +32,13 @@ Last updated: 2026-08-14
 - In PEAK 2.0.a, `CharacterData.extraStamina` is already clamped by petrify. PlayersInfo must display it as supplied and must not apply the petrify reduction again.
 - Teammate bar ordering defaults to `Stable`: distance selects the nearest teammates, while the existing displayed order determines their vertical positions. `Distance` remains available for users who explicitly want distance order.
 - PEAK 2.1.a review found no breaking changes in PlayersInfo's referenced HUD, stamina, affliction, character sync, or inventory APIs. Do not add compatibility code until an in-game regression is observed.
+- Starting with 0.2.0, the default `Display.Anchor` is `BottomLeft`. On upgrade, persisted `TopLeft` values migrate, while the other anchor values are preserved.
+- Starting with 0.2.1, each teammate bar is permanently associated with the existing `stableId`; distance/range changes only control visibility and sibling order, so one player's bar cannot inherit another player's values or interpolation state.
+- Display data must resolve through `observedCharacter` first and `localCharacter` second. This same target is used for stamina, extra stamina, afflictions, countdowns, and the spectator nearby-distance center. The spectator center is configurable as `LocalCharacter` or `ObservedCharacter`, with the latter as the default.
+- Every cloned teammate bar owns a `TeammateBarAffliction` component. Vanilla `BarAffliction` is removed from the clone because it can read the global observer target implicitly; PlayersInfo computes the target value, width, and visibility itself.
+- Teammate inventory display is an ordered enum: `Disabled` (do not show the row), `ContentsOnly` (show actual backpack contents), and `ContentsAndJetpackFuel` (also show jetpack fuel). The old boolean config key is intentionally reused: `true` migrates to `ContentsOnly`, `false` to `Disabled`, and unrelated config entries are untouched.
+- Backpack inner-slot count comes from the backpack visual/type, with explicit support for no contents, two-slot fanny packs, and four-slot normal backpacks. The data model may still contain four serialized item slots; unused capacity must remain hidden.
+- Durability is rendered as a bottom horizontal progress bar, with the icon above it; cooked-food icon color follows `ItemCooking.GetCookColor()`. Dynamic text placement uses TMP preferred width to avoid overlapping stamina, names, and countdowns.
 
 ## Diagnostics
 
@@ -45,3 +52,4 @@ Last updated: 2026-08-14
 - Do not bypass `TmpOutlineHelper` for new TMP text.
 - Do not duplicate `GetChineseCapableFont`-style logic in other files; always call `FontHelper.GetChineseCapable()`.
 - Do not add gameplay behavior to PlayersInfo; keep it display-only.
+- Do not bind a cloned teammate bar to display position or the global `Character.observedCharacter`; target identity and target data must remain explicit.

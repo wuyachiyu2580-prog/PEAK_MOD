@@ -107,6 +107,9 @@
 
 ## PlayersInfo
 
+- [ ] 发布前在 PEAK 2.1.a 实机验证 0.2.1 的左下角默认位置、旧配置迁移、石化值、额外体力当前/上限、队友物品、背包容量/燃料和稳定排序。
+- [ ] 实机验证观战中心下拉项 `LocalCharacter` / `ObservedCharacter`，确认死亡、切换目标和无效观战目标不会串用本机数据。
+- [ ] 实机验证饥饿倒计时、队友耐久进度条、熟食图标颜色和三档队友背包显示；同时确认开启物品栏时的帧率和 GC 开销。
 - [ ] 实机验证 2026-05-21 配置修复：旧配置是否迁移到 `Display` / `Advanced`，`EnableStaminaBar=false` 是否只隐藏队友条，`Anchor` / `OffsetX` / `OffsetY` 是否能移动 HUD，中文语言 + PEAKLib.ModConfig 时配置分区/选项/枚举/描述是否中文显示，无 ModConfig 时是否正常启动。
 - [ ] 验证 6 人以上队伍 HUD 布局是否溢出，并决定滚动、分栏或折叠策略。
 - [ ] 验证超高 DPI 下 TMP 描边是否仍清晰，必要时加入缩放补偿。
@@ -135,5 +138,17 @@
 - [ ] 确认线上 Supabase 已应用 `20260720120000_add_accounts_map_ownership_and_likes.sql` 和 `20260720130000_add_map_json_revisions.sql`，并确认 `SUPABASE_SERVICE_ROLE_KEY` 配置存在。
 - [x] 网页端已部署 `POST /api/auth/sign-out`；线上空 JSON 请求不带 Bearer token 返回 `401` 和 `Cache-Control: no-store`。仍需使用真实账号在游戏内验证有效 token 能撤销当前 refresh session。
 - [ ] UI 美化/框架重构后置：用户暂不要求从 IMGUI 改为 uGUI 或 UI Toolkit；恢复任务前先重新确认范围和视觉目标。
+
+## WhereIsThing
+
+- [ ] 进 PEAK 2.1.a 实机确认 ItemDatabase 加载时机、窗口打开、搜索/类别/语言切换和中文字体。
+- [ ] 实机验证地面物品、手持物品、落地背包内物品的位置标签，以及拾取/丢弃/场景重载后的清理。
+- [ ] 实机验证常驻与计时显示、Alt+C 与 C 的输入行为、窗口关闭后的鼠标和玩家控制恢复。
+- [ ] 观察大量物品标签和 0.5 秒补扫的性能；必要时按可见区域、距离或活动物品列表进一步收窄。
+- [ ] 根据实机物品名称和 ItemTags 修正类别启发式；补齐特殊容器或嵌套背包规则。
+- [ ] 实机确认同名物品组内所有 itemID 都能被扫描，且不同变体不会误合并；若误合并，优先把合并键从显示名收窄到游戏 `UIData.itemName`。
+- [ ] 实机确认 `Luggage.ALL_LUGGAGE` 在开箱前能显示、开箱后能清理，且不会把 RespawnChest 等特殊 Spawner 误当普通行李箱。
+- [ ] 根据截图调整自适应网格的最小卡片宽度、列数上限和长名称省略策略。
+- [ ] 完成发行 `0.1.0` 的 README、CHANGELOG、manifest、icon、DLL 和 zip，发布前重新确认 2.1.a DLL 版本。
 
 

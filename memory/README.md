@@ -1,6 +1,6 @@
 ﻿# PEAK MOD Memory
 
-更新时间：2026-08-14
+更新时间：2026-08-16
 
 这是项目记忆的唯一入口。目标是让新的 AI 智能体在 1 到 3 分钟内知道：当前有哪些 MOD、近期做了什么、还有什么没做、哪些规则不能违反。
 
@@ -35,9 +35,16 @@
 - 用户明确要求 `DreamyAscent永久暂停`。
 - `DreamyAscent` 现在是永久暂停/归档项目；除非用户明确恢复，不再继续 DA 的功能、日志、构建、诊断或 TODO。
 
-## 2026-06-04 PlayersInfo 发布状态
+## 2026-08-16 PlayersInfo 状态
 
-- `PlayersInfo` 当前版本线仍是 `0.1.1`。
+- `PlayersInfo` 当前源码和 profile DLL 版本为 `0.2.1`。
+- 0.2.1 已整合稳定玩家条绑定、统一观战目标、独立异常组件、饥饿倒计时、队友耐久条、熟食图标颜色，以及按背包实际容量显示内容/喷气背包燃料的三级配置。
+- PlayersInfo 直接编译输出 DLL 路径：`C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`；后续构建直接写入该 profile，不再输出到测试环境。
+- 0.2.0 左下角锚点和旧配置迁移仍然有效；旧版本历史记录保留在 PlayersInfo memory 四件套中。0.2.1 新增功能仍需 PEAK 2.1.a 实机验证。
+
+## 2026-06-04 PlayersInfo 历史发布状态
+
+- 当时 `PlayersInfo` 当前版本线为 `0.1.1`。
 - `发行/0.1.1/PlayersInfo.dll` 已包含 2026-05-24 队友临时体力数字裁切修复；2026-05-30 已同步 README / CHANGELOG。
 - `发行/0.1.1/wuyachiyu-PlayersInfo-0.1.1.zip` 已存在，大小 `158802`，zip 内 README/CHANGELOG 含临时体力裁切修复说明，发布 DLL 与测试环境 DLL 哈希一致。
 - 下次接手 PlayersInfo 先读 `mods/PlayersInfo/temp/2026-06-04.md`，再读 `RECENT.md`。
@@ -67,10 +74,11 @@
 
 - `ItemInfoCN`：物品信息中文化（1.0.0 已发布）。入口：`mods/ItemInfoCN/README.md`。
 - `Lantern_ShootZombies_Night`：灯笼、打僵尸、日夜和寒冷/回暖相关功能整合（0.2.1）。入口：`mods/Lantern_ShootZombies_Night/README.md`。
-- `PlayersInfo`：队友状态、物品栏、灯笼状态等 HUD 信息（0.1.1，当前 zip 已验证）。入口：`mods/PlayersInfo/README.md`。
+- `PlayersInfo`：队友状态、物品栏和观战相关 HUD 信息（0.2.1）。项目直接编译输出到 PEAK 2.0.a profile。入口：`mods/PlayersInfo/README.md`。
 - `DreamyAscent`：地形定制中文化与功能修复（永久暂停/归档）。入口：`mods/DreamyAscent/README.md`。
 - `WhySoLaggy`：性能、RPC、Harmony 和异常行为观测（1.0.3）。入口：`mods/WhySoLaggy/README.md`。
 - `TerrainCustomiserCN`：TerrainCustomiser 中文 UI 版（0.1.2 已发布，对应原版 0.3.2）。入口：`mods/TerrainCustomiserCN/README.md`。
+- `WhereIsThing`：PEAK 2.1.a 多物品位置显示 MOD（0.1.0 基础版，待实机验证）。入口：`mods/WhereIsThing/README.md`。
 
 ## 写入规则（四同步铁律）
 

@@ -1,13 +1,32 @@
 # PlayersInfo Files
 
-Last updated: 2026-08-14
+Last updated: 2026-08-16
 
 ## Paths
 
 - Source: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\PlayersInfo`
 - Project: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\PlayersInfo\PlayersInfo.csproj`
-- Test output: `C:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\plugins\PlayersInfo.dll`
-- Release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.1.1`
+- Direct build output: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`
+- Release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.0`
+
+The project `<OutputPath>` now points directly to the 2.0.a profile above. Future PlayersInfo builds should write the DLL there; do not redirect it back to the workspace test environment.
+
+## Current source 0.2.1
+
+- Version chain currently verified: `.csproj <Version> = 0.2.1`, `PlayersInfoPlugin.PluginVersion = 0.2.1`, `AssemblyInfo = 0.2.1.0`.
+- The current profile DLL at the path above reports `0.2.1.0`; the project is configured to overwrite this file directly on the next build.
+- Current implementation includes stableId-bound teammate bars, unified observed/local display-character resolution, an independent `TeammateBarAffliction`, local hunger countdown, teammate item durability bars, cooked-food icon coloring, and dynamic TMP-width placement.
+- The old `Display.EnableInventoryRow` key is retained as a compatibility key but is now a three-level enum: `Disabled`, `ContentsOnly`, and `ContentsAndJetpackFuel`. Legacy `true` maps to `ContentsOnly`; legacy `false` maps to `Disabled`.
+- Backpack contents use the actual backpack capacity: fanny packs show 2 slots, normal backpacks show 4, and backpacks without contents show no inner slots. Jetpack fuel is shown only in the third mode.
+
+## Release 0.2.0
+
+- Release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.0`.
+- Version chain: `.csproj <Version> = 0.2.0`, `PlayersInfoPlugin.PluginVersion = 0.2.0`, `AssemblyInfo = 0.2.0.0`, `manifest.version_number = 0.2.0`.
+- Loose release files: `README.md`, `CHANGELOG.md`, `manifest.json`, `PlayersInfo.dll`, and `icon.png`.
+- The loose release files are current. An existing `wuyachiyu-PlayersInfo-0.2.0.zip` contains the pre-fix 66048-byte DLL and was intentionally not rebuilt; do not upload that zip as the repaired build.
+- `PlayersInfo.dll` is the Release build copied from `测试环境/BepInEx/plugins/PlayersInfo.dll`; build result was 0 warnings / 0 errors.
+- Default `Display.Anchor` is `BottomLeft`; old persisted `TopLeft` values migrate on startup, while the other anchor values are preserved.
 
 ## Release 0.1.1
 
@@ -37,10 +56,13 @@ dotnet build "C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\Play
 - `Helpers\FontHelper.cs`: shared CJK-capable TMP_FontAsset accessor with 4-tier fallback.
 - `Helpers\AfflictionValueHelper.cs`: shared PEAK 2.0.a-aware normal affliction/petrify value reader.
 - `Helpers\ExtraStaminaValueHelper.cs`: shared petrify-aware extra-stamina cap calculation for displayed current/cap values.
+- `Helpers\DisplayCharacterHelper.cs`: resolves `observedCharacter` first and falls back to `localCharacter`.
+- `Helpers\AfflictionTimeHelper.cs`: local hunger countdown and affliction timing helpers.
 - `Helpers\IconSpriteCache.cs`: inventory icon sprite cache.
 - `MonoBehaviours\TeammateBarsCoordinator.cs`: teammate HUD coordinator.
 - `MonoBehaviours\TeammateBarDriver.cs`: per-teammate stamina and status driver.
 - `MonoBehaviours\TeammateInventoryRow.cs`: teammate inventory row.
+- `MonoBehaviours\TeammateBarAffliction.cs`: PlayersInfo-owned affliction renderer for cloned teammate bars.
 - `MonoBehaviours\TeammateBarsCoordinator.cs`: teammate HUD coordinator, including stable/distance ordering.
 - `Patches\GUIManagerReadyPatch.cs`: GUI readiness guard.
 - `Patches\LocalStaminaBarPatch.cs`: local stamina HUD patch.

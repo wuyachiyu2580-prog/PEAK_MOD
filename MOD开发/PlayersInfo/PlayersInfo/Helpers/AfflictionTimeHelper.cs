@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace PlayersInfo.Helpers
 {
@@ -48,6 +49,53 @@ namespace PlayersInfo.Helpers
                 return reductionTime;
             }
             catch { return 0f; }
+        }
+
+        /// <summary>
+        /// Returns the local player's time until the next vanilla 2.5% hunger tick.
+        /// The incremental hunger accumulator is not synchronized for remote players.
+        /// </summary>
+        public static float GetHungerTickTimeRemaining(Character character)
+        {
+            try
+            {
+                if (!DisplayCharacterHelper.IsLocalDisplay(character)
+                    || character.data == null || !character.data.fullyConscious
+                    || character.isZombie || character.data.isSkeleton
+                    || character.isScoutmaster || character.statusesLocked)
+                    return 0f;
+
+                var afflictions = character.refs != null ? character.refs.afflictions : null;
+                if (afflictions == null || !afflictions.canGetHungry
+                    || SceneManager.GetActiveScene().name == "Airport")
+                    return 0f;
+
+                float hungerRate = afflictions.hungerPerSecond * Ascents.hungerRateMultiplier;
+                if (hungerRate <= 0f || IsInvincible(character.data)) return 0f;
+
+                float progress = Mathf.Clamp(afflictions.GetIncrementalStatus(
+                    CharacterAfflictions.STATUSTYPE.Hunger), 0f, 0.025f);
+                return Mathf.Max(0f, 0.025f - progress) / hungerRate;
+            }
+            catch
+            {
+                return 0f;
+            }
+        }
+
+        private static FieldInfo _isInvincibleField;
+        private static bool _isInvincibleFieldResolved;
+
+        private static bool IsInvincible(CharacterData data)
+        {
+            if (data == null) return false;
+            if (!_isInvincibleFieldResolved)
+            {
+                _isInvincibleFieldResolved = true;
+                _isInvincibleField = typeof(CharacterData).GetField("isInvincible",
+                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            }
+            return _isInvincibleField != null && (bool)_isInvincibleField.GetValue(data);
         }
 
         private static float GetThornsRemaining(CharacterAfflictions ca)

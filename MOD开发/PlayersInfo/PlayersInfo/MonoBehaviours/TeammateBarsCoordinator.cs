@@ -19,7 +19,11 @@ namespace PlayersInfo.MonoBehaviours
         public static TeammateBarsCoordinator Instance { get; private set; }
 
         private readonly List<TeammateBarDriver> _pool = new List<TeammateBarDriver>();
+        private readonly Dictionary<int, TeammateBarDriver> _driversByStableId = new Dictionary<int, TeammateBarDriver>();
+        private readonly Dictionary<TeammateBarDriver, int> _stableIdByDriver = new Dictionary<TeammateBarDriver, int>();
+        private readonly List<int> _driverCleanupScratch = new List<int>();
         private StaminaBar _origBar;
+        private bool _layoutInitialized;
 
         private float _nextRefreshTime;
         private const float RefreshInterval = 0.25f;
@@ -35,6 +39,7 @@ namespace PlayersInfo.MonoBehaviours
         // 避免距离恶在 NearbyRange 边缘抹动造成体力条反复进出、Bind/Hide 闪烁。
         private const float HysteresisMargin = 5f;
         private static readonly HashSet<int> s_displayOrderSet = new HashSet<int>();
+        private static readonly HashSet<int> s_currentStableIds = new HashSet<int>();
 
         // 网络波动加固：玩家因 Photon 重连 / 跨段传送 / Owner 短暂为 null 而临时从 mates 列表丢失时，
         // 维持已显示状态 RetainOnLossDelay 秒，避免体力条莫名其妙跳/闪一下。
@@ -78,7 +83,11 @@ namespace PlayersInfo.MonoBehaviours
                     PluginLogger.ThrottleWarn("bars_init", "GUIManager.instance.bar not ready, skip init.");
                     return;
                 }
-                _origBar = GUIManager.instance.bar;
+                if (!object.ReferenceEquals(_origBar, GUIManager.instance.bar))
+                {
+                    _origBar = GUIManager.instance.bar;
+                    _layoutInitialized = false;
+                }
                 FixBarGroupOnce();
             }
             catch (Exception ex)
@@ -92,16 +101,57 @@ namespace PlayersInfo.MonoBehaviours
         {
             try
             {
+                if (_layoutInitialized) return;
                 var parentRt = _origBar.transform.parent as RectTransform;
                 if (parentRt == null) return;
                 parentRt.sizeDelta = new Vector2(600f, 600f);
                 ApplyConfiguredAnchor(parentRt);
                 var vlg = parentRt.GetComponent<VerticalLayoutGroup>();
                 if (vlg != null) vlg.spacing = 25f;
+                ConfigureLocalExtraBar();
+                _layoutInitialized = true;
             }
             catch (Exception ex)
             {
                 PluginLogger.ThrottleWarn("fix_bargroup", "FixBarGroup failed: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// PEAK 的本地 extraBar 原本是 BarGroup 的兄弟节点。BarGroup 被 PlayersInfo
+        /// 改成可容纳队友条后，VerticalLayoutGroup 会把它排成额外的一行。将它挂到
+        /// 本地 fullBar 上，并按 HUD 锚点放到安全侧，避免额外条跳到布局底部。
+        /// </summary>
+        private void ConfigureLocalExtraBar()
+        {
+            try
+            {
+                if (_origBar == null || _origBar.extraBar == null || _origBar.fullBar == null)
+                    return;
+
+                var extra = _origBar.extraBar;
+                if (extra.parent != _origBar.fullBar)
+                    extra.SetParent(_origBar.fullBar, false);
+
+                bool rightSide = ShouldPlaceExtraTextOnRight();
+                if (rightSide)
+                {
+                    extra.anchorMin = new Vector2(1f, 0.5f);
+                    extra.anchorMax = new Vector2(1f, 0.5f);
+                    extra.pivot = new Vector2(0f, 0.5f);
+                    extra.anchoredPosition = new Vector2(8f, 0f);
+                }
+                else
+                {
+                    extra.anchorMin = new Vector2(0f, 0.5f);
+                    extra.anchorMax = new Vector2(0f, 0.5f);
+                    extra.pivot = new Vector2(1f, 0.5f);
+                    extra.anchoredPosition = new Vector2(-8f, 0f);
+                }
+            }
+            catch (Exception ex)
+            {
+                PluginLogger.ThrottleWarn("local_extra_layout", "ConfigureLocalExtraBar failed: " + ex.Message);
             }
         }
 
@@ -170,13 +220,23 @@ namespace PlayersInfo.MonoBehaviours
                 return;
             }
             FixBarGroupOnce();
-            SyncExtraTextPlacement();
 
             var tracker = TeamRosterTracker.Instance;
             if (tracker == null) return;
 
             var local = Character.localCharacter;
-            if (local == null || local.Equals(null)) { HideAll(); return; }
+            var displayCharacter = DisplayCharacterHelper.GetObservedOrLocal();
+            if (local == null || local.Equals(null) || displayCharacter == null || displayCharacter.Equals(null))
+            {
+                HideAll();
+                return;
+            }
+
+            bool spectating = displayCharacter != local;
+            bool useLocalCenter = PlayersInfoPlugin.CfgSpectatorNearbyCenter != null
+                && PlayersInfoPlugin.CfgSpectatorNearbyCenter.Value
+                    == PlayersInfoPlugin.SpectatorNearbyCenterMode.LocalCharacter;
+            var focus = spectating && useLocalCenter ? local : displayCharacter;
 
             int maxN = PlayersInfoPlugin.CfgMaxNearbyCount != null ? PlayersInfoPlugin.CfgMaxNearbyCount.Value : 3;
             float range = PlayersInfoPlugin.CfgNearbyRange != null ? PlayersInfoPlugin.CfgNearbyRange.Value : 30f;
@@ -184,8 +244,6 @@ namespace PlayersInfo.MonoBehaviours
 
             // 按距离升序收集：用 Character.Center 而不是 transform.position
             // （PEAK 的 Character.transform 是逻辑根，一直在原点）
-            // 灵魂状态（本地角色死亡）下 local.Center 会跟观战镜头跳动 → 距离排序剧变→条抜动
-            // 解决：死亡时取消距离排序，按 ViewID 稳定展示
             _scratch.Clear();
             s_visibleScratch.Clear();
             s_visibleById.Clear();
@@ -194,24 +252,27 @@ namespace PlayersInfo.MonoBehaviours
             s_displayOrderSet.Clear();
             for (int doi = 0; doi < _displayOrder.Count; doi++) s_displayOrderSet.Add(_displayOrder[doi]);
             var mates = tracker.Teammates;
-            bool localDead = (local.data != null && local.data.dead);
-            Vector3 lp = local.Center;
+            Vector3 focusPosition = focus.Center;
+            s_currentStableIds.Clear();
             for (int i = 0; i < mates.Count; i++)
             {
                 var c = mates[i];
                 if (c == null || c.Equals(null)) continue;
                 if (c.data == null) continue;
                 if (c.photonView == null) continue;
+                int currentStableId = GetStableCharacterId(c);
+                if (currentStableId == int.MinValue) continue;
+                s_currentStableIds.Add(currentStableId);
+                // 默认本地体力条已经显示观战目标，队友列表不重复显示它。
+                // 开启本地中心后，观战目标属于本地附近玩家，可正常列入附近列表。
+                if (c == displayCharacter && !useLocalCenter) continue;
                 // Owner 短暂为 null 不再剔除（网络抖动期间）：依靠 GetStableCharacterId 的 viewId→actor 缓存
                 // 把同一玩家识别成同一 stableId，避免被当作新玩家造成体力条切换。
-                float d = localDead
-                    ? c.photonView.ViewID   // 死亡时用 ViewID 做稳定序
-                    : Vector3.Distance(lp, c.Center);
-                if (!localDead && range > 0f)
+                float d = Vector3.Distance(focusPosition, c.Center);
+                if (range > 0f)
                 {
                     // 已显示玩家用宽松阈值 range+HysteresisMargin，避免边缘抹动 → 体力条反复闪烁
-                    int sidForRange = GetStableCharacterId(c);
-                    float effectiveRange = s_displayOrderSet.Contains(sidForRange)
+                    float effectiveRange = s_displayOrderSet.Contains(currentStableId)
                         ? range + HysteresisMargin
                         : range;
                     if (d > effectiveRange) continue;
@@ -283,8 +344,11 @@ namespace PlayersInfo.MonoBehaviours
                 }
             }
 
-            int showCount = s_visibleScratch.Count;
             ResolveDisplayOrder(s_visibleScratch);
+            s_displayOrderSet.Clear();
+            for (int i = 0; i < _displayOrder.Count; i++) s_displayOrderSet.Add(_displayOrder[i]);
+            EnsureDriversForDisplayOrder(s_visibleById);
+            ApplyDriverSiblingOrder();
 
             // 距离调试日志：节流输出自己 → 各队友 的距离
             if (PluginLogger.DebugEnabled && Time.unscaledTime >= _nextDistLogTime)
@@ -306,35 +370,85 @@ namespace PlayersInfo.MonoBehaviours
                 catch { }
             }
 
-            // 确保 pool 足够（最多到 maxN）
-            while (_pool.Count < showCount)
-            {
-                var drv = CreateBar();
-                if (drv == null) break;
-                _pool.Add(drv);
-            }
+            CleanupUntrackedDrivers();
 
-            // 绑定前 showCount 个，其余隐藏
+            // 按 stableId 显示和绑定，Driver 不在不同玩家之间交换。
             for (int i = 0; i < _pool.Count; i++)
             {
                 var drv = _pool[i];
                 if (drv == null) continue;
-                if (i < showCount)
+                int stableId = GetDriverStableId(drv);
+                if (stableId != int.MinValue && s_displayOrderSet.Contains(stableId)
+                    && s_visibleById.TryGetValue(stableId, out var c) && c != null)
                 {
-                    if (i >= _displayOrder.Count || !s_visibleById.TryGetValue(_displayOrder[i], out var c) || c == null)
-                    {
-                        if (drv.gameObject.activeSelf) drv.gameObject.SetActive(false);
-                        continue;
-                    }
                     if (!drv.gameObject.activeSelf) drv.gameObject.SetActive(true);
-                    // 目标变化时才重绑，避免每 0.25s 都重置
                     if (drv.Target != c) drv.BindTarget(c);
-                    // 子组件 target 同步
                     if (drv.InventoryRow != null) drv.InventoryRow.Target = c;
                 }
                 else
                 {
                     if (drv.gameObject.activeSelf) drv.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        private void EnsureDriversForDisplayOrder(Dictionary<int, Character> visibleById)
+        {
+            for (int i = 0; i < _displayOrder.Count; i++)
+            {
+                int stableId = _displayOrder[i];
+                if (_driversByStableId.ContainsKey(stableId)) continue;
+                if (!visibleById.TryGetValue(stableId, out var target) || target == null) continue;
+
+                var driver = CreateBar();
+                if (driver == null) continue;
+                _driversByStableId[stableId] = driver;
+                _stableIdByDriver[driver] = stableId;
+                _pool.Add(driver);
+                driver.BindTarget(target);
+            }
+        }
+
+        private void ApplyDriverSiblingOrder()
+        {
+            int siblingIndex = 0;
+            for (int i = 0; i < _displayOrder.Count; i++)
+            {
+                if (!_driversByStableId.TryGetValue(_displayOrder[i], out var driver) || driver == null)
+                    continue;
+                if (driver.transform.GetSiblingIndex() != siblingIndex)
+                    driver.transform.SetSiblingIndex(siblingIndex);
+                siblingIndex++;
+            }
+        }
+
+        private int GetDriverStableId(TeammateBarDriver driver)
+        {
+            if (driver == null) return int.MinValue;
+            return _stableIdByDriver.TryGetValue(driver, out var stableId) ? stableId : int.MinValue;
+        }
+
+        private void CleanupUntrackedDrivers()
+        {
+            _driverCleanupScratch.Clear();
+            foreach (var pair in _driversByStableId)
+            {
+                int stableId = pair.Key;
+                if (s_currentStableIds.Contains(stableId) || s_retainedById.ContainsKey(stableId))
+                    continue;
+                _driverCleanupScratch.Add(stableId);
+            }
+
+            for (int i = 0; i < _driverCleanupScratch.Count; i++)
+            {
+                int stableId = _driverCleanupScratch[i];
+                if (!_driversByStableId.TryGetValue(stableId, out var driver)) continue;
+                _driversByStableId.Remove(stableId);
+                if (driver != null)
+                {
+                    _stableIdByDriver.Remove(driver);
+                    _pool.Remove(driver);
+                    UnityEngine.Object.Destroy(driver.gameObject);
                 }
             }
         }
@@ -386,7 +500,7 @@ namespace PlayersInfo.MonoBehaviours
                     driver.campfire = origCompOnClone.campfire;
                     driver.defaultBackingColor = origCompOnClone.defaultBackingColor;
                     driver.outOfStaminaBackingColor = origCompOnClone.outOfStaminaBackingColor;
-                    driver.afflictions = origCompOnClone.afflictions;
+                    driver.afflictions = ConvertAfflictions(origCompOnClone.afflictions);
 
                     // 温和放弃：extraBar 克隆方案太脂肩（原版 extraBar 在 BarGroup 下和 Bar 同级，
                     // 克隆后坐标换算、parent 选择、sibling order 都有坑）。
@@ -404,7 +518,7 @@ namespace PlayersInfo.MonoBehaviours
                 else
                 {
                     // 若原版组件不在（异常情况），手动抓 afflictions
-                    driver.afflictions = cloneGo.GetComponentsInChildren<BarAffliction>(true);
+                    driver.afflictions = ConvertAfflictions(cloneGo.GetComponentsInChildren<BarAffliction>(true));
                 }
 
                 // 名字标签
@@ -437,10 +551,15 @@ namespace PlayersInfo.MonoBehaviours
                 if (driver.fullBar != null)
                 {
                     var hostRect = cloneTransform as RectTransform;
-                    if (PlayersInfoPlugin.CfgEnableInventoryRow != null && PlayersInfoPlugin.CfgEnableInventoryRow.Value)
+                    var inventoryMode = PlayersInfoPlugin.CfgInventoryDisplayMode != null
+                        ? PlayersInfoPlugin.CfgInventoryDisplayMode.Value
+                        : PlayersInfoPlugin.TeammateInventoryDisplayMode.ContentsOnly;
+                    if (inventoryMode != PlayersInfoPlugin.TeammateInventoryDisplayMode.Disabled)
                     {
                         float invWidth = Mathf.Max(180f, driver.fullBar.rect.width);
-                        driver.InventoryRow = TeammateInventoryRow.Build(hostRect, invWidth, 22f, 1.5f);
+                        bool showJetpackFuel = inventoryMode == PlayersInfoPlugin.TeammateInventoryDisplayMode.ContentsAndJetpackFuel;
+                        float rowHeight = showJetpackFuel ? 28f : 22f;
+                        driver.InventoryRow = TeammateInventoryRow.Build(hostRect, invWidth, rowHeight, 1.5f, showJetpackFuel);
                         var irt = driver.InventoryRow.GetComponent<RectTransform>();
                         irt.anchorMin = new Vector2(0f, 0.5f);
                         irt.anchorMax = new Vector2(0f, 0.5f);
@@ -464,6 +583,26 @@ namespace PlayersInfo.MonoBehaviours
                 PluginLogger.Error("CreateBar failed: " + ex.Message);
                 return null;
             }
+        }
+
+        private static TeammateBarAffliction[] ConvertAfflictions(BarAffliction[] sources)
+        {
+            if (sources == null || sources.Length == 0)
+                return new TeammateBarAffliction[0];
+
+            var result = new TeammateBarAffliction[sources.Length];
+            for (int i = 0; i < sources.Length; i++)
+            {
+                var source = sources[i];
+                if (source == null) continue;
+                var target = source.gameObject.GetComponent<TeammateBarAffliction>();
+                if (target == null) target = source.gameObject.AddComponent<TeammateBarAffliction>();
+                target.Initialize(source);
+                result[i] = target;
+                source.enabled = false;
+                UnityEngine.Object.Destroy(source);
+            }
+            return result;
         }
 
         private static bool ShouldPlaceExtraTextOnRight()
@@ -906,12 +1045,17 @@ namespace PlayersInfo.MonoBehaviours
                 if (drv != null && drv.gameObject != null) UnityEngine.Object.Destroy(drv.gameObject);
             }
             _pool.Clear();
+            _driversByStableId.Clear();
+            _stableIdByDriver.Clear();
             _displayOrder.Clear();
             _pendingOrder.Clear();
             _pendingOrderSince = -1f;
+            _layoutInitialized = false;
             // 跨场景/配置重建时清掉网络波动相关缓存，避免脏数据残留
             s_retainedById.Clear();
             s_viewIdToActor.Clear();
+            s_currentStableIds.Clear();
+            s_displayOrderSet.Clear();
         }
 
         public void OnConfigChanged()
@@ -919,6 +1063,13 @@ namespace PlayersInfo.MonoBehaviours
             // 最简单：全清重建（配置变更不频繁）
             ClearAll();
             _nextRefreshTime = 0f;
+        }
+
+        public void RefreshLayout()
+        {
+            _layoutInitialized = false;
+            FixBarGroupOnce();
+            SyncExtraTextPlacement();
         }
 
         private static int GetStableCharacterId(Character c)

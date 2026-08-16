@@ -1,7 +1,22 @@
 ﻿# Memory Changelog
 
+## 2026-08-16
+
+- [PlayersInfo] 同步 0.2.1 最新实现到 memory：稳定 ID 固定绑定队友体力条、统一 `observedCharacter -> localCharacter` 显示目标、独立 `TeammateBarAffliction`、本地饥饿倒计时、队友耐久进度条、熟食图标颜色和 TMP 实际宽度布局。
+- [PlayersInfo] 同步队友背包类型显示：根据实际容量显示无背包/两格滑稽背包/四格普通背包，新增可选喷气背包燃料显示；沿用 `Display.EnableInventoryRow` 配置键，将旧布尔值迁移为 `Disabled` / `ContentsOnly` / `ContentsAndJetpackFuel`，不影响其他配置。
+- [PlayersInfo] 更正并落实 DLL 输出规则：`PlayersInfo.csproj <OutputPath>` 已改为 `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\`，后续 PlayersInfo 编译直接写入 profile，不再输出到测试环境或依赖手动复制。
+- [规则] 更新 `common/02_工程与构建规范.md`：以后实际使用某个 MOD 时再将其 DLL 输出切换到 2.0.a profile；本轮不批量修改其他 MOD 的项目文件。
+
 ## 2026-08-14
 
+- [新增] `WhereIsThing`：建立 PEAK 2.1.a 多物品位置显示 MOD 的 memory 四件套和临时恢复入口，记录动态 ItemDatabase、游戏内 Localization、类别初稿、快捷键、窗口边界和实机待办。
+- [新增] `MOD开发/WhereIsThing`：完成 0.1.0 基础工程、物品选择窗口、实时标签、常驻/计时显示和配置持久化；Release 构建通过，0 warnings / 0 errors，尚未制作发布包。
+- [修改] `WhereIsThing` 构建输出：从工作区测试环境切换到 `r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins`，并同步使用该 profile 的 BepInEx 引用。
+- [修改] `WhereIsThing`：合并同名 itemID 组，接入 `Luggage.ALL_LUGGAGE`，新增地面/手持/背包/行李箱范围复选框，细化分类，改为自适应多列窗口，并在窗口存续期间接管鼠标指针；Release 构建继续为 0 warnings / 0 errors。
+- [修改] `WhereIsThing`：目录首次加载时将旧配置命中的单个同名变体扩展为完整选择组，避免旧配置出现显示组与实际扫描不一致。
+
+- [PlayersInfo] 修复 0.2.0 发布前两个 HUD 问题：本地额外体力条不再被队友条布局组排到面板底部，改为跟随本地主条安全侧；死亡状态清空并隐藏本地/队友体力、额外体力和异常百分比文字，避免旧数值重叠。Release 构建 0 警告 0 错误；loose DLL 已更新，现有 zip 仍是修复前版本且按要求未重打。
+- [PlayersInfo] 准备 0.2.0 发布：默认 HUD 锚点改为左下角；旧版保存的左上角配置启动时迁移到左下角，其余锚点保留；版本链、发行说明和 loose release 文件已同步，未生成 zip；Release 构建 0 警告 0 错误。
 - [新增] `common/07_PEAK版本与反编译基线.md`：记录 PEAK 2.1.a 相对 2.0.a 的 16 个业务级变化、现有 MOD 兼容结论和 AntiSphere/邀请/存档待验证风险；同步入口、索引和根 TODO。
 - [PlayersInfo] Changed local and teammate extra-stamina text to show current/cap (`+current/cap`), using the game's petrify-aware cap formula. Release build passed 0/0; release package awaits in-game verification.
 - [PlayersInfo] Reviewed PEAK 2.1.a source and the installed game assembly. HUD, stamina, petrify, character sync, and inventory APIs used by PlayersInfo remain compatible; baseline Release build passed 0/0, with no source change required.

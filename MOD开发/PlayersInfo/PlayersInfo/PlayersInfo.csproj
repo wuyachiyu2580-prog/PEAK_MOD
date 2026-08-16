@@ -4,13 +4,13 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net4.7.2</TargetFramework>
     <AssemblyName>PlayersInfo</AssemblyName>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RootNamespace>PlayersInfo</RootNamespace>
-    <!-- 编译后直接输出到测试环境 plugins 目录 -->
+    <!-- 编译后直接输出到 2.0.a profile plugins 目录 -->
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\plugins\</OutputPath>
+    <OutputPath>C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

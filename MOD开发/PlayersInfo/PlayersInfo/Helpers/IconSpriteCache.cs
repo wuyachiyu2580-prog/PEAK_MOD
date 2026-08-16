@@ -11,6 +11,21 @@ namespace PlayersInfo.Helpers
     {
         // 以 Item 实例的 InstanceID 作为 key（Item 是 ScriptableObject/MonoBehaviour prefab，InstanceID 稳定）
         private static readonly Dictionary<int, Sprite> _cache = new Dictionary<int, Sprite>();
+        private static Sprite _whiteSprite;
+        private static Texture2D _whiteTexture;
+
+        public static Sprite GetWhiteSprite()
+        {
+            if (_whiteSprite != null) return _whiteSprite;
+            _whiteTexture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+            _whiteTexture.SetPixel(0, 0, Color.white);
+            _whiteTexture.Apply();
+            _whiteTexture.hideFlags = HideFlags.DontSave;
+            _whiteSprite = Sprite.Create(_whiteTexture, new Rect(0f, 0f, 1f, 1f),
+                new Vector2(0.5f, 0.5f), 100f);
+            _whiteSprite.hideFlags = HideFlags.DontSave;
+            return _whiteSprite;
+        }
 
         public static Sprite Get(Item itemPrefab)
         {
@@ -51,6 +66,16 @@ namespace PlayersInfo.Helpers
                 catch { /* 序列化资源 / 跨场景 Sprite 可能拒绝 Destroy，忽略即可 */ }
             }
             _cache.Clear();
+            if (_whiteSprite != null)
+            {
+                try { Object.Destroy(_whiteSprite); } catch { }
+                _whiteSprite = null;
+            }
+            if (_whiteTexture != null)
+            {
+                try { Object.Destroy(_whiteTexture); } catch { }
+                _whiteTexture = null;
+            }
         }
     }
 }

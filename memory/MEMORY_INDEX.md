@@ -1,6 +1,6 @@
 ﻿# Memory Index
 
-更新时间：2026-08-14
+更新时间：2026-08-16
 
 ## 当前结构
 
@@ -46,12 +46,12 @@
 - `mods/Lantern_ShootZombies_Night/DECISIONS.md`：版本、灯笼同步、本地燃料权威、配置同步、兼容和禁止回退。
 - `mods/Lantern_ShootZombies_Night/FILES.md`：源码路径、构建命令、关键 Helper / Patch 清单。
 
-### PlayersInfo（0.1.1）
+### PlayersInfo（0.2.1）
 
 - `mods/PlayersInfo/README.md`：队友 HUD 聚合概览与功能轮廓。
-- `mods/PlayersInfo/RECENT.md`：0.1.0 首发状态、HUD 聚合、本地体力显示、TMP 描边、2026-05-17 性能优化（脏检查+反射降频+Sprite 销毁）、发布 0.1.1 维护版、三类体力条闪烁修复、2026-05-21 配置审查修复（`EnableStaminaBar`/HUD 位置真实生效、配置分区合并为 `Display` / `Advanced`、旧配置迁移、可选中文 ModConfig 本地化）、2026-05-24 队友临时体力数字裁切修复、2026-05-30 发行文档同步、2026-06-04 已验证 0.1.1 zip 存在且内容包含最新文档/DLL）、2026-08-14 PEAK 2.0.a 石化值、背包 API 和队友条稳定排序兼容修复，以及 2.1.a API 复核和基线构建通过。
+- `mods/PlayersInfo/RECENT.md`：0.1.0 首发状态、HUD 聚合、本地体力显示、TMP 描边、历史性能和闪烁修复、PEAK 2.0.a/2.1.a 兼容、0.2.0 左下角默认锚点，以及 0.2.1 的稳定玩家绑定、观战目标统一、异常状态独立组件、饥饿倒计时、耐久条、熟食颜色和背包类型/燃料显示。
 - `mods/PlayersInfo/DECISIONS.md`：只读展示不发 RPC、HUD 架构、首发发布口径和跨 MOD 数据边界。
-- `mods/PlayersInfo/FILES.md`：源码路径、项目文件、版本和关键文件（含 `Helpers/FontHelper.cs` CJK 字体四级兜底）。
+- `mods/PlayersInfo/FILES.md`：源码路径、项目文件、0.2.1 版本和当前 DLL 输出路径（含 `Helpers/FontHelper.cs`、`Helpers/DisplayCharacterHelper.cs`、`MonoBehaviours/TeammateBarAffliction.cs`）。
 
 ### DreamyAscent（永久暂停/归档）
 
@@ -93,10 +93,21 @@
 - `mods/PeakMapBrowser/FILES.md`：客户端/服务端路径、关键源码、API 文档和构建命令。
 - `mods/PeakMapBrowser/temp/2026-07-30.md`：0.1.1 发布、安全改动和线上退出接口验证摘要。
 
+### WhereIsThing（0.1.0 基础版，待实机验证）
+
+- `mods/WhereIsThing/README.md`：多物品位置显示能力、动态类别初稿和接手入口。
+- `mods/WhereIsThing/RECENT.md`：2.1.a 接口复查、已实现功能、构建状态和剩余验证。
+- `mods/WhereIsThing/DECISIONS.md`：动态 ItemDatabase、游戏 Localization、快捷键、窗口和背包位置边界。
+- `mods/WhereIsThing/FILES.md`：源码路径、依赖、构建命令和输出位置。
+- `mods/WhereIsThing/PLAN.md`：分阶段研究、实机验证、收口和发布计划。
+- `mods/WhereIsThing/temp/2026-08-14.md`：当前阶段压缩恢复摘要。
+
 ## 当前重点
 
+- `WhereIsThing` 当前重点是进 PEAK 2.1.a 实机验证重名合并、行李箱目标、四类范围筛选、自适应多列窗口、中文字体、鼠标恢复和大量目标性能；验证通过后再制作 0.1.0 发布包。
+
 - `Lantern_ShootZombies_Night` 当前重点是实机验证客机本地燃料权威：有备用池时只降备用池、不降灯燃料，且远端 fuel 下降不覆盖本地。
-- `PlayersInfo` 当前已完成 PEAK 2.0.a/2.1.a 兼容复核，额外体力文本已改为显示当前/上限（如 `+45/70`），测试环境 DLL 已重建；待实机验证石化值、队友物品、稳定排序和新数字格式，确认后再决定是否发 0.1.2 并重打 zip。
+- `PlayersInfo` 的 0.2.0 发布准备记录已归档；当前状态以 0.2.1 专属 memory 四件套和上方 2026-08-16 状态为准。0.2.1 仍待用户在 PEAK 2.1.a 中完成多人、观战、背包和性能实机验证。
 - `DreamyAscent` 已于 2026-05-24 永久暂停/归档。此前预览、模板库、Snapshot V2、官方生成链和 zero-output 恢复等资料仅作为历史记录，不作为当前重点推进。
 - `TerrainCustomiserCN` 已发布 0.1.2，对应原版 0.3.2。当前重点是后续玩家反馈漏翻时补 `DisplayNameTranslator.cs`、重建 Release、更新发布包；若玩家反馈旧地图缺失，先核对新持久化目录和旧插件目录，不要自动迁移；任何功能改动前先读 `DECISIONS.md` 的联机/存档兼容禁止回退项。
 - 其他 MOD 新增功能前先读对应 `RECENT.md` 和 `DECISIONS.md` 的"禁止回退"条款。

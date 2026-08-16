@@ -17,10 +17,12 @@ namespace PlayersInfo
     {
         public const string PluginGuid = "com.players.info";
         public const string PluginName = "PlayersInfo";
-        public const string PluginVersion = "0.2.0";
+        public const string PluginVersion = "0.2.1";
 
         public enum HudAnchor { TopLeft, TopRight, BottomLeft, BottomRight }
         public enum TeammateSortMode { Stable, Distance }
+        public enum SpectatorNearbyCenterMode { LocalCharacter, ObservedCharacter }
+        public enum TeammateInventoryDisplayMode { Disabled, ContentsOnly, ContentsAndJetpackFuel }
 
         // ========== Config Entries（全局共享） ==========
         public static ConfigEntry<bool> CfgModEnabled;
@@ -28,7 +30,7 @@ namespace PlayersInfo
         public static ConfigEntry<bool> CfgEnableStaminaBar;
         public static ConfigEntry<bool> CfgShowStaminaValue;
 
-        public static ConfigEntry<bool> CfgEnableInventoryRow;
+        public static ConfigEntry<TeammateInventoryDisplayMode> CfgInventoryDisplayMode;
 
         public static ConfigEntry<HudAnchor> CfgAnchor;
         public static ConfigEntry<float> CfgOffsetX;
@@ -38,6 +40,7 @@ namespace PlayersInfo
         public static ConfigEntry<float> CfgNearbyRange;
         public static ConfigEntry<int> CfgMaxNearbyCount;
         public static ConfigEntry<TeammateSortMode> CfgTeammateSortMode;
+        public static ConfigEntry<SpectatorNearbyCenterMode> CfgSpectatorNearbyCenter;
         public static ConfigEntry<bool> CfgRoundStamina;
         public static ConfigEntry<bool> CfgDebugLogging;
 
@@ -98,10 +101,13 @@ namespace PlayersInfo
                 LanguageHelper.L("Show numeric stamina value on the bar.",
                                  "在体力条右侧显示数值。"));
 
-            CfgEnableInventoryRow = Config.Bind(DisplaySection,
-                "EnableInventoryRow", ReadLegacyValue("Features", "EnableInventoryRow", true),
-                LanguageHelper.L("Show teammate inventory (main 3 + temp + backpack + backpack inner 4).",
-                                 "显示队友物品栏（主 3 + 临时 + 背包槽 + 背包内部 4 格）。"));
+            TeammateInventoryDisplayMode inventoryMode = ReadInventoryDisplayMode();
+            RemoveConfigEntry(DisplaySection, "EnableInventoryRow");
+            RemoveConfigEntry("Features", "EnableInventoryRow");
+            CfgInventoryDisplayMode = Config.Bind(DisplaySection,
+                "EnableInventoryRow", inventoryMode,
+                LanguageHelper.L("Choose whether teammate inventory is hidden, shows contents only, or also shows jetpack fuel.",
+                                 "选择隐藏队友物品栏、仅显示物品内容，或同时显示喷气背包燃料。"));
 
             CfgAnchor = Config.Bind(DisplaySection,
                 "Anchor", ReadLegacyValue("Layout", "Anchor", HudAnchor.BottomLeft),
@@ -139,6 +145,12 @@ namespace PlayersInfo
                 LanguageHelper.L("Order teammate bars by first appearance, or by current distance.",
                                  "队友条按首次出现顺序或当前距离排序。"));
 
+            CfgSpectatorNearbyCenter = Config.Bind(DisplaySection,
+                "SpectatorNearbyCenter",
+                SpectatorNearbyCenterMode.ObservedCharacter,
+                LanguageHelper.L("While spectating, use the local character or the observed character as the nearby-player center.",
+                                 "观战时，选择以本机角色或被观看角色作为附近玩家中心。"));
+
             CfgRoundStamina = Config.Bind(DisplaySection,
                 "RoundStaminaValue", ReadLegacyValue("Features", "RoundStaminaValue", true),
                 LanguageHelper.L("If true, round stamina numeric value to nearest integer; else 1 decimal.",
@@ -155,12 +167,55 @@ namespace PlayersInfo
 
             // 只订阅真正影响"克隆体结构"的配置项变化，避免任意配置改动（OffsetX 拖滑块、
             // BepInEx 启动回写、ConfigurationManager 实时事件）触发 ClearAll → 全部体力条一起跳。
-            // 运行时数值类（NearbyRange/MaxNearbyCount/TeammateSortMode/RoundStamina/DebugLogging/Anchor/Offset）
+            // 运行时数值类（NearbyRange/MaxNearbyCount/TeammateSortMode/SpectatorNearbyCenter/
+            // RoundStamina/DebugLogging/Anchor/Offset）
             // 由 Update 直接读 Cfg.Value 生效，无需事件。
             CfgModEnabled.SettingChanged += OnStructuralConfigChanged;
             CfgEnableStaminaBar.SettingChanged += OnStructuralConfigChanged;
             CfgShowStaminaValue.SettingChanged += OnStructuralConfigChanged;
-            CfgEnableInventoryRow.SettingChanged += OnStructuralConfigChanged;
+            CfgInventoryDisplayMode.SettingChanged += OnStructuralConfigChanged;
+            CfgAnchor.SettingChanged += OnLayoutConfigChanged;
+            CfgOffsetX.SettingChanged += OnLayoutConfigChanged;
+            CfgOffsetY.SettingChanged += OnLayoutConfigChanged;
+
+            try { Config.Save(); } catch { }
+        }
+
+        private TeammateInventoryDisplayMode ReadInventoryDisplayMode()
+        {
+            try
+            {
+                var definition = new ConfigDefinition(DisplaySection, "EnableInventoryRow");
+                if (Config.TryGetEntry<TeammateInventoryDisplayMode>(definition, out var modeEntry))
+                    return modeEntry.Value;
+                if (Config.TryGetEntry<bool>(definition, out var currentBool))
+                    return currentBool.Value
+                        ? TeammateInventoryDisplayMode.ContentsOnly
+                        : TeammateInventoryDisplayMode.Disabled;
+
+                if (OrphanedEntriesField != null)
+                {
+                    var orphans = OrphanedEntriesField.GetValue(Config)
+                        as System.Collections.Generic.Dictionary<ConfigDefinition, string>;
+                    if (orphans != null && orphans.TryGetValue(definition, out string raw))
+                    {
+                        if (Enum.TryParse(raw, true, out TeammateInventoryDisplayMode parsedMode))
+                            return parsedMode;
+                        if (bool.TryParse(raw, out bool oldEnabled))
+                            return oldEnabled
+                                ? TeammateInventoryDisplayMode.ContentsOnly
+                                : TeammateInventoryDisplayMode.Disabled;
+                    }
+                }
+
+                return ReadLegacyValue("Features", "EnableInventoryRow", true)
+                    ? TeammateInventoryDisplayMode.ContentsOnly
+                    : TeammateInventoryDisplayMode.Disabled;
+            }
+            catch
+            {
+                return TeammateInventoryDisplayMode.ContentsOnly;
+            }
         }
 
         private void MigrateDefaultHudAnchor()
@@ -254,6 +309,19 @@ namespace PlayersInfo
         private void OnStructuralConfigChanged(object sender, EventArgs e)
         {
             OnAnyConfigChanged();
+        }
+
+        private void OnLayoutConfigChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (TeammateBarsCoordinator.Instance != null)
+                    TeammateBarsCoordinator.Instance.RefreshLayout();
+            }
+            catch (Exception ex)
+            {
+                PluginLogger.ThrottleError("layout_changed", "HUD layout refresh failed: " + ex.Message);
+            }
         }
 
         private void OnAnyConfigChanged()
@@ -352,7 +420,10 @@ namespace PlayersInfo
                 if (CfgModEnabled != null) CfgModEnabled.SettingChanged -= OnStructuralConfigChanged;
                 if (CfgEnableStaminaBar != null) CfgEnableStaminaBar.SettingChanged -= OnStructuralConfigChanged;
                 if (CfgShowStaminaValue != null) CfgShowStaminaValue.SettingChanged -= OnStructuralConfigChanged;
-                if (CfgEnableInventoryRow != null) CfgEnableInventoryRow.SettingChanged -= OnStructuralConfigChanged;
+                if (CfgInventoryDisplayMode != null) CfgInventoryDisplayMode.SettingChanged -= OnStructuralConfigChanged;
+                if (CfgAnchor != null) CfgAnchor.SettingChanged -= OnLayoutConfigChanged;
+                if (CfgOffsetX != null) CfgOffsetX.SettingChanged -= OnLayoutConfigChanged;
+                if (CfgOffsetY != null) CfgOffsetY.SettingChanged -= OnLayoutConfigChanged;
                 _harmony?.UnpatchSelf();
             }
             catch { }
