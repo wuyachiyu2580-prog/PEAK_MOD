@@ -133,15 +133,30 @@ namespace PlayersInfo.MonoBehaviours
                 if (extra.parent != _origBar.fullBar)
                     extra.SetParent(_origBar.fullBar, false);
 
-                extra.anchorMin = new Vector2(0.5f, 0f);
-                extra.anchorMax = new Vector2(0.5f, 0f);
-                extra.pivot = new Vector2(0.5f, 1f);
-                extra.anchoredPosition = new Vector2(0f, -6f);
+                // 额外条整体从主条左下角开始，外层高度负责把内部视觉内容放到主条下方。
+                // 不再沿用原版右侧布局的内部锚点，否则 outline 会留在主条这一行。
+                extra.anchorMin = new Vector2(0f, 0f);
+                extra.anchorMax = new Vector2(0f, 0f);
+                extra.pivot = new Vector2(0f, 1f);
+                extra.anchoredPosition = new Vector2(0f, -2f);
+
+                ConfigureLocalExtraChild(_origBar.extraBarOutline, extra);
+                ConfigureLocalExtraChild(_origBar.extraBarStamina, extra);
             }
             catch (Exception ex)
             {
                 PluginLogger.ThrottleWarn("local_extra_layout", "ConfigureLocalExtraBar failed: " + ex.Message);
             }
+        }
+
+        private static void ConfigureLocalExtraChild(RectTransform child, RectTransform parent)
+        {
+            if (child == null || parent == null || child.parent != parent) return;
+
+            child.anchorMin = new Vector2(0f, 0.5f);
+            child.anchorMax = new Vector2(0f, 0.5f);
+            child.pivot = new Vector2(0f, 0.5f);
+            child.anchoredPosition = Vector2.zero;
         }
 
         private static void ApplyConfiguredAnchor(RectTransform rt)
@@ -513,11 +528,10 @@ namespace PlayersInfo.MonoBehaviours
                 // 名字标签
                 driver.nameLabel = TryAddNameLabel(cloneGo);
 
-                // 数值文本（仿 StaminaInfo）
+                // 主体力数值仍保留；额外体力图形条不克隆，只保留右侧数值。
                 bool showValue = PlayersInfoPlugin.CfgShowStaminaValue == null || PlayersInfoPlugin.CfgShowStaminaValue.Value;
-                if (showValue && driver.staminaBar != null)
-                    driver.staminaValueText = AddValueText(driver.staminaBar.gameObject, "StaminaValue");
-                // 临时体力数字贴在 HUD 安全侧外侧（左锚点放右边，右锚点放左边），避免贴屏幕边缘被裁切。
+                if (showValue && driver.fullBar != null)
+                    driver.staminaValueText = AddValueText(driver.fullBar.gameObject, "StaminaValue");
                 if (showValue && driver.fullBar != null)
                     driver.extraValueText = AddSideText(driver.fullBar, "PI_MateExtraValue", ShouldPlaceExtraTextOnRight(), new Color(0.55f, 1f, 0.35f));
 
@@ -623,14 +637,14 @@ namespace PlayersInfo.MonoBehaviours
                 rt.anchorMin = new Vector2(1f, 0.5f);
                 rt.anchorMax = new Vector2(1f, 0.5f);
                 rt.pivot = new Vector2(0f, 0.5f);
-                rt.anchoredPosition = new Vector2(8f, 0f);
+                rt.anchoredPosition = new Vector2(40f, 0f);
             }
             else
             {
                 rt.anchorMin = new Vector2(0f, 0.5f);
                 rt.anchorMax = new Vector2(0f, 0.5f);
                 rt.pivot = new Vector2(1f, 0.5f);
-                rt.anchoredPosition = new Vector2(-8f, 0f);
+                rt.anchoredPosition = new Vector2(24f, 0f);
             }
             rt.sizeDelta = new Vector2(120f, 24f);
         }

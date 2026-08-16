@@ -67,9 +67,8 @@ namespace PlayersInfo.MonoBehaviours
         private float _nextExtraValLogTime;
 
         // 数值文本脏检查：避免每帧 ToString + TMP mesh 重建产生 GC。
-        // _lastStamWasFloat 用于在 round/F1 两种模式之间切换时强制刷一次。
         private int _lastStaminaShownInt = int.MinValue;
-        private int _lastStaminaShownTenth = int.MinValue;   // F1 模式下缓存 value*10 取整
+        private int _lastStaminaShownTenth = int.MinValue;
         private bool _lastStaminaWasFloat;
         private int _lastExtraShownInt = int.MinValue;
         private int _lastExtraCapShownInt = int.MinValue;
@@ -87,7 +86,6 @@ namespace PlayersInfo.MonoBehaviours
         private bool _lastCampfireActive;
         private bool _hasShieldState;
         private bool _hasCampfireState;
-
         private void OnEnable()
         {
             SyncTargetVisualsImmediate();
@@ -485,6 +483,7 @@ namespace PlayersInfo.MonoBehaviours
                     catch { }
                     SetWidthImmediate(staminaBarOutline, 14f + Mathf.Max(1f, statusSum) * fullWidth);
                 }
+
             }
             catch { }
         }
@@ -509,8 +508,7 @@ namespace PlayersInfo.MonoBehaviours
 
             if (staminaValueText != null)
             {
-                // staminaBar 渲染宽度 太窄就隐藏，避免文字溢出
-                float w = staminaBar != null ? staminaBar.sizeDelta.x : 0f;
+                float w = fullBar != null ? fullBar.sizeDelta.x : 0f;
                 if (w < 15f)
                 {
                     if (staminaValueText.gameObject.activeSelf) staminaValueText.gameObject.SetActive(false);
@@ -541,45 +539,36 @@ namespace PlayersInfo.MonoBehaviours
                     if (!staminaValueText.gameObject.activeSelf) staminaValueText.gameObject.SetActive(true);
                 }
             }
+
             if (extraValueText != null)
             {
-                // 临时体力数字：按 normalized 值判显隐，不再依赖克隆 extraBar。
-                // 阈值 0.5 避免因浮点残留显 0 这种尴尬表现。
-                if (extraStam < 0.5f)
+                int v = Mathf.Clamp(Mathf.RoundToInt(extraStam), 0, 100);
+                int cap = Mathf.Clamp(Mathf.RoundToInt(extraCap), 0, 100);
+                if (v != _lastExtraShownInt || cap != _lastExtraCapShownInt)
                 {
-                    if (extraValueText.gameObject.activeSelf) extraValueText.gameObject.SetActive(false);
+                    extraValueText.text = v.ToString() + "/" + cap.ToString();
+                    _lastExtraShownInt = v;
+                    _lastExtraCapShownInt = cap;
+                    float preferredWidth = extraValueText.GetPreferredValues(extraValueText.text).x + 6f;
+                    var textSize = extraValueText.rectTransform.sizeDelta;
+                    if (Mathf.Abs(textSize.x - preferredWidth) > 0.1f)
+                    {
+                        textSize.x = preferredWidth;
+                        extraValueText.rectTransform.sizeDelta = textSize;
+                    }
                 }
-                else
+                if (!extraValueText.gameObject.activeSelf) extraValueText.gameObject.SetActive(true);
+                if (PluginLogger.DebugEnabled && Time.unscaledTime >= _nextExtraValLogTime)
                 {
-                    int v = Mathf.RoundToInt(extraStam);
-                    int cap = Mathf.Clamp(Mathf.RoundToInt(extraCap), 0, 100);
-                    if (v != _lastExtraShownInt || cap != _lastExtraCapShownInt)
+                    _nextExtraValLogTime = Time.unscaledTime + 3f;
+                    try
                     {
-                        extraValueText.text = "+" + v.ToString() + "/" + cap.ToString();
-                        _lastExtraShownInt = v;
-                        _lastExtraCapShownInt = cap;
-                        float preferredWidth = extraValueText.GetPreferredValues(extraValueText.text).x + 6f;
-                        var textSize = extraValueText.rectTransform.sizeDelta;
-                        if (Mathf.Abs(textSize.x - preferredWidth) > 0.1f)
-                        {
-                            textSize.x = preferredWidth;
-                            extraValueText.rectTransform.sizeDelta = textSize;
-                        }
+                        float rawMain = Target.data.currentStamina;
+                        float rawExtra = Target.data.extraStamina;
+                        string nm = SafeGetName(Target);
+                        PluginLogger.Debug("[ExtraVal] mate=" + nm + " rawExtra=" + rawExtra.ToString("F4") + " shown=" + v + "/" + cap + " rawMain=" + rawMain.ToString("F4"));
                     }
-                    if (!extraValueText.gameObject.activeSelf) extraValueText.gameObject.SetActive(true);
-                    // 量纲诊断：打出真实 raw 值 vs 显示数字，方便骨石问题是代码算错还是道具描述差倽
-                    if (PluginLogger.DebugEnabled && Time.unscaledTime >= _nextExtraValLogTime)
-                    {
-                        _nextExtraValLogTime = Time.unscaledTime + 3f;
-                        try
-                        {
-                            float rawMain = Target.data.currentStamina;
-                            float rawExtra = Target.data.extraStamina;
-                            string nm = SafeGetName(Target);
-                            PluginLogger.Debug("[ExtraVal] mate=" + nm + " rawExtra=" + rawExtra.ToString("F4") + " shown=+" + Mathf.Round(rawExtra * 100f) + "/" + cap + " rawMain=" + rawMain.ToString("F4"));
-                        }
-                        catch { }
-                    }
+                    catch { }
                 }
             }
         }

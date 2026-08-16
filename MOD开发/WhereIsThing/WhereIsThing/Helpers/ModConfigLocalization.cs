@@ -259,7 +259,7 @@ namespace WhereIsThing
                 case "Antlion": return chinese ? "蚁狮" : "Antlion";
                 case "VenusFlyTrap": return chinese ? "捕蝇草" : "Venus Flytrap";
                 case "Tornado": return chinese ? "龙卷风" : "Tornado";
-                case "NapberryHypnoOrb": return chinese ? "催眠浆果幻象球" : "Napberry Hypno Orb";
+                case "NapberryHypnoOrb": return chinese ? "未摘下的晚安莓" : "Unpicked Napberry";
                 case "ArrowShooter": return chinese ? "箭矢发射器" : "Arrow Shooter";
                 case "MovingSawBlade": return chinese ? "移动锯刃" : "Moving Sawblade";
                 case "SpikeRoller": return chinese ? "滚刺机关" : "Spike Roller";

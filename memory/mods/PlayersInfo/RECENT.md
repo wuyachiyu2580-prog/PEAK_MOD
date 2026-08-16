@@ -1,10 +1,13 @@
 # PlayersInfo Recent
 
-## 2026-08-16 Local extra-bar layout and value format
+## 2026-08-16 Final local/teammate extra-stamina layout
 
-- Fixed the local player's extra-stamina bar being placed to the left/right of the main stamina bar. `ConfigureLocalExtraBar()` now anchors the original local `extraBar` below `fullBar`; teammate bar layout is unchanged.
-- Local extra-stamina text now uses `current/cap` without the old `+` prefix. It reads the outer `extraBar` width and is attached to the outer node so `0/cap` can remain visible when the vanilla inner fill is hidden at zero current stamina.
-- Release build passed with 0 warnings / 0 errors. DLL output: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`, version `0.2.1.0`, size `80384`, timestamp `2026-08-16 13:02:56`.
+- The local player's original `extraBar` is anchored directly below `fullBar`; its outer container, outline, and fill now share the same left origin. The gap from the main bar is 2 pixels, fixing the old outline overlap.
+- The separate local `PI_LocalExtraStaminaValue` text was removed. The local extra bar remains visible as the primary display, while the existing normal and petrify/affliction values inside the bar are unchanged.
+- Teammate main stamina bars, main stamina numbers, and affliction visuals remain enabled. Teammate extra-stamina graphical bars remain disabled; only the HUD-safe side value is shown.
+- Teammate extra stamina uses `current/cap` without `+`, including `0/cap` for a living teammate with no current extra stamina.
+- Bottom HUD anchors now default to `OffsetY=138`; only an old exact-zero bottom offset migrates, so custom nonzero offsets are preserved.
+- Release build passed with 0 warnings / 0 errors. DLL output: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`, version `0.2.1.0`, size `80896`, timestamp `2026-08-16 19:18:07`.
 
 ## 2026-08-16 PlayersInfo 0.2.1 implementation sync
 

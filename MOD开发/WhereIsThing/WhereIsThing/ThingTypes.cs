@@ -430,7 +430,7 @@ namespace WhereIsThing
                     case ThingSceneTargetType.Antlion: return "蚁狮";
                     case ThingSceneTargetType.VenusFlyTrap: return "捕蝇草";
                     case ThingSceneTargetType.Tornado: return "龙卷风";
-                    case ThingSceneTargetType.NapberryHypnoOrb: return "催眠浆果幻象球";
+                    case ThingSceneTargetType.NapberryHypnoOrb: return "未摘下的晚安莓";
                     case ThingSceneTargetType.ArrowShooter: return "箭矢发射器";
                     case ThingSceneTargetType.MovingSawBlade: return "移动锯刃";
                     case ThingSceneTargetType.SpikeRoller: return "滚刺机关";
@@ -453,7 +453,7 @@ namespace WhereIsThing
                 case ThingSceneTargetType.Antlion: return "Antlion";
                 case ThingSceneTargetType.VenusFlyTrap: return "Venus Flytrap";
                 case ThingSceneTargetType.Tornado: return "Tornado";
-                case ThingSceneTargetType.NapberryHypnoOrb: return "Napberry Hypno Orb";
+                case ThingSceneTargetType.NapberryHypnoOrb: return "Unpicked Napberry";
                 case ThingSceneTargetType.ArrowShooter: return "Arrow Shooter";
                 case ThingSceneTargetType.MovingSawBlade: return "Moving Sawblade";
                 case ThingSceneTargetType.SpikeRoller: return "Spike Roller";

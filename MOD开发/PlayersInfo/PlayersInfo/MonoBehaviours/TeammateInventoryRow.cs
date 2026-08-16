@@ -40,8 +40,7 @@ namespace PlayersInfo.MonoBehaviours
         private Image _jetpackFuelTrack;
         private Image _jetpackFuelFill;
         private float _lastJetpackFuel = -1f;
-        private float _backpackStartX;
-        private float _backpackWidth;
+        private float _rowWidth;
         private float _nextRefreshTime;
         private const float RefreshInterval = 0.15f; // 降频刷新，减少 GC
 
@@ -62,6 +61,7 @@ namespace PlayersInfo.MonoBehaviours
 
             var c = go.AddComponent<TeammateInventoryRow>();
             c._showJetpackFuel = showJetpackFuel;
+            c._rowWidth = totalWidth;
             c.BuildSlots(rt, totalWidth, height, spacing);
             if (showJetpackFuel) c.BuildJetpackFuelBar(rt);
             return c;
@@ -79,9 +79,6 @@ namespace PlayersInfo.MonoBehaviours
                 slotSize = (totalWidth - (TotalSlots - 1) * spacing) / TotalSlots;
                 slotSize = Mathf.Max(slotSize, 12f);
             }
-            _backpackStartX = startX + (MainSlotCount + 1) * (slotSize + spacing);
-            _backpackWidth = BackpackInnerCount * slotSize + (BackpackInnerCount - 1) * spacing;
-
             for (int i = 0; i < TotalSlots; i++)
             {
                 var slotGo = new GameObject($"Slot{i}", typeof(RectTransform));
@@ -175,15 +172,19 @@ namespace PlayersInfo.MonoBehaviours
             var fuelGo = new GameObject("JetpackFuel", typeof(RectTransform));
             fuelGo.transform.SetParent(root, false);
             var fuelRt = fuelGo.GetComponent<RectTransform>();
-            fuelRt.anchorMin = fuelRt.anchorMax = new Vector2(0f, 0f);
-            fuelRt.pivot = new Vector2(0f, 0f);
-            fuelRt.sizeDelta = new Vector2(_backpackWidth, 3f);
-            fuelRt.anchoredPosition = new Vector2(_backpackStartX, 1f);
+            fuelRt.anchorMin = fuelRt.anchorMax = new Vector2(1f, 0.5f);
+            fuelRt.pivot = new Vector2(0f, 0.5f);
+            fuelRt.sizeDelta = new Vector2(Mathf.Max(20f, _rowWidth), 6f);
+            fuelRt.anchoredPosition = new Vector2(8f, 0f);
 
             _jetpackFuelTrack = fuelGo.AddComponent<Image>();
             _jetpackFuelTrack.sprite = IconSpriteCache.GetWhiteSprite();
-            _jetpackFuelTrack.color = new Color(0f, 0f, 0f, 0.72f);
+            _jetpackFuelTrack.color = new Color(0.02f, 0.04f, 0.05f, 0.88f);
             _jetpackFuelTrack.raycastTarget = false;
+            var outline = fuelGo.AddComponent<Outline>();
+            outline.effectColor = new Color(0.82f, 0.94f, 0.98f, 0.9f);
+            outline.effectDistance = new Vector2(1.25f, 1.25f);
+            outline.useGraphicAlpha = false;
 
             var fillGo = new GameObject("Fill", typeof(RectTransform));
             fillGo.transform.SetParent(fuelGo.transform, false);
@@ -335,16 +336,16 @@ namespace PlayersInfo.MonoBehaviours
             _lastJetpackFuel = fuel;
             if (_jetpackFuelTrack != null)
                 _jetpackFuelTrack.color = fuel <= 0.001f
-                    ? new Color(0.5f, 0.04f, 0.03f, 0.9f)
-                    : new Color(0f, 0f, 0f, 0.72f);
+                    ? new Color(0.32f, 0.03f, 0.02f, 0.92f)
+                    : new Color(0.02f, 0.04f, 0.05f, 0.88f);
             if (_jetpackFuelFill != null)
             {
                 _jetpackFuelFill.fillAmount = fuel;
                 _jetpackFuelFill.color = fuel <= 0.2f
-                    ? new Color(1f, 0.18f, 0.12f)
+                    ? new Color(1f, 0.24f, 0.12f)
                     : fuel <= 0.5f
                         ? new Color(1f, 0.78f, 0.12f)
-                        : new Color(0.2f, 0.8f, 1f);
+                        : new Color(0.45f, 1f, 0.25f);
             }
         }
 

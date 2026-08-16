@@ -188,10 +188,9 @@ namespace PlayersInfo.Patches
                 if (bar.staminaBar != null && _staminaValueText == null)
                     _staminaValueText = AddStretchText(bar.staminaBar.gameObject, "PI_LocalStaminaValue", 20f, false);
 
-                // 挂在外层 extraBar，避免原版在当前额外体力为 0 时隐藏 extraBarStamina，
-                // 导致 0/上限无法显示。extraBar 本身在石化或有额外体力上限时仍保持激活。
-                if (bar.extraBar != null && _extraValueText == null)
-                    _extraValueText = AddStretchText(bar.extraBar.gameObject, "PI_LocalExtraStaminaValue", 20f, false);
+                // 额外体力以主体力条下方的独立条为主，不再叠加外层 40/100 文本。
+                // 额外条内部的正常体力和石化数值由原有异常状态组件继续显示。
+                _extraValueText = null;
 
                 if (bar.fullBar != null && _hungerCountdownText == null)
                     _hungerCountdownText = AddFloatingText(bar.fullBar.gameObject, "PI_LocalHungerCountdown", 14f);
