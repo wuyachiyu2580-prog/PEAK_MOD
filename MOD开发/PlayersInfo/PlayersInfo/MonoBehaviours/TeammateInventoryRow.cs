@@ -43,6 +43,8 @@ namespace PlayersInfo.MonoBehaviours
         private float _rowWidth;
         private float _nextRefreshTime;
         private const float RefreshInterval = 0.15f; // 降频刷新，减少 GC
+        private const float JetpackFuelOffsetX = 122f;
+        private const float JetpackFuelWidth = 320f;
 
         private static readonly Color BgEmpty = new Color(0f, 0f, 0f, 0.45f);
         private static readonly Color BgFilled = new Color(0f, 0f, 0f, 0.6f);
@@ -172,18 +174,19 @@ namespace PlayersInfo.MonoBehaviours
             var fuelGo = new GameObject("JetpackFuel", typeof(RectTransform));
             fuelGo.transform.SetParent(root, false);
             var fuelRt = fuelGo.GetComponent<RectTransform>();
-            fuelRt.anchorMin = fuelRt.anchorMax = new Vector2(1f, 0.5f);
+            fuelRt.anchorMin = fuelRt.anchorMax = new Vector2(0f, 0.5f);
             fuelRt.pivot = new Vector2(0f, 0.5f);
-            fuelRt.sizeDelta = new Vector2(Mathf.Max(20f, _rowWidth), 6f);
-            fuelRt.anchoredPosition = new Vector2(8f, 0f);
+            fuelRt.sizeDelta = new Vector2(Mathf.Min(JetpackFuelWidth,
+                Mathf.Max(20f, _rowWidth - JetpackFuelOffsetX)), 14f);
+            fuelRt.anchoredPosition = new Vector2(JetpackFuelOffsetX, 0f);
 
             _jetpackFuelTrack = fuelGo.AddComponent<Image>();
             _jetpackFuelTrack.sprite = IconSpriteCache.GetWhiteSprite();
-            _jetpackFuelTrack.color = new Color(0.02f, 0.04f, 0.05f, 0.88f);
+            _jetpackFuelTrack.color = new Color(0.06f, 0.08f, 0.05f, 0.94f);
             _jetpackFuelTrack.raycastTarget = false;
             var outline = fuelGo.AddComponent<Outline>();
-            outline.effectColor = new Color(0.82f, 0.94f, 0.98f, 0.9f);
-            outline.effectDistance = new Vector2(1.25f, 1.25f);
+            outline.effectColor = new Color(0.88f, 0.84f, 0.65f, 0.95f);
+            outline.effectDistance = new Vector2(1.5f, 1.5f);
             outline.useGraphicAlpha = false;
 
             var fillGo = new GameObject("Fill", typeof(RectTransform));
@@ -191,8 +194,8 @@ namespace PlayersInfo.MonoBehaviours
             var fillRt = fillGo.GetComponent<RectTransform>();
             fillRt.anchorMin = Vector2.zero;
             fillRt.anchorMax = Vector2.one;
-            fillRt.offsetMin = Vector2.zero;
-            fillRt.offsetMax = Vector2.zero;
+            fillRt.offsetMin = new Vector2(2f, 2f);
+            fillRt.offsetMax = new Vector2(-2f, -2f);
             _jetpackFuelFill = fillGo.AddComponent<Image>();
             _jetpackFuelFill.sprite = IconSpriteCache.GetWhiteSprite();
             _jetpackFuelFill.type = Image.Type.Filled;

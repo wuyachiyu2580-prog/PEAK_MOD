@@ -11,12 +11,12 @@ namespace WhereIsThing
     internal sealed class ThingSelectionWindow
     {
         private const float MinCellWidth = 220f;
-        private const float CellHeight = 44f;
+        private const float CellHeight = 48f;
         private const float CellSpacing = 6f;
 
         private readonly Canvas _canvas;
         private readonly TMP_FontAsset _font;
-        private readonly Action<HashSet<ushort>, HashSet<ThingLuggageType>, HashSet<ThingSceneTargetType>, ThingNameLanguage, ThingLocationScope> _apply;
+        private readonly Action<HashSet<ushort>, HashSet<ThingLuggageType>, HashSet<ThingSceneTargetType>, ThingNameLanguage> _apply;
         private readonly Action _cancel;
         private readonly GameObject _root;
         private readonly GameObject _cursorWindowObject;
@@ -31,10 +31,8 @@ namespace WhereIsThing
         private readonly Toggle _selectedOnlyToggle;
         private readonly List<ThingTargetDefinition> _catalog = new List<ThingTargetDefinition>();
         private readonly List<ThingTargetDefinition> _visibleDefinitions = new List<ThingTargetDefinition>();
-        private readonly Dictionary<ThingLocationScope, Toggle> _scopeToggles = new Dictionary<ThingLocationScope, Toggle>();
         private HashSet<ushort> _workingSelection = new HashSet<ushort>();
         private ThingNameLanguage _workingLanguage;
-        private ThingLocationScope _workingScopes;
         private string _workingCategory = "All";
         private HashSet<ThingLuggageType> _workingLuggageTypes = new HashSet<ThingLuggageType>();
         private HashSet<ThingSceneTargetType> _workingSceneTargetTypes = new HashSet<ThingSceneTargetType>();
@@ -46,7 +44,7 @@ namespace WhereIsThing
         private CursorLockMode _previousCursorLockState;
 
         public ThingSelectionWindow(Canvas canvas, TMP_FontAsset font,
-            Action<HashSet<ushort>, HashSet<ThingLuggageType>, HashSet<ThingSceneTargetType>, ThingNameLanguage, ThingLocationScope> apply, Action cancel)
+            Action<HashSet<ushort>, HashSet<ThingLuggageType>, HashSet<ThingSceneTargetType>, ThingNameLanguage> apply, Action cancel)
         {
             _canvas = canvas;
             _font = font;
@@ -59,48 +57,40 @@ namespace WhereIsThing
             overlay.color = new Color(0f, 0f, 0f, 0.54f);
             overlay.raycastTarget = true;
 
-            // GUIManager derives cursor state from MenuWindow.AllActiveWindows.
             _cursorWindowObject = CreateRect("WhereIsThingMenuWindow", _root.transform);
             _cursorWindowObject.SetActive(false);
             _cursorWindow = _cursorWindowObject.AddComponent<MenuWindow>();
 
             GameObject panel = CreateRect("ItemBrowserPanel", _root.transform);
             RectTransform panelRect = panel.GetComponent<RectTransform>();
-            panelRect.anchorMin = new Vector2(0.08f, 0.06f);
-            panelRect.anchorMax = new Vector2(0.92f, 0.94f);
+            panelRect.anchorMin = new Vector2(0.06f, 0.05f);
+            panelRect.anchorMax = new Vector2(0.94f, 0.95f);
             panelRect.offsetMin = Vector2.zero;
             panelRect.offsetMax = Vector2.zero;
-            panelRect.pivot = new Vector2(0.5f, 0.5f);
             Image panelImage = panel.AddComponent<Image>();
             panelImage.color = new Color(0.075f, 0.08f, 0.075f, 0.98f);
             Outline outline = panel.AddComponent<Outline>();
             outline.effectColor = new Color(0.7f, 0.66f, 0.52f, 0.75f);
             outline.effectDistance = new Vector2(2f, 2f);
 
-            CreateText(panel.transform, "Title", "WhereIsThing / 物品与目标位置", 25f, TextAlignmentOptions.Left,
-                new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(32f, -50f), new Vector2(-32f, -12f));
-            CreateText(panel.transform, "Subtitle", "Select targets to show / 选择要显示的目标", 14f, TextAlignmentOptions.Left,
-                new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(32f, -76f), new Vector2(-32f, -52f));
+            CreateText(panel.transform, "Title", ThingUi.SelectionWindowTitle(), 24f, TextAlignmentOptions.Left,
+                new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(28f, -48f), new Vector2(-28f, -10f), false, true);
+            CreateText(panel.transform, "Subtitle", ThingUi.SelectionWindowSubtitle(), 13f, TextAlignmentOptions.Left,
+                new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(28f, -74f), new Vector2(-28f, -42f), true, true);
 
-            _languageButtonText = CreateButton(panel.transform, "LanguageButton", new Vector2(32f, -96f), new Vector2(230f, 42f), string.Empty, CycleLanguage);
-            _categoryButtonText = CreateButton(panel.transform, "CategoryButton", new Vector2(274f, -96f), new Vector2(230f, 42f), string.Empty, CycleCategory);
-            _selectedOnlyToggle = CreateFilterToggle(panel.transform, "Selected only / 仅显示已选", new Vector2(516f, -96f), new Vector2(180f, 42f));
+            _languageButtonText = CreateButton(panel.transform, "LanguageButton", new Vector2(28f, -94f), new Vector2(206f, 40f), string.Empty, CycleLanguage);
+            _categoryButtonText = CreateButton(panel.transform, "CategoryButton", new Vector2(244f, -94f), new Vector2(206f, 40f), string.Empty, CycleCategory);
+            _selectedOnlyToggle = CreateFilterToggle(panel.transform, ThingUi.SelectedOnly(), new Vector2(460f, -94f), new Vector2(170f, 40f));
             _searchInput = CreateSearch(panel.transform);
-            _countText = CreateText(panel.transform, "Count", string.Empty, 14f, TextAlignmentOptions.Right,
-                new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(-250f, -76f), new Vector2(-32f, -52f));
-
-            CreateText(panel.transform, "ScopeTitle", "Locations / 显示范围", 14f, TextAlignmentOptions.Left,
-                new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(32f, -151f), new Vector2(250f, -128f));
-            CreateScopeToggle(panel.transform, "Ground / 地面", ThingLocationScope.Ground, 32f);
-            CreateScopeToggle(panel.transform, "Held / 手持", ThingLocationScope.Held, 224f);
-            CreateScopeToggle(panel.transform, "Backpack / 背包", ThingLocationScope.Backpack, 416f);
+            _countText = CreateText(panel.transform, "Count", string.Empty, 13f, TextAlignmentOptions.Right,
+                new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(-260f, -74f), new Vector2(-28f, -44f), false, true);
 
             GameObject viewportObject = CreateRect("Viewport", panel.transform);
             _viewport = viewportObject.GetComponent<RectTransform>();
             _viewport.anchorMin = new Vector2(0f, 0f);
             _viewport.anchorMax = new Vector2(1f, 1f);
-            _viewport.offsetMin = new Vector2(32f, 78f);
-            _viewport.offsetMax = new Vector2(-32f, -204f);
+            _viewport.offsetMin = new Vector2(28f, 78f);
+            _viewport.offsetMax = new Vector2(-28f, -156f);
             Image viewportImage = viewportObject.AddComponent<Image>();
             viewportImage.color = new Color(0f, 0f, 0f, 0.18f);
             Mask mask = viewportObject.AddComponent<Mask>();
@@ -111,6 +101,7 @@ namespace WhereIsThing
             ScrollRect scroll = scrollObject.AddComponent<ScrollRect>();
             scroll.horizontal = false;
             scroll.vertical = true;
+            scroll.scrollSensitivity = 36f;
             scroll.movementType = ScrollRect.MovementType.Clamped;
             scroll.viewport = _viewport;
             _content = CreateRect("Content", scrollObject.transform).GetComponent<RectTransform>();
@@ -131,14 +122,14 @@ namespace WhereIsThing
             fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
             fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            _emptyText = CreateText(panel.transform, "Empty", "No matching targets / 没有匹配目标", 17f, TextAlignmentOptions.Center,
-                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-180f, -10f), new Vector2(180f, 34f));
+            _emptyText = CreateText(panel.transform, "Empty", ThingUi.NoMatchingTargets(), 16f, TextAlignmentOptions.Center,
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-180f, -8f), new Vector2(180f, 30f), false, true);
             _emptyText.color = new Color(0.72f, 0.72f, 0.68f, 1f);
 
-            CreateActionButton(panel.transform, "SelectAll", "Select visible / 全选当前", new Vector2(32f, 24f), new Vector2(180f, 42f), SelectVisible);
-            CreateActionButton(panel.transform, "Clear", "Clear visible / 清除当前", new Vector2(222f, 24f), new Vector2(180f, 42f), ClearVisible);
-            CreateActionButton(panel.transform, "Close", "Cancel / 取消", new Vector2(-212f, 24f), new Vector2(180f, 42f), Close);
-            CreateActionButton(panel.transform, "Apply", "Apply / 应用", new Vector2(-32f, 24f), new Vector2(180f, 42f), Apply);
+            CreateActionButton(panel.transform, "SelectAll", ThingUi.SelectVisible(), new Vector2(28f, 22f), new Vector2(170f, 40f), SelectVisible);
+            CreateActionButton(panel.transform, "Clear", ThingUi.ClearVisible(), new Vector2(208f, 22f), new Vector2(170f, 40f), ClearVisible);
+            CreateActionButton(panel.transform, "Close", ThingUi.Cancel(), new Vector2(-198f, 22f), new Vector2(170f, 40f), Close);
+            CreateActionButton(panel.transform, "Apply", ThingUi.Apply(), new Vector2(-28f, 22f), new Vector2(170f, 40f), Apply);
 
             _searchInput.onValueChanged.AddListener(delegate { RebuildRows(); });
             _root.SetActive(false);
@@ -147,8 +138,7 @@ namespace WhereIsThing
         public bool IsOpen { get { return _isOpen; } }
 
         public void Open(IEnumerable<ThingTargetDefinition> catalog, IEnumerable<ushort> selected, IEnumerable<ThingLuggageType> selectedLuggageTypes,
-            IEnumerable<ThingSceneTargetType> selectedSceneTargetTypes,
-            ThingNameLanguage language, ThingLocationScope scopes)
+            IEnumerable<ThingSceneTargetType> selectedSceneTargetTypes, ThingNameLanguage language)
         {
             if (_font == null)
             {
@@ -161,12 +151,6 @@ namespace WhereIsThing
             _workingLuggageTypes = new HashSet<ThingLuggageType>(selectedLuggageTypes ?? Enumerable.Empty<ThingLuggageType>());
             _workingSceneTargetTypes = new HashSet<ThingSceneTargetType>(selectedSceneTargetTypes ?? Enumerable.Empty<ThingSceneTargetType>());
             _workingLanguage = language;
-            // Luggage is controlled by the selected luggage types, not by a separate scope toggle.
-            _workingScopes = scopes & ~ThingLocationScope.Luggage;
-            if (_workingLuggageTypes.Count > 0)
-            {
-                _workingScopes |= ThingLocationScope.Luggage;
-            }
             _workingCategory = "All";
             _selectedOnly = false;
             _searchInput.text = string.Empty;
@@ -174,10 +158,6 @@ namespace WhereIsThing
             _lastListWidth = -1f;
             _isRebuilding = true;
             _selectedOnlyToggle.isOn = false;
-            foreach (KeyValuePair<ThingLocationScope, Toggle> scopeToggle in _scopeToggles)
-            {
-                scopeToggle.Value.isOn = (_workingScopes & scopeToggle.Key) != 0;
-            }
             _isRebuilding = false;
             _previousCursorVisible = Cursor.visible;
             _previousCursorLockState = Cursor.lockState;
@@ -242,7 +222,7 @@ namespace WhereIsThing
             if (_apply != null)
             {
                 _apply(new HashSet<ushort>(_workingSelection), new HashSet<ThingLuggageType>(_workingLuggageTypes),
-                    new HashSet<ThingSceneTargetType>(_workingSceneTargetTypes), _workingLanguage, _workingScopes);
+                    new HashSet<ThingSceneTargetType>(_workingSceneTargetTypes), _workingLanguage);
             }
             CloseInternal(false);
         }
@@ -320,16 +300,6 @@ namespace WhereIsThing
             RebuildRows();
         }
 
-        private void ToggleScope(ThingLocationScope scope, bool value)
-        {
-            if (_isRebuilding)
-            {
-                return;
-            }
-            if (value) _workingScopes |= scope;
-            else _workingScopes &= ~scope;
-        }
-
         private void RebuildRows()
         {
             if (!_isOpen || !_root.activeSelf)
@@ -361,9 +331,9 @@ namespace WhereIsThing
             }
 
             _emptyText.gameObject.SetActive(visible.Count == 0);
-            _languageButtonText.text = "Language: " + GetLanguageDisplay(_workingLanguage);
-            _categoryButtonText.text = "Category: " + ThingCatalog.GetCategoryDisplay(_workingCategory, _workingLanguage);
-            _countText.text = string.Format("{0} selected / 已选 {1}", CountSelected(), _catalog.Count);
+            _languageButtonText.text = ThingUi.LanguageLabel(_workingLanguage);
+            _categoryButtonText.text = ThingUi.CategoryLabel(_workingCategory, _workingLanguage);
+            _countText.text = ThingUi.SelectedCount(CountSelected(), _catalog.Count);
             _lastListWidth = _viewport.rect.width;
             _isRebuilding = false;
         }
@@ -388,7 +358,7 @@ namespace WhereIsThing
             Image headerImage = header.AddComponent<Image>();
             headerImage.color = new Color(0.2f, 0.19f, 0.15f, 0.9f);
             TextMeshProUGUI headerText = CreateText(header.transform, "Text", ThingCatalog.GetCategoryDisplay(category, _workingLanguage), 15f, TextAlignmentOptions.Left,
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(12f, 0f), new Vector2(-8f, 0f));
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(12f, 0f), new Vector2(-8f, 0f), false, true);
             headerText.fontStyle = FontStyles.Bold;
 
             GameObject gridObject = CreateRect("Grid", section.transform);
@@ -426,7 +396,7 @@ namespace WhereIsThing
             RectTransform toggleRect = toggleObject.GetComponent<RectTransform>();
             toggleRect.anchorMin = new Vector2(0f, 0.5f);
             toggleRect.anchorMax = new Vector2(0f, 0.5f);
-            toggleRect.sizeDelta = new Vector2(26f, 26f);
+            toggleRect.sizeDelta = new Vector2(24f, 24f);
             toggleRect.anchoredPosition = new Vector2(18f, 0f);
             Image background = toggleObject.AddComponent<Image>();
             background.color = new Color(0.03f, 0.03f, 0.03f, 1f);
@@ -440,19 +410,24 @@ namespace WhereIsThing
             toggle.isOn = definition.IsSelected(_workingSelection, _workingLuggageTypes, _workingSceneTargetTypes);
             toggle.onValueChanged.AddListener(delegate(bool value)
             {
-                if (_isRebuilding) return;
+                if (_isRebuilding)
+                {
+                    return;
+                }
+
                 definition.SetSelected(_workingSelection, _workingLuggageTypes, _workingSceneTargetTypes, value);
                 if (_selectedOnly)
                 {
                     RebuildRows();
                     return;
                 }
-                _countText.text = string.Format("{0} selected / 已选 {1}", CountSelected(), _catalog.Count);
+
+                _countText.text = ThingUi.SelectedCount(CountSelected(), _catalog.Count);
             });
 
             string label = definition.GetDisplayName(_workingLanguage) + definition.GetVariantSuffix(_workingLanguage);
-            TextMeshProUGUI text = CreateText(cell.transform, "Name", label, 14f, TextAlignmentOptions.Left,
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(56f, 2f), new Vector2(-8f, -2f));
+            TextMeshProUGUI text = CreateText(cell.transform, "Name", label, 13f, TextAlignmentOptions.Left,
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(52f, 4f), new Vector2(-8f, -4f), true, true);
             text.color = new Color(0.9f, 0.89f, 0.82f, 1f);
         }
 
@@ -467,15 +442,15 @@ namespace WhereIsThing
             RectTransform rect = inputObject.GetComponent<RectTransform>();
             rect.anchorMin = new Vector2(1f, 1f);
             rect.anchorMax = new Vector2(1f, 1f);
-            rect.sizeDelta = new Vector2(340f, 42f);
-            rect.anchoredPosition = new Vector2(-202f, -117f);
+            rect.sizeDelta = new Vector2(320f, 40f);
+            rect.anchoredPosition = new Vector2(-188f, -114f);
             Image image = inputObject.AddComponent<Image>();
             image.color = new Color(0.03f, 0.035f, 0.03f, 1f);
 
             TextMeshProUGUI text = CreateText(inputObject.transform, "Text", string.Empty, 15f, TextAlignmentOptions.Left,
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(12f, 0f), new Vector2(-12f, 0f));
-            TextMeshProUGUI placeholder = CreateText(inputObject.transform, "Placeholder", "Search / 搜索", 15f, TextAlignmentOptions.Left,
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(12f, 0f), new Vector2(-12f, 0f));
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(12f, 0f), new Vector2(-12f, 0f), false, true);
+            TextMeshProUGUI placeholder = CreateText(inputObject.transform, "Placeholder", ThingUi.SearchPlaceholder(), 15f, TextAlignmentOptions.Left,
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(12f, 0f), new Vector2(-12f, 0f), false, true);
             placeholder.color = new Color(0.55f, 0.56f, 0.52f, 1f);
             TMP_InputField input = inputObject.AddComponent<TMP_InputField>();
             input.textComponent = text;
@@ -483,35 +458,6 @@ namespace WhereIsThing
             input.lineType = TMP_InputField.LineType.SingleLine;
             input.characterLimit = 80;
             return input;
-        }
-
-        private Toggle CreateScopeToggle(Transform parent, string label, ThingLocationScope scope, float x)
-        {
-            GameObject toggleObject = CreateRect("Scope_" + scope, parent);
-            RectTransform toggleRect = toggleObject.GetComponent<RectTransform>();
-            toggleRect.anchorMin = new Vector2(0f, 1f);
-            toggleRect.anchorMax = new Vector2(0f, 1f);
-            toggleRect.sizeDelta = new Vector2(180f, 30f);
-            toggleRect.anchoredPosition = new Vector2(x + 90f, -178f);
-            Image background = toggleObject.AddComponent<Image>();
-            background.color = new Color(0.03f, 0.03f, 0.03f, 1f);
-            GameObject checkObject = CreateRect("Checkmark", toggleObject.transform);
-            RectTransform checkRect = checkObject.GetComponent<RectTransform>();
-            checkRect.anchorMin = new Vector2(0f, 0.5f);
-            checkRect.anchorMax = new Vector2(0f, 0.5f);
-            checkRect.sizeDelta = new Vector2(18f, 18f);
-            checkRect.anchoredPosition = new Vector2(6f, 0f);
-            Image check = checkObject.AddComponent<Image>();
-            check.color = new Color(0.85f, 0.72f, 0.28f, 1f);
-            Toggle toggle = toggleObject.AddComponent<Toggle>();
-            toggle.targetGraphic = background;
-            toggle.graphic = check;
-            toggle.isOn = (_workingScopes & scope) != 0;
-            toggle.onValueChanged.AddListener(delegate(bool value) { ToggleScope(scope, value); });
-            _scopeToggles[scope] = toggle;
-            CreateText(toggleObject.transform, "Label", label, 13f, TextAlignmentOptions.Left,
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(32f, 0f), new Vector2(-4f, 0f));
-            return toggle;
         }
 
         private Toggle CreateFilterToggle(Transform parent, string label, Vector2 position, Vector2 size)
@@ -529,7 +475,7 @@ namespace WhereIsThing
             RectTransform checkRect = checkObject.GetComponent<RectTransform>();
             checkRect.anchorMin = new Vector2(0f, 0.5f);
             checkRect.anchorMax = new Vector2(0f, 0.5f);
-            checkRect.sizeDelta = new Vector2(22f, 22f);
+            checkRect.sizeDelta = new Vector2(20f, 20f);
             checkRect.anchoredPosition = new Vector2(18f, 0f);
             Image check = checkObject.AddComponent<Image>();
             check.color = new Color(0.85f, 0.72f, 0.28f, 1f);
@@ -544,11 +490,12 @@ namespace WhereIsThing
                 {
                     return;
                 }
+
                 _selectedOnly = value;
                 RebuildRows();
             });
-            CreateText(toggleObject.transform, "Label", label, 13f, TextAlignmentOptions.Left,
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(38f, 0f), new Vector2(-6f, 0f));
+            CreateText(toggleObject.transform, "Label", label, 12f, TextAlignmentOptions.Left,
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(36f, 0f), new Vector2(-6f, 0f), false, true);
             return toggle;
         }
 
@@ -565,8 +512,8 @@ namespace WhereIsThing
             Button button = buttonObject.AddComponent<Button>();
             button.targetGraphic = image;
             button.onClick.AddListener(action);
-            return CreateText(buttonObject.transform, "Text", text, 14f, TextAlignmentOptions.Center,
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero);
+            return CreateText(buttonObject.transform, "Text", text, 13f, TextAlignmentOptions.Center,
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero, false, true);
         }
 
         private Button CreateActionButton(Transform parent, string name, string text, Vector2 position, Vector2 size, UnityAction action)
@@ -582,13 +529,13 @@ namespace WhereIsThing
             Button button = buttonObject.AddComponent<Button>();
             button.targetGraphic = image;
             button.onClick.AddListener(action);
-            CreateText(buttonObject.transform, "Text", text, 14f, TextAlignmentOptions.Center,
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero);
+            CreateText(buttonObject.transform, "Text", text, 13f, TextAlignmentOptions.Center,
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero, false, true);
             return button;
         }
 
         private TextMeshProUGUI CreateText(Transform parent, string name, string value, float size, TextAlignmentOptions alignment,
-            Vector2 anchorMin, Vector2 pivot, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax)
+            Vector2 anchorMin, Vector2 pivot, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax, bool wrap, bool autoSize)
         {
             GameObject textObject = CreateRect(name, parent);
             RectTransform rect = textObject.GetComponent<RectTransform>();
@@ -604,7 +551,15 @@ namespace WhereIsThing
             text.text = value;
             text.color = new Color(0.9f, 0.88f, 0.8f, 1f);
             text.raycastTarget = false;
-            text.overflowMode = TextOverflowModes.Ellipsis;
+            text.enableAutoSizing = autoSize;
+            if (autoSize)
+            {
+                text.fontSizeMin = Mathf.Max(9f, size - 4f);
+                text.fontSizeMax = Mathf.Clamp(size, 9f, 24f);
+            }
+            text.textWrappingMode = wrap ? TextWrappingModes.Normal : TextWrappingModes.NoWrap;
+            text.overflowMode = wrap ? TextOverflowModes.Truncate : TextOverflowModes.Ellipsis;
+            text.margin = new Vector4(4f, 0f, 4f, 0f);
             return text;
         }
 
@@ -622,16 +577,6 @@ namespace WhereIsThing
             rect.anchorMax = Vector2.one;
             rect.offsetMin = new Vector2(left, bottom);
             rect.offsetMax = new Vector2(-right, -top);
-        }
-
-        private static string GetLanguageDisplay(ThingNameLanguage language)
-        {
-            switch (language)
-            {
-                case ThingNameLanguage.English: return "English";
-                case ThingNameLanguage.SimplifiedChinese: return "简体中文";
-                default: return "Game / 游戏";
-            }
         }
     }
 }

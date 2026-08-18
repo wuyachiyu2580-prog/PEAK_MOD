@@ -1,6 +1,6 @@
 ﻿# PEAK MOD Memory
 
-更新时间：2026-08-16
+更新时间：2026-08-17
 
 这是项目记忆的唯一入口。目标是让新的 AI 智能体在 1 到 3 分钟内知道：当前有哪些 MOD、近期做了什么、还有什么没做、哪些规则不能违反。
 
@@ -35,12 +35,14 @@
 - 用户明确要求 `DreamyAscent永久暂停`。
 - `DreamyAscent` 现在是永久暂停/归档项目；除非用户明确恢复，不再继续 DA 的功能、日志、构建、诊断或 TODO。
 
-## 2026-08-16 PlayersInfo 状态
+## 2026-08-17 PlayersInfo 状态
 
 - `PlayersInfo` 当前源码和 profile DLL 版本为 `0.2.1`。
 - 0.2.1 已整合稳定玩家条绑定、统一观战目标、独立异常组件、饥饿倒计时、队友耐久条、熟食图标颜色，以及按背包实际容量显示内容/喷气背包燃料的三级配置。
+- 本地额外体力条不再由 PlayersInfo 重挂层级或强制改宽度，恢复交给 PEAK 原版 `StaminaBar.Update()` 控制缩放、动画、黑边、闪电图标和石化布局；PlayersInfo 只在绿色填充内部显示当前额外体力整数，例如 `40`。
+- 观战/灵魂状态继续使用 `observedCharacter -> localCharacter` 的统一目标；队友额外图形条继续隐藏。队友物品栏中的紧凑喷气背包燃料条是独立成熟改动，本轮明确保留。
 - PlayersInfo 直接编译输出 DLL 路径：`C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`；后续构建直接写入该 profile，不再输出到测试环境。
-- 0.2.0 左下角锚点和旧配置迁移仍然有效；旧版本历史记录保留在 PlayersInfo memory 四件套中。0.2.1 新增功能仍需 PEAK 2.1.a 实机验证。
+- 当前 Release 构建为 `0` warnings / `0` errors；profile DLL 为 `0.2.1.0`、`83968` 字节，时间 `2026/8/17 18:25:47`。本地额外条和 0.2.1 新增功能仍需 PEAK 2.1.a 实机验证。
 
 ## 2026-06-04 PlayersInfo 历史发布状态
 

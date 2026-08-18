@@ -1,5 +1,19 @@
 ﻿# Memory Changelog
 
+## 2026-08-17
+
+- [PlayersInfo] 完成 `发行/0.2.1` 非 ZIP 发行目录：包含 DLL、manifest、简洁完整的 README/CHANGELOG 和 icon；发行 DLL 与 profile 产物版本/hash 一致。
+- [PlayersInfo] 根据清晰截图定位最后的重叠来自队友 `BarAffliction.isPetrify` 克隆，而非 `extraBar*` 本体；队友不再克隆石化上限图形，普通异常条保留，石化后的额外体力上限继续通过右侧 `current/cap` 分母显示，并重新构建部署 `0.2.1`。
+- [PlayersInfo] 用户确认红框内是本机主体力条与队友图形额外体力条重叠，不是右侧 `current/cap`；现在仅从队友克隆树内按字段和明确 `Extra*` 名称移除额外条、外框、图标和光晕，保留 `current/cap`、主体力条、异常条、物品栏和喷气背包燃料条，并重新构建部署 `0.2.1`。
+- [PlayersInfo] 修复部分克隆把本地原版 `BarAffliction` 当作队友组件销毁，导致额外体力物品在 `GUIManager.bar.ChangeBar()` 中断、进度完成却不生效的问题；新增克隆根所有权检查和队友异常条显式复制，并完成 `0.2.1` 重新构建部署。
+- [PlayersInfo] 本地额外条已恢复原版布局后，将整体 HUD 的 `Display.OffsetY` 默认值恢复为 `0`，并删除底部锚点 `0 -> 138` 的自动迁移；已有用户自定义偏移不覆盖。
+- [PlayersInfo] 额外条实机确认完成后，移除临时 `[LocalExtraRuntime]` 采样和未调用的手动尺寸接管方法，恢复安静日志。
+- [修改] `mods/PlayersInfo/README.md` / `RECENT.md` / `DECISIONS.md` / `FILES.md`：记录本地额外体力条恢复 PEAK 原版层级和运行时缩放控制，当前值只在绿色填充内部显示；明确观战目标、队友额外图形条抑制和紧凑喷气背包燃料条均保留。
+- [新增] `mods/PlayersInfo/temp/2026-08-17.md`：保存本轮源码证据、方案取舍、构建部署状态和实机验证入口。
+- [修改] `TODO.md`：新增本地额外条缩放/黑边/闪电图标/石化 containment/current-only 数值、观战目标、队友额外条隐藏及燃料条回归验证，并记录验证后清理临时日志。
+- [索引] `README.md` / `MEMORY_INDEX.md` / `mods/README.md`：同步 PlayersInfo 2026-08-17 当前状态和最新临时记忆入口。
+- [规则] 当前会话未提供专用 `update_memory` 工具；已完成所有可用的本地 MD、索引、TODO 和变更日志同步，后续若工具恢复需补同内容的内存实体更新。
+
 ## 2026-08-16
 
 - [PlayersInfo] 最终确定额外体力显示规则：本地额外条固定在主体力条下方并修正外框/填充重叠，去掉独立的 `40/100` 外层文字，内部正常与石化数值保留；队友主体力条、主体力数值和异常条保留，额外图形条不显示，仅在安全侧显示无 `+` 的 `当前/上限`（含 `0/上限`）。底部 HUD 默认 `OffsetY=138`，仅迁移旧的精确零值。

@@ -1,13 +1,13 @@
 # PlayersInfo Files
 
-Last updated: 2026-08-16
+Last updated: 2026-08-17
 
 ## Paths
 
 - Source: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\PlayersInfo`
 - Project: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\PlayersInfo\PlayersInfo.csproj`
 - Direct build output: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`
-- Release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.0`
+- Current release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.1`
 
 The project `<OutputPath>` now points directly to the 2.0.a profile above. Future PlayersInfo builds should write the DLL there; do not redirect it back to the workspace test environment.
 
@@ -15,9 +15,17 @@ The project `<OutputPath>` now points directly to the 2.0.a profile above. Futur
 
 - Version chain currently verified: `.csproj <Version> = 0.2.1`, `PlayersInfoPlugin.PluginVersion = 0.2.1`, `AssemblyInfo = 0.2.1.0`.
 - The current profile DLL at the path above reports `0.2.1.0`; the project is configured to overwrite this file directly on the next build.
-- Current implementation includes stableId-bound teammate bars, unified observed/local display-character resolution, an independent `TeammateBarAffliction`, local hunger countdown, teammate item durability bars, cooked-food icon coloring, and dynamic TMP-width placement.
+- Current implementation includes stableId-bound teammate bars, unified observed/local display-character resolution, an independent `TeammateBarAffliction`, local hunger countdown, teammate item durability bars, cooked-food icon coloring, dynamic TMP-width placement, and native PEAK ownership of the local extra-stamina bar layout.
 - The old `Display.EnableInventoryRow` key is retained as a compatibility key but is now a three-level enum: `Disabled`, `ContentsOnly`, and `ContentsAndJetpackFuel`. Legacy `true` maps to `ContentsOnly`; legacy `false` maps to `Disabled`.
 - Backpack contents use the actual backpack capacity: fanny packs show 2 slots, normal backpacks show 4, and backpacks without contents show no inner slots. Jetpack fuel is shown only in the third mode.
+
+## Release 0.2.1
+
+- Release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.1`.
+- Contents: `PlayersInfo.dll`, `README.md`, `CHANGELOG.md`, `manifest.json`, and `icon.png`.
+- No ZIP was created, as requested.
+- Release DLL version is `0.2.1.0`, size `83968` bytes, SHA-256 `7732C6A23AB4C1AC9493A9BB25EA8B9AF14AE292DF5AAEE11E231C170896A2CF`; it matches the deployed profile DLL.
+- README and changelog cover stable player binding, spectator targeting/center selection, hunger countdown, durability bars, cooked-food colors, backpack capacities, inventory display modes, jetpack fuel, local/teammate extra-stamina rules, UI update reduction, and the local HUD/consumable regression fixes.
 
 ## Release 0.2.0
 
@@ -55,7 +63,7 @@ dotnet build "C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\Play
 - `Helpers\TmpOutlineHelper.cs`: centralized TMP outline styling.
 - `Helpers\FontHelper.cs`: shared CJK-capable TMP_FontAsset accessor with 4-tier fallback.
 - `Helpers\AfflictionValueHelper.cs`: shared PEAK 2.0.a-aware normal affliction/petrify value reader.
-- `Helpers\ExtraStaminaValueHelper.cs`: shared petrify-aware extra-stamina cap calculation for displayed current/cap values.
+- `Helpers\ExtraStaminaValueHelper.cs`: petrify-aware extra-stamina cap calculation used by teammate `current/cap` side values; the local extra bar now shows current only.
 - `Helpers\DisplayCharacterHelper.cs`: resolves `observedCharacter` first and falls back to `localCharacter`.
 - `Helpers\AfflictionTimeHelper.cs`: local hunger countdown and affliction timing helpers.
 - `Helpers\IconSpriteCache.cs`: inventory icon sprite cache.
@@ -63,6 +71,6 @@ dotnet build "C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\Play
 - `MonoBehaviours\TeammateBarDriver.cs`: per-teammate stamina and status driver.
 - `MonoBehaviours\TeammateInventoryRow.cs`: teammate inventory row.
 - `MonoBehaviours\TeammateBarAffliction.cs`: PlayersInfo-owned affliction renderer for cloned teammate bars.
-- `MonoBehaviours\TeammateBarsCoordinator.cs`: teammate HUD coordinator, including stable/distance ordering.
+- `MonoBehaviours\TeammateBarsCoordinator.cs`: teammate HUD coordinator, including stable/distance ordering and cloned teammate extra-bar suppression; it must not reparent the local `ExtraStaminaBar`.
 - `Patches\GUIManagerReadyPatch.cs`: GUI readiness guard.
-- `Patches\LocalStaminaBarPatch.cs`: local stamina HUD patch.
+- `Patches\LocalStaminaBarPatch.cs`: local stamina HUD patch; resolves observed/local target and places current-only extra-stamina text inside the native `extraBarStamina` fill without taking over PEAK's sizing.

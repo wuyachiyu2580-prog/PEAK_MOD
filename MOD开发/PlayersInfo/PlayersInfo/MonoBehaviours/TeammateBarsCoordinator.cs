@@ -28,6 +28,7 @@ namespace PlayersInfo.MonoBehaviours
         private float _nextRefreshTime;
         private const float RefreshInterval = 0.25f;
         private float _nextDistLogTime;
+        private float _nextDiagnosticLogTime;
         private const float ReorderDelay = 0.75f;
 
         // 复用的临时列表
@@ -108,7 +109,6 @@ namespace PlayersInfo.MonoBehaviours
                 ApplyConfiguredAnchor(parentRt);
                 var vlg = parentRt.GetComponent<VerticalLayoutGroup>();
                 if (vlg != null) vlg.spacing = 25f;
-                ConfigureLocalExtraBar();
                 _layoutInitialized = true;
             }
             catch (Exception ex)
@@ -130,6 +130,12 @@ namespace PlayersInfo.MonoBehaviours
                     return;
 
                 var extra = _origBar.extraBar;
+                PluginLogger.Info("[LocalExtraLayout] extraParent=" + GetParentName(extra)
+                    + " outlineParent=" + GetParentName(_origBar.extraBarOutline)
+                    + " staminaParent=" + GetParentName(_origBar.extraBarStamina)
+                    + " iconParent=" + (_origBar.extraStaminaIcon != null
+                        ? GetParentName(_origBar.extraStaminaIcon.rectTransform)
+                        : "null"));
                 if (extra.parent != _origBar.fullBar)
                     extra.SetParent(_origBar.fullBar, false);
 
@@ -151,12 +157,21 @@ namespace PlayersInfo.MonoBehaviours
 
         private static void ConfigureLocalExtraChild(RectTransform child, RectTransform parent)
         {
-            if (child == null || parent == null || child.parent != parent) return;
+            if (child == null || parent == null) return;
 
-            child.anchorMin = new Vector2(0f, 0.5f);
-            child.anchorMax = new Vector2(0f, 0.5f);
+            if (child.parent != parent)
+                child.SetParent(parent, false);
+
+            child.anchorMin = new Vector2(0f, 0f);
+            child.anchorMax = new Vector2(0f, 1f);
             child.pivot = new Vector2(0f, 0.5f);
             child.anchoredPosition = Vector2.zero;
+        }
+
+        private static string GetParentName(RectTransform child)
+        {
+            if (child == null) return "null";
+            return child.parent != null ? child.parent.name : "<root>";
         }
 
         private static void ApplyConfiguredAnchor(RectTransform rt)
@@ -394,6 +409,12 @@ namespace PlayersInfo.MonoBehaviours
                     if (drv.gameObject.activeSelf) drv.gameObject.SetActive(false);
                 }
             }
+
+            if (Time.unscaledTime >= _nextDiagnosticLogTime)
+            {
+                _nextDiagnosticLogTime = Time.unscaledTime + 2f;
+                LogCoordinatorDiagnostics(tracker.Teammates.Count, focus, s_visibleScratch.Count);
+            }
         }
 
         private void EnsureDriversForDisplayOrder(Dictionary<int, Character> visibleById)
@@ -410,7 +431,69 @@ namespace PlayersInfo.MonoBehaviours
                 _stableIdByDriver[driver] = stableId;
                 _pool.Add(driver);
                 driver.BindTarget(target);
+                PluginLogger.Info("[PI-DIAG][DriverCreated] stableId=" + stableId
+                    + " driver=" + driver.GetInstanceID()
+                    + " target=" + GetCharacterDebugName(target)
+                    + " rootSelf=" + driver.gameObject.activeSelf
+                    + " rootHierarchy=" + driver.gameObject.activeInHierarchy
+                    + " afflictions=" + (driver.afflictions != null ? driver.afflictions.Length : -1)
+                    + " texts=" + (driver.afflictionTexts != null ? driver.afflictionTexts.Length : -1));
             }
+        }
+
+        private void LogCoordinatorDiagnostics(int rosterCount, Character focus, int visibleCount)
+        {
+            try
+            {
+                var sb = new System.Text.StringBuilder(512);
+                sb.Append("[PI-DIAG][Coordinator] roster=").Append(rosterCount)
+                    .Append(" candidates=").Append(_scratch.Count)
+                    .Append(" visible=").Append(visibleCount)
+                    .Append(" order=").Append(_displayOrder.Count)
+                    .Append(" pool=").Append(_pool.Count)
+                    .Append(" focus=").Append(GetCharacterDebugName(focus))
+                    .Append(" originalSelf=").Append(_origBar != null && _origBar.gameObject.activeSelf)
+                    .Append(" originalHierarchy=").Append(_origBar != null && _origBar.gameObject.activeInHierarchy);
+
+                for (int i = 0; i < _pool.Count; i++)
+                {
+                    var driver = _pool[i];
+                    if (driver == null)
+                    {
+                        sb.Append(" | driver[").Append(i).Append("]=null");
+                        continue;
+                    }
+
+                    sb.Append(" | driver[").Append(i).Append("] id=").Append(driver.GetInstanceID())
+                        .Append(" stable=").Append(GetDriverStableId(driver))
+                        .Append(" sibling=").Append(driver.transform.GetSiblingIndex())
+                        .Append(" self=").Append(driver.gameObject.activeSelf)
+                        .Append(" hierarchy=").Append(driver.gameObject.activeInHierarchy)
+                        .Append(" enabled=").Append(driver.enabled)
+                        .Append(" target=").Append(GetCharacterDebugName(driver.Target))
+                        .Append(" aff=").Append(driver.afflictions != null ? driver.afflictions.Length : -1)
+                        .Append(" txt=").Append(driver.afflictionTexts != null ? driver.afflictionTexts.Length : -1);
+                }
+                PluginLogger.Info(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                PluginLogger.ThrottleWarn("pi_diag_coordinator", "[PI-DIAG][Coordinator] failed: " + ex);
+            }
+        }
+
+        private static string GetCharacterDebugName(Character character)
+        {
+            if (character == null || character.Equals(null)) return "<null>";
+            try
+            {
+                if (character.photonView != null && character.photonView.Owner != null
+                    && !string.IsNullOrEmpty(character.photonView.Owner.NickName))
+                    return character.photonView.Owner.NickName;
+            }
+            catch { }
+            try { return character.characterName ?? character.name ?? "<unnamed>"; }
+            catch { return "<invalid>"; }
         }
 
         private void ApplyDriverSiblingOrder()
@@ -452,6 +535,8 @@ namespace PlayersInfo.MonoBehaviours
                 {
                     _stableIdByDriver.Remove(driver);
                     _pool.Remove(driver);
+                    if (driver.gameObject != null && driver.gameObject.activeSelf)
+                        driver.gameObject.SetActive(false);
                     UnityEngine.Object.Destroy(driver.gameObject);
                 }
             }
@@ -473,11 +558,34 @@ namespace PlayersInfo.MonoBehaviours
             try
             {
                 var origTransform = _origBar.transform;
+                string afflictionTemplateSource;
+                var afflictionTemplates = ResolveAfflictionTemplates(
+                    _origBar,
+                    out afflictionTemplateSource);
+                if (afflictionTemplates.Length == 0)
+                {
+                    // GUIManager.Start can run before StaminaBar.Start has populated its runtime
+                    // array. Do not create a permanently incomplete driver; the regular roster
+                    // refresh will retry once the original HUD hierarchy is ready.
+                    PluginLogger.ThrottleWarn(
+                        "affliction_templates_not_ready",
+                        "Original affliction templates are not ready; delaying teammate bar creation.");
+                    return null;
+                }
+
+                PluginLogger.ThrottleInfo(
+                    "affliction_template_source",
+                    "Teammate affliction templates: source=" + afflictionTemplateSource
+                        + " count=" + afflictionTemplates.Length,
+                    30f);
                 var cloneTransform = UnityEngine.Object.Instantiate(origTransform, origTransform.parent);
                 cloneTransform.name = "TeammateBar_Clone";
                 cloneTransform.SetAsFirstSibling();
 
                 var cloneGo = cloneTransform.gameObject;
+                // Build while hidden. Destroy() is deferred, so an active clone could otherwise
+                // render copied local texts or stale affliction visuals for the remainder of the frame.
+                cloneGo.SetActive(false);
                 // 清理：原版条上被 LocalStaminaBarPatch 动态添加的 PI_Local* 子节点会被 Instantiate 深拷进来，
                 // 和我们下面自己要加的文本重叠 → 全部删除
                 CleanupClonedPatchArtifacts(cloneTransform);
@@ -486,6 +594,9 @@ namespace PlayersInfo.MonoBehaviours
 
                 if (origCompOnClone != null)
                 {
+                    // Disable immediately. Destroy() is deferred until the end of the frame, and an
+                    // enabled vanilla component can otherwise reactivate cloned extra-bar visuals.
+                    origCompOnClone.enabled = false;
                     driver.backing = origCompOnClone.backing;
                     driver.fullBar = origCompOnClone.fullBar;
                     driver.staminaBar = origCompOnClone.staminaBar;
@@ -504,13 +615,20 @@ namespace PlayersInfo.MonoBehaviours
                     driver.campfire = origCompOnClone.campfire;
                     driver.defaultBackingColor = origCompOnClone.defaultBackingColor;
                     driver.outOfStaminaBackingColor = origCompOnClone.outOfStaminaBackingColor;
-                    driver.afflictions = ConvertAfflictions(origCompOnClone.afflictions);
+                    // StaminaBar.afflictions is populated from the bar group's children at runtime.
+                    // References outside origTransform are not remapped when only the bar is cloned,
+                    // so converting origCompOnClone.afflictions directly can destroy the local HUD's
+                    // original BarAffliction components. Build an owned set for this clone instead.
+                    driver.afflictions = BuildClonedAfflictions(
+                        afflictionTemplates,
+                        cloneTransform,
+                        origTransform);
 
-                    // 温和放弃：extraBar 克隆方案太脂肩（原版 extraBar 在 BarGroup 下和 Bar 同级，
-                    // 克隆后坐标换算、parent 选择、sibling order 都有坑）。
-                    // 改为贴在 fullBar 左端外侧放临时体力数值。
-                    // driver.extraBar / extraBarStamina / extraBarOutline 继承自 origCompOnClone，指向的是原版节点，
-                    // 清一下避免 DoUpdate 误操作到原版 UI。
+                    // 队友仅显示额外体力数值。直接移除克隆范围内的额外条视觉，
+                    // 避免延迟销毁的原版 StaminaBar 或其他子组件再次把它激活。
+                    RemoveClonedExtraBarVisuals(origCompOnClone, cloneTransform);
+
+                    // 队友不绘制额外体力条，避免 driver 操作到克隆或原版的 extraBar。
                     driver.extraBar = null;
                     driver.extraBarStamina = null;
                     driver.extraBarOutline = null;
@@ -521,8 +639,11 @@ namespace PlayersInfo.MonoBehaviours
                 }
                 else
                 {
-                    // 若原版组件不在（异常情况），手动抓 afflictions
-                    driver.afflictions = ConvertAfflictions(cloneGo.GetComponentsInChildren<BarAffliction>(true));
+                    // 异常回退也走相同的所有权筛选，避免重新引入重复或石化组件。
+                    driver.afflictions = BuildClonedAfflictions(
+                        afflictionTemplates,
+                        cloneTransform,
+                        origTransform);
                 }
 
                 // 名字标签
@@ -546,6 +667,9 @@ namespace PlayersInfo.MonoBehaviours
                         driver.afflictionTexts[ai] = AddAfflictionText(a.gameObject, "AfflictionPct_" + ai);
                     }
                 }
+
+                ValidateClonedBarArtifacts(cloneTransform,
+                    driver.afflictions != null ? driver.afflictions.Length : 0);
 
                 // 附加：物品栏（作为克隆体子节点，同一行放在名字右边）
                 const float NameWidth = 140f;   // 名字标签固定宽
@@ -588,24 +712,410 @@ namespace PlayersInfo.MonoBehaviours
             }
         }
 
-        private static TeammateBarAffliction[] ConvertAfflictions(BarAffliction[] sources)
+        private static void RemoveClonedExtraBarVisuals(StaminaBar cloneBar, Transform cloneRoot)
         {
-            if (sources == null || sources.Length == 0)
+            if (cloneBar == null || cloneRoot == null) return;
+
+            var visualRoots = new List<GameObject>(5);
+            AddOwnedVisual(visualRoots, cloneBar.extraBar, cloneRoot);
+            AddOwnedVisual(visualRoots, cloneBar.extraBarStamina, cloneRoot);
+            AddOwnedVisual(visualRoots, cloneBar.extraBarOutline, cloneRoot);
+            AddOwnedVisual(visualRoots, cloneBar.extraStaminaIcon, cloneRoot);
+            AddOwnedVisual(visualRoots, cloneBar.extraStaminaGlow, cloneRoot);
+
+            // Some PEAK layouts leave the runtime field pointing at the original sibling while a
+            // renamed copy still exists inside the cloned tree. Catch both the original field names
+            // and clone-owned nodes explicitly named for extra stamina.
+            var originalNames = new HashSet<string>(StringComparer.Ordinal);
+            AddVisualName(originalNames, cloneBar.extraBar);
+            AddExplicitExtraVisualName(originalNames, cloneBar.extraBarStamina);
+            AddExplicitExtraVisualName(originalNames, cloneBar.extraBarOutline);
+            AddExplicitExtraVisualName(originalNames, cloneBar.extraStaminaIcon);
+            AddExplicitExtraVisualName(originalNames, cloneBar.extraStaminaGlow);
+
+            var descendants = cloneRoot.GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < descendants.Length; i++)
+            {
+                var child = descendants[i];
+                if (child == null || child == cloneRoot)
+                    continue;
+                bool hasKnownName = originalNames.Contains(child.name);
+                bool hasExplicitExtraName = !string.IsNullOrEmpty(child.name)
+                    && child.name.IndexOf("extra", StringComparison.OrdinalIgnoreCase) >= 0;
+                if (!hasKnownName && !hasExplicitExtraName) continue;
+                AddOwnedVisual(visualRoots, child, cloneRoot);
+            }
+
+            for (int i = 0; i < visualRoots.Count; i++)
+            {
+                var visual = visualRoots[i];
+                if (visual == null) continue;
+                if (visual.activeSelf) visual.SetActive(false);
+                UnityEngine.Object.Destroy(visual);
+            }
+        }
+
+        private static void AddOwnedVisual(List<GameObject> visuals, Component component, Transform cloneRoot)
+        {
+            if (component != null) AddOwnedVisual(visuals, component.transform, cloneRoot);
+        }
+
+        private static void AddOwnedVisual(List<GameObject> visuals, Transform transform, Transform cloneRoot)
+        {
+            if (transform == null || cloneRoot == null || !transform.IsChildOf(cloneRoot)) return;
+            var gameObject = transform.gameObject;
+            for (int i = 0; i < visuals.Count; i++)
+            {
+                var existing = visuals[i];
+                if (existing == null) continue;
+                if (gameObject == existing || transform.IsChildOf(existing.transform)) return;
+                if (existing.transform.IsChildOf(transform))
+                {
+                    visuals.RemoveAt(i);
+                    i--;
+                }
+            }
+            visuals.Add(gameObject);
+        }
+
+        private static void AddVisualName(HashSet<string> names, Component component)
+        {
+            if (component != null && !string.IsNullOrEmpty(component.name)) names.Add(component.name);
+        }
+
+        private static void AddExplicitExtraVisualName(HashSet<string> names, Component component)
+        {
+            if (component == null || string.IsNullOrEmpty(component.name)) return;
+            if (component.name.IndexOf("extra", StringComparison.OrdinalIgnoreCase) >= 0)
+                names.Add(component.name);
+        }
+
+        private static TeammateBarAffliction[] BuildClonedAfflictions(
+            BarAffliction[] templates,
+            Transform cloneRoot,
+            Transform originalBarRoot)
+        {
+            if (cloneRoot == null)
                 return new TeammateBarAffliction[0];
 
-            var result = new TeammateBarAffliction[sources.Length];
+            if (templates == null || templates.Length == 0)
+            {
+                CleanupClonedPatchArtifacts(cloneRoot);
+                return new TeammateBarAffliction[0];
+            }
+
+            var localSources = new List<BarAffliction>(
+                cloneRoot.GetComponentsInChildren<BarAffliction>(true));
+            int initialLocalSourceCount = localSources.Count;
+            var ownedSources = new List<BarAffliction>(templates.Length);
+
+            try
+            {
+                var templateLog = new System.Text.StringBuilder(768);
+                templateLog.Append("[PI-DIAG][AfflictionTemplates] count=").Append(templates.Length)
+                    .Append(" cloneLocalBefore=").Append(initialLocalSourceCount);
+                for (int i = 0; i < templates.Length; i++)
+                {
+                    var template = templates[i];
+                    templateLog.Append(" | ").Append(i).Append(':');
+                    if (template == null)
+                    {
+                        templateLog.Append("null");
+                        continue;
+                    }
+                    templateLog.Append(template.afflictionType)
+                        .Append(" petrify=").Append(template.isPetrify)
+                        .Append(" name=").Append(template.name)
+                        .Append(" self=").Append(template.gameObject.activeSelf)
+                        .Append(" hierarchy=").Append(template.gameObject.activeInHierarchy)
+                        .Append(" rtf=").Append(template.rtf != null ? template.rtf.name : "null")
+                        .Append(" icon=").Append(template.icon != null ? template.icon.name : "null");
+                }
+                PluginLogger.Info(templateLog.ToString());
+            }
+            catch (Exception ex)
+            {
+                PluginLogger.Warn("[PI-DIAG][AfflictionTemplates] logging failed: " + ex.Message);
+            }
+
+            // PEAK uses the petrify BarAffliction as the cap segment of the separate extra-stamina
+            // row. Teammates represent that cap through current/cap text only, so keeping this
+            // visual would place a cloned segment over the local player's stamina row.
+            for (int i = localSources.Count - 1; i >= 0; i--)
+            {
+                var source = localSources[i];
+                if (source == null || !source.isPetrify || !source.transform.IsChildOf(cloneRoot))
+                    continue;
+                source.enabled = false;
+                source.gameObject.SetActive(false);
+                UnityEngine.Object.Destroy(source.gameObject);
+                localSources.RemoveAt(i);
+            }
+
+            for (int i = 0; i < templates.Length; i++)
+            {
+                var template = templates[i];
+                if (template == null || template.isPetrify) continue;
+
+                BarAffliction source = null;
+                for (int j = 0; j < localSources.Count; j++)
+                {
+                    var candidate = localSources[j];
+                    if (candidate == null
+                        || candidate.afflictionType != template.afflictionType
+                        || candidate.isPetrify != template.isPetrify)
+                        continue;
+
+                    source = candidate;
+                    localSources.RemoveAt(j);
+                    break;
+                }
+
+                if (source == null)
+                    source = CloneAfflictionTemplate(template, cloneRoot, originalBarRoot, i);
+
+                if (source != null && source.transform.IsChildOf(cloneRoot))
+                {
+                    RepairAfflictionOwnership(source, cloneRoot);
+                    ownedSources.Add(source);
+                }
+            }
+
+            CleanupClonedPatchArtifacts(cloneRoot);
+            DisableUnownedAfflictions(cloneRoot, ownedSources);
+            var converted = ConvertAfflictions(ownedSources.ToArray(), cloneRoot);
+            try
+            {
+                var buildLog = new System.Text.StringBuilder(768);
+                buildLog.Append("[PI-DIAG][AfflictionBuild] templates=").Append(templates.Length)
+                    .Append(" cloneLocalBefore=").Append(initialLocalSourceCount)
+                    .Append(" owned=").Append(ownedSources.Count)
+                    .Append(" converted=").Append(converted.Length)
+                    .Append(" remainingVanilla=")
+                    .Append(cloneRoot.GetComponentsInChildren<BarAffliction>(true).Length);
+                for (int i = 0; i < converted.Length; i++)
+                {
+                    var affliction = converted[i];
+                    buildLog.Append(" | ").Append(i).Append(':');
+                    if (affliction == null)
+                    {
+                        buildLog.Append("null");
+                        continue;
+                    }
+                    buildLog.Append(affliction.afflictionType)
+                        .Append(" petrify=").Append(affliction.isPetrify)
+                        .Append(" name=").Append(affliction.name)
+                        .Append(" self=").Append(affliction.gameObject.activeSelf)
+                        .Append(" hierarchy=").Append(affliction.gameObject.activeInHierarchy)
+                        .Append(" rtf=").Append(affliction.rtf != null ? affliction.rtf.name : "null");
+                }
+                PluginLogger.Info(buildLog.ToString());
+            }
+            catch (Exception ex)
+            {
+                PluginLogger.Warn("[PI-DIAG][AfflictionBuild] logging failed: " + ex.Message);
+            }
+            return converted;
+        }
+
+        private static BarAffliction[] ResolveAfflictionTemplates(
+            StaminaBar originalBar,
+            out string sourceKind)
+        {
+            sourceKind = "none";
+            if (originalBar == null || originalBar.transform == null)
+                return new BarAffliction[0];
+
+            var result = new List<BarAffliction>();
+            var seen = new HashSet<BarAffliction>();
+            bool usedRuntimeArray = AddOriginalAfflictionTemplates(
+                result,
+                seen,
+                originalBar.afflictions);
+
+            // StaminaBar.Start fills afflictions from this parent. GUIManager.Start can precede it
+            // on clients, so scan the serialized hierarchy as a timing-independent fallback. The
+            // scan also completes a partially initialized runtime array.
+            var parent = originalBar.transform.parent;
+            bool usedParentScan = parent != null && AddOriginalAfflictionTemplates(
+                result,
+                seen,
+                parent.GetComponentsInChildren<BarAffliction>(true));
+
+            if (usedRuntimeArray && usedParentScan) sourceKind = "runtime-array+parent-scan";
+            else if (usedRuntimeArray) sourceKind = "runtime-array";
+            else if (usedParentScan) sourceKind = "parent-scan";
+            return result.ToArray();
+        }
+
+        private static bool AddOriginalAfflictionTemplates(
+            List<BarAffliction> result,
+            HashSet<BarAffliction> seen,
+            BarAffliction[] candidates)
+        {
+            if (candidates == null || candidates.Length == 0) return false;
+            bool added = false;
+            for (int i = 0; i < candidates.Length; i++)
+            {
+                var candidate = candidates[i];
+                if (candidate == null
+                    || candidate.transform == null
+                    || IsInsideTeammateClone(candidate.transform)
+                    || !seen.Add(candidate))
+                    continue;
+
+                result.Add(candidate);
+                added = true;
+            }
+            return added;
+        }
+
+        private static bool IsInsideTeammateClone(Transform transform)
+        {
+            for (var current = transform; current != null; current = current.parent)
+            {
+                if (string.Equals(current.name, "TeammateBar_Clone", StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
+        }
+
+        private static void RepairAfflictionOwnership(BarAffliction source, Transform cloneRoot)
+        {
+            if (source == null || cloneRoot == null) return;
+
+            if (source.rtf == null || !source.rtf.IsChildOf(cloneRoot))
+                source.rtf = source.transform as RectTransform;
+
+            if (source.icon != null && source.icon.transform.IsChildOf(cloneRoot)) return;
+            source.icon = null;
+            var images = source.gameObject.GetComponentsInChildren<Image>(true);
+            for (int i = 0; i < images.Length; i++)
+            {
+                if (images[i] == null || !images[i].transform.IsChildOf(cloneRoot)) continue;
+                source.icon = images[i];
+                if (string.Equals(images[i].name, "Icon", StringComparison.OrdinalIgnoreCase)) break;
+            }
+        }
+
+        private static void DisableUnownedAfflictions(
+            Transform cloneRoot,
+            List<BarAffliction> ownedSources)
+        {
+            if (cloneRoot == null) return;
+            var owned = new HashSet<BarAffliction>(ownedSources);
+            var all = cloneRoot.GetComponentsInChildren<BarAffliction>(true);
+            for (int i = 0; i < all.Length; i++)
+            {
+                var source = all[i];
+                if (source == null || owned.Contains(source)) continue;
+                source.enabled = false;
+
+                bool sharesOwnedObject = false;
+                var sameObject = source.gameObject.GetComponents<BarAffliction>();
+                for (int j = 0; j < sameObject.Length; j++)
+                {
+                    if (sameObject[j] != null && owned.Contains(sameObject[j]))
+                    {
+                        sharesOwnedObject = true;
+                        break;
+                    }
+                }
+
+                bool standaloneVisual = source.transform != cloneRoot
+                    && source.gameObject.GetComponent<StaminaBar>() == null
+                    && !sharesOwnedObject;
+                if (standaloneVisual && source.gameObject.activeSelf)
+                    source.gameObject.SetActive(false);
+                UnityEngine.Object.Destroy(source);
+            }
+        }
+
+        private static BarAffliction CloneAfflictionTemplate(
+            BarAffliction template,
+            Transform cloneRoot,
+            Transform originalBarRoot,
+            int index)
+        {
+            try
+            {
+                var cloneObject = UnityEngine.Object.Instantiate(template.gameObject, cloneRoot, false);
+                cloneObject.name = "PI_TeammateAffliction_" + index + "_" + template.gameObject.name;
+
+                var sourceRect = template.transform as RectTransform;
+                var cloneRect = cloneObject.transform as RectTransform;
+                if (sourceRect != null && cloneRect != null && originalBarRoot != null)
+                {
+                    // Preserve the template's position relative to the original stamina bar even
+                    // when the vanilla affliction is a sibling elsewhere in the bar group.
+                    cloneRect.localPosition = originalBarRoot.InverseTransformPoint(sourceRect.position);
+                    cloneRect.localRotation = Quaternion.Inverse(originalBarRoot.rotation) * sourceRect.rotation;
+                    cloneRect.sizeDelta = sourceRect.sizeDelta;
+                }
+
+                var source = cloneObject.GetComponent<BarAffliction>();
+                if (source == null) return null;
+
+                if (source.rtf == null || !source.rtf.IsChildOf(cloneObject.transform))
+                    source.rtf = cloneRect != null ? cloneRect : cloneObject.GetComponent<RectTransform>();
+
+                if (source.icon == null || !source.icon.transform.IsChildOf(cloneObject.transform))
+                {
+                    source.icon = null;
+                    var images = cloneObject.GetComponentsInChildren<Image>(true);
+                    for (int i = 0; i < images.Length; i++)
+                    {
+                        if (images[i] == null) continue;
+                        if (template.icon != null && images[i].name == template.icon.name)
+                        {
+                            source.icon = images[i];
+                            break;
+                        }
+                        if (source.icon == null) source.icon = images[i];
+                    }
+                }
+
+                return source;
+            }
+            catch (Exception ex)
+            {
+                PluginLogger.ThrottleWarn(
+                    "clone_affliction_" + index,
+                    "CloneAfflictionTemplate failed: " + ex.Message);
+                return null;
+            }
+        }
+
+        private static TeammateBarAffliction[] ConvertAfflictions(
+            BarAffliction[] sources,
+            Transform ownershipRoot)
+        {
+            if (ownershipRoot == null || sources == null || sources.Length == 0)
+                return new TeammateBarAffliction[0];
+
+            var result = new List<TeammateBarAffliction>(sources.Length);
             for (int i = 0; i < sources.Length; i++)
             {
                 var source = sources[i];
-                if (source == null) continue;
+                if (source == null || !source.transform.IsChildOf(ownershipRoot))
+                {
+                    if (source != null)
+                    {
+                        PluginLogger.ThrottleWarn(
+                            "foreign_affliction_reference",
+                            "Skipped a BarAffliction outside the teammate clone to protect the local HUD.");
+                    }
+                    continue;
+                }
+
                 var target = source.gameObject.GetComponent<TeammateBarAffliction>();
                 if (target == null) target = source.gameObject.AddComponent<TeammateBarAffliction>();
-                target.Initialize(source);
-                result[i] = target;
                 source.enabled = false;
+                target.Initialize(source);
+                result.Add(target);
                 UnityEngine.Object.Destroy(source);
             }
-            return result;
+            return result.ToArray();
         }
 
         private static bool ShouldPlaceExtraTextOnRight()
@@ -727,6 +1237,7 @@ namespace PlayersInfo.MonoBehaviours
                     var n = t.name;
                     if (!string.IsNullOrEmpty(n) && n.StartsWith("PI_Local"))
                     {
+                        if (t.gameObject.activeSelf) t.gameObject.SetActive(false);
                         UnityEngine.Object.Destroy(t.gameObject);
                     }
                 }
@@ -977,6 +1488,7 @@ namespace PlayersInfo.MonoBehaviours
             try
             {
                 if (hostGo == null) return null;
+                CleanupExistingTeammateAfflictionTexts(hostGo.transform);
                 var go = new GameObject("PI_" + label, typeof(RectTransform));
                 go.transform.SetParent(hostGo.transform, false);
                 var rt = go.GetComponent<RectTransform>();
@@ -1001,6 +1513,57 @@ namespace PlayersInfo.MonoBehaviours
                 PluginLogger.ThrottleWarn("aff_text", "AddAfflictionText failed: " + ex.Message);
                 return null;
             }
+        }
+
+        private static void CleanupExistingTeammateAfflictionTexts(Transform host)
+        {
+            if (host == null) return;
+            var all = host.GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < all.Length; i++)
+            {
+                var child = all[i];
+                if (child == null || child == host || string.IsNullOrEmpty(child.name)) continue;
+                if (!child.name.StartsWith("PI_AfflictionPct_", StringComparison.Ordinal)) continue;
+                if (child.gameObject.activeSelf) child.gameObject.SetActive(false);
+                UnityEngine.Object.Destroy(child.gameObject);
+            }
+        }
+
+        private static void ValidateClonedBarArtifacts(Transform cloneRoot, int expectedAfflictions)
+        {
+            if (cloneRoot == null) return;
+            int activeLocalTexts = 0;
+            int teammateTexts = 0;
+            var transforms = cloneRoot.GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < transforms.Length; i++)
+            {
+                var child = transforms[i];
+                if (child == null || string.IsNullOrEmpty(child.name)) continue;
+                if (child.name.StartsWith("PI_Local", StringComparison.Ordinal)
+                    && child.gameObject.activeSelf)
+                    activeLocalTexts++;
+                if (child.name.StartsWith("PI_AfflictionPct_", StringComparison.Ordinal)
+                    && child.gameObject.activeSelf)
+                    teammateTexts++;
+            }
+
+            int enabledVanilla = 0;
+            var vanilla = cloneRoot.GetComponentsInChildren<BarAffliction>(true);
+            for (int i = 0; i < vanilla.Length; i++)
+                if (vanilla[i] != null && vanilla[i].enabled) enabledVanilla++;
+
+            int ownedCount = cloneRoot.GetComponentsInChildren<TeammateBarAffliction>(true).Length;
+            bool valid = activeLocalTexts == 0
+                && enabledVanilla == 0
+                && teammateTexts == expectedAfflictions
+                && ownedCount == expectedAfflictions;
+            string summary = "[CloneValidation] localActive=" + activeLocalTexts
+                + " teammateTexts=" + teammateTexts
+                + " vanillaEnabled=" + enabledVanilla
+                + " owned=" + ownedCount
+                + " expected=" + expectedAfflictions;
+            if (valid) PluginLogger.ThrottleInfo("clone_validation_ok", "[PI-DIAG]" + summary, 5f);
+            else PluginLogger.ThrottleWarn("clone_validation", summary);
         }
 
         /// <summary>仿 StaminaInfo.AddTextObject：在指定条形 GameObject 上加一个居中显示数值的 TMP_Text。</summary>
@@ -1045,7 +1608,11 @@ namespace PlayersInfo.MonoBehaviours
             for (int i = 0; i < _pool.Count; i++)
             {
                 var drv = _pool[i];
-                if (drv != null && drv.gameObject != null) UnityEngine.Object.Destroy(drv.gameObject);
+                if (drv != null && drv.gameObject != null)
+                {
+                    if (drv.gameObject.activeSelf) drv.gameObject.SetActive(false);
+                    UnityEngine.Object.Destroy(drv.gameObject);
+                }
             }
             _pool.Clear();
             _driversByStableId.Clear();

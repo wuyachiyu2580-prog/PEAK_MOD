@@ -1,6 +1,6 @@
 ﻿# Memory Index
 
-更新时间：2026-08-16
+更新时间：2026-08-17
 
 ## 当前结构
 
@@ -30,7 +30,7 @@
 - 当天临时文件命名为 `mods/<ModName>/temp/YYYY-MM-DD.md`。
 - 每形成 3 次明确的阶段性判断、排查结论或方案取舍，就追加一次摘要。
 - 上下文压缩、会话中断或换 AI 后，先读该 MOD 最新临时 MD，再读正式四件套。
-- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`WhySoLaggy/temp/2026-05-19.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`。
+- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`WhySoLaggy/temp/2026-05-19.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`。
 
 ### ItemInfoCN（1.0.0 已发布）
 
@@ -49,8 +49,8 @@
 ### PlayersInfo（0.2.1）
 
 - `mods/PlayersInfo/README.md`：队友 HUD 聚合概览与功能轮廓。
-- `mods/PlayersInfo/RECENT.md`：0.1.0 首发状态、HUD 聚合、本地体力显示、TMP 描边、历史性能和闪烁修复、PEAK 2.0.a/2.1.a 兼容、0.2.0 左下角默认锚点，以及 0.2.1 的稳定玩家绑定、观战目标统一、异常状态独立组件、饥饿倒计时、耐久条、熟食颜色和背包类型/燃料显示。
-- `mods/PlayersInfo/DECISIONS.md`：只读展示不发 RPC、HUD 架构、首发发布口径和跨 MOD 数据边界。
+- `mods/PlayersInfo/RECENT.md`：含 2026-08-17 本地额外体力条恢复原版层级/缩放控制、当前值内嵌显示、观战目标保留、队友额外图形条隐藏和物品栏燃料条保留结论，以及此前 0.2.1 功能历史。
+- `mods/PlayersInfo/DECISIONS.md`：只读展示不发 RPC、HUD 架构、原版负责本地额外条布局、观战目标、队友额外条抑制、燃料条保留和禁止整体回退边界。
 - `mods/PlayersInfo/FILES.md`：源码路径、项目文件、0.2.1 版本和当前 DLL 输出路径（含 `Helpers/FontHelper.cs`、`Helpers/DisplayCharacterHelper.cs`、`MonoBehaviours/TeammateBarAffliction.cs`）。
 
 ### DreamyAscent（永久暂停/归档）
@@ -107,7 +107,7 @@
 - `WhereIsThing` 当前重点是进 PEAK 2.1.a 实机验证重名合并、行李箱目标、四类范围筛选、自适应多列窗口、中文字体、鼠标恢复和大量目标性能；验证通过后再制作 0.1.0 发布包。
 
 - `Lantern_ShootZombies_Night` 当前重点是实机验证客机本地燃料权威：有备用池时只降备用池、不降灯燃料，且远端 fuel 下降不覆盖本地。
-- `PlayersInfo` 的 0.2.0 发布准备记录已归档；当前状态以 0.2.1 专属 memory 四件套和上方 2026-08-16 状态为准。0.2.1 仍待用户在 PEAK 2.1.a 中完成多人、观战、背包和性能实机验证。
+- `PlayersInfo` 的 0.2.0 发布准备记录已归档；当前状态以 0.2.1 专属 memory 四件套和 2026-08-17 临时记忆为准。本地额外条已恢复 PEAK 原版层级/缩放控制，仍待实机确认布局、石化、观战、队友额外条抑制、背包燃料和性能。
 - `DreamyAscent` 已于 2026-05-24 永久暂停/归档。此前预览、模板库、Snapshot V2、官方生成链和 zero-output 恢复等资料仅作为历史记录，不作为当前重点推进。
 - `TerrainCustomiserCN` 已发布 0.1.2，对应原版 0.3.2。当前重点是后续玩家反馈漏翻时补 `DisplayNameTranslator.cs`、重建 Release、更新发布包；若玩家反馈旧地图缺失，先核对新持久化目录和旧插件目录，不要自动迁移；任何功能改动前先读 `DECISIONS.md` 的联机/存档兼容禁止回退项。
 - 其他 MOD 新增功能前先读对应 `RECENT.md` 和 `DECISIONS.md` 的"禁止回退"条款。

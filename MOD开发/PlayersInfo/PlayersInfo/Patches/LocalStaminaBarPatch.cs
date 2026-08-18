@@ -28,6 +28,9 @@ namespace PlayersInfo.Patches
         private static float _nextAfflictionRefreshTime;
         private static float _nextHungerCalculationTime;
         private static string _cachedHungerTime = string.Empty;
+        private static Character _infiniteDisplayCharacter;
+        private static bool _wasInfiniteStamina;
+        private static float _frozenInfiniteStamina01;
         private const float ValueRefreshInterval = 0.15f;
         private const float AfflictionRefreshInterval = 0.5f;
 
@@ -45,6 +48,7 @@ namespace PlayersInfo.Patches
                 if (PlayersInfoPlugin.CfgModEnabled != null && !PlayersInfoPlugin.CfgModEnabled.Value)
                 {
                     HideAll();
+                    ResetInfiniteStaminaDisplay();
                     return;
                 }
 
@@ -62,13 +66,16 @@ namespace PlayersInfo.Patches
                 // 原版 StaminaBar 使用 observedCharacter；文字也必须读取同一角色。
                 // sizeDelta.x 只用来判断宽度足够不足显示，避免文字溢出
                 Character displayCharacter = DisplayCharacterHelper.GetObservedOrLocal();
-                float mainStam01 = 0f, extraStam01 = 0f;
+                float mainStam01 = 0f, extraStam01 = 0f, maxStam01 = 1f;
+                bool infiniteStamina = false;
                 try
                 {
                     if (displayCharacter != null && displayCharacter.data != null)
                     {
                         mainStam01 = displayCharacter.data.currentStamina;
                         extraStam01 = displayCharacter.data.extraStamina;
+                        maxStam01 = Mathf.Max(0f, displayCharacter.GetMaxStamina());
+                        infiniteStamina = displayCharacter.infiniteStam;
                     }
                 }
                 catch { }
@@ -76,6 +83,10 @@ namespace PlayersInfo.Patches
                 bool displayDead = displayCharacter != null
                                  && displayCharacter.data != null
                                  && displayCharacter.data.dead;
+                float displayedMainStam01 = ResolveDisplayedMainStamina(
+                    displayCharacter, mainStam01, maxStam01, infiniteStamina, displayDead);
+                CorrectOverflowingStaminaWidth(
+                    __instance, displayedMainStam01, mainStam01, maxStam01, infiniteStamina);
                 bool refreshValues = Time.unscaledTime >= _nextValueRefreshTime;
                 if (refreshValues)
                     _nextValueRefreshTime = Time.unscaledTime + ValueRefreshInterval;
@@ -84,7 +95,7 @@ namespace PlayersInfo.Patches
                 if (_staminaValueText != null)
                 {
                     if (refreshValues && showValue && displayCharacter != null && !displayDead && __instance.staminaBar != null)
-                        UpdateValueText(_staminaValueText, mainStam01 * 100f, __instance.staminaBar.sizeDelta.x);
+                        UpdateValueText(_staminaValueText, displayedMainStam01 * 100f, __instance.staminaBar.sizeDelta.x);
                     else if (!showValue || displayCharacter == null || displayDead)
                         SetActive(_staminaValueText, false);
                 }
@@ -96,11 +107,11 @@ namespace PlayersInfo.Patches
                 if (_extraValueText != null)
                 {
                     bool extraActive = __instance.extraBar != null && __instance.extraBar.gameObject.activeSelf;
-                    if (refreshValues && showValue && displayCharacter != null && !displayDead && extraActive && __instance.extraBar != null)
+                    if (refreshValues && showValue && displayCharacter != null && !displayDead
+                        && extraActive && __instance.extraBarStamina != null)
                     {
-                        float extraCap01 = ExtraStaminaValueHelper.GetCap01(displayCharacter);
-                        UpdateExtraValueText(_extraValueText, extraStam01 * 100f, extraCap01 * 100f,
-                            __instance.extraBar.sizeDelta.x);
+                        UpdateExtraValueText(_extraValueText, extraStam01 * 100f,
+                            __instance.extraBarStamina.sizeDelta.x);
                     }
                     else if (!showValue || displayCharacter == null || displayDead || !extraActive)
                         SetActive(_extraValueText, false);
@@ -159,6 +170,7 @@ namespace PlayersInfo.Patches
                         }
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -178,6 +190,66 @@ namespace PlayersInfo.Patches
             _nextAfflictionRefreshTime = 0f;
             _nextHungerCalculationTime = 0f;
             _cachedHungerTime = string.Empty;
+            ResetInfiniteStaminaDisplay();
+        }
+
+        private static float ResolveDisplayedMainStamina(
+            Character displayCharacter,
+            float currentStamina,
+            float maxStamina,
+            bool infiniteStamina,
+            bool displayDead)
+        {
+            if (displayCharacter == null || displayDead)
+            {
+                ResetInfiniteStaminaDisplay();
+                return 0f;
+            }
+
+            if (!object.ReferenceEquals(_infiniteDisplayCharacter, displayCharacter))
+            {
+                _infiniteDisplayCharacter = displayCharacter;
+                _wasInfiniteStamina = false;
+                _frozenInfiniteStamina01 = 0f;
+            }
+
+            float reasonableCurrent = Mathf.Clamp(currentStamina, 0f, maxStamina);
+            if (infiniteStamina)
+            {
+                if (!_wasInfiniteStamina)
+                    _frozenInfiniteStamina01 = reasonableCurrent;
+                _wasInfiniteStamina = true;
+                return _frozenInfiniteStamina01;
+            }
+
+            _wasInfiniteStamina = false;
+            _frozenInfiniteStamina01 = 0f;
+            return reasonableCurrent;
+        }
+
+        private static void CorrectOverflowingStaminaWidth(
+            StaminaBar bar,
+            float displayedStamina,
+            float rawStamina,
+            float maxStamina,
+            bool infiniteStamina)
+        {
+            if (bar == null || bar.staminaBar == null || bar.fullBar == null) return;
+            if (!infiniteStamina && rawStamina >= 0f && rawStamina <= maxStamina + 0.0001f) return;
+
+            float targetWidth = Mathf.Max(0f,
+                displayedStamina * bar.fullBar.sizeDelta.x + bar.staminaBarOffset);
+            var size = bar.staminaBar.sizeDelta;
+            if (Mathf.Abs(size.x - targetWidth) < 0.01f) return;
+            size.x = targetWidth;
+            bar.staminaBar.sizeDelta = size;
+        }
+
+        private static void ResetInfiniteStaminaDisplay()
+        {
+            _infiniteDisplayCharacter = null;
+            _wasInfiniteStamina = false;
+            _frozenInfiniteStamina01 = 0f;
         }
 
         private static void EnsureInit(StaminaBar bar)
@@ -188,9 +260,9 @@ namespace PlayersInfo.Patches
                 if (bar.staminaBar != null && _staminaValueText == null)
                     _staminaValueText = AddStretchText(bar.staminaBar.gameObject, "PI_LocalStaminaValue", 20f, false);
 
-                // 额外体力以主体力条下方的独立条为主，不再叠加外层 40/100 文本。
-                // 额外条内部的正常体力和石化数值由原有异常状态组件继续显示。
-                _extraValueText = null;
+                if (bar.extraBarStamina != null && _extraValueText == null)
+                    _extraValueText = AddStretchText(bar.extraBarStamina.gameObject,
+                        "PI_LocalExtraStaminaValue", 20f, false);
 
                 if (bar.fullBar != null && _hungerCountdownText == null)
                     _hungerCountdownText = AddFloatingText(bar.fullBar.gameObject, "PI_LocalHungerCountdown", 14f);
@@ -238,7 +310,7 @@ namespace PlayersInfo.Patches
             SetActive(txt, true);
         }
 
-        private static void UpdateExtraValueText(TMP_Text txt, float currentPercent, float capPercent, float widthPx)
+        private static void UpdateExtraValueText(TMP_Text txt, float currentPercent, float widthPx)
         {
             if (widthPx < 15f)
             {
@@ -247,8 +319,7 @@ namespace PlayersInfo.Patches
             }
 
             int current = Mathf.Clamp(Mathf.RoundToInt(currentPercent), 0, 100);
-            int cap = Mathf.Clamp(Mathf.RoundToInt(capPercent), 0, 100);
-            txt.text = current.ToString() + "/" + cap.ToString();
+            txt.text = current.ToString();
             SetActive(txt, true);
         }
 
@@ -324,9 +395,6 @@ namespace PlayersInfo.Patches
             try
             {
                 if (host == null) return null;
-                // TMP 初始化需要 host 处于 active 状态
-                if (!host.activeSelf) host.SetActive(true);
-
                 var go = new GameObject(name, typeof(RectTransform));
                 go.transform.SetParent(host.transform, false);
                 var rt = go.GetComponent<RectTransform>();

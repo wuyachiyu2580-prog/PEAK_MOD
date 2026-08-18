@@ -1,12 +1,54 @@
 # PlayersInfo Recent
 
-## 2026-08-16 Final local/teammate extra-stamina layout
+## 2026-08-17 Release 0.2.1 directory
+
+- Prepared `MOD开发/PlayersInfo/发行/0.2.1` without a ZIP.
+- Included `PlayersInfo.dll`, `manifest.json`, `README.md`, `CHANGELOG.md`, and `icon.png`.
+- The release DLL is version `0.2.1.0`, size `83968` bytes, SHA-256 `7732C6A23AB4C1AC9493A9BB25EA8B9AF14AE292DF5AAEE11E231C170896A2CF`, and matches the current profile DLL.
+- README and changelog were rewritten to be concise while covering all 0.2.1 changes: stable binding, spectator behavior, hunger countdown, status layout, durability, cooked-food colors, backpack capacity, inventory modes, jetpack fuel, extra-stamina presentation, performance reductions, and regression fixes.
+
+## 2026-08-17 Residual teammate extra-bar visual removal
+
+- The reported residual element was the cloned teammate graphical extra-stamina bar, not the intended right-side `current/cap` text.
+- A second screenshot identified the remaining overlap precisely: PEAK's `isPetrify` `BarAffliction` is the cap segment of the separate extra-stamina row. Cloning it for a teammate placed the purple cap segment over the local player's main stamina row.
+- `BuildClonedAfflictions()` now excludes teammate petrify visuals and immediately removes any clone-owned petrify component already present. Ordinary teammate hunger/injury/etc. affliction visuals remain enabled. Petrify still reduces the cap shown by teammate `current/cap` text.
+- `CreateBar()` now disables the cloned vanilla `StaminaBar` immediately, then removes only clone-owned visual roots referenced by `extraBar`, `extraBarStamina`, `extraBarOutline`, `extraStaminaIcon`, and `extraStaminaGlow`. It also catches renamed clone-owned `Extra*` nodes that are not correctly remapped into those fields.
+- Every removal requires the object to be under the teammate clone root. External references are never disabled or destroyed, protecting the local vanilla HUD and the extra-stamina item-use fix.
+- The teammate main stamina bar/value, ordinary affliction visuals, right-side `current/cap`, inventory row, and jetpack fuel bar remain unchanged. The local native extra-stamina and petrify bars also remain unchanged.
+- Release build passed with `0` warnings and `0` errors. Deployed `PlayersInfo.dll` version `0.2.1.0`, size `83968` bytes, timestamp `2026-08-17 22:35:35`, SHA-256 `7732C6A23AB4C1AC9493A9BB25EA8B9AF14AE292DF5AAEE11E231C170896A2CF`, to the configured `2.0.a` profile plugins directory.
+
+## 2026-08-17 Extra-stamina item use regression fix
+
+- Confirmed an in-game regression where food and other items that grant extra stamina completed their use progress but produced no effect; removing PlayersInfo restored normal behavior.
+- Root cause: `CreateBar()` cloned only the `StaminaBar` transform, then converted `origCompOnClone.afflictions`. Runtime `StaminaBar.afflictions` can contain references outside the cloned transform, and Unity leaves those external references pointing at the local HUD. `ConvertAfflictions()` then disabled/destroyed the local vanilla `BarAffliction` components. A later `Action_GiveExtraStamina -> Character.AddExtraStamina -> GUIManager.bar.ChangeBar()` hit those destroyed entries and interrupted the remaining item actions, including consumption.
+- Teammate afflictions are now resolved from components owned by the teammate clone. Missing visuals are cloned from vanilla templates, while `ConvertAfflictions()` rejects every component outside the clone root before disabling or destroying it.
+- `LocalStaminaBarPatch.AddStretchText()` no longer activates an inactive vanilla host while creating text; PEAK retains control of extra-bar visibility and sequencing.
+- Teammate extra-stamina graphical bars remain disabled. The teammate side value remains `current/cap` without `+`; inventory and jetpack fuel rendering are unchanged.
+- Release build passed with `0` warnings and `0` errors. Deployed `PlayersInfo.dll` version `0.2.1.0`, size `82944` bytes, timestamp `2026-08-17 19:53:10`, to the configured `2.0.a` profile plugins directory.
+
+## 2026-08-17 Native local extra-stamina layout restoration
+
+- Restored the global HUD vertical-offset default to `0` for every anchor and removed the temporary bottom-anchor `0 -> 138` migration. Existing persisted custom offsets are not overwritten.
+- Removed the temporary `[LocalExtraRuntime]` sampling and the unused manual extra-bar sizing helper after in-game confirmation; normal logs are quiet again.
+- Did not roll the project back to `0.2.0`. The fix is limited to local extra-stamina layout ownership so the mature `0.2.1` spectator, stable binding, affliction, hunger, durability, backpack, and fuel features remain available.
+- `TeammateBarsCoordinator` no longer calls `ConfigureLocalExtraBar()`. The original `ExtraStaminaBar` hierarchy is left intact instead of being reparented below `fullBar`.
+- `LocalStaminaBarPatch` no longer calls `KeepLocalExtraBarVisible()`. PEAK's own `StaminaBar.Update()` again controls extra-bar width, animation, black outline, lightning icon, and petrify placement, preventing the bar from being stretched across the full main bar.
+- Restored `PI_LocalExtraStaminaValue` as a child of `extraBarStamina`. It displays only the current rounded value such as `40`, not `+40/100` or `40/100`.
+- Spectator/ghost compatibility is preserved through `DisplayCharacterHelper.GetObservedOrLocal()`, so local stamina and extra-stamina text continue to follow the observed player when valid.
+- Teammate graphical extra bars are removed from the clone through `RemoveClonedExtraBarVisuals`; teammate side `current/cap` values remain unchanged.
+- The compact jetpack fuel bar changes in `TeammateInventoryRow` are intentionally preserved and are outside this local extra-stamina fix.
+- Release build passed with 0 warnings / 0 errors. Deployed DLL: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`, version `0.2.1.0`, size `83968`, timestamp `2026-08-17 18:25:47`.
+- In-game verification is still pending for the Figure 1 indentation, black border, lightning icon, petrify containment, current-only text, observed-player targeting, hidden teammate extra bars, and retained compact fuel bar.
+
+## 2026-08-16 Superseded local/teammate extra-stamina layout attempt
+
+- This manual reparenting/sizing approach was superseded on 2026-08-17 by restoring PEAK's native local `ExtraStaminaBar` hierarchy and runtime control. Keep the entry only as history; do not treat it as the current layout rule.
 
 - The local player's original `extraBar` is anchored directly below `fullBar`; its outer container, outline, and fill now share the same left origin. The gap from the main bar is 2 pixels, fixing the old outline overlap.
 - The separate local `PI_LocalExtraStaminaValue` text was removed. The local extra bar remains visible as the primary display, while the existing normal and petrify/affliction values inside the bar are unchanged.
 - Teammate main stamina bars, main stamina numbers, and affliction visuals remain enabled. Teammate extra-stamina graphical bars remain disabled; only the HUD-safe side value is shown.
 - Teammate extra stamina uses `current/cap` without `+`, including `0/cap` for a living teammate with no current extra stamina.
-- Bottom HUD anchors now default to `OffsetY=138`; only an old exact-zero bottom offset migrates, so custom nonzero offsets are preserved.
+- At this superseded stage, bottom HUD anchors temporarily defaulted to `OffsetY=138`; the 2026-08-17 native-layout restoration removed that migration and restored the current default to `0`.
 - Release build passed with 0 warnings / 0 errors. DLL output: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`, version `0.2.1.0`, size `80896`, timestamp `2026-08-16 19:18:07`.
 
 ## 2026-08-16 PlayersInfo 0.2.1 implementation sync

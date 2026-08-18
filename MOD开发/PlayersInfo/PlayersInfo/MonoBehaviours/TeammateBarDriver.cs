@@ -11,9 +11,9 @@ namespace PlayersInfo.MonoBehaviours
     /// <summary>
     /// 挂在"克隆出来的原版 StaminaBar"上，接管 Update 逻辑：
     /// - 原版 StaminaBar 组件已被销毁（避免读 observedCharacter 冲突）
-    /// - 保留原版所有 UI 引用（fullBar/staminaBar/extraBar/extraStaminaGlow ...）
+    /// - 保留原版主体力 UI 引用，队友额外体力仅使用单独的 current/cap 文本
     /// - Update 完整复制 StaminaBar.Update 但把 observedCharacter 换成 Target
-    /// 这样既完整复用原版视觉（含 extraBar 临时体力泡泡+光晕），又能指向任意队友。
+    /// 这样复用主体力视觉，同时显式绑定任意队友。
     /// </summary>
     internal class TeammateBarDriver : MonoBehaviour
     {
@@ -77,6 +77,7 @@ namespace PlayersInfo.MonoBehaviours
         private float _nextAfflictionTextRefreshTime;
         private const float AfflictionTextRefreshInterval = 0.5f;
         private float _nextIdentityRefreshTime;
+        private float _nextDiagnosticLogTime;
 
         // 反射结果缓存：CharacterData.isInvincible 每帧反射 GetValue 会装箱产生 GC，
         // shield 显隐对延迟不敏感，0.25s 探一次足够。
@@ -176,6 +177,13 @@ namespace PlayersInfo.MonoBehaviours
                     if (tx.gameObject.activeSelf) tx.gameObject.SetActive(false);
                 }
             }
+            _nextDiagnosticLogTime = 0f;
+            PluginLogger.Info("[PI-DIAG][Bind] driver=" + GetInstanceID()
+                + " target=" + SafeGetName(c)
+                + " rootSelf=" + gameObject.activeSelf
+                + " rootHierarchy=" + gameObject.activeInHierarchy
+                + " afflictions=" + (afflictions != null ? afflictions.Length : -1)
+                + " texts=" + (afflictionTexts != null ? afflictionTexts.Length : -1));
         }
 
         private void Update()
@@ -186,8 +194,25 @@ namespace PlayersInfo.MonoBehaviours
 
         private void DoUpdate()
         {
-            if (Target == null || Target.Equals(null) || Target.data == null) return;
-            if (fullBar == null || staminaBar == null) return;
+            if (Target == null || Target.Equals(null) || Target.data == null)
+            {
+                PluginLogger.ThrottleInfo(
+                    "pi_diag_target_" + GetInstanceID(),
+                    "[PI-DIAG][DriverSkip] driver=" + GetInstanceID() + " reason=invalid-target",
+                    2f);
+                return;
+            }
+            if (fullBar == null || staminaBar == null)
+            {
+                PluginLogger.ThrottleInfo(
+                    "pi_diag_bar_refs_" + GetInstanceID(),
+                    "[PI-DIAG][DriverSkip] driver=" + GetInstanceID()
+                        + " target=" + SafeGetName(Target)
+                        + " reason=missing-bar fullBar=" + (fullBar != null)
+                        + " staminaBar=" + (staminaBar != null),
+                    2f);
+                return;
+            }
 
             // 玩家名与颜色很少变化，低频刷新即可。
             if (nameLabel != null && Time.unscaledTime >= _nextIdentityRefreshTime)
@@ -416,6 +441,108 @@ namespace PlayersInfo.MonoBehaviours
             {
                 _nextValueRefreshTime = Time.unscaledTime + ValueRefreshInterval;
                 UpdateValueTexts();
+            }
+
+            if (Time.unscaledTime >= _nextDiagnosticLogTime)
+            {
+                _nextDiagnosticLogTime = Time.unscaledTime + 2f;
+                LogRuntimeDiagnostics(fullWidth, statusSum);
+            }
+        }
+
+        private void LogRuntimeDiagnostics(float fullWidth, float statusSum)
+        {
+            try
+            {
+                CharacterAfflictions targetAfflictions = null;
+                try
+                {
+                    targetAfflictions = Target != null && Target.refs != null
+                        ? Target.refs.afflictions
+                        : null;
+                }
+                catch { }
+
+                var sb = new System.Text.StringBuilder(1536);
+                sb.Append("[PI-DIAG][DriverState] driver=").Append(GetInstanceID())
+                    .Append(" target=").Append(SafeGetName(Target))
+                    .Append(" rootSelf=").Append(gameObject.activeSelf)
+                    .Append(" rootHierarchy=").Append(gameObject.activeInHierarchy)
+                    .Append(" enabled=").Append(enabled)
+                    .Append(" dead=").Append(Target != null && Target.data != null && Target.data.dead)
+                    .Append(" refsAff=").Append(targetAfflictions != null)
+                    .Append(" statusArray=").Append(targetAfflictions != null && targetAfflictions.currentStatuses != null
+                        ? targetAfflictions.currentStatuses.Length
+                        : -1)
+                    .Append(" statusSum=").Append(statusSum.ToString("F3"))
+                    .Append(" currentStamina=").Append(Target != null && Target.data != null
+                        ? Target.data.currentStamina.ToString("F3")
+                        : "null")
+                    .Append(" fullWidth=").Append(fullWidth.ToString("F1"))
+                    .Append(" staminaWidth=").Append(staminaBar != null ? staminaBar.sizeDelta.x.ToString("F1") : "null")
+                    .Append(" staminaSelf=").Append(staminaBar != null && staminaBar.gameObject.activeSelf)
+                    .Append(" staminaHierarchy=").Append(staminaBar != null && staminaBar.gameObject.activeInHierarchy)
+                    .Append(" staminaText=").Append(DescribeText(staminaValueText))
+                    .Append(" affCount=").Append(afflictions != null ? afflictions.Length : -1)
+                    .Append(" textCount=").Append(afflictionTexts != null ? afflictionTexts.Length : -1);
+
+                if (afflictions != null)
+                {
+                    for (int i = 0; i < afflictions.Length; i++)
+                    {
+                        var affliction = afflictions[i];
+                        sb.Append(" | aff[").Append(i).Append("]=");
+                        if (affliction == null)
+                        {
+                            sb.Append("null");
+                            continue;
+                        }
+
+                        float value = AfflictionValueHelper.GetValue(
+                            Target,
+                            affliction.afflictionType,
+                            affliction.isPetrify);
+                        sb.Append(affliction.afflictionType)
+                            .Append(':').Append(value.ToString("F3"))
+                            .Append(" width=").Append(affliction.width.ToString("F1"))
+                            .Append(" size=").Append(affliction.size.ToString("F1"))
+                            .Append(" self=").Append(affliction.gameObject.activeSelf)
+                            .Append(" hierarchy=").Append(affliction.gameObject.activeInHierarchy)
+                            .Append(" rtf=").Append(affliction.rtf != null)
+                            .Append(" text=").Append(afflictionTexts != null && i < afflictionTexts.Length
+                                ? DescribeText(afflictionTexts[i])
+                                : "<missing>");
+                    }
+                }
+                PluginLogger.Info(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                PluginLogger.ThrottleWarn(
+                    "pi_diag_driver_" + GetInstanceID(),
+                    "[PI-DIAG][DriverState] failed for driver=" + GetInstanceID() + ": " + ex,
+                    2f);
+            }
+        }
+
+        private static string DescribeText(TMP_Text text)
+        {
+            if (text == null) return "<null>";
+            string content;
+            try { content = string.IsNullOrEmpty(text.text) ? "<empty>" : text.text; }
+            catch { content = "<invalid>"; }
+            try
+            {
+                return content
+                    + ",self=" + text.gameObject.activeSelf
+                    + ",hierarchy=" + text.gameObject.activeInHierarchy
+                    + ",enabled=" + text.enabled
+                    + ",font=" + (text.font != null ? text.font.name : "null")
+                    + ",size=" + text.fontSize.ToString("F1");
+            }
+            catch
+            {
+                return content + ",state=<invalid>";
             }
         }
 

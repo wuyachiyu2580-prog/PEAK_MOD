@@ -1,6 +1,6 @@
 ﻿# Mods Memory
 
-更新时间：2026-07-23
+更新时间：2026-08-17
 
 每个 MOD 必须独立成目录。不要再把某个 MOD 的上下文堆到根目录或 `common/`。
 
@@ -15,7 +15,7 @@
 
 - `ItemInfoCN/`
 - `Lantern_ShootZombies_Night/`
-- `PlayersInfo/`：当前版本 `0.2.1`；项目直接编译输出到 `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins`，详情以该目录四件套为准。
+- `PlayersInfo/`：当前版本 `0.2.1`；本地额外体力条恢复 PEAK 原版层级/缩放控制，观战目标、队友额外条抑制和物品栏燃料条保留；项目直接编译输出到 `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins`。
 - `DreamyAscent/`：永久暂停/归档。除标准四件套外，另有 `MAP_GENERATION.md`、`IMPLEMENTATION_MATRIX.md`、`MAP_GENERATION_RESEARCH_NOTES.md` 和 `CROSS_SEGMENT_PLACEMENT.md`，仅作为历史资料；除非用户明确恢复，否则不要继续 DA 工作。
 - `WhySoLaggy/`
 - `TerrainCustomiserCN/`：当前发布 `0.1.2`，对应原版 `TerrainCustomiser 0.3.2`；详情以该目录四件套为准。

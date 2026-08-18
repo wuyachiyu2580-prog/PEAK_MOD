@@ -47,7 +47,6 @@ namespace PlayersInfo
         private Harmony _harmony;
         private float _nextSafeTick;
         private const float SafeTickInterval = 1f;
-        private const float DefaultBottomOffsetY = 138f;
         private const string DisplaySection = "Display";
         private const string AdvancedSection = "Advanced";
         private static readonly FieldInfo OrphanedEntriesField =
@@ -121,12 +120,8 @@ namespace PlayersInfo
                     LanguageHelper.L("Additional X offset in pixels.", "X 方向像素偏移。"),
                     new AcceptableValueRange<float>(-800f, 800f)));
 
-            float defaultOffsetY = CfgAnchor.Value == HudAnchor.BottomLeft
-                                || CfgAnchor.Value == HudAnchor.BottomRight
-                ? DefaultBottomOffsetY
-                : 0f;
             CfgOffsetY = Config.Bind(DisplaySection,
-                "OffsetY", ReadLegacyValue("Layout", "OffsetY", defaultOffsetY),
+                "OffsetY", ReadLegacyValue("Layout", "OffsetY", 0f),
                 new ConfigDescription(
                     LanguageHelper.L("Additional Y offset in pixels.", "Y 方向像素偏移。"),
                     new AcceptableValueRange<float>(-800f, 800f)));
@@ -169,7 +164,6 @@ namespace PlayersInfo
             ModConfigLocalization.ApplyLocalizedDescriptions();
             RemoveLegacyConfigEntries();
             MigrateDefaultHudAnchor();
-            MigrateDefaultBottomOffsetY();
 
             // 只订阅真正影响"克隆体结构"的配置项变化，避免任意配置改动（OffsetX 拖滑块、
             // BepInEx 启动回写、ConfigurationManager 实时事件）触发 ClearAll → 全部体力条一起跳。
@@ -239,25 +233,6 @@ namespace PlayersInfo
             catch (Exception ex)
             {
                 PluginLogger.ThrottleWarn("anchor_migrate_save", "HUD anchor migration save failed: " + ex.Message);
-            }
-        }
-
-        private void MigrateDefaultBottomOffsetY()
-        {
-            if (CfgAnchor == null || CfgOffsetY == null) return;
-            bool bottomAnchor = CfgAnchor.Value == HudAnchor.BottomLeft
-                             || CfgAnchor.Value == HudAnchor.BottomRight;
-            if (!bottomAnchor || Mathf.Abs(CfgOffsetY.Value) > 0.001f) return;
-
-            CfgOffsetY.Value = DefaultBottomOffsetY;
-            try
-            {
-                Config.Save();
-                PluginLogger.Info("Migrated the default bottom HUD vertical offset from 0 to 138.");
-            }
-            catch (Exception ex)
-            {
-                PluginLogger.ThrottleWarn("offset_y_migrate_save", "HUD vertical offset migration save failed: " + ex.Message);
             }
         }
 

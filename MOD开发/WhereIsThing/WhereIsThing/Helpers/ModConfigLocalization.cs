@@ -233,6 +233,7 @@ namespace WhereIsThing
                 case "General": return chinese ? "常规" : "General";
                 case "Display": return chinese ? "显示" : "Display";
                 case "Selection": return chinese ? "选择" : "Selection";
+                case "Presets": return chinese ? "预设" : "Presets";
                 case "Enabled": return chinese ? "启用 MOD" : "Enabled";
                 case "ScanKey": return chinese ? "扫描快捷键" : "Scan Key";
                 case "WindowKey": return chinese ? "选择窗口快捷键" : "Window Key";
@@ -247,6 +248,11 @@ namespace WhereIsThing
                 case "SelectedLuggageTypes": return chinese ? "已选行李箱类型" : "Selected Luggage Types";
                 case "SelectedSceneTargetTypes": return chinese ? "已选场景目标" : "Selected Scene Targets";
                 case "LocationScopes": return chinese ? "位置范围" : "Location Scopes";
+                case "PresetSchemaVersion": return chinese ? "预设版本号" : "Preset Schema Version";
+                case "LocalPresets": return chinese ? "本地预设数据" : "Local Presets";
+                case "ActiveLocalPresetId": return chinese ? "当前本地预设" : "Active Local Preset";
+                case "SelectedSharedPresetId": return chinese ? "当前共享预设" : "Selected Shared Preset";
+                case "ShareMode": return chinese ? "房主共享模式" : "Share Mode";
                 case "MushroomZombie": return chinese ? "森蕈僵尸" : "Mushroom Zombie";
                 case "Beetle": return chinese ? "甲虫" : "Beetle";
                 case "Scorpion": return chinese ? "蝎子" : "Scorpion";
@@ -267,6 +273,9 @@ namespace WhereIsThing
                 case "GloomBellTower": return chinese ? "雾沼钟塔" : "Gloom Bell Tower";
                 case "Persistent": return chinese ? "常驻" : "Persistent";
                 case "Timed": return chinese ? "定时" : "Timed";
+                case "Off": return chinese ? "关闭" : "Off";
+                case "BuiltInOnly": return chinese ? "仅默认预设" : "Built-in Only";
+                case "PublishedPresets": return chinese ? "已发布预设" : "Published Presets";
                 case "Game": return chinese ? "跟随游戏" : "Follow Game";
                 case "English": return "English";
                 case "SimplifiedChinese": return chinese ? "简体中文" : "Simplified Chinese";
@@ -298,6 +307,11 @@ namespace WhereIsThing
                 case "SelectedLuggageTypes": return chinese ? "由 Alt+C 选择窗口维护的行李箱类型，请勿手动编辑。" : "Luggage types managed by the Alt+C selection window. Do not edit manually.";
                 case "SelectedSceneTargetTypes": return chinese ? "由 Alt+C 选择窗口维护的动态危险和钟塔类型，请勿手动编辑。" : "Scene target types managed by the Alt+C selection window. Do not edit manually.";
                 case "LocationScopes": return chinese ? "目标位置范围。行李箱是否扫描由 Alt+C 窗口中已选的行李箱类型自动控制。" : "Target location scopes. Luggage scanning is controlled automatically by the luggage types selected in the Alt+C window.";
+                case "PresetSchemaVersion": return chinese ? "WhereIsThing 内部使用的预设数据版本，请勿手动编辑。" : "Internal preset schema version used by WhereIsThing. Do not edit manually.";
+                case "LocalPresets": return chinese ? "WhereIsThing 保存的本地预设内容，请勿手动编辑。" : "Serialized local presets managed by WhereIsThing. Do not edit manually.";
+                case "ActiveLocalPresetId": return chinese ? "当前本地玩家使用的预设 ID，请勿手动编辑。" : "Preset ID currently selected for local use. Do not edit manually.";
+                case "SelectedSharedPresetId": return chinese ? "当前客户端选择的共享预设 ID，请勿手动编辑。" : "Shared preset ID currently selected by this client. Do not edit manually.";
+                case "ShareMode": return chinese ? "房主是否向客机共享默认预设或已发布预设。" : "Whether the host shares built-in presets or published presets with clients.";
                 default: return string.Empty;
             }
         }
