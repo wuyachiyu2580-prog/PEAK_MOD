@@ -210,6 +210,16 @@ namespace WhereIsThing
             return Text("Backpack", "背包");
         }
 
+        public static string Luggage()
+        {
+            return Text("Luggage", "行李箱");
+        }
+
+        public static string Statue()
+        {
+            return Text("Statue", "雕像");
+        }
+
         public static string TimeMinus()
         {
             return "-";

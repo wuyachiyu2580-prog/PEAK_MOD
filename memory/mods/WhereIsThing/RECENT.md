@@ -1,6 +1,31 @@
 # WhereIsThing Recent
 
-更新时间：2026-08-14
+更新时间：2026-08-20
+
+## 2026-08-20 发布 0.1.1
+
+- 完成 `发行/0.1.1` 散装发行目录，包含 `WhereIsThing.dll`、`README.md`、`CHANGELOG.md`、`manifest.json` 和 `icon.png`；按用户要求未创建 ZIP。
+- 0.1.1 发行说明覆盖护符雕像碎片扫描范围和 ModConfig 安全本地化修复。
+- Release 构建通过 `0 warnings / 0 errors`；发行 DLL 为 `0.1.1.0`、`126464` 字节，SHA-256 与 profile DLL 一致。
+
+## 2026-08-19 ModConfig 安全本地化修复
+
+- 移除 WhereIsThing 对 PEAKLib.ModConfig 全局缓存的清空和重新注册，不再调用 `ProcessModEntries`、`LoadModSettings` 或同类私有注册流程，避免切换语言时所有 MOD 的配置项复制。
+- 配置项显示名改为按稳定的 `Definition.Section + Definition.Key` 解析；中文只作为界面文本，不写入配置 section/key 或枚举序列化值。
+- 启动和语言切换的本地化请求合并为单个延迟协程，只更新 WhereIsThing 自己的描述和当前可见 UI。
+- Release 构建通过 `0 warnings / 0 errors`，已部署到 `2.0.a` profile；PlayersInfo、LanternShootZombiesNight 及其他 MOD 仍需按 `memory/common/08_ModConfig本地化与安全集成规范.md` 迁移。
+
+## 2026-08-19 护符雕像范围
+
+- 新增 `ThingLocationScope.Statue`，并在 `Alt+C` 预设窗口的扫描范围行加入 `Statue / 雕像` 复选框；这是扫描范围，不是新的目标类别或新的“雕像碎片”可选目标。
+- 当当前预设已选择四个护符中的任意一个时，开启 `Statue` 范围会扫描 `Peak.PropSpawner_AmuletStatues`，识别第 1~4 关场景雕像手中显示但未拾取的护符碎片，并用已选护符的名称显示标签。
+- 行李箱逻辑不变：`Luggage` 位仍由已选行李箱类型自动维护，窗口不恢复行李箱范围复选框。
+- 本次不修改版本号，仍为 `0.1.0`；`dotnet build MOD开发\WhereIsThing\WhereIsThing.slnx -v:minimal` 通过，`0 warnings / 0 errors`，DLL 已覆盖到 r2modman `2.0.a` profile。
+
+## 2026-08-18 发布完成
+
+- 用户确认 WhereIsThing 已完成发布；本地发行目录已有 `MOD开发/WhereIsThing/发行/0.1.0/icon.png` 和 `wuyachiyu-WhereIsThing-0.1.0.zip`。
+- 发布前素材准备记录已经用完，不再作为后续待办或设计约束保留。
 
 ## 当前阶段
 
@@ -9,7 +34,7 @@
 - 已实现 `ThingCatalog`，从 `SingletonAsset<ItemDatabase>.Instance.itemLookup` 动态读取物品定义，按 ID 去重。
 - 已实现 `ThingCatalog` 的显示名合并：同名物品组保存多个 itemID，选择一次覆盖所有变体，并显示变体数。
 - 兼容旧选择配置：目录首次加载时，旧配置中命中的单个变体会扩展为整个同名组。
-- 已实现 `WhereIsThingPlugin`：默认 `C` 扫描，常驻/计时显示，0.5 秒补扫一次，清理已拾取或失效目标；支持地面、手持、背包、行李箱范围。
+- 已实现 `WhereIsThingPlugin`：默认 `C` 扫描，常驻/计时显示，0.5 秒补扫一次，清理已拾取或失效目标；支持地面、手持、背包、雕像护符碎片范围，行李箱范围由已选行李箱类型自动启用。
 - 已接入 `Luggage.ALL_LUGGAGE`，未打开行李箱作为独立场景目标显示，打开后由游戏生成的 Item 继续走物品扫描。
 - 已实现 `ThingLabel`：世界坐标标签、距离、屏幕外方向箭头和游戏字体。
 - 已实现 `ThingSelectionWindow`：Overlay Canvas、深色 ItemBrowser 风格面板、搜索、类别轮换、语言轮换、范围复选框、批量选择和分类内自适应多列网格。
@@ -43,7 +68,7 @@
 - `ScanMode` 和 `NameLanguage` 保持 ModConfig 枚举下拉菜单，并分别显示“常驻/定时”和“跟随游戏/English/简体中文”。
 - `LocationScopes` 是可组合的标志值，主要通过 `Alt+C` 窗口里的地面、手持、背包复选框修改；行李箱位由已选行李箱类型自动维护，ModConfig 说明中明确这一点。
 - 选择 ID、旧行李箱布尔值和行李箱类型字符串标明为窗口维护/兼容配置，避免用户误以为需要手填。
-- 监听 `LocalizedText.OnLangugageChanged` 更新说明并刷新 ModConfig 缓存；Release 构建通过 `0 warnings / 0 errors`，DLL 已覆盖到 r2modman `2.0.a` profile。
+- 监听 `LocalizedText.OnLangugageChanged` 更新说明并刷新 ModConfig 界面文字；旧版曾刷新 ModConfig 缓存，现已按 2026-08-19 安全修复移除该行为。Release 构建通过 `0 warnings / 0 errors`，DLL 已覆盖到 r2modman `2.0.a` profile。
 
 ## 2026-08-16 已选筛选与场景目标调研
 
@@ -106,5 +131,4 @@
 - 尚未在 2.1.a 实机确认物品数据库加载时机、标签遮挡、背包内容位置和大量标签性能。
 - 尚未确认所有物品 prefab 的 `itemState` / `data` 生命周期，尤其是手持和嵌套背包情况。
 - 尚未实机确认动态目标在多人非主机端的管理器列表同步、钟塔标签的视觉锚点，以及同时显示多只风滚草时的性能。
-- 尚未制作 `发行/0.1.0`、manifest、README、CHANGELOG、icon 和 zip。
 - 暂未接入原版 `MenuWindow` 类型，因为其 `Open`/`Close` 生命周期有 internal 边界；当前窗口保持独立 Overlay，并手动管理鼠标状态。

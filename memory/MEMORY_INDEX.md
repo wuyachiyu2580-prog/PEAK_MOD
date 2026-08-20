@@ -1,6 +1,6 @@
 ﻿# Memory Index
 
-更新时间：2026-08-17
+更新时间：2026-08-20
 
 ## 当前结构
 
@@ -8,7 +8,7 @@
 - `CHANGELOG.md`：memory 变更履历（按时间倒序追加）。
 - `TODO.md`：永久待办和风险。
 - `MEMORY_INDEX.md`：本文件，总览索引。
-- `common/`：跨 MOD 通用规则（00-07 共 8 个主题）。
+- `common/`：跨 MOD 通用规则（00-08 共 9 个主题）。
 - `mods/`：每个 MOD 的独立四件套（README + RECENT + DECISIONS + FILES）和 `temp/` 临时思考记忆区。
 
 ## 通用规则（common/）
@@ -21,6 +21,7 @@
 - `common/05_发布与版本规范.md`：README/CHANGELOG/manifest 三文件协同、135 字符限制。
 - `common/06_UI与字体规范.md`：CJK 字体四级兜底、FontHelper 标准实现、描边与字号规范。
 - `common/07_PEAK版本与反编译基线.md`：PEAK 2.1.a 相对 2.0.a 的业务级变化、MOD 兼容结论和待验证风险。
+- `common/08_ModConfig本地化与安全集成规范.md`：ModConfig 中英文显示的 section/key 方案、禁止全局缓存重建、生命周期、迁移步骤和验证清单。
 
 ## MOD 四件套（mods/）
 
@@ -93,18 +94,26 @@
 - `mods/PeakMapBrowser/FILES.md`：客户端/服务端路径、关键源码、API 文档和构建命令。
 - `mods/PeakMapBrowser/temp/2026-07-30.md`：0.1.1 发布、安全改动和线上退出接口验证摘要。
 
-### WhereIsThing（0.1.0 基础版，待实机验证）
+### WhereIsThing（0.1.1 已发布，待反馈收口）
 
-- `mods/WhereIsThing/README.md`：多物品位置显示能力、动态类别初稿和接手入口。
-- `mods/WhereIsThing/RECENT.md`：2.1.a 接口复查、已实现功能、构建状态和剩余验证。
+- `mods/WhereIsThing/README.md`：多物品位置显示能力、动态类别初稿、0.1.1 发布状态和接手入口。
+- `mods/WhereIsThing/RECENT.md`：2.1.a 接口复查、已实现功能、发布状态和剩余验证。
 - `mods/WhereIsThing/DECISIONS.md`：动态 ItemDatabase、游戏 Localization、快捷键、窗口和背包位置边界。
 - `mods/WhereIsThing/FILES.md`：源码路径、依赖、构建命令和输出位置。
 - `mods/WhereIsThing/PLAN.md`：分阶段研究、实机验证、收口和发布计划。
 - `mods/WhereIsThing/temp/2026-08-14.md`：当前阶段压缩恢复摘要。
 
+### WhereIsMyAmulet（1.0.2 已发布）
+
+- `mods/WhereIsMyAmulet/README.md`：护符定位 MOD 概览和接手入口。
+- `mods/WhereIsMyAmulet/RECENT.md`：1.0.2 常驻/定时显示恢复、构建和发布状态。
+- `mods/WhereIsMyAmulet/DECISIONS.md`：标签生命周期、雕像 FakeItem 识别边界和 ModConfig 本地化规则。
+- `mods/WhereIsMyAmulet/FILES.md`：源码、构建命令、profile 输出和发行包路径。
+- `mods/WhereIsMyAmulet/temp/2026-08-20.md`：本轮实现和验证入口。
+
 ## 当前重点
 
-- `WhereIsThing` 当前重点是进 PEAK 2.1.a 实机验证重名合并、行李箱目标、四类范围筛选、自适应多列窗口、中文字体、鼠标恢复和大量目标性能；验证通过后再制作 0.1.0 发布包。
+- `WhereIsThing` 0.1.1 非 ZIP 发行目录已完成；当前重点是根据实机和玩家反馈继续确认重名合并、行李箱目标、场景危险/地标、雕像碎片、自适应窗口、中文字体、鼠标恢复和大量目标性能。
 
 - `Lantern_ShootZombies_Night` 当前重点是实机验证客机本地燃料权威：有备用池时只降备用池、不降灯燃料，且远端 fuel 下降不覆盖本地。
 - `PlayersInfo` 的 0.2.0 发布准备记录已归档；当前状态以 0.2.1 专属 memory 四件套和 2026-08-17 临时记忆为准。本地额外条已恢复 PEAK 原版层级/缩放控制，仍待实机确认布局、石化、观战、队友额外条抑制、背包燃料和性能。

@@ -1,6 +1,6 @@
 # WhereIsThing Plan
 
-更新时间：2026-08-14
+更新时间：2026-08-18
 
 ## 阶段 1：资料和数据边界（已完成）
 
@@ -52,7 +52,7 @@
 - 必要时加入可见范围、分组显示、标签上限或更细的刷新策略。
 - 若输入穿透明显，再评估原版 `MenuWindow`/`UIInputHandler` 的兼容接入。
 
-## 阶段 5：发布（待进行）
+## 阶段 5：发布（已完成）
 
-- 版本升到发布版本，补发行 README、CHANGELOG、manifest、icon 和 zip。
-- 在关闭游戏后确认发布 DLL 与 r2modman `2.0.a` profile 中的 DLL 为同一构建产物，并做包内容检查。
+- 0.1.0 发布包已完成，发行目录包含 README、CHANGELOG、manifest、icon、WhereIsThing.dll 和 `wuyachiyu-WhereIsThing-0.1.0.zip`。
+- 后续若根据反馈重发版本，继续按通用发布规范同步 README、CHANGELOG、manifest、DLL、icon 和 zip。

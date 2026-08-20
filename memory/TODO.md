@@ -1,8 +1,13 @@
 ﻿# Permanent TODO
 
-更新时间：2026-08-17
+更新时间：2026-08-19
 
 这里只记录未完成、待验证、已知风险和后续优化。已经稳定或已经写入各 MOD `RECENT.md` / `DECISIONS.md` 的内容，不再重复放在这里。
+
+## ModConfig 本地化安全迁移
+
+- [ ] 将 PlayersInfo、LanternShootZombiesNight 和其他包含 `RefreshCache` 全局重注册逻辑的 MOD 按 `common/08_ModConfig本地化与安全集成规范.md` 迁移。
+- [ ] 在同时安装多个 MOD 的环境中连续切换游戏语言至少 5 次，确认 ModConfig 配置项数量不增长。
 
 ## PEAK 2.1.a
 
@@ -151,6 +156,5 @@
 - [ ] 实机确认同名物品组内所有 itemID 都能被扫描，且不同变体不会误合并；若误合并，优先把合并键从显示名收窄到游戏 `UIData.itemName`。
 - [ ] 实机确认 `Luggage.ALL_LUGGAGE` 在开箱前能显示、开箱后能清理，且不会把 RespawnChest 等特殊 Spawner 误当普通行李箱。
 - [ ] 根据截图调整自适应网格的最小卡片宽度、列数上限和长名称省略策略。
-- [ ] 完成发行 `0.1.0` 的 README、CHANGELOG、manifest、icon、DLL 和 zip，发布前重新确认 2.1.a DLL 版本。
 
 

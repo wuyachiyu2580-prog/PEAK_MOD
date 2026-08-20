@@ -143,6 +143,7 @@ namespace WhereIsThing
             CreateScopeToggle(panel.transform, ThingUi.Ground(), ThingLocationScope.Ground, 110f);
             CreateScopeToggle(panel.transform, ThingUi.Held(), ThingLocationScope.Held, 250f);
             CreateScopeToggle(panel.transform, ThingUi.Backpack(), ThingLocationScope.Backpack, 390f);
+            CreateScopeToggle(panel.transform, ThingUi.Statue(), ThingLocationScope.Statue, 530f);
 
             CreateRenameDialog();
 

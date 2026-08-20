@@ -1,5 +1,6 @@
 # WhereIsThing
-
+![0.1.0-1](https://raw.githubusercontent.com/wuyachiyu2580-prog/PEAK_MOD_PNG/refs/heads/main/WhereIsThing/0.1.0-1.png)
+![0.1.0-2](https://raw.githubusercontent.com/wuyachiyu2580-prog/PEAK_MOD_PNG/refs/heads/main/WhereIsThing/0.1.0-2.png)
 WhereIsThing is an expanded successor to WhereIsMyAmulet. It can place location labels on items, luggage, hazards, and selected landmarks such as the Gloom Bell Tower.
 
 The included fallback presets cover three common situations: emergency medical supplies, achievement targets, and the four Ascent 8 amulets.
@@ -66,12 +67,4 @@ Local presets and personal display settings are not overwritten when joining or 
 
 ModConfig is optional. When installed, WhereIsThing provides localized English and Chinese setting names and descriptions. Serialized preset data, internal IDs, and compatibility settings are hidden from the ModConfig page.
 
-## FAQ
-
-### The host has the mod and enabled sharing. Why can I not see their custom presets?
-
-Ask the host to press `Alt+C` and check the sharing mode in the upper-left corner. If it says `Share: Built-in only`, click it until it says `Share: Published presets`. Also make sure the custom preset is marked as published.
-
-### What should I include in a bug report?
-
-Please provide both the host and client BepInEx logs. Include who was the host, which preset was selected, and which sharing mode was active.
+Location-label appearance can also be configured in ModConfig. `Label Font` offers Auto, Game Default, Ascent Display, Daily Title, and TMP Default. Game Default is used initially. If the selected font cannot display Chinese, WhereIsThing automatically uses a Chinese-capable game font instead. `Bold Labels` is disabled by default, and the label outline uses a lighter four-direction shadow for a thinner appearance. Font, bold, size, and language changes are applied to existing labels without another scan.

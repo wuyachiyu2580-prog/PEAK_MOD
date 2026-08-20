@@ -78,6 +78,9 @@ namespace PlayersInfo.Helpers
                 SetDescription(PlayersInfoPlugin.CfgShowStaminaValue,
                     LanguageHelper.L("Show numeric stamina values on local and teammate bars.",
                         "在本地和队友体力条上显示数字。"));
+                SetDescription(PlayersInfoPlugin.CfgShowExtraStaminaCap,
+                    LanguageHelper.L("Show teammate extra stamina as current/cap. Off shows current only.",
+                        "队友额外体力显示为 当前/上限。关闭后只显示当前值。"));
                 SetDescription(PlayersInfoPlugin.CfgInventoryDisplayMode,
                     LanguageHelper.L("Choose whether teammate inventory is hidden, shows contents only, or also shows jetpack fuel.",
                         "选择隐藏队友物品栏、仅显示物品内容，或同时显示喷气背包燃料。"));
@@ -219,6 +222,7 @@ namespace PlayersInfo.Helpers
                 case "Enabled": return zh ? "启用 MOD" : "Enabled";
                 case "EnableStaminaBar": return zh ? "队友体力条" : "Teammate Bars";
                 case "ShowStaminaValue": return zh ? "显示体力数字" : "Stamina Values";
+                case "ShowExtraStaminaCap": return zh ? "显示额外体力上限" : "Extra Stamina Cap";
                 case "EnableInventoryRow": return zh ? "队友物品栏显示" : "Teammate Inventory Display";
                 case "Anchor": return zh ? "HUD 锚点" : "HUD Anchor";
                 case "OffsetX": return zh ? "水平偏移" : "Offset X";

@@ -19,6 +19,15 @@ namespace WhereIsThing
         SimplifiedChinese
     }
 
+    internal enum ThingLabelFont
+    {
+        Auto,
+        GameDefault,
+        TmpDefault,
+        KoreanBinggrae,
+        Crazk
+    }
+
     [Flags]
     internal enum ThingLocationScope
     {
@@ -26,7 +35,8 @@ namespace WhereIsThing
         Ground = 1,
         Held = 2,
         Backpack = 4,
-        Luggage = 8
+        Luggage = 8,
+        Statue = 16
     }
 
     internal enum ThingTargetKind
@@ -735,6 +745,11 @@ namespace WhereIsThing
         public static string GetContainerSuffix(ThingNameLanguage language)
         {
             return language == ThingNameLanguage.English ? "In backpack" : "背包内";
+        }
+
+        public static string GetStatueSuffix(ThingNameLanguage language)
+        {
+            return language == ThingNameLanguage.English ? "On statue" : "雕像上";
         }
 
         private static string GetMergeKey(Item item)

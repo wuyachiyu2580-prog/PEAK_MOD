@@ -651,8 +651,10 @@ namespace PlayersInfo.MonoBehaviours
 
                 // 主体力数值仍保留；额外体力图形条不克隆，只保留右侧数值。
                 bool showValue = PlayersInfoPlugin.CfgShowStaminaValue == null || PlayersInfoPlugin.CfgShowStaminaValue.Value;
-                if (showValue && driver.fullBar != null)
-                    driver.staminaValueText = AddValueText(driver.fullBar.gameObject, "StaminaValue");
+                // 主体力数值必须挂在绿色填充层，而不是 FullBar 整体节点。
+                // FullBar 只负责外层布局，挂在那里时文本可能被绿色填充层遮住。
+                if (showValue && driver.staminaBar != null)
+                    driver.staminaValueText = AddValueText(driver.staminaBar.gameObject, "StaminaValue");
                 if (showValue && driver.fullBar != null)
                     driver.extraValueText = AddSideText(driver.fullBar, "PI_MateExtraValue", ShouldPlaceExtraTextOnRight(), new Color(0.55f, 1f, 0.35f));
 

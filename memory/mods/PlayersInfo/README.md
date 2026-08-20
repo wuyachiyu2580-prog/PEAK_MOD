@@ -1,6 +1,6 @@
 # PlayersInfo
 
-Last updated: 2026-08-17
+Last updated: 2026-08-19
 
 ## Purpose
 
@@ -27,6 +27,9 @@ The mod should not change game business logic and should not actively send gamep
 - Teammates retain their main stamina bars and values, but their cloned extra-stamina graphical bars stay disabled; the HUD-safe side value remains `current/cap` without `+`.
 - `Display.OffsetY` defaults to `0` for every HUD anchor. PlayersInfo does not apply an automatic whole-HUD vertical shift; persisted user values remain respected.
 - The spectator nearby center is a dropdown with `LocalCharacter` / `ObservedCharacter` (本机角色 / 被观看角色), defaulting to `ObservedCharacter`.
+- Teammate main-stamina values are attached to the green `staminaBar` fill layer, so the number follows the visible fill instead of being hidden by or centered within the outer `fullBar` layout layer.
+- Teammate infinite-stamina effects are detected through the synchronized `InfiniteStamina` affliction. PlayersInfo freezes the last reliable pre-effect teammate stamina value for the green fill and number, then resumes live synchronization when the effect ends. This is display-only and does not alter remote gameplay state.
+- The previously reported teammate green-bar centering/overlap issue has been fixed and confirmed; future changes must preserve per-target fill sizing and must not use the full 100% bar center as the fill position.
 - The retained `Display.EnableInventoryRow` key is migrated from the old boolean into an enum display mode. Existing `true` and `false` values map to `ContentsOnly` and `Disabled` respectively, without changing unrelated settings.
 - Direct build output DLL path: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`. Future PlayersInfo builds write here directly.
 - The 2026-05-24 temporary-stamina clipping fix is retained as historical `0.1.1` release context; the current DLL is the `0.2.1` profile deployment listed above.

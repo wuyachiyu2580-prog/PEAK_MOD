@@ -1,5 +1,23 @@
 ﻿# Memory Changelog
 
+## 2026-08-20
+
+- [WhereIsThing] 完成 `发行/0.1.1` 非 ZIP 发行目录，包含 DLL、README、CHANGELOG、manifest 和 icon；发行 DLL 与 `2.0.a` profile 产物版本/hash 一致。
+- [WhereIsThing] 0.1.1 发行说明补充护符雕像碎片范围和 ModConfig 安全本地化修复。
+
+## 2026-08-19
+
+- [新增] `common/08_ModConfig本地化与安全集成规范.md`：统一说明 section/key 本地化、禁止全局缓存重建、生命周期、迁移步骤和验证标准。
+- [修改] `mods/WhereIsThing/DECISIONS.md`：更正 ModConfig 决策，明确只刷新自身描述和当前 UI，不得刷新全局注册缓存。
+- [修改] `MEMORY_INDEX.md` / `TODO.md`：加入 ModConfig 安全规范入口和其他 MOD 迁移待办。
+
+## 2026-08-18
+
+- [修改] `mods/WhereIsThing/`：清理已完成的发布前素材准备记忆，同步 0.1.0 已发布状态、发行包路径和后续反馈收口重点。
+- [修改] `README.md` / `MEMORY_INDEX.md` / `mods/README.md` / `TODO.md`：WhereIsThing 从“待发布”改为“0.1.0 已发布”，移除发行包制作待办。
+- [删除] `mods/WhereIsThing/temp/2026-08-18.md`：删除仅用于发布前素材准备的临时记录，避免后续误当待办。
+- [规则] 当前会话未提供专用 `update_memory` 工具；已按本地 MD、索引、TODO 和变更日志完成可用同步。
+
 ## 2026-08-17
 
 - [PlayersInfo] 完成 `发行/0.2.1` 非 ZIP 发行目录：包含 DLL、manifest、简洁完整的 README/CHANGELOG 和 icon；发行 DLL 与 profile 产物版本/hash 一致。
@@ -235,3 +253,8 @@
 - [重写] 清理 `README.md`、`MEMORY_INDEX.md`、`TODO.md`、`common/` 和 `mods/` 中对历史目录的依赖说明。
 - [规则] 后续不再把已删除的历史文件作为兜底；缺失信息必须从源码、日志或用户反馈重新确认后写入当前结构。
 - [修正] 不再只围绕 DreamyAscent 建 memory；`MOD开发/` 下 ItemInfoCN、Lantern_ShootZombies_Night、PlayersInfo、DreamyAscent、WhySoLaggy 都有 `mods/<ModName>/` 入口。
+
+## 2026-08-20
+
+- [新增] `mods/WhereIsMyAmulet/`：记录 WhereIsMyAmulet 1.0.2 的常驻/定时显示配置、定时秒数、雕像碎片识别边界、构建输出和发行包路径。
+- [修改] `MEMORY_INDEX.md`：加入 WhereIsMyAmulet 四件套入口并更新索引日期。

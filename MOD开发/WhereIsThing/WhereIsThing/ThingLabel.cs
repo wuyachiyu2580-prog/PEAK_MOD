@@ -18,9 +18,10 @@ namespace WhereIsThing
         private readonly List<TextMeshProUGUI> _shadowTexts = new List<TextMeshProUGUI>();
         private readonly TextMeshProUGUI _mainText;
         private readonly TextMeshProUGUI _arrow;
-        private readonly float _fontSize;
+        private float _fontSize;
 
-        public ThingLabel(string key, Transform canvas, Transform target, Func<string> titleProvider, Func<bool> isValid, TMP_FontAsset font, float fontSize)
+        public ThingLabel(string key, Transform canvas, Transform target, Func<string> titleProvider, Func<bool> isValid,
+            TMP_FontAsset font, float fontSize)
             : this(key, canvas, target, titleProvider, isValid, null, font, fontSize)
         {
         }
@@ -42,11 +43,11 @@ namespace WhereIsThing
             _group.blocksRaycasts = false;
             _group.interactable = false;
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < ShadowOffsets.Length; i++)
             {
                 TextMeshProUGUI shadow = CreateText("Shadow_" + i, font, fontSize);
                 shadow.color = new Color(0f, 0f, 0f, 0.9f);
-                shadow.rectTransform.anchoredPosition = ShadowOffsets[i] * 1.5f;
+                shadow.rectTransform.anchoredPosition = ShadowOffsets[i];
                 _shadowTexts.Add(shadow);
             }
 
@@ -71,6 +72,24 @@ namespace WhereIsThing
         public string Key { get { return _key; } }
         public bool IsValid { get { return _target != null && _isValid != null && _isValid(); } }
 
+        public void ApplyStyle(TMP_FontAsset font, float fontSize)
+        {
+            if (font == null)
+            {
+                return;
+            }
+
+            _fontSize = Mathf.Clamp(fontSize, 10f, 64f);
+            _mainText.font = font;
+            _mainText.fontSize = _fontSize;
+            foreach (TextMeshProUGUI shadow in _shadowTexts)
+            {
+                shadow.font = font;
+                shadow.fontSize = _fontSize;
+            }
+            _arrow.font = font;
+        }
+
         public void Update(Camera camera, float maxDistance, bool showOffscreen)
         {
             if (camera == null)
@@ -90,7 +109,8 @@ namespace WhereIsThing
             if (onScreen && withinDistance)
             {
                 _root.transform.position = camera.WorldToScreenPoint(worldPosition);
-                SetText(string.Format("<b>{0}</b>\n<size=18>{1:F0}m</size>", _titleProvider(), distance));
+                string title = _titleProvider();
+                SetText(string.Format("{0}\n<size=18>{1:F0}m</size>", title, distance));
                 _arrow.enabled = false;
                 SetVisible(true);
                 return;
@@ -140,6 +160,7 @@ namespace WhereIsThing
             text.overflowMode = TextOverflowModes.Overflow;
             text.richText = true;
             text.font = font;
+            text.fontStyle = FontStyles.Normal;
             text.fontSize = Mathf.Clamp(size, 10f, 64f);
             text.rectTransform.sizeDelta = new Vector2(320f, 96f);
             text.rectTransform.anchoredPosition = Vector2.zero;
@@ -165,11 +186,7 @@ namespace WhereIsThing
             new Vector2(0f, 1f),
             new Vector2(0f, -1f),
             new Vector2(-1f, 0f),
-            new Vector2(1f, 0f),
-            new Vector2(-1f, 1f),
-            new Vector2(1f, 1f),
-            new Vector2(-1f, -1f),
-            new Vector2(1f, -1f)
+            new Vector2(1f, 0f)
         };
     }
 }

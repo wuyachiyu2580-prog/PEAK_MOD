@@ -82,43 +82,6 @@ namespace WhereIsThing
             }
         }
 
-        public static void RefreshCache()
-        {
-            try
-            {
-                if (!Chainloader.PluginInfos.TryGetValue(ModConfigGuid, out PluginInfo pluginInfo) ||
-                    pluginInfo == null || pluginInfo.Instance == null)
-                {
-                    return;
-                }
-
-                Type modConfigType = pluginInfo.Instance.GetType();
-                foreach (string propertyName in new[] { "EntriesProcessed", "ModdedKeys", "GetValidKeyPaths" })
-                {
-                    PropertyInfo property = modConfigType.GetProperty(propertyName,
-                        BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                    if (property != null && property.GetValue(null, null) is IList list)
-                    {
-                        list.Clear();
-                    }
-                }
-
-                foreach (string methodName in new[] { "GenerateValidKeyPaths", "ProcessModEntries", "LoadModSettings" })
-                {
-                    MethodInfo method = modConfigType.GetMethod(methodName,
-                        BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                    if (method != null)
-                    {
-                        method.Invoke(null, null);
-                    }
-                }
-            }
-            catch
-            {
-                // ModConfig is optional and may still be initializing.
-            }
-        }
-
         private static void ModConfigDisplayNamePostfix(object __instance, ref string __result)
         {
             ConfigEntryBase entry = TryGetConfigEntry(__instance);
@@ -127,7 +90,7 @@ namespace WhereIsThing
                 return;
             }
 
-            string localized = GetLocalizedUiText(entry.Definition.Key);
+            string localized = GetLocalizedConfigText(entry.Definition.Section, entry.Definition.Key);
             if (!string.IsNullOrEmpty(localized))
             {
                 __result = localized;
@@ -205,7 +168,8 @@ namespace WhereIsThing
             }
 
             string normalized = text.Replace(" ", string.Empty);
-            string direct = GetLocalizedToken(normalized);
+            string canonical = GetCanonicalToken(normalized);
+            string direct = GetLocalizedToken(canonical);
             if (!string.IsNullOrEmpty(direct))
             {
                 return direct;
@@ -214,7 +178,10 @@ namespace WhereIsThing
             if (normalized.IndexOf(',') >= 0)
             {
                 string[] tokens = normalized.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                string[] localizedTokens = tokens.Select(GetLocalizedToken).ToArray();
+                string[] localizedTokens = tokens
+                    .Select(GetCanonicalToken)
+                    .Select(GetLocalizedToken)
+                    .ToArray();
                 if (localizedTokens.All(value => !string.IsNullOrEmpty(value)))
                 {
                     return string.Join(IsChinese ? "、" : ", ", localizedTokens);
@@ -222,6 +189,100 @@ namespace WhereIsThing
             }
 
             return null;
+        }
+
+        private static string GetLocalizedConfigText(string section, string key)
+        {
+            string canonicalSection = GetCanonicalToken(section == null ? string.Empty : section.Replace(" ", string.Empty));
+            string canonicalKey = GetCanonicalToken(key == null ? string.Empty : key.Replace(" ", string.Empty));
+            if (string.IsNullOrEmpty(canonicalKey))
+            {
+                return null;
+            }
+
+            // Section is part of the stable identity. Keep the mapping scoped so a future
+            // duplicate key in another section cannot be localized accidentally.
+            if (!IsKnownConfigKey(canonicalSection, canonicalKey))
+            {
+                return null;
+            }
+
+            return GetLocalizedToken(canonicalKey);
+        }
+
+        private static bool IsKnownConfigKey(string section, string key)
+        {
+            switch (section)
+            {
+                case "General":
+                    return key == "Enabled" || key == "ScanKey" || key == "WindowKey" ||
+                        key == "ScanMode" || key == "DisplayDurationSeconds";
+                case "Display":
+                    return key == "NameLanguage" || key == "MaxDistance" || key == "FontSize" ||
+                        key == "LabelFont" || key == "ShowOffscreenDirection";
+                case "Presets":
+                    return key == "PresetSchemaVersion" || key == "LocalPresets" ||
+                        key == "ActiveLocalPresetId" || key == "SelectedSharedPresetId" || key == "ShareMode";
+                case "Selection":
+                    return key == "SelectedItemIds" || key == "SelectedLuggage" ||
+                        key == "SelectedLuggageTypes" || key == "SelectedSceneTargetTypes" ||
+                        key == "LocationScopes";
+                default:
+                    return false;
+            }
+        }
+
+        private static string GetCanonicalToken(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            switch (value)
+            {
+                case "物品在哪": return "WhereIsThing";
+                case "常规": return "General";
+                case "显示": return "Display";
+                case "选择": return "Selection";
+                case "预设": return "Presets";
+                case "启用MOD": return "Enabled";
+                case "扫描快捷键": return "ScanKey";
+                case "选择窗口快捷键": return "WindowKey";
+                case "显示模式": return "ScanMode";
+                case "定时显示秒数": return "DisplayDurationSeconds";
+                case "名称语言": return "NameLanguage";
+                case "最大距离": return "MaxDistance";
+                case "标签字号": return "FontSize";
+                case "标签字体": return "LabelFont";
+                case "屏外方向提示": return "ShowOffscreenDirection";
+                case "已选物品ID": return "SelectedItemIds";
+                case "兼容行李箱开关": return "SelectedLuggage";
+                case "已选行李箱类型": return "SelectedLuggageTypes";
+                case "已选场景目标": return "SelectedSceneTargetTypes";
+                case "位置范围": return "LocationScopes";
+                case "预设版本号": return "PresetSchemaVersion";
+                case "本地预设数据": return "LocalPresets";
+                case "当前本地预设": return "ActiveLocalPresetId";
+                case "当前共享预设": return "SelectedSharedPresetId";
+                case "房主共享模式": return "ShareMode";
+                case "常驻": return "Persistent";
+                case "定时": return "Timed";
+                case "关闭": return "Off";
+                case "仅默认预设": return "BuiltInOnly";
+                case "已发布预设": return "PublishedPresets";
+                case "跟随游戏": return "Game";
+                case "简体中文": return "SimplifiedChinese";
+                case "自动": return "Auto";
+                case "游戏默认": return "GameDefault";
+                case "TMP默认字体": return "TmpDefault";
+                case "无": return "None";
+                case "地面": return "Ground";
+                case "手持": return "Held";
+                case "背包": return "Backpack";
+                case "行李箱": return "Luggage";
+                default: return value;
+            }
         }
 
         private static string GetLocalizedToken(string key)
@@ -242,6 +303,7 @@ namespace WhereIsThing
                 case "NameLanguage": return chinese ? "名称语言" : "Name Language";
                 case "MaxDistance": return chinese ? "最大距离" : "Max Distance";
                 case "FontSize": return chinese ? "标签字号" : "Label Font Size";
+                case "LabelFont": return chinese ? "标签字体" : "Label Font";
                 case "ShowOffscreenDirection": return chinese ? "屏外方向提示" : "Off-screen Direction";
                 case "SelectedItemIds": return chinese ? "已选物品 ID" : "Selected Item IDs";
                 case "SelectedLuggage": return chinese ? "兼容行李箱开关" : "Legacy Luggage Toggle";
@@ -279,11 +341,17 @@ namespace WhereIsThing
                 case "Game": return chinese ? "跟随游戏" : "Follow Game";
                 case "English": return "English";
                 case "SimplifiedChinese": return chinese ? "简体中文" : "Simplified Chinese";
+                case "Auto": return chinese ? "自动" : "Auto";
+                case "GameDefault": return chinese ? "游戏默认" : "Game Default";
+                case "TmpDefault": return chinese ? "TMP 默认字体" : "TMP Default";
+                case "KoreanBinggrae": return "KoreanBinggrae";
+                case "Crazk": return "Crazk";
                 case "None": return chinese ? "无" : "None";
                 case "Ground": return chinese ? "地面" : "Ground";
                 case "Held": return chinese ? "手持" : "Held";
                 case "Backpack": return chinese ? "背包" : "Backpack";
                 case "Luggage": return chinese ? "行李箱" : "Luggage";
+                case "Statue": return chinese ? "雕像" : "Statue";
                 default: return null;
             }
         }
@@ -301,12 +369,13 @@ namespace WhereIsThing
                 case "NameLanguage": return chinese ? "物品名称跟随游戏语言，或强制使用英文/简体中文。" : "Follow the game language for item names, or force English/Simplified Chinese.";
                 case "MaxDistance": return chinese ? "显示标签的最大距离，单位米。0 表示不限制。" : "Maximum label distance in meters. Set to 0 for unlimited.";
                 case "FontSize": return chinese ? "位置与距离标签的字号。" : "Font size used by location and distance labels.";
+                case "LabelFont": return chinese ? "选择仅用于英文位置标签的字体；中文可能显示为口口口。" : "Choose a font for English location labels only. Chinese text may display as tofu boxes.";
                 case "ShowOffscreenDirection": return chinese ? "目标在屏幕外时显示方向提示。" : "Show a direction indicator when a target is off-screen.";
                 case "SelectedItemIds": return chinese ? "由 Alt+C 选择窗口维护的物品 ID，请勿手动编辑。" : "Item IDs managed by the Alt+C selection window. Do not edit manually.";
                 case "SelectedLuggage": return chinese ? "旧版配置兼容项，请使用选择窗口设置行李箱类型。" : "Legacy compatibility setting. Choose luggage types in the selection window.";
                 case "SelectedLuggageTypes": return chinese ? "由 Alt+C 选择窗口维护的行李箱类型，请勿手动编辑。" : "Luggage types managed by the Alt+C selection window. Do not edit manually.";
                 case "SelectedSceneTargetTypes": return chinese ? "由 Alt+C 选择窗口维护的动态危险和钟塔类型，请勿手动编辑。" : "Scene target types managed by the Alt+C selection window. Do not edit manually.";
-                case "LocationScopes": return chinese ? "目标位置范围。行李箱是否扫描由 Alt+C 窗口中已选的行李箱类型自动控制。" : "Target location scopes. Luggage scanning is controlled automatically by the luggage types selected in the Alt+C window.";
+                case "LocationScopes": return chinese ? "目标位置范围。雕像范围会显示已选护符在场景雕像手中的碎片；行李箱是否扫描由 Alt+C 窗口中已选的行李箱类型自动控制。" : "Target location scopes. Statue scope shows selected amulet fragments held by scene statues. Luggage scanning is controlled automatically by the luggage types selected in the Alt+C window.";
                 case "PresetSchemaVersion": return chinese ? "WhereIsThing 内部使用的预设数据版本，请勿手动编辑。" : "Internal preset schema version used by WhereIsThing. Do not edit manually.";
                 case "LocalPresets": return chinese ? "WhereIsThing 保存的本地预设内容，请勿手动编辑。" : "Serialized local presets managed by WhereIsThing. Do not edit manually.";
                 case "ActiveLocalPresetId": return chinese ? "当前本地玩家使用的预设 ID，请勿手动编辑。" : "Preset ID currently selected for local use. Do not edit manually.";

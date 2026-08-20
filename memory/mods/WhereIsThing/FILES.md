@@ -1,6 +1,6 @@
 # WhereIsThing Files
 
-更新时间：2026-08-14
+更新时间：2026-08-20
 
 ## 源码
 
@@ -24,4 +24,8 @@ dotnet build WhereIsThing.csproj --configuration Release --no-restore
 
 输出：`C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\WhereIsThing.dll`。
 
-当前依赖 `Assembly-CSharp.dll`、`Zorro.Core.Runtime.dll`、`Sirenix.Serialization.dll`、BepInEx、Harmony、Unity UI、TMP、TextRenderingModule 和 PhotonUnityNetworking。ModConfig 是可选运行时集成，未安装时本地化补丁静默跳过。发布前必须先关闭游戏，再确认 r2modman profile DLL 已被加载。
+当前发行目录：`MOD开发/WhereIsThing/发行/0.1.1`，包含 README、CHANGELOG、manifest、icon 和 WhereIsThing.dll；按用户要求未创建 ZIP。
+
+发行 DLL 版本为 `0.1.1.0`，大小 `126464` 字节，SHA-256 为 `EC3487EA4145EB275F82E43C45270ECC0E8F4D92A620D8AD8FF3182E496FBCA3`，与 profile DLL 一致。
+
+当前依赖 `Assembly-CSharp.dll`、`Zorro.Core.Runtime.dll`、`Sirenix.Serialization.dll`、BepInEx、Harmony、Unity UI、TMP、TextRenderingModule 和 PhotonUnityNetworking。ModConfig 是可选运行时集成，未安装时本地化补丁静默跳过。后续重发版本前必须先关闭游戏，再确认 r2modman profile DLL 已被加载。

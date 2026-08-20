@@ -1,6 +1,6 @@
 ﻿# Mods Memory
 
-更新时间：2026-08-17
+更新时间：2026-08-18
 
 每个 MOD 必须独立成目录。不要再把某个 MOD 的上下文堆到根目录或 `common/`。
 
@@ -20,7 +20,7 @@
 - `WhySoLaggy/`
 - `TerrainCustomiserCN/`：当前发布 `0.1.2`，对应原版 `TerrainCustomiser 0.3.2`；详情以该目录四件套为准。
 - `PeakMapBrowser/`：当前插件版本 `0.1.1`，已完成账号安全改动和发布包；UI 重构暂缓，详情以该目录四件套为准。
-- `WhereIsThing/`：PEAK 2.1.a 多物品位置显示 MOD，当前 0.1.0 基础版已编译，尚未实机验证和发布。
+- `WhereIsThing/`：PEAK 2.1.a 多物品位置显示 MOD，当前 0.1.1 已发布（非 ZIP 发行目录），后续按实机和玩家反馈收口。
 
 ## 命名说明
 

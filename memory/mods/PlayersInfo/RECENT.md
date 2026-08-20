@@ -1,5 +1,15 @@
 # PlayersInfo Recent
 
+## 2026-08-19 Teammate stamina display fixes confirmed
+
+- The teammate green main-stamina bar/value issue was fixed and confirmed in-game.
+- Teammate main-stamina text is created under the actual `staminaBar` green-fill node, matching the local `LocalStaminaBarPatch` and the PeakStatsEx reference. It must not be attached to `fullBar`, which is only the outer layout container and can place the text behind the fill or at the wrong render layer.
+- The reported overlap was more specifically the teammate green stamina fill appearing centered at the middle of the full 100% bar instead of representing the teammate's current value. This has been fixed; do not reintroduce a full-bar-centered fill or use `fullBar` as the green-fill host.
+- Teammate infinite-stamina display uses the synchronized `Affliction_InfiniteStamina` entry because `CharacterSyncData` does not synchronize `Character.infiniteStam`. Each `TeammateBarDriver` freezes the last reliable pre-effect `currentStamina` for both the green-bar width and main-stamina number, keeps the value frozen while the affliction is active, and returns to live synchronized stamina after the affliction is removed.
+- The frozen value is per driver/target, is not re-sampled when infinite stamina is extended or stacked, and is reset on target rebinding. If a driver first appears after the effect has already started, its first reasonable synchronized stamina value is used as a fallback.
+- This remains presentation-only: PlayersInfo does not modify remote `CharacterData`, `infiniteStam`, affliction state, or gameplay RPCs.
+- The current source-side teammate infinite-stamina implementation compiles successfully with 0 warnings and 0 errors. The profile output remains `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`.
+
 ## 2026-08-17 Release 0.2.1 directory
 
 - Prepared `MOD开发/PlayersInfo/发行/0.2.1` without a ZIP.

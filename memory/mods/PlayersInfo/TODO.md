@@ -1,6 +1,12 @@
 # PlayersInfo TODO
 
-Last updated: 2026-08-17
+Last updated: 2026-08-19
+
+## 2026-08-19 Confirmed fixes
+
+- [x] Teammate main-stamina number is visible on the green `staminaBar` layer instead of the outer `fullBar` node.
+- [x] Teammate green stamina fill no longer appears centered at the middle of the full 100% bar.
+- [x] Teammate infinite-stamina display freezes the pre-effect main-stamina value and restores live synchronization after the synchronized `InfiniteStamina` affliction ends.
 
 ## 2026-08-16 follow-up verification
 

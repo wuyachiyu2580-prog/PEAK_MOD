@@ -1,6 +1,6 @@
 ﻿# PEAK MOD Memory
 
-更新时间：2026-08-17
+更新时间：2026-08-18
 
 这是项目记忆的唯一入口。目标是让新的 AI 智能体在 1 到 3 分钟内知道：当前有哪些 MOD、近期做了什么、还有什么没做、哪些规则不能违反。
 
@@ -80,7 +80,7 @@
 - `DreamyAscent`：地形定制中文化与功能修复（永久暂停/归档）。入口：`mods/DreamyAscent/README.md`。
 - `WhySoLaggy`：性能、RPC、Harmony 和异常行为观测（1.0.3）。入口：`mods/WhySoLaggy/README.md`。
 - `TerrainCustomiserCN`：TerrainCustomiser 中文 UI 版（0.1.2 已发布，对应原版 0.3.2）。入口：`mods/TerrainCustomiserCN/README.md`。
-- `WhereIsThing`：PEAK 2.1.a 多物品位置显示 MOD（0.1.0 基础版，待实机验证）。入口：`mods/WhereIsThing/README.md`。
+- `WhereIsThing`：PEAK 2.1.a 多物品位置显示 MOD（0.1.0 已发布，后续按实机和玩家反馈收口）。入口：`mods/WhereIsThing/README.md`。
 
 ## 写入规则（四同步铁律）
 

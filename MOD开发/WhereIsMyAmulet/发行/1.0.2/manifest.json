@@ -1,0 +1,7 @@
+{
+  "name": "WhereIsMyAmulet",
+  "version_number": "1.0.2",
+  "website_url": "",
+  "description": "Shows distances to dropped amulets and visible statue fragments in PEAK.",
+  "dependencies": []
+}

@@ -17,7 +17,7 @@ namespace PlayersInfo
     {
         public const string PluginGuid = "com.players.info";
         public const string PluginName = "PlayersInfo";
-        public const string PluginVersion = "0.2.1";
+        public const string PluginVersion = "0.2.2";
 
         public enum HudAnchor { TopLeft, TopRight, BottomLeft, BottomRight }
         public enum TeammateSortMode { Stable, Distance }
@@ -29,6 +29,7 @@ namespace PlayersInfo
 
         public static ConfigEntry<bool> CfgEnableStaminaBar;
         public static ConfigEntry<bool> CfgShowStaminaValue;
+        public static ConfigEntry<bool> CfgShowExtraStaminaCap;
 
         public static ConfigEntry<TeammateInventoryDisplayMode> CfgInventoryDisplayMode;
 
@@ -101,6 +102,11 @@ namespace PlayersInfo
                 LanguageHelper.L("Show numeric stamina value on the bar.",
                                  "在体力条右侧显示数值。"));
 
+            CfgShowExtraStaminaCap = Config.Bind(DisplaySection,
+                "ShowExtraStaminaCap", true,
+                LanguageHelper.L("Show teammate extra stamina as current/cap. Turn off to show current only.",
+                                 "队友额外体力显示为 当前/上限。关闭后只显示当前值。"));
+
             TeammateInventoryDisplayMode inventoryMode = ReadInventoryDisplayMode();
             RemoveConfigEntry(DisplaySection, "EnableInventoryRow");
             RemoveConfigEntry("Features", "EnableInventoryRow");
@@ -168,7 +174,7 @@ namespace PlayersInfo
             // 只订阅真正影响"克隆体结构"的配置项变化，避免任意配置改动（OffsetX 拖滑块、
             // BepInEx 启动回写、ConfigurationManager 实时事件）触发 ClearAll → 全部体力条一起跳。
             // 运行时数值类（NearbyRange/MaxNearbyCount/TeammateSortMode/SpectatorNearbyCenter/
-            // RoundStamina/DebugLogging/Anchor/Offset）
+            // RoundStamina/ShowExtraStaminaCap/DebugLogging/Anchor/Offset）
             // 由 Update 直接读 Cfg.Value 生效，无需事件。
             CfgModEnabled.SettingChanged += OnStructuralConfigChanged;
             CfgEnableStaminaBar.SettingChanged += OnStructuralConfigChanged;

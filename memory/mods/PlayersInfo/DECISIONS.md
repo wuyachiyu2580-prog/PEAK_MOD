@@ -1,6 +1,6 @@
 # PlayersInfo Decisions
 
-Last updated: 2026-08-17
+Last updated: 2026-08-19
 
 ## Architecture
 
@@ -46,6 +46,10 @@ Last updated: 2026-08-17
 - Remove teammate extra-stamina visuals only when each referenced object is owned by the teammate clone root. Runtime references copied by Unity may still point at the local vanilla HUD; never disable or destroy those external objects. The right-side `current/cap` text is independent and must remain visible.
 - The compact teammate jetpack fuel bar in `TeammateInventoryRow` is an independent retained feature. Local extra-stamina layout work must not revert, resize, or otherwise alter that fuel display.
 - `Display.OffsetY` defaults to `0` for every anchor. Do not move the whole HUD merely to make room for the local extra bar, and do not migrate zero offsets to a nonzero value. Existing user-selected offsets remain valid.
+- Teammate main-stamina numbers belong to the actual green `staminaBar` fill node, not the outer `fullBar` layout node. The fill and its number must use the same explicit target value and visual layer.
+- Teammate infinite stamina is detected from the synchronized `Peak.Afflictions.AfflictionType.InfiniteStamina` entry, with `Character.infiniteStam` used only where locally available. Do not assume the remote `infiniteStam` flag is networked.
+- While a teammate infinite-stamina effect is active, freeze the last reliable pre-effect main-stamina value for both the fill width and number. Restore live `CharacterSyncData` stamina after the effect ends. Reset this state when the driver target changes or the HUD is rebuilt.
+- Do not center a teammate green fill against the full 100% bar as a fallback. A valid fill must be sized from the explicit teammate display value and the bar's full width; the number must remain attached to the green fill.
 
 ## Diagnostics
 

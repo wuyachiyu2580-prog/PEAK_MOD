@@ -1,6 +1,6 @@
 # WhereIsThing Decisions
 
-更新时间：2026-08-14
+更新时间：2026-08-19
 
 ## 数据来源
 
@@ -17,7 +17,7 @@
 - `ScanMode=Persistent` 保持标签；`ScanMode=Timed` 使用 `DisplayDurationSeconds` 自动隐藏。
 - 选择窗口先编辑工作副本，点击 `Apply` 才写回选择 ID 和语言配置；取消或 Escape 放弃本次窗口修改。
 - 标签只读显示，不改变物品、背包、网络状态或生成逻辑。
-- 位置范围窗口只提供 `Ground`、`Held`、`Backpack` 三个复选框；`ThingLocationScope.Luggage` 保留用于旧配置兼容，但扫描是否包含行李箱完全由 `SelectedLuggageTypes` 是否为空自动决定。至少选择一种行李箱类型时自动加入该范围，全部取消时自动清除。
+- 位置范围窗口提供 `Ground`、`Held`、`Backpack`、`Statue` 四个复选框；`Statue` 只影响已选护符在场景雕像手中的碎片显示，不新增目标列表项。`ThingLocationScope.Luggage` 保留用于旧配置兼容，但扫描是否包含行李箱完全由 `SelectedLuggageTypes` 是否为空自动决定。至少选择一种行李箱类型时自动加入该范围，全部取消时自动清除。
 
 ## UI
 
@@ -54,8 +54,16 @@
 - 保留 BepInEx 原始 section/key 和枚举值，避免现有配置失效；只通过 Harmony 和 ModConfig UI 文本替换修改玩家看到的名称。
 - ModConfig `GetDisplayName` 后缀必须按配置文件名限制为 WhereIsThing，不能改写其他 MOD 的配置项名称。
 - `ThingScanMode`、`ThingNameLanguage` 使用枚举配置，由 ModConfig 自动提供下拉菜单；中文只替换下拉显示文本，不改变序列化值。
-- `ThingLocationScope` 是 `[Flags]` 多选值，不改成普通下拉菜单；正式入口是选择窗口中的 Ground、Held、Backpack 三个复选框，Luggage 由行李箱类型自动维护。
-- 游戏语言变化时重新写入 `ConfigDescription` 并刷新 ModConfig 缓存；ModConfig 未安装或初始化尚未完成时必须静默降级，不影响位置显示主体。
+- `ThingLocationScope` 是 `[Flags]` 多选值，不改成普通下拉菜单；正式入口是选择窗口中的 Ground、Held、Backpack、Statue 四个复选框，Luggage 由行李箱类型自动维护。
+
+## 护符雕像碎片
+
+- 第 1~4 关手里拿着碎片的场景雕像使用 `Peak.PropSpawner_AmuletStatues`，不是复活队友相关的 `ScoutStatue`。
+- 雕像碎片不作为新的 `ThingTargetDefinition` 或独立目标类别出现；用户选择仍是四个护符本身，是否额外显示雕像上的碎片由 `ThingLocationScope.Statue` 控制。
+- 扫描只读 `PropSpawner_AmuletStatues` 已生成的子物体和护符 prefab 定义，不执行生成逻辑，不拿起物品，不改变网络、场景或存档状态。
+- 识别优先看雕像子物体名称中的护符关键词；只有 `props.Length == 4` 且 `statueIndex` 合法时才回退使用 `statueIndex`，避免在随机化表更复杂时误判。
+- 游戏语言变化时只重新写入 WhereIsThing 自己的 `ConfigDescription` 并刷新当前可见 UI；禁止清空或重建 ModConfig 全局缓存，禁止调用 `ProcessModEntries` / `LoadModSettings`。ModConfig 未安装或初始化尚未完成时必须静默降级，不影响位置显示主体。
+- 配置项本地化使用稳定的 `Definition.Section + Definition.Key`，中文只作为显示文本；配置文件中的 section/key 和枚举序列化值保持原样。
 
 ## 场景目标调研
 

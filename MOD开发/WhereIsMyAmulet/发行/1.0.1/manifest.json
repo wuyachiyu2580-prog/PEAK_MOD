@@ -1,0 +1,7 @@
+{
+  "name": "WhereIsMyAmulet",
+  "version_number": "1.0.1",
+  "website_url": "",
+  "description": "Shows the distance to amulets and active statue medallions in PEAK.",
+  "dependencies": []
+}

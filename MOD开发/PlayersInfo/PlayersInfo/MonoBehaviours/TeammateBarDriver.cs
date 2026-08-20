@@ -62,6 +62,14 @@ namespace PlayersInfo.MonoBehaviours
         private float TAU = 6.2831855f;
         private bool outOfStamina;
 
+        // CharacterSyncData 不同步 Character.infiniteStam，但会同步 Affliction_InfiniteStamina。
+        // 因此队友条按异常列表识别效果，并冻结生效前最后一份可信主体力显示。
+        private bool _wasInfiniteStamina;
+        private bool _hasReliableMainStamina;
+        private float _lastReliableMainStamina01;
+        private float _frozenInfiniteStamina01;
+        private float _displayedMainStamina01;
+
         // 临时体力克隆方案已废弃，改为 fullBar 安全侧外侧文本显示。
         // [ExtraVal] 量纲诊断日志的节流计时。
         private float _nextExtraValLogTime;
@@ -72,6 +80,7 @@ namespace PlayersInfo.MonoBehaviours
         private bool _lastStaminaWasFloat;
         private int _lastExtraShownInt = int.MinValue;
         private int _lastExtraCapShownInt = int.MinValue;
+        private bool _lastExtraShownWithCap = true;
         private float _nextValueRefreshTime;
         private const float ValueRefreshInterval = 0.15f;
         private float _nextAfflictionTextRefreshTime;
@@ -101,6 +110,7 @@ namespace PlayersInfo.MonoBehaviours
             desiredExtraStaminaSize = 0f;
             cachedExtraStam = 0f;
             outOfStamina = false;
+            ResetInfiniteStaminaDisplay();
             // 切换目标后立即重新探一次反射 + 强刷一次数值文本，避免显示上一个玩家的状态
             _cachedInvincible = false;
             _nextInvincibleProbeTime = 0f;
@@ -111,6 +121,7 @@ namespace PlayersInfo.MonoBehaviours
             _lastStaminaWasFloat = false;
             _lastExtraShownInt = int.MinValue;
             _lastExtraCapShownInt = int.MinValue;
+            _lastExtraShownWithCap = true;
             _nextValueRefreshTime = 0f;
             _nextAfflictionTextRefreshTime = 0f;
             _nextIdentityRefreshTime = 0f;
@@ -228,10 +239,27 @@ namespace PlayersInfo.MonoBehaviours
             }
 
             float fullWidth = fullBar.sizeDelta.x;
+            bool targetDead = Target.data.dead;
+
+            float maxStamina01;
+            try { maxStamina01 = Mathf.Max(0f, Target.GetMaxStamina()); }
+            catch { maxStamina01 = 1f; }
+            if (targetDead)
+            {
+                ResetInfiniteStaminaDisplay();
+                _displayedMainStamina01 = 0f;
+            }
+            else
+            {
+                _displayedMainStamina01 = ResolveDisplayedMainStamina(
+                    Target.data.currentStamina,
+                    maxStamina01,
+                    HasInfiniteStaminaEffect(Target));
+            }
 
             // === Main Stamina ===
-            desiredStaminaSize = Mathf.Max(0f, Target.data.currentStamina * fullWidth + staminaBarOffset);
-            if (Target.data.currentStamina <= 0.005f)
+            desiredStaminaSize = Mathf.Max(0f, _displayedMainStamina01 * fullWidth + staminaBarOffset);
+            if (!targetDead && Target.data.currentStamina <= 0.005f)
             {
                 if (!outOfStamina) { outOfStamina = true; OutOfStaminaPulse(); }
             }
@@ -252,11 +280,7 @@ namespace PlayersInfo.MonoBehaviours
             }
 
             // === Max Stamina（被饥饿等消耗掉的上限） ===
-            try
-            {
-                desiredMaxStaminaSize = Mathf.Max(0f, Target.GetMaxStamina() * fullWidth + staminaBarOffset);
-            }
-            catch { desiredMaxStaminaSize = fullWidth; }
+            desiredMaxStaminaSize = Mathf.Max(0f, maxStamina01 * fullWidth + staminaBarOffset);
             if (maxStaminaBar != null)
             {
                 var m = maxStaminaBar.sizeDelta;
@@ -435,7 +459,7 @@ namespace PlayersInfo.MonoBehaviours
 
             // 死亡状态下 CharacterData 可能仍保留上一帧的体力/临时体力数值。
             // 保留灰暗的队友条，但清理数值文字，避免死亡过渡时旧值与 0/新值重叠。
-            if (Target.data.dead)
+            if (targetDead)
                 HideValueTexts();
             else if (Time.unscaledTime >= _nextValueRefreshTime)
             {
@@ -585,8 +609,21 @@ namespace PlayersInfo.MonoBehaviours
                     return;
 
                 float fullWidth = fullBar.sizeDelta.x;
-                desiredStaminaSize = Mathf.Max(0f, Target.data.currentStamina * fullWidth + staminaBarOffset);
-                desiredMaxStaminaSize = Mathf.Max(0f, Target.GetMaxStamina() * fullWidth + staminaBarOffset);
+                float maxStamina01 = Mathf.Max(0f, Target.GetMaxStamina());
+                if (Target.data.dead)
+                {
+                    ResetInfiniteStaminaDisplay();
+                    _displayedMainStamina01 = 0f;
+                }
+                else
+                {
+                    _displayedMainStamina01 = ResolveDisplayedMainStamina(
+                        Target.data.currentStamina,
+                        maxStamina01,
+                        HasInfiniteStaminaEffect(Target));
+                }
+                desiredStaminaSize = Mathf.Max(0f, _displayedMainStamina01 * fullWidth + staminaBarOffset);
+                desiredMaxStaminaSize = Mathf.Max(0f, maxStamina01 * fullWidth + staminaBarOffset);
                 desiredExtraStaminaSize = Mathf.Max(0f, Target.data.extraStamina * fullWidth);
                 cachedExtraStam = desiredExtraStaminaSize;
                 SetWidthImmediate(staminaBar, desiredStaminaSize);
@@ -615,6 +652,65 @@ namespace PlayersInfo.MonoBehaviours
             catch { }
         }
 
+        private float ResolveDisplayedMainStamina(float rawStamina, float maxStamina, bool infiniteStamina)
+        {
+            float reasonableCurrent = Mathf.Clamp(rawStamina, 0f, maxStamina);
+            if (infiniteStamina)
+            {
+                if (!_wasInfiniteStamina)
+                {
+                    _frozenInfiniteStamina01 = _hasReliableMainStamina
+                        ? _lastReliableMainStamina01
+                        : reasonableCurrent;
+                    PluginLogger.Debug("[InfiniteStam] mate=" + SafeGetName(Target)
+                        + " start raw=" + rawStamina.ToString("F3")
+                        + " max=" + maxStamina.ToString("F3")
+                        + " frozen=" + _frozenInfiniteStamina01.ToString("F3")
+                        + " cached=" + _hasReliableMainStamina);
+                }
+                _wasInfiniteStamina = true;
+                return _frozenInfiniteStamina01;
+            }
+
+            if (_wasInfiniteStamina)
+            {
+                PluginLogger.Debug("[InfiniteStam] mate=" + SafeGetName(Target)
+                    + " end raw=" + rawStamina.ToString("F3"));
+            }
+            _wasInfiniteStamina = false;
+            _frozenInfiniteStamina01 = 0f;
+            _lastReliableMainStamina01 = reasonableCurrent;
+            _hasReliableMainStamina = true;
+            return reasonableCurrent;
+        }
+
+        private void ResetInfiniteStaminaDisplay()
+        {
+            _wasInfiniteStamina = false;
+            _hasReliableMainStamina = false;
+            _lastReliableMainStamina01 = 0f;
+            _frozenInfiniteStamina01 = 0f;
+            _displayedMainStamina01 = 0f;
+        }
+
+        private static bool HasInfiniteStaminaEffect(Character target)
+        {
+            try
+            {
+                if (target == null || target.Equals(null)) return false;
+                if (target.infiniteStam) return true;
+                if (target.refs == null || target.refs.afflictions == null) return false;
+                Peak.Afflictions.Affliction ignored;
+                return target.refs.afflictions.HasAfflictionType(
+                    Peak.Afflictions.Affliction.AfflictionType.InfiniteStamina,
+                    out ignored);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private static void SetActiveIfChanged(GameObject target, bool active)
         {
             if (target != null && target.activeSelf != active)
@@ -629,9 +725,16 @@ namespace PlayersInfo.MonoBehaviours
             try { round = PlayersInfoPlugin.CfgRoundStamina == null || PlayersInfoPlugin.CfgRoundStamina.Value; } catch { }
 
             // 直接用 normalized 数值 × 100，分辨率无关（避免 2K/4K 下 size/6 算出两倍数）
-            float mainStam = Target.data.currentStamina * 100f;
+            float mainStam = _displayedMainStamina01 * 100f;
             float extraStam = Target.data.extraStamina * 100f;
             float extraCap = ExtraStaminaValueHelper.GetCap01(Target) * 100f;
+            bool showExtraCap = true;
+            try
+            {
+                showExtraCap = PlayersInfoPlugin.CfgShowExtraStaminaCap == null
+                    || PlayersInfoPlugin.CfgShowExtraStaminaCap.Value;
+            }
+            catch { }
 
             if (staminaValueText != null)
             {
@@ -671,11 +774,15 @@ namespace PlayersInfo.MonoBehaviours
             {
                 int v = Mathf.Clamp(Mathf.RoundToInt(extraStam), 0, 100);
                 int cap = Mathf.Clamp(Mathf.RoundToInt(extraCap), 0, 100);
-                if (v != _lastExtraShownInt || cap != _lastExtraCapShownInt)
+                if (v != _lastExtraShownInt || cap != _lastExtraCapShownInt
+                    || showExtraCap != _lastExtraShownWithCap)
                 {
-                    extraValueText.text = v.ToString() + "/" + cap.ToString();
+                    extraValueText.text = showExtraCap
+                        ? v.ToString() + "/" + cap.ToString()
+                        : v.ToString();
                     _lastExtraShownInt = v;
                     _lastExtraCapShownInt = cap;
+                    _lastExtraShownWithCap = showExtraCap;
                     float preferredWidth = extraValueText.GetPreferredValues(extraValueText.text).x + 6f;
                     var textSize = extraValueText.rectTransform.sizeDelta;
                     if (Mathf.Abs(textSize.x - preferredWidth) > 0.1f)
@@ -693,7 +800,10 @@ namespace PlayersInfo.MonoBehaviours
                         float rawMain = Target.data.currentStamina;
                         float rawExtra = Target.data.extraStamina;
                         string nm = SafeGetName(Target);
-                        PluginLogger.Debug("[ExtraVal] mate=" + nm + " rawExtra=" + rawExtra.ToString("F4") + " shown=" + v + "/" + cap + " rawMain=" + rawMain.ToString("F4"));
+                        PluginLogger.Debug("[ExtraVal] mate=" + nm
+                            + " rawExtra=" + rawExtra.ToString("F4")
+                            + " shown=" + extraValueText.text
+                            + " rawMain=" + rawMain.ToString("F4"));
                     }
                     catch { }
                 }

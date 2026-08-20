@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WhereIsThing
@@ -40,7 +41,26 @@ namespace WhereIsThing
 
         public static bool IsChineseCapable(TMP_FontAsset font)
         {
-            if (font == null)
+            return IsChineseCapable(font, new HashSet<TMP_FontAsset>());
+        }
+
+        public static TMP_FontAsset GetLabelFont(ThingLabelFont choice)
+        {
+            string requestedSource;
+            TMP_FontAsset requested = GetFontForChoice(choice, out requestedSource);
+            TMP_FontAsset selected = requested;
+
+            if (selected == null)
+            {
+                selected = GetGameDefaultFont();
+            }
+
+            return selected;
+        }
+
+        private static bool IsChineseCapable(TMP_FontAsset font, HashSet<TMP_FontAsset> visited)
+        {
+            if (font == null || !visited.Add(font))
             {
                 return false;
             }
@@ -63,7 +83,7 @@ namespace WhereIsThing
 
             foreach (TMP_FontAsset fallback in font.fallbackFontAssetTable)
             {
-                if (fallback != null && !ReferenceEquals(fallback, font) && IsChineseCapable(fallback))
+                if (fallback != null && !ReferenceEquals(fallback, font) && IsChineseCapable(fallback, visited))
                 {
                     return true;
                 }
@@ -93,22 +113,72 @@ namespace WhereIsThing
             return null;
         }
 
+        private static TMP_FontAsset GetFontForChoice(ThingLabelFont choice, out string source)
+        {
+            switch (choice)
+            {
+                case ThingLabelFont.TmpDefault:
+                    source = "TmpDefault";
+                    return TMP_Settings.defaultFontAsset;
+                case ThingLabelFont.KoreanBinggrae:
+                    source = "KoreanBinggrae";
+                    return FindFontAsset("Korean Binggrae-Bold SDF");
+                case ThingLabelFont.Crazk:
+                    source = "Crazk";
+                    return FindFontAsset("CRAZK___ SDF");
+                case ThingLabelFont.Auto:
+                    source = "Auto(GameDefault)";
+                    return GetGameDefaultFont() ?? TMP_Settings.defaultFontAsset;
+                default:
+                    source = "GameDefault";
+                    return GetGameDefaultFont();
+            }
+        }
+
+        private static TMP_FontAsset GetGameDefaultFont()
+        {
+            return FontFallbackSwapper.instance == null ? null : FontFallbackSwapper.instance.mainBaseFont;
+        }
+
+        private static TMP_FontAsset FindFontAsset(string assetName)
+        {
+            IEnumerable<TMP_FontAsset> loadedFonts = Resources.FindObjectsOfTypeAll<TMP_FontAsset>();
+            IEnumerable<TMP_FontAsset> resourceFonts;
+            try
+            {
+                resourceFonts = Resources.LoadAll<TMP_FontAsset>(string.Empty);
+            }
+            catch
+            {
+                resourceFonts = Enumerable.Empty<TMP_FontAsset>();
+            }
+
+            return loadedFonts.Concat(resourceFonts)
+                .Where(font => font != null)
+                .Distinct()
+                .FirstOrDefault(font => string.Equals(NormalizeFontName(font.name), NormalizeFontName(assetName),
+                    System.StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static string NormalizeFontName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return string.Empty;
+            }
+
+            int cloneSuffix = name.IndexOf(" (Clone)", System.StringComparison.OrdinalIgnoreCase);
+            return (cloneSuffix < 0 ? name : name.Substring(0, cloneSuffix)).Trim();
+        }
+
         private static TMP_FontAsset[] GetCandidateFonts()
         {
             System.Collections.Generic.List<TMP_FontAsset> fonts = new System.Collections.Generic.List<TMP_FontAsset>();
 
-            if (GUIManager.instance != null)
+            TMP_FontAsset gameDefault = GetGameDefaultFont();
+            if (gameDefault != null)
             {
-                AscentUI ascent = GUIManager.instance.GetComponentInChildren<AscentUI>(true);
-                if (ascent != null && ascent.text != null && ascent.text.font != null)
-                {
-                    fonts.Add(ascent.text.font);
-                }
-
-                if (GUIManager.instance.heroDayText != null && GUIManager.instance.heroDayText.font != null)
-                {
-                    fonts.Add(GUIManager.instance.heroDayText.font);
-                }
+                fonts.Add(gameDefault);
             }
 
             TextMeshProUGUI anyText = Object.FindAnyObjectByType<TextMeshProUGUI>();

@@ -23,7 +23,7 @@ namespace WhereIsThing
     {
         public const string PluginGuid = "com.wuyachiyu.WhereIsThing";
         public const string PluginName = "WhereIsThing";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.1.1";
         private const int PresetSchemaVersion = 4;
         private const int ShareProtocolVersion = 2;
         private const string ShareModePropertyKey = "WIT.ShareMode";
@@ -45,11 +45,12 @@ namespace WhereIsThing
         private ThingSelectionWindow _window;
         private ThingPresetPickerWindow _pickerWindow;
         private TMP_FontAsset _font;
+        private TMP_FontAsset _labelFont;
         private bool _displayActive;
         private float _hideAt;
         private float _nextRefresh;
-        private bool _catalogLogged;
         private Harmony _harmony;
+        private bool _modConfigRefreshScheduled;
         private ThingLocationScope _effectiveScopes;
         private ThingScanMode _effectiveScanMode;
         private float _effectiveDisplayDuration;
@@ -65,6 +66,9 @@ namespace WhereIsThing
         private bool _sessionValid;
         private float _sessionStaleUntil = -1f;
         private ThingPresetShareMode _lastObservedShareMode;
+        private ThingLabelFont _lastObservedLabelFont;
+        private float _lastObservedFontSize;
+        private ThingNameLanguage _lastObservedNameLanguage;
 
         private ConfigEntry<bool> _enabled;
         private ConfigEntry<KeyCode> _scanKey;
@@ -73,6 +77,7 @@ namespace WhereIsThing
         private ConfigEntry<float> _displayDuration;
         private ConfigEntry<float> _maxDistance;
         private ConfigEntry<float> _fontSize;
+        private ConfigEntry<ThingLabelFont> _labelFontChoice;
         private ConfigEntry<bool> _showOffscreen;
         private ConfigEntry<ThingNameLanguage> _nameLanguage;
         private ConfigEntry<ThingLocationScope> _locationScopes;
@@ -97,6 +102,8 @@ namespace WhereIsThing
             _nameLanguage = Config.Bind("Display", "NameLanguage", ThingNameLanguage.Game, "Game language, English, or Simplified Chinese.");
             _maxDistance = Config.Bind("Display", "MaxDistance", 500f, "Maximum distance in metres. Set to 0 for unlimited.");
             _fontSize = Config.Bind("Display", "FontSize", 22f, "Distance label font size.");
+            _labelFontChoice = Config.Bind("Display", "LabelFont", ThingLabelFont.GameDefault,
+                "Font used by English location labels. Chinese text may display as tofu boxes.");
             _showOffscreen = Config.Bind("Display", "ShowOffscreenDirection", true, "Show a direction marker for offscreen items.");
             _presetSchemaVersion = Config.Bind("Presets", "PresetSchemaVersion", 0,
                 new ConfigDescription("Preset schema version for WhereIsThing.", null, "Hidden"));
@@ -116,12 +123,15 @@ namespace WhereIsThing
             _selectedSceneTargetTypesConfig = Config.Bind("Selection", "SelectedSceneTargetTypes", string.Empty,
                 new ConfigDescription("Comma-separated scene target types selected in the window.", null, "Hidden"));
             _locationScopes = Config.Bind("Selection", "LocationScopes", ThingLocationScope.Ground | ThingLocationScope.Backpack | ThingLocationScope.Luggage,
-                "Locations to scan: ground, held, backpack contents, or unopened luggage.");
+                "Locations to scan: ground, held, backpack contents, unopened luggage, or selected amulet fragments held by statues.");
             LoadSelection();
             LoadPresetState();
             _activeLocalPresetId = _activeLocalPresetIdConfig.Value ?? string.Empty;
             _selectedSharedPresetId = _selectedSharedPresetIdConfig.Value ?? string.Empty;
             _lastObservedShareMode = _shareModeConfig.Value;
+            _lastObservedLabelFont = _labelFontChoice.Value;
+            _lastObservedFontSize = _fontSize.Value;
+            _lastObservedNameLanguage = _nameLanguage.Value;
 
             ModConfigLocalization.ApplyLocalizedDescriptions(GetConfigEntries());
             _harmony = new Harmony(PluginGuid + ".ModConfigLocalization");
@@ -142,12 +152,13 @@ namespace WhereIsThing
 
         private void Start()
         {
-            StartCoroutine(DeferredModConfigRefresh());
+            ScheduleModConfigRefresh();
         }
 
         private void Update()
         {
             UpdateRoomState();
+            UpdateLabelStyleIfChanged();
 
             if (Input.GetKeyDown(_windowKey.Value) && IsAltHeld())
             {
@@ -265,8 +276,18 @@ namespace WhereIsThing
             }
             yield return null;
             ModConfigLocalization.ApplyLocalizedDescriptions(GetConfigEntries());
-            ModConfigLocalization.RefreshCache();
-            _log.LogInfo("[ModConfig] Deferred localization refresh completed");
+            _modConfigRefreshScheduled = false;
+        }
+
+        private void ScheduleModConfigRefresh()
+        {
+            if (_modConfigRefreshScheduled)
+            {
+                return;
+            }
+
+            _modConfigRefreshScheduled = true;
+            StartCoroutine(DeferredModConfigRefresh());
         }
 
         private void OnGameLanguageChanged()
@@ -283,7 +304,9 @@ namespace WhereIsThing
             }
             FontHelper.InvalidateCache();
             _font = null;
-            StartCoroutine(DeferredModConfigRefresh());
+            _labelFont = null;
+            ApplyLabelStyleToExisting(true);
+            ScheduleModConfigRefresh();
         }
 
         private IEnumerable<ConfigEntryBase> GetConfigEntries()
@@ -298,6 +321,7 @@ namespace WhereIsThing
                 _nameLanguage,
                 _maxDistance,
                 _fontSize,
+                _labelFontChoice,
                 _showOffscreen,
                 _presetSchemaVersion,
                 _localPresetsConfig,
@@ -329,6 +353,7 @@ namespace WhereIsThing
             ClearLabels();
             FontHelper.InvalidateCache();
             _font = null;
+            _labelFont = null;
             _nextRefresh = Time.unscaledTime + 1f;
         }
 
@@ -391,7 +416,6 @@ namespace WhereIsThing
             {
                 _displayActive = false;
                 ClearLabels();
-                _log.LogInfo("No targets selected. Hold Alt and press " + _windowKey.Value + " to choose targets.");
                 return;
             }
 
@@ -412,8 +436,7 @@ namespace WhereIsThing
                 return;
             }
 
-            _font = _font ?? FontHelper.GetChineseCapable();
-            if (_font == null)
+            if (!EnsureLabelFont(true))
             {
                 return;
             }
@@ -500,6 +523,8 @@ namespace WhereIsThing
                 }
             }
 
+            RefreshAmuletStatueLabels(seen);
+
             RefreshSceneLabels(seen);
 
             foreach (string key in _labels.Keys.ToList())
@@ -509,6 +534,218 @@ namespace WhereIsThing
                     RemoveLabel(key);
                 }
             }
+        }
+
+        private void RefreshAmuletStatueLabels(HashSet<string> seen)
+        {
+            if ((_effectiveScopes & ThingLocationScope.Statue) == 0 || _selectedIds.Count == 0)
+            {
+                return;
+            }
+
+            foreach (Peak.PropSpawner_AmuletStatues statue in Resources.FindObjectsOfTypeAll<Peak.PropSpawner_AmuletStatues>())
+            {
+                if (statue == null || !statue.gameObject.scene.IsValid() || !statue.gameObject.activeInHierarchy ||
+                    statue.transform.childCount == 0)
+                {
+                    continue;
+                }
+
+                GameObject statueObject = statue.transform.GetChild(0).gameObject;
+                if (statueObject == null || !statueObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                FakeItem statueFragment = FindAmuletStatueFakeItem(statue, statueObject);
+                if (statueFragment == null)
+                {
+                    continue;
+                }
+
+                ushort itemId;
+                Item definition;
+                if (!TryGetAmuletStatueItem(statue, statueObject, out itemId, out definition) || !_selectedIds.Contains(itemId))
+                {
+                    continue;
+                }
+
+                Peak.PropSpawner_AmuletStatues capturedStatue = statue;
+                GameObject capturedStatueObject = statueObject;
+                FakeItem capturedStatueFragment = statueFragment;
+                Item capturedDefinition = definition;
+                ushort capturedItemId = itemId;
+                string key = "statue:" + capturedStatue.GetInstanceID();
+                seen.Add(key);
+                Transform target = capturedStatueFragment.transform;
+                AddLabel(key, target,
+                    delegate { return GetAmuletStatueLabelName(capturedDefinition); },
+                    delegate
+                    {
+                        return IsAmuletStatueValid(capturedStatue, capturedStatueObject, capturedStatueFragment) &&
+                            _selectedIds.Contains(capturedItemId) &&
+                            (_effectiveScopes & ThingLocationScope.Statue) != 0;
+                    });
+            }
+        }
+
+        private static FakeItem FindAmuletStatueFakeItem(Peak.PropSpawner_AmuletStatues statue, GameObject statueObject)
+        {
+            if (statueObject == null)
+            {
+                return null;
+            }
+
+            int statueAmuletIndex;
+            bool hasStatueAmuletIndex = TryGetAmuletIndexFromStatue(statue, statueObject, out statueAmuletIndex);
+            FakeItem fallback = null;
+            FakeItem[] fakeItems = statueObject.GetComponentsInChildren<FakeItem>(true);
+            foreach (FakeItem fakeItem in fakeItems)
+            {
+                if (fakeItem == null)
+                {
+                    continue;
+                }
+
+                if (fallback == null)
+                {
+                    fallback = fakeItem;
+                }
+
+                int fakeAmuletIndex;
+                if (hasStatueAmuletIndex && fakeItem.realItemPrefab != null &&
+                    TryGetAmuletIndex(fakeItem.realItemPrefab, out fakeAmuletIndex) &&
+                    fakeAmuletIndex == statueAmuletIndex)
+                {
+                    return fakeItem;
+                }
+            }
+
+            return fakeItems.Length == 1 ? fallback : null;
+        }
+
+        private bool TryGetAmuletStatueItem(Peak.PropSpawner_AmuletStatues statue, GameObject statueObject, out ushort itemId, out Item definition)
+        {
+            itemId = ushort.MaxValue;
+            definition = null;
+
+            int amuletIndex;
+            if (!TryGetAmuletIndexFromStatue(statue, statueObject, out amuletIndex))
+            {
+                return false;
+            }
+
+            definition = FindAmuletDefinition(amuletIndex);
+            if (definition == null)
+            {
+                return false;
+            }
+
+            itemId = definition.itemID;
+            return true;
+        }
+
+        private static bool TryGetAmuletIndexFromStatue(Peak.PropSpawner_AmuletStatues statue, GameObject statueObject, out int index)
+        {
+            index = -1;
+            if (TryGetAmuletIndexFromName(statueObject == null ? null : statueObject.name, out index))
+            {
+                return true;
+            }
+
+            if (statue != null && statue.props != null && statue.props.Length == 4 && statue.statueIndex >= 0 && statue.statueIndex < 4)
+            {
+                index = statue.statueIndex;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryGetAmuletIndexFromName(string value, out int index)
+        {
+            index = -1;
+            if (string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+
+            string name = value.ToLowerInvariant();
+            if (name.Contains("doublejump") || name.Contains("double_jump") || name.Contains("superjump") || name.Contains("initiative"))
+            {
+                index = 0;
+                return true;
+            }
+            if (name.Contains("infinitestam") || name.Contains("infinite_stam") || name.Contains("stamina") || name.Contains("ambition"))
+            {
+                index = 1;
+                return true;
+            }
+            if (name.Contains("healing") || name.Contains("heal") || name.Contains("tenacity"))
+            {
+                index = 2;
+                return true;
+            }
+            if (name.Contains("clone") || name.Contains("generosity"))
+            {
+                index = 3;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryGetAmuletIndex(Item item, out int index)
+        {
+            index = -1;
+            if (item == null || !item.TryGetComponent<Peak.AmuletBase>(out Peak.AmuletBase amulet))
+            {
+                return false;
+            }
+
+            index = amulet.amuletIndex;
+            return index >= 0 && index < 4;
+        }
+
+        private Item FindAmuletDefinition(int amuletIndex)
+        {
+            foreach (ThingTargetDefinition definition in _catalog)
+            {
+                if (definition == null || definition.IsLuggage || definition.IsSceneTarget)
+                {
+                    continue;
+                }
+
+                foreach (Item item in definition.Prefabs)
+                {
+                    int index;
+                    if (item != null && TryGetAmuletIndex(item, out index) && index == amuletIndex)
+                    {
+                        return item;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private string GetAmuletStatueLabelName(Item definition)
+        {
+            string suffix = ThingCatalog.GetStatueSuffix(_nameLanguage.Value);
+            if (definition == null)
+            {
+                return suffix;
+            }
+
+            return ThingCatalog.GetDisplayName(definition, _nameLanguage.Value) + "\n" + suffix;
+        }
+
+        private static bool IsAmuletStatueValid(Peak.PropSpawner_AmuletStatues statue, GameObject statueObject, FakeItem statueFragment)
+        {
+            return statue != null && statue.gameObject.activeInHierarchy && statue.transform.childCount > 0 &&
+                statueObject != null && statueObject.activeInHierarchy &&
+                statue.transform.GetChild(0).gameObject == statueObject &&
+                statueFragment != null && statueFragment.gameObject.activeInHierarchy && !statueFragment.pickedUp;
         }
 
         private void RefreshSceneLabels(HashSet<string> seen)
@@ -752,7 +989,56 @@ namespace WhereIsThing
             }
 
             _labels.Add(key, new ThingLabel(key, _canvas.transform, target, titleProvider, isValid,
-                positionProvider, _font, _fontSize.Value));
+                positionProvider, _labelFont, _fontSize.Value));
+        }
+
+        private void UpdateLabelStyleIfChanged()
+        {
+            if (_labelFontChoice.Value == _lastObservedLabelFont &&
+                Mathf.Approximately(_fontSize.Value, _lastObservedFontSize) &&
+                _nameLanguage.Value == _lastObservedNameLanguage)
+            {
+                return;
+            }
+
+            _lastObservedLabelFont = _labelFontChoice.Value;
+            _lastObservedFontSize = _fontSize.Value;
+            _lastObservedNameLanguage = _nameLanguage.Value;
+            _labelFont = null;
+            ApplyLabelStyleToExisting(true);
+        }
+
+        private bool EnsureLabelFont(bool logResolution)
+        {
+            if (_labelFont != null)
+            {
+                return true;
+            }
+
+            _labelFont = FontHelper.GetLabelFont(_labelFontChoice.Value);
+            if (_labelFont == null)
+            {
+                if (logResolution)
+                {
+                    _log.LogWarning("[Display] No TMP font is currently available for location labels");
+                }
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ApplyLabelStyleToExisting(bool logResolution)
+        {
+            if (!EnsureLabelFont(logResolution))
+            {
+                return;
+            }
+
+            foreach (ThingLabel label in _labels.Values)
+            {
+                label.ApplyStyle(_labelFont, _fontSize.Value);
+            }
         }
 
         private void ApplyWindowChanges(HashSet<ushort> selection, HashSet<ThingLuggageType> selectedLuggageTypes,
@@ -775,8 +1061,6 @@ namespace WhereIsThing
             SaveLocalPresets();
             RefreshEffectivePresetState(true);
             MarkShareDirty(true);
-            _log.LogInfo("[Presets] Updated preset '" + preset.Name + "' (" + preset.Id + "): items=" + preset.SelectedItemIds.Count +
-                ", luggage=" + preset.SelectedLuggageTypes.Count + ", scene=" + preset.SelectedSceneTargetTypes.Count);
         }
 
         private bool TryLoadCatalog()
@@ -813,12 +1097,6 @@ namespace WhereIsThing
             }
             _selectedItemIds.Value = string.Join(",", _selectedIds.OrderBy(id => id).Select(id => id.ToString()).ToArray());
             _selectedSceneTargetTypesConfig.Value = SerializeSceneTargetTypes(_selectedSceneTargetTypes);
-            if (!_catalogLogged)
-            {
-                _catalogLogged = true;
-                _log.LogInfo("Loaded " + _catalog.Count + " selectable targets from ItemDatabase and scene target definitions. Categories: " +
-                    string.Join(", ", _catalog.Select(item => item.Category).Distinct().OrderBy(value => value).ToArray()));
-            }
             return true;
         }
 
@@ -913,7 +1191,6 @@ namespace WhereIsThing
                 if (_presetSchemaVersion.Value < 4)
                 {
                     UpsertBuiltInPreset(ThingPresetFactory.CreateAscentEightPreset(), 2, false);
-                    _log.LogInfo("[Presets] Schema v4 migration added the Ascent 8 fallback preset without replacing existing preset edits");
                 }
             }
 
@@ -933,7 +1210,6 @@ namespace WhereIsThing
             _selectedSharedPresetId = _selectedSharedPresetIdConfig.Value ?? string.Empty;
             _presetSchemaVersion.Value = PresetSchemaVersion;
             SaveLocalPresets();
-            _log.LogInfo("[Presets] Loaded local presets: count=" + _localPresets.Count + ", activeLocal='" + _activeLocalPresetId + "', selectedShared='" + _selectedSharedPresetId + "'");
         }
 
         private void EnsureDefaultLocalPresets()
@@ -1012,10 +1288,6 @@ namespace WhereIsThing
                     if (resolvedNames.Count < 4)
                     {
                         _log.LogWarning(resolutionMessage + "; expected 4 target groups");
-                    }
-                    else
-                    {
-                        _log.LogInfo(resolutionMessage);
                     }
                 }
                 else if ((string.Equals(preset.Id, ThingPresetFactory.SurvivalPresetId, StringComparison.Ordinal) ||
@@ -1149,8 +1421,6 @@ namespace WhereIsThing
             IEnumerable<ThingPresetDefinition> presets = allowEditing ? _localPresets : GetSharedPresetSource();
             string activePresetId = allowEditing ? _activeLocalPresetId : _selectedSharedPresetId;
             bool usingFallbackPresets = !allowEditing && !HasUsableSessionPresets();
-            _log.LogInfo("[Presets] Open picker: mode=" + (allowEditing ? "local-edit" : "client-select") + ", entries=" + presets.Count() +
-                ", active='" + activePresetId + "', shareMode=" + _shareModeConfig.Value + ", source=" + (usingFallbackPresets ? "fallback" : "shared"));
             _pickerWindow.Open(presets, activePresetId, allowEditing, usingFallbackPresets, _shareModeConfig.Value,
                 _locationScopes.Value, _scanMode.Value, _displayDuration.Value,
                 delegate(ThingPresetDefinition preset) { return ThingPresetFactory.BuildSummary(preset, _catalog); },
@@ -1176,7 +1446,6 @@ namespace WhereIsThing
             _activeLocalPresetId = preset.Id;
             SaveLocalPresets();
             RefreshEffectivePresetState(true);
-            _log.LogInfo("[Presets] Selected local preset '" + preset.Name + "' (" + preset.Id + ")");
             OpenPresetPicker();
         }
 
@@ -1190,7 +1459,6 @@ namespace WhereIsThing
             _selectedSharedPresetIdConfig.Value = presetId;
             PersistConfig();
             RefreshEffectivePresetState(true);
-            _log.LogInfo("[Presets] Selected shared preset '" + presetId + "'");
             OpenPresetPicker();
         }
 
@@ -1214,7 +1482,6 @@ namespace WhereIsThing
                 _window = new ThingSelectionWindow(_canvas, _font, ApplyWindowChanges, null);
             }
             _window.Open(_catalog, preset.SelectedItemIds, preset.SelectedLuggageTypes, preset.SelectedSceneTargetTypes, _nameLanguage.Value);
-            _log.LogInfo("[Presets] Open editor for preset '" + preset.Name + "' (" + preset.Id + ")");
         }
 
         private void CreatePreset()
@@ -1226,7 +1493,6 @@ namespace WhereIsThing
             SaveLocalPresets();
             RefreshEffectivePresetState(true);
             MarkShareDirty(true);
-            _log.LogInfo("[Presets] Created preset '" + preset.Name + "' (" + preset.Id + ")");
             OpenPresetPicker();
         }
 
@@ -1234,7 +1500,6 @@ namespace WhereIsThing
         {
             if (ThingPresetFactory.IsBuiltInPresetId(presetId))
             {
-                _log.LogInfo("[Rename] Ignored rename request for built-in preset '" + presetId + "'");
                 return;
             }
 
@@ -1258,12 +1523,9 @@ namespace WhereIsThing
                 return;
             }
 
-            string previousName = preset.Name;
             preset.Name = normalizedName;
             SaveLocalPresets();
             MarkShareDirty(true);
-            _log.LogInfo("[Rename] Renamed custom preset '" + previousName + "' -> '" + preset.Name + "' (" + preset.Id +
-                "), published=" + preset.Published);
             OpenPresetPicker();
         }
 
@@ -1271,7 +1533,6 @@ namespace WhereIsThing
         {
             if (ThingPresetFactory.IsBuiltInPresetId(presetId))
             {
-                _log.LogInfo("[Presets] Delete ignored for built-in preset '" + presetId + "'");
                 return;
             }
 
@@ -1289,7 +1550,6 @@ namespace WhereIsThing
             SaveLocalPresets();
             RefreshEffectivePresetState(true);
             MarkShareDirty(true);
-            _log.LogInfo("[Presets] Deleted preset '" + preset.Name + "' (" + preset.Id + "), new active='" + _activeLocalPresetId + "'");
             OpenPresetPicker();
         }
 
@@ -1305,7 +1565,6 @@ namespace WhereIsThing
             {
                 preset.Published = true;
                 SaveLocalPresets();
-                _log.LogInfo("[Presets] Publish toggle ignored for built-in preset '" + preset.Name + "' (" + preset.Id + ")");
                 OpenPresetPicker();
                 return;
             }
@@ -1313,7 +1572,6 @@ namespace WhereIsThing
             preset.Published = !preset.Published;
             SaveLocalPresets();
             MarkShareDirty(true);
-            _log.LogInfo("[Presets] Toggled publish for '" + preset.Name + "' (" + preset.Id + ") -> " + preset.Published);
             OpenPresetPicker();
         }
 
@@ -1323,7 +1581,6 @@ namespace WhereIsThing
             _lastObservedShareMode = shareMode;
             PersistConfig();
             MarkShareDirty(true);
-            _log.LogInfo("[Presets] Share mode -> " + shareMode);
             OpenPresetPicker();
         }
 
@@ -1347,7 +1604,6 @@ namespace WhereIsThing
             _locationScopes.Value = newScopes;
             PersistConfig();
             RefreshEffectivePresetState(true);
-            _log.LogInfo("[Scan] Local scope '" + scope + "' -> " + enabled + ", effective=" + _locationScopes.Value);
             OpenPresetPicker();
         }
 
@@ -1356,7 +1612,6 @@ namespace WhereIsThing
             _scanMode.Value = _scanMode.Value == ThingScanMode.Persistent ? ThingScanMode.Timed : ThingScanMode.Persistent;
             PersistConfig();
             RefreshEffectivePresetState(true);
-            _log.LogInfo("[Scan] Local scan mode -> " + _scanMode.Value);
             OpenPresetPicker();
         }
 
@@ -1371,7 +1626,6 @@ namespace WhereIsThing
             _displayDuration.Value = next;
             PersistConfig();
             RefreshEffectivePresetState(true);
-            _log.LogInfo("[Scan] Local display duration -> " + _displayDuration.Value.ToString("0.0", CultureInfo.InvariantCulture));
             OpenPresetPicker();
         }
 
@@ -1396,7 +1650,6 @@ namespace WhereIsThing
                 _lastObservedShareMode = _shareModeConfig.Value;
                 PersistConfig();
                 MarkShareDirty(true);
-                _log.LogInfo("[Presets] Share mode changed externally -> " + _lastObservedShareMode);
                 if (_pickerWindow != null && _pickerWindow.IsOpen)
                 {
                     OpenPresetPicker();
@@ -1408,7 +1661,6 @@ namespace WhereIsThing
             {
                 if (!string.IsNullOrEmpty(_activeRoomName))
                 {
-                    _log.LogInfo("[Share] Left online room '" + _activeRoomName + "', clearing session presets");
                     _activeRoomName = string.Empty;
                     ClearSessionOverlay();
                     RefreshEffectivePresetState(true);
@@ -1419,7 +1671,6 @@ namespace WhereIsThing
             string roomName = PhotonNetwork.CurrentRoom.Name ?? string.Empty;
             if (!string.Equals(roomName, _activeRoomName, StringComparison.Ordinal))
             {
-                _log.LogInfo("[Share] Enter room '" + roomName + "' as " + (PhotonNetwork.IsMasterClient ? "master" : "client"));
                 _activeRoomName = roomName;
                 if (PhotonNetwork.IsMasterClient)
                 {
@@ -1439,7 +1690,6 @@ namespace WhereIsThing
             }
             else if (_sessionPresets.Count > 0 && !_sessionValid && _sessionStaleUntil > 0f && Time.unscaledTime >= _sessionStaleUntil)
             {
-                _log.LogInfo("[Share] Session preset grace expired; falling back from stale host data");
                 ClearSessionOverlay();
                 RefreshEffectivePresetState(true);
                 if (_pickerWindow != null && _pickerWindow.IsOpen)
@@ -1483,10 +1733,6 @@ namespace WhereIsThing
             _lastPublishedShareHash = hash;
             _shareDirty = false;
             _lastPublishAt = Time.unscaledTime;
-            _log.LogInfo("[Share] Published room state: mode=" + _shareModeConfig.Value + ", actor=" +
-                (PhotonNetwork.LocalPlayer == null ? -1 : PhotonNetwork.LocalPlayer.ActorNumber) + ", payloadPresets=" +
-                (_shareModeConfig.Value == ThingPresetShareMode.PublishedPresets ? _localPresets.Count(preset => preset.Published) : 0) +
-                ", hash=" + hash);
         }
 
         private void ApplySharedStateFromRoomProperties()
@@ -1501,7 +1747,6 @@ namespace WhereIsThing
             {
                 if (_sessionStaleUntil <= 0f || Time.unscaledTime >= _sessionStaleUntil)
                 {
-                    _log.LogInfo("[Share] No room share metadata found; clearing session presets");
                     ClearSessionOverlay();
                 }
                 return;
@@ -1518,7 +1763,6 @@ namespace WhereIsThing
             {
                 if (_sessionStaleUntil <= 0f || Time.unscaledTime >= _sessionStaleUntil)
                 {
-                    _log.LogInfo("[Share] Share payload invalid or stale for current master; clearing session presets");
                     ClearSessionOverlay();
                 }
                 return;
@@ -1527,7 +1771,6 @@ namespace WhereIsThing
             ThingPresetShareMode shareMode = (ThingPresetShareMode)shareModeValue;
             if (shareMode != ThingPresetShareMode.PublishedPresets || string.IsNullOrWhiteSpace(payload))
             {
-                _log.LogInfo("[Share] Master is not sharing published presets (mode=" + shareMode + "); using fallback presets");
                 ClearSessionOverlay();
                 return;
             }
@@ -1535,7 +1778,6 @@ namespace WhereIsThing
             List<ThingPresetDefinition> presets = ThingPresetCodec.DeserializePresets(payload);
             if (presets.Count == 0)
             {
-                _log.LogInfo("[Share] Share payload parsed but contained no presets; using fallback presets");
                 ClearSessionOverlay();
                 return;
             }
@@ -1550,8 +1792,6 @@ namespace WhereIsThing
                 _selectedSharedPresetId = _sessionPresets[0].Id;
                 _selectedSharedPresetIdConfig.Value = _selectedSharedPresetId;
             }
-            _log.LogInfo("[Share] Applied shared presets from actor=" + actorNumber + ", count=" + _sessionPresets.Count +
-                ", selected='" + _selectedSharedPresetId + "'");
         }
 
         private void ClearSessionOverlay()
@@ -1637,7 +1877,6 @@ namespace WhereIsThing
         {
             if (!PhotonNetwork.IsMasterClient)
             {
-                _log.LogInfo("[Share] Room properties updated; refreshing shared presets");
                 ApplySharedStateFromRoomProperties();
                 RefreshEffectivePresetState(true);
                 if (_pickerWindow != null && _pickerWindow.IsOpen)
@@ -1649,8 +1888,6 @@ namespace WhereIsThing
 
         public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
         {
-            _log.LogInfo("[Share] Master switched -> actor=" + (newMasterClient == null ? -1 : newMasterClient.ActorNumber) +
-                ", localIsMaster=" + PhotonNetwork.IsMasterClient);
             if (PhotonNetwork.IsMasterClient)
             {
                 ClearSessionOverlay();

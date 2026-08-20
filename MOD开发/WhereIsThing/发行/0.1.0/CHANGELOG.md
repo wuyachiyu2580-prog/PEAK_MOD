@@ -2,11 +2,14 @@
 
 ## 0.1.0
 
-- 首次发布 WhereIsThing。
-- 支持定位物品、行李箱、危险目标和钟塔。
-- 支持本地预设、房主共享预设和客机只读选择。
-- 内置生存急救、成就探索和天阶 8 三套保底预设。
-- 支持创建、编辑、重命名、公开、隐藏和删除自定义预设。
-- 每名玩家可以独立设置使用的预设、显示范围、显示模式和时间。
-- 支持房主切换和房主无 MOD 时的默认预设回退。
-- 支持中文与英文界面、搜索和 ModConfig 文本。
+- Initial release of WhereIsThing.
+- Added location labels for items, luggage, hazards, and the Gloom Bell Tower.
+- Added local presets, host-shared presets, and read-only preset selection for clients.
+- Added three built-in fallback presets: Survival Medical, Achievement, and Ascent 8.
+- Added support for creating, editing, renaming, publishing, hiding, and deleting custom presets.
+- Each player can independently choose a preset and configure scan locations, display mode, and duration.
+- Added master-client switch handling and built-in fallback presets when the host does not have the mod.
+- Added English and Chinese UI text, target search, and ModConfig localization.
+- Added selectable game fonts for location labels with automatic Chinese glyph fallback.
+- Made location labels thinner by disabling bold text by default and reducing the outline weight.
+- Font, bold, size, and language changes now apply to existing labels without rescanning.
