@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using BepInEx;
 using BepInEx.Configuration;
@@ -17,7 +18,7 @@ namespace WhySoLaggy
     {
         public const string PluginGuid = "com.wuyachiyu.WhySoLaggy";
         public const string PluginName = "WhySoLaggy";
-        public const string PluginVersion = "1.0.3";
+        public const string PluginVersion = "1.0.4";
 
         // ── 性能监测配置 ──
         public static ConfigEntry<int> SpikeThresholdMs;
@@ -34,6 +35,10 @@ namespace WhySoLaggy
         public static ConfigEntry<int> DestroyRateThreshold;
         public static ConfigEntry<int> RpcRateThreshold;
         public static ConfigEntry<int> ObjectSpikeThreshold;
+        public static ConfigEntry<int> ActorMethodRateThreshold;
+        public static ConfigEntry<int> OwnershipGrabRateThreshold;
+        public static ConfigEntry<int> OwnershipRequestRateThreshold;
+        public static ConfigEntry<float> AlertCooldownSeconds;
 
         // ── RPC 监控配置 ──
         public static ConfigEntry<bool> EnableRpcMonitor;
@@ -42,6 +47,7 @@ namespace WhySoLaggy
         public static ConfigEntry<int> RpcMonitorWatchShowPerMethod;
         public static ConfigEntry<string> ExtraWatchMethods;
         public static ConfigEntry<int> PumpBatchSize;
+        public static ConfigEntry<int> QueueCapacity;
         
         // ── 1.0.3 新增：性能/过滤/日志 ──
         public static ConfigEntry<float> MinReportMs;
@@ -49,6 +55,8 @@ namespace WhySoLaggy
         public static ConfigEntry<string> IgnorePatchMethods;
         public static ConfigEntry<LogVerbosity> VerbosityCfg;
         public static ConfigEntry<int> MaxLogFileSizeMB;
+        public static ConfigEntry<int> MaxRotatedFiles;
+        public static ConfigEntry<int> MaxRotatedStorageMB;
         public static ConfigEntry<bool> EnableMemoryMonitor;
         public static ConfigEntry<bool> ShowDashboard;
         
@@ -72,6 +80,7 @@ namespace WhySoLaggy
         private int _reportFrameCount;
         private float _reportTimer;
         private bool _profilingActive;
+        private bool _modConfigRefreshScheduled;
 
         void Awake()
         {
@@ -134,6 +143,22 @@ namespace WhySoLaggy
                     "Object count increase per check interval to trigger spike alert.",
                     new AcceptableValueRange<int>(5, 100)));
 
+            ActorMethodRateThreshold = Config.Bind("AbuseDetection", "ActorMethodRateThreshold", 20,
+                new ConfigDescription("Max calls for one remote Actor and RPC method per check window before alerting.",
+                    new AcceptableValueRange<int>(5, 500)));
+
+            OwnershipGrabRateThreshold = Config.Bind("AbuseDetection", "OwnershipGrabRateThreshold", 10,
+                new ConfigDescription("Max remote ownership transfers to one new owner per check window before alerting.",
+                    new AcceptableValueRange<int>(2, 200)));
+
+            OwnershipRequestRateThreshold = Config.Bind("AbuseDetection", "OwnershipRequestRateThreshold", 20,
+                new ConfigDescription("Max ownership requests from one remote actor per check window before alerting.",
+                    new AcceptableValueRange<int>(2, 500)));
+
+            AlertCooldownSeconds = Config.Bind("AbuseDetection", "AlertCooldownSeconds", 10f,
+                new ConfigDescription("Seconds before the same abuse alert key can be emitted again.",
+                    new AcceptableValueRange<float>(1f, 60f)));
+
             // ── RPC 监控配置 ──
             EnableRpcMonitor = Config.Bind("RpcMonitor", "EnableRpcMonitor", true,
                 "Track all network RPC method names and their sources. Low performance overhead (<0.5ms/s for 1000 RPCs/s).");
@@ -160,6 +185,11 @@ namespace WhySoLaggy
                 new ConfigDescription(
                     "Max RPC queue items consumed per frame on main thread.",
                     new AcceptableValueRange<int>(8, 256)));
+
+            QueueCapacity = Config.Bind("RpcMonitor", "QueueCapacity", 2048,
+                new ConfigDescription(
+                    "Maximum queued RPC records. When full, the oldest records are discarded so recent activity is retained.",
+                    new AcceptableValueRange<int>(256, 65536)));
         
             // ── 1.0.3 性能/过滤/日志 ──
             MinReportMs = Config.Bind("General", "MinReportMs", 0.1f,
@@ -180,6 +210,14 @@ namespace WhySoLaggy
                 new ConfigDescription(
                     "Rotate structured CSV/JSONL files when they exceed this size.",
                     new AcceptableValueRange<int>(1, 100)));
+
+            MaxRotatedFiles = Config.Bind("Logging", "MaxRotatedFiles", 30,
+                new ConfigDescription("Maximum number of rotated CSV or JSONL files retained per format.",
+                    new AcceptableValueRange<int>(1, 200)));
+
+            MaxRotatedStorageMB = Config.Bind("Logging", "MaxRotatedStorageMB", 350,
+                new ConfigDescription("Maximum total size of rotated CSV or JSONL files retained per format.",
+                    new AcceptableValueRange<int>(1, 4096)));
         
             EnableMemoryMonitor = Config.Bind("General", "EnableMemoryMonitor", true,
                 "Sample GC allocation rate and include AllocRateKBps in FpsReport events.");
@@ -225,6 +263,8 @@ namespace WhySoLaggy
                 new ConfigDescription(
                     "Default max stack frames captured per snapshot when includeStack is enabled.",
                     new AcceptableValueRange<int>(1, 30)));
+
+            ModConfigLocalization.ApplyLocalizedDescriptions(GetConfigEntries());
         
             // 初始化日志系统
             _bepInExDir = Path.GetDirectoryName(
@@ -245,6 +285,8 @@ namespace WhySoLaggy
             LagLogger.Initialize(_bepInExDir);
             AbuseLogger.Initialize(_bepInExDir);
             StructuredLogger.MaxLogFileSizeMB = MaxLogFileSizeMB.Value;
+            StructuredLogger.MaxRotatedFiles = MaxRotatedFiles.Value;
+            StructuredLogger.MaxRotatedStorageMB = MaxRotatedStorageMB.Value;
             StructuredLogger.Initialize(_bepInExDir);
         
             // 传递配置
@@ -264,6 +306,15 @@ namespace WhySoLaggy
             // 创建 Harmony 实例
             _harmony = new Harmony(PluginGuid);
             PatchProfiler.OwnHarmonyId = PluginGuid;
+            try
+            {
+                ModConfigLocalization.PatchDisplayNames(_harmony);
+            }
+            catch (Exception ex)
+            {
+                Log.LogWarning("[WHY_LAG] ModConfig localization patch skipped: " + ex.Message);
+            }
+            ModConfigLocalization.SubscribeLanguageChanged(OnGameLanguageChanged);
         
             Log.LogInfo("[WHY_LAG] Config bound, loggers initialized");
         }
@@ -291,6 +342,7 @@ namespace WhySoLaggy
 
         IEnumerator Start()
         {
+            ScheduleModConfigRefresh();
             Log.LogInfo("[WHY_LAG] Waiting 5s for all plugins to finish loading...");
             LagLogger.Info("[WHY_LAG] Waiting 5s for all plugins to finish loading...");
 
@@ -312,6 +364,10 @@ namespace WhySoLaggy
                 NetworkAbuseDetector.ObjectSpikeThreshold = ObjectSpikeThreshold.Value;
                 NetworkAbuseDetector.CheckIntervalSeconds = AbuseCheckInterval.Value;
                 NetworkAbuseDetector.ReportIntervalSeconds = AbuseReportInterval.Value;
+                NetworkAbuseDetector.ActorMethodRateThreshold = ActorMethodRateThreshold.Value;
+                NetworkAbuseDetector.OwnershipGrabRateThreshold = OwnershipGrabRateThreshold.Value;
+                NetworkAbuseDetector.OwnershipRequestRateThreshold = OwnershipRequestRateThreshold.Value;
+                NetworkAbuseDetector.AlertCooldownSeconds = AlertCooldownSeconds.Value;
                 NetworkAbuseDetector.Initialize(_harmony);
             }
 
@@ -323,6 +379,8 @@ namespace WhySoLaggy
                 RpcMonitor.WatchedRecordPerMethodCapacity = RpcMonitorWatchPerMethodCapacity.Value;
                 RpcMonitor.WatchedShowPerMethod = RpcMonitorWatchShowPerMethod.Value;
                 RpcMonitor.PumpBatchSize = PumpBatchSize.Value;
+                RpcMonitor.QueueCapacity = QueueCapacity.Value;
+                RpcMonitor.WindowSeconds = AbuseCheckInterval.Value;
                 RpcMonitor.AddExtraWatchMethods(ExtraWatchMethods.Value);
                 RpcMonitor.Initialize(_harmony);
             }
@@ -359,6 +417,7 @@ namespace WhySoLaggy
 
         void Update()
         {
+            StructuredLogger.Tick();
             // FPS 追踪始终运行
             FpsTracker.Tick();
         
@@ -368,7 +427,7 @@ namespace WhySoLaggy
         
             // RPC 队列主线程消费（即便 _profilingActive 未置位也需 Pump，避免积压）
             if (RpcMonitor.Enabled)
-                RpcMonitor.PumpQueue();
+                RpcMonitor.Tick();
         
             if (!_profilingActive) return;
         
@@ -400,10 +459,107 @@ namespace WhySoLaggy
         
         void OnDestroy()
         {
+            StopAllCoroutines();
+            ModConfigLocalization.Shutdown();
             PhotonNetwork.RemoveCallbackTarget(this);
+            _profilingActive = false;
+            NetworkAbuseDetector.Shutdown();
+            RpcMonitor.Shutdown();
+            PluginProfiler.Shutdown();
+            PatchProfiler.Shutdown();
+            MethodTracer.Shutdown();
+            FieldProbe.Shutdown();
+            FpsTracker.Reset();
+            PerformanceDashboard.Reset();
+            AbuseNotificationUI.Reset();
+            try { _harmony?.UnpatchSelf(); }
+            catch (Exception ex) { Log?.LogWarning($"[WHY_LAG] Harmony unpatch failed: {ex.Message}"); }
+            _harmony = null;
+            _reportFrameCount = 0;
+            _reportTimer = 0f;
+            StructuredLogger.Flush();
             LagLogger.Shutdown();
             AbuseLogger.Shutdown();
             StructuredLogger.Shutdown();
+        }
+
+        private void OnGameLanguageChanged()
+        {
+            ScheduleModConfigRefresh();
+            ModConfigLocalization.RefreshVisibleUi();
+        }
+
+        private void ScheduleModConfigRefresh()
+        {
+            if (_modConfigRefreshScheduled)
+            {
+                return;
+            }
+
+            _modConfigRefreshScheduled = true;
+            StartCoroutine(DeferredModConfigRefresh());
+        }
+
+        private IEnumerator DeferredModConfigRefresh()
+        {
+            try
+            {
+                yield return null;
+                ModConfigLocalization.ApplyLocalizedDescriptions(GetConfigEntries());
+                ModConfigLocalization.RefreshVisibleUi();
+            }
+            finally
+            {
+                _modConfigRefreshScheduled = false;
+            }
+        }
+
+        private IEnumerable<ConfigEntryBase> GetConfigEntries()
+        {
+            return new ConfigEntryBase[]
+            {
+                SpikeThresholdMs,
+                ReportIntervalSeconds,
+                EnablePluginProfiling,
+                EnablePatchProfiling,
+                TopMethodCount,
+                EnableAbuseDetection,
+                AbuseCheckInterval,
+                AbuseReportInterval,
+                InstantiateRateThreshold,
+                DestroyRateThreshold,
+                RpcRateThreshold,
+                ObjectSpikeThreshold,
+                ActorMethodRateThreshold,
+                OwnershipGrabRateThreshold,
+                OwnershipRequestRateThreshold,
+                AlertCooldownSeconds,
+                EnableRpcMonitor,
+                RpcMonitorTopCount,
+                RpcMonitorWatchPerMethodCapacity,
+                RpcMonitorWatchShowPerMethod,
+                ExtraWatchMethods,
+                PumpBatchSize,
+                QueueCapacity,
+                MinReportMs,
+                IgnorePluginGuids,
+                IgnorePatchMethods,
+                VerbosityCfg,
+                MaxLogFileSizeMB,
+                MaxRotatedFiles,
+                MaxRotatedStorageMB,
+                EnableMemoryMonitor,
+                ShowDashboard,
+                TraceMethodNames,
+                TraceMaxDepth,
+                TraceRateLimit,
+                EnableFieldProbe,
+                FieldProbeRulesFile,
+                FieldProbeDefaultRate,
+                FieldProbeDefaultMaxLen,
+                FieldProbeDefaultStack,
+                FieldProbeDefaultStackDepth,
+            };
         }
 
         // ═══════════════════════════════════════════════

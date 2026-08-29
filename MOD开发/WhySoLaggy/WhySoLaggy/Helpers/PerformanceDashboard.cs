@@ -70,5 +70,12 @@ namespace WhySoLaggy
 
             GUI.DragWindow();
         }
+
+        public static void Reset()
+        {
+            _lastAlert = "";
+            _lastAlertTime = -1f;
+            _windowRect = new Rect(16f, 16f, 380f, 220f);
+        }
     }
 }

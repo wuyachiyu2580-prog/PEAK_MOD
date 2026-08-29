@@ -83,7 +83,18 @@ namespace WhereIsThing
         MovingSawBlade,
         SpikeRoller,
         SwingingAxe,
-        GloomBellTower
+        GloomBellTower,
+        SlipperyJellyfish,
+        Urch,
+        SporeCloud,
+        ExplodingMushroom,
+        Geyser,
+        TrapChest,
+        CheckpointFlagPlaced,
+        BounceShroomPlaced,
+        RopePlaced,
+        PitonPlaced,
+        MagicBeanVine
     }
 
     internal sealed class ThingTargetDefinition
@@ -285,7 +296,18 @@ namespace WhereIsThing
             ThingSceneTargetType.MovingSawBlade,
             ThingSceneTargetType.SpikeRoller,
             ThingSceneTargetType.SwingingAxe,
-            ThingSceneTargetType.GloomBellTower
+            ThingSceneTargetType.GloomBellTower,
+            ThingSceneTargetType.SlipperyJellyfish,
+            ThingSceneTargetType.Urch,
+            ThingSceneTargetType.SporeCloud,
+            ThingSceneTargetType.ExplodingMushroom,
+            ThingSceneTargetType.Geyser,
+            ThingSceneTargetType.TrapChest,
+            ThingSceneTargetType.CheckpointFlagPlaced,
+            ThingSceneTargetType.BounceShroomPlaced,
+            ThingSceneTargetType.RopePlaced,
+            ThingSceneTargetType.PitonPlaced,
+            ThingSceneTargetType.MagicBeanVine
         };
 
         private static readonly string[] SpecialWords = { "scoutmaster's soul", "scoutmastersoul" };
@@ -332,7 +354,7 @@ namespace WhereIsThing
                 string sceneMergeKey = NormalizeMergeKey(GetSceneTargetDisplayName(sceneTargetType, ThingNameLanguage.English));
                 ThingTargetDefinition matchingItem = itemDefinitions.FirstOrDefault(definition =>
                     string.Equals(GetMergeKey(definition.Prefab), sceneMergeKey, StringComparison.OrdinalIgnoreCase));
-                if (matchingItem != null)
+                if (matchingItem != null && !IsIndependentSceneTarget(sceneTargetType))
                 {
                     result.Remove(matchingItem);
                     result.Add(ThingTargetDefinition.CreateSceneTarget(sceneTargetType, matchingItem.Prefabs));
@@ -347,6 +369,27 @@ namespace WhereIsThing
                 .OrderBy(item => GetCategoryOrder(item.Category))
                 .ThenBy(item => item.GetDisplayName(ThingNameLanguage.Game), StringComparer.OrdinalIgnoreCase)
                 .ToList();
+        }
+
+        private static bool IsIndependentSceneTarget(ThingSceneTargetType sceneTargetType)
+        {
+            switch (sceneTargetType)
+            {
+                case ThingSceneTargetType.SlipperyJellyfish:
+                case ThingSceneTargetType.Urch:
+                case ThingSceneTargetType.SporeCloud:
+                case ThingSceneTargetType.ExplodingMushroom:
+                case ThingSceneTargetType.Geyser:
+                case ThingSceneTargetType.TrapChest:
+                case ThingSceneTargetType.CheckpointFlagPlaced:
+                case ThingSceneTargetType.BounceShroomPlaced:
+                case ThingSceneTargetType.RopePlaced:
+                case ThingSceneTargetType.PitonPlaced:
+                case ThingSceneTargetType.MagicBeanVine:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         public static string GetDisplayName(Item item, ThingNameLanguage language)
@@ -445,6 +488,17 @@ namespace WhereIsThing
                     case ThingSceneTargetType.MovingSawBlade: return "移动锯刃";
                     case ThingSceneTargetType.SpikeRoller: return "滚刺机关";
                     case ThingSceneTargetType.SwingingAxe: return "摆斧机关";
+                    case ThingSceneTargetType.SlipperyJellyfish: return "滑溜水母";
+                    case ThingSceneTargetType.Urch: return "海胆";
+                    case ThingSceneTargetType.SporeCloud: return "孢子云";
+                    case ThingSceneTargetType.ExplodingMushroom: return "爆炸/孢子蘑菇";
+                    case ThingSceneTargetType.Geyser: return "间歇泉";
+                    case ThingSceneTargetType.TrapChest: return "陷阱箱";
+                    case ThingSceneTargetType.CheckpointFlagPlaced: return "检查点旗";
+                    case ThingSceneTargetType.BounceShroomPlaced: return "踏板菇";
+                    case ThingSceneTargetType.RopePlaced: return "绳索";
+                    case ThingSceneTargetType.PitonPlaced: return "岩钉";
+                    case ThingSceneTargetType.MagicBeanVine: return "魔豆藤";
                     default: return "雾沼钟塔";
                 }
             }
@@ -468,6 +522,17 @@ namespace WhereIsThing
                 case ThingSceneTargetType.MovingSawBlade: return "Moving Sawblade";
                 case ThingSceneTargetType.SpikeRoller: return "Spike Roller";
                 case ThingSceneTargetType.SwingingAxe: return "Swinging Axe";
+                case ThingSceneTargetType.SlipperyJellyfish: return "Slippery Jellyfish";
+                case ThingSceneTargetType.Urch: return "Urchin";
+                case ThingSceneTargetType.SporeCloud: return "Spore Cloud";
+                case ThingSceneTargetType.ExplodingMushroom: return "Exploding / Spore Mushroom";
+                case ThingSceneTargetType.Geyser: return "Geyser";
+                case ThingSceneTargetType.TrapChest: return "Trap Chest";
+                case ThingSceneTargetType.CheckpointFlagPlaced: return "Checkpoint Flag";
+                case ThingSceneTargetType.BounceShroomPlaced: return "Bounce Shroom";
+                case ThingSceneTargetType.RopePlaced: return "Rope";
+                case ThingSceneTargetType.PitonPlaced: return "Piton";
+                case ThingSceneTargetType.MagicBeanVine: return "Magic Bean Vine";
                 default: return "Gloom Bell Tower";
             }
         }
@@ -662,6 +727,20 @@ namespace WhereIsThing
                 case ThingSceneTargetType.SpikeRoller:
                 case ThingSceneTargetType.SwingingAxe:
                     return "Mechanical Traps";
+                case ThingSceneTargetType.SlipperyJellyfish:
+                case ThingSceneTargetType.Urch:
+                case ThingSceneTargetType.SporeCloud:
+                case ThingSceneTargetType.ExplodingMushroom:
+                case ThingSceneTargetType.Geyser:
+                    return "Natural Hazards";
+                case ThingSceneTargetType.TrapChest:
+                    return "Mechanical Traps";
+                case ThingSceneTargetType.CheckpointFlagPlaced:
+                case ThingSceneTargetType.BounceShroomPlaced:
+                case ThingSceneTargetType.RopePlaced:
+                case ThingSceneTargetType.PitonPlaced:
+                case ThingSceneTargetType.MagicBeanVine:
+                    return "Player Placed";
                 case ThingSceneTargetType.GloomBellTower:
                     return "Landmarks";
                 default:
@@ -738,6 +817,7 @@ namespace WhereIsThing
                 case "Mechanical Traps": return "机关陷阱";
                 case "Hazards": return "危险";
                 case "Landmarks": return "地标";
+                case "Player Placed": return "玩家放置物";
                 default: return "其他";
             }
         }
@@ -784,13 +864,14 @@ namespace WhereIsThing
                 case "Mechanical Traps": return 9;
                 case "Hazards": return 10;
                 case "Landmarks": return 11;
-                case "Climbing Gear": return 12;
-                case "Mobility": return 13;
-                case "Lighting": return 14;
-                case "Navigation": return 15;
-                case "Weapons and Explosives": return 16;
-                case "Creatures": return 17;
-                case "Toys and Sports": return 18;
+                case "Player Placed": return 12;
+                case "Climbing Gear": return 13;
+                case "Mobility": return 14;
+                case "Lighting": return 15;
+                case "Navigation": return 16;
+                case "Weapons and Explosives": return 17;
+                case "Creatures": return 18;
+                case "Toys and Sports": return 19;
                 default: return 19;
             }
         }

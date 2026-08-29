@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Diagnostics;
+using System.Threading;
 using HarmonyLib;
 using Photon.Pun;
 using Photon.Realtime;
@@ -13,9 +14,9 @@ namespace WhySoLaggy
 {
     /// <summary>
     /// 高性能 RPC 监控器（1.0.3 重构）：
-    /// - 热路径：仅快速提取少量字段后 Enqueue，主线程 Tick 中统一消费（ConcurrentQueue 方案）。
+    /// - 热路径：仅快速提取少量字段后进入有界队列，主线程 Tick 中统一消费。
     /// - 每方法独立环形缓冲（方案 A，1.0.2 保留）：SyncAfflictionsRPC 等高频 RPC 不再淹没低频 RPC。
-    /// - 所有 Photon 回调均在主线程，改用 ConcurrentQueue 只是为了与后续可能的多线程变更隔离。
+    /// - 队列超限丢弃最旧项并按窗口汇总，避免诊断本身造成无界内存增长。
     /// - Payload 大小估算 + 结构化事件（1.0.3 新增）。
     /// </summary>
     internal static class RpcMonitor
@@ -29,10 +30,13 @@ namespace WhySoLaggy
         public static int WatchedShowPerMethod = 6;
         /// <summary>1.0.3：主线程每帧 PumpQueue 最多消费条数（防止尖峰）。</summary>
         public static int PumpBatchSize = 32;
+        /// <summary>待处理 RPC 的全局上限；超限时丢弃最旧项，保留最新诊断。</summary>
+        public static int QueueCapacity = 2048;
+        public static float WindowSeconds = 1f;
 
         /// <summary>
         /// 关注的高危 RPC 白名单（会记录完整调用明细：sender + target + args）。
-        /// 选型原则：低频 + 破坏性高。所有条目均已在 Assembly-CSharp 1.61.b 中核实 [PunRPC]。
+        /// 选型原则：低频 + 破坏性高。所有条目均已在 PEAK 2.3.a Assembly-CSharp 中核实 [PunRPC]。
         /// 绝不加：每帧/每秒同步类（Sync*Time/Lava/Fog/Tornado/Vine、Jump/Crouch/Climb 等）——会将 args 序列化压力放大 100×。
         /// </summary>
         public static readonly HashSet<string> WatchedMethods = new HashSet<string>(StringComparer.Ordinal)
@@ -42,15 +46,10 @@ namespace WhySoLaggy
             "RemoveFeedDataRPC",
             "GetFedItemRPC",
             "Consume",
-            "RPCA_ConsumeItem",
-            // ═══ 治疗/解毒统计 ═══
-            "IncrementFriendHealingRpc",
-            "IncrementPoisonHealedStat",
             // ═══ 状态/Affliction 同步 ═══
             "SyncStatusesRPC",
             "SyncAfflictionsRPC",
             "RPC_ApplyStatusesFromFloatArray",
-            "RPCA_AddStatusBingBing",
             "RPCA_Stick",
             "RPCA_Unstick",                 // 1.0.4：与 Stick 成对
             "RPC_StickToCharacterRemote",   // 1.0.4：StickyItemComponent 粘人
@@ -62,9 +61,7 @@ namespace WhySoLaggy
             "RPCA_PassOut",
             "RPCA_UnPassOut",               // 1.0.4：与 PassOut 成对
             "RPCA_Fall",
-            "RPCA_FallWithScreenShake",
             "RPCA_UnFall",                  // 1.0.4：与 Fall 成对
-            "RPCA_Revive",                  // 1.0.4：复活
             "RPCA_ReviveAtPosition",        // 1.0.4：在指定位置复活
             "WarpPlayerRPC",
             // ═══ 物理冲击 ═══
@@ -76,15 +73,18 @@ namespace WhySoLaggy
             "RPCA_Kick",
             "RPCA_StartCarry",
             "RPCA_Drop",                    // CharacterCarrying.RPCA_Drop（同名视窗 OK，同为“丢人”）
+            "RPCA_StartGrabbing",
+            "RPCA_GrabCharacter",
             // ═══ 物品交互 ═══
-            "LightLanternRPC",
             "PutInBackpackRPC",
-            "SetHeldItemID",
             "DropItemRpc",
             "DropItemFromSlotRPC",          // 1.0.4：CharacterItems 从指定槽丢
             "DestroyHeldItemRpc",           // 1.0.4：破坏性
             "EquipSlotRpc",                 // 1.0.4：装备槽切换
             "RequestPickup",
+            "OnPickupAccepted",
+            "SetItemInstanceDataRPC",
+            "SetKinematicRPC",
             "RPC_SetThrownData",
             "RPCAddItemToBackpack",         // 1.0.4：Backpack.RPCAddItemToBackpack
             "RPCAddItemToCharacterBackpack",// 1.0.4：CharacterBackpackHandler
@@ -97,6 +97,7 @@ namespace WhySoLaggy
             "CreatePrefabRPC",
             "InstantiateAndGrabRPC",
             "RPC_SpawnResourceAtPosition",
+            "RPC_SpawnItemInHandMaster",
             // ═══ 场景/终局（1.0.4）——一次就是大新闻 ═══
             "RPCEndGame",
             "RPCEndGame_ForceWin",
@@ -117,6 +118,13 @@ namespace WhySoLaggy
             "Light_Rpc",                    // Campfire.Light_Rpc（也会命中同名其它，低频 OK）
             "Extinguish_Rpc",               // Campfire.Extinguish_Rpc
         };
+
+        private static readonly HashSet<string> AggregateOnlyMethods = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "StartClimbRpc",
+            "StopClimbingRpc",
+        };
+        private static readonly HashSet<string> _extraWatchMethods = new HashSet<string>(StringComparer.Ordinal);
 
         // ── Photon keyByteX 硬编码 ──
         private const byte K_VIEWID = 0;
@@ -161,7 +169,7 @@ namespace WhySoLaggy
         private static readonly Dictionary<string, MethodBuffer> _watchedByMethod =
             new Dictionary<string, MethodBuffer>(32, StringComparer.Ordinal);
 
-        // ── 1.0.3：ConcurrentQueue 入队项 ──
+        // ── 队列入队项 ──
         private struct RpcQueueItem
         {
             public string methodName;
@@ -171,9 +179,52 @@ namespace WhySoLaggy
             public object[] args;    // 引用；Photon 回调完毕即同帧消费，生命周期安全
             public int payloadBytes;
             public bool watched;
+            public long queueSequence;
+            public long enqueueTicks;
+            public long enqueueFrame;
+            public float enqueueRealtime;
         }
 
-        private static readonly ConcurrentQueue<RpcQueueItem> _queue = new ConcurrentQueue<RpcQueueItem>();
+        private static long _nextQueueSequence;
+        private static long _metricsProcessed;
+        private static long _metricsDropped;
+        private static int _metricsPeakDepth;
+        private static double _metricsPumpMs;
+
+        internal struct RpcRuntimeMetrics
+        {
+            public RpcRuntimeMetrics(int depth, int peak, long dropped, long processed, double pumpMs)
+            {
+                QueueDepth = depth; QueuePeak = peak; QueueDropped = dropped;
+                ProcessedCount = processed; PumpMs = pumpMs;
+            }
+            public int QueueDepth { get; }
+            public int QueuePeak { get; }
+            public long QueueDropped { get; }
+            public long ProcessedCount { get; }
+            public double PumpMs { get; }
+        }
+
+        internal static RpcRuntimeMetrics TakeRuntimeMetrics()
+        {
+            long processed = Interlocked.Exchange(ref _metricsProcessed, 0);
+            long dropped = Interlocked.Exchange(ref _metricsDropped, 0);
+            double pumpMs;
+            int peak;
+            lock (_metricsLock)
+            {
+                pumpMs = _metricsPumpMs;
+                _metricsPumpMs = 0d;
+                peak = _metricsPeakDepth;
+                _metricsPeakDepth = _queue.Count;
+            }
+            return new RpcRuntimeMetrics(_queue.Count, peak, dropped, processed, pumpMs);
+        }
+
+        private static readonly object _metricsLock = new object();
+
+        private static readonly BoundedConcurrentQueue<RpcQueueItem> _queue =
+            new BoundedConcurrentQueue<RpcQueueItem>(2048);
 
         // 复用缓冲（主线程，无 lock）
         private static readonly StringBuilder _argsSb = new StringBuilder(48);
@@ -188,6 +239,7 @@ namespace WhySoLaggy
 
         // ── 运行时 ──
         private static bool _inited;
+        private static float _windowTimer;
 
         // ═══════════════════════════════════════════════
         //  Initialization
@@ -196,11 +248,17 @@ namespace WhySoLaggy
         /// <summary>合并 ExtraWatchMethods（逗号分隔）到 WatchedMethods。Plugin 在 Initialize 前调用。</summary>
         public static void AddExtraWatchMethods(string csv)
         {
+            foreach (string previous in _extraWatchMethods) WatchedMethods.Remove(previous);
+            _extraWatchMethods.Clear();
             if (string.IsNullOrWhiteSpace(csv)) return;
             foreach (var part in csv.Split(','))
             {
                 var name = part.Trim();
-                if (!string.IsNullOrEmpty(name)) WatchedMethods.Add(name);
+                if (!string.IsNullOrEmpty(name) && !AggregateOnlyMethods.Contains(name))
+                {
+                    WatchedMethods.Add(name);
+                    _extraWatchMethods.Add(name);
+                }
             }
         }
 
@@ -210,11 +268,17 @@ namespace WhySoLaggy
             try
             {
                 PatchExecuteRpc(harmony);
+                _queue.Clear();
+                Interlocked.Exchange(ref _nextQueueSequence, 0);
+                Interlocked.Exchange(ref _metricsProcessed, 0);
+                Interlocked.Exchange(ref _metricsDropped, 0);
+                lock (_metricsLock) { _metricsPeakDepth = 0; _metricsPumpMs = 0d; }
+                _queue.Capacity = QueueCapacity;
                 _watchedByMethod.Clear();
                 foreach (var mn in WatchedMethods)
                     _watchedByMethod[mn] = new MethodBuffer(WatchedRecordPerMethodCapacity);
                 _inited = true;
-                AbuseLogger.Info($"[RPC_MON] RpcMonitor initialized (watched: {WatchedMethods.Count}, per-method buffer: {WatchedRecordPerMethodCapacity}, pump batch: {PumpBatchSize})");
+                AbuseLogger.Info($"[RPC_MON] RpcMonitor initialized (watched: {WatchedMethods.Count}, per-method buffer: {WatchedRecordPerMethodCapacity}, queue: {QueueCapacity}, pump batch: {PumpBatchSize})");
             }
             catch (Exception ex)
             {
@@ -275,14 +339,14 @@ namespace WhySoLaggy
                     methodName = rpcData[K_METHOD_NAME] as string;
                 if (string.IsNullOrEmpty(methodName)) return;
 
-                bool watched = _watchedByMethod.ContainsKey(methodName);
+                bool watched = !AggregateOnlyMethods.Contains(methodName) && _watchedByMethod.ContainsKey(methodName);
                 int targetVID = -1;
                 try { if (rpcData[K_VIEWID] is int iv) targetVID = iv; } catch { }
 
                 int bytes = EstimatePayloadSize(rpcData);
                 object[] args = watched ? rpcData[K_ARGS] as object[] : null;
 
-                _queue.Enqueue(new RpcQueueItem
+                var queued = new RpcQueueItem
                 {
                     methodName = methodName,
                     senderActor = sender?.ActorNumber ?? -1,
@@ -291,7 +355,17 @@ namespace WhySoLaggy
                     args = args,
                     payloadBytes = bytes,
                     watched = watched,
-                });
+                    queueSequence = Interlocked.Increment(ref _nextQueueSequence),
+                    enqueueTicks = DateTime.UtcNow.Ticks,
+                    enqueueFrame = Time.frameCount,
+                    enqueueRealtime = Time.realtimeSinceStartup,
+                };
+                QueueEnqueueResult enqueueResult = _queue.Enqueue(queued);
+                if (enqueueResult.Dropped) Interlocked.Increment(ref _metricsDropped);
+                lock (_metricsLock)
+                {
+                    if (enqueueResult.Depth > _metricsPeakDepth) _metricsPeakDepth = enqueueResult.Depth;
+                }
             }
             catch (Exception ex)
             {
@@ -303,7 +377,10 @@ namespace WhySoLaggy
         public static void PumpQueue()
         {
             if (!_inited) return;
+            if (_queue.Count == 0) return;
             int budget = PumpBatchSize;
+            long started = Stopwatch.GetTimestamp();
+            int processed = 0;
             while (budget-- > 0 && _queue.TryDequeue(out var item))
             {
                 try { ProcessDequeued(ref item); }
@@ -311,7 +388,21 @@ namespace WhySoLaggy
                 {
                     WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] RpcMonitor pump failed: {ex.Message}");
                 }
+                processed++;
             }
+            if (processed > 0) Interlocked.Add(ref _metricsProcessed, processed);
+            double elapsedMs = (Stopwatch.GetTimestamp() - started) * 1000d / Stopwatch.Frequency;
+            lock (_metricsLock) _metricsPumpMs += elapsedMs;
+        }
+
+        public static void Tick()
+        {
+            if (!_inited) return;
+            PumpQueue();
+            _windowTimer += Time.unscaledDeltaTime;
+            if (_windowTimer < WindowSeconds) return;
+            OnWindowEnd();
+            _windowTimer = 0f;
         }
 
         private static void ProcessDequeued(ref RpcQueueItem item)
@@ -363,9 +454,14 @@ namespace WhySoLaggy
                             { "SenderName", item.senderName ?? "" },
                             { "TargetViewID", item.targetVID },
                             { "TargetName", recForLog.targetName ?? "" },
+                            { "TargetPath", recForLog.targetPath ?? "" },
                             { "PayloadBytes", item.payloadBytes },
                             { "ArgsSummary", recForLog.argsSummary ?? "" },
                             { "SpecificDesc", recForLog.specificDesc ?? "" },
+                            { "QueueSequence", item.queueSequence },
+                            { "EnqueueTimestamp", StructuredLogger.StampFromUtcTicks(item.enqueueTicks) },
+                            { "EnqueueFrameNumber", item.enqueueFrame },
+                            { "QueueDelayMs", Math.Round((double)Math.Max(0f, (Time.realtimeSinceStartup - item.enqueueRealtime) * 1000f), 3) },
                         },
                     });
                 }
@@ -526,23 +622,12 @@ namespace WhySoLaggy
                     break;
 
                 case "Consume":
-                case "RPCA_ConsumeItem":
                     if (args.Length >= 1 && args[0] is int consumerId)
                     {
                         string eater = ResolvePhotonViewOwner(consumerId);
                         string itemObj = ResolvePhotonViewGameObject(targetVID);
                         return $"消耗者={eater}#{consumerId}, 物品={itemObj}#{targetVID}";
                     }
-                    break;
-
-                case "IncrementFriendHealingRpc":
-                    if (args.Length >= 1 && args[0] is int healAmt)
-                        return $"治疗量={healAmt}";
-                    break;
-
-                case "IncrementPoisonHealedStat":
-                    if (args.Length >= 1 && args[0] is int poisonAmt)
-                        return $"解毒量={poisonAmt}";
                     break;
 
                 case "DropItemRpc":
@@ -555,6 +640,34 @@ namespace WhySoLaggy
                         if (args[0] is int rpVid) charName = ResolvePhotonViewOwner(rpVid);
                         return $"拾取请求: 角色={charName}, 物品={ResolvePhotonViewGameObject(targetVID)}#{targetVID}";
                     }
+                    break;
+
+                case "OnPickupAccepted":
+                    if (args.Length >= 1 && args[0] is byte acceptedSlot)
+                        return $"pickup accepted: slot={acceptedSlot}, character={ResolvePhotonViewOwner(targetVID)}#{targetVID}";
+                    break;
+
+                case "SetItemInstanceDataRPC":
+                    if (args.Length >= 1)
+                        return $"item={ResolvePhotonViewGameObject(targetVID)}#{targetVID}, data={ValueFormatter.Format(args[0], 160)}";
+                    break;
+
+                case "SetKinematicRPC":
+                    if (args.Length >= 3 && args[0] is bool kinematic && args[1] is Vector3 kp && args[2] is Quaternion kr)
+                        return $"kinematic={kinematic}, pos=({kp.x:F1},{kp.y:F1},{kp.z:F1}), rot=({kr.x:F2},{kr.y:F2},{kr.z:F2},{kr.w:F2})";
+                    break;
+
+                case "RPCA_StartGrabbing":
+                    return $"character={ResolvePhotonViewOwner(targetVID)}#{targetVID} started grabbing";
+
+                case "RPCA_GrabCharacter":
+                    if (args.Length >= 1 && args[0] is PhotonView grabbedView)
+                        return $"grabber={ResolvePhotonViewGameObject(targetVID)}#{targetVID}, target={grabbedView.Owner?.NickName ?? grabbedView.name}#{grabbedView.ViewID}";
+                    break;
+
+                case "RPC_SpawnItemInHandMaster":
+                    if (args.Length >= 1 && args[0] is string objectName)
+                        return $"spawn item={objectName}, character={ResolvePhotonViewOwner(targetVID)}#{targetVID}";
                     break;
 
                 case "RPC_SetThrownData":
@@ -584,29 +697,11 @@ namespace WhySoLaggy
                         return $"sec={fs:F2}";
                     break;
 
-                case "RPCA_FallWithScreenShake":
-                    if (args.Length >= 2 && args[0] is float fss && args[1] is float shake)
-                        return $"sec={fss:F2}, shake={shake:F2}";
-                    break;
-
-                case "LightLanternRPC":
-                    if (args.Length >= 1 && args[0] is bool lit)
-                        return $"lit={lit}";
-                    break;
-
                 case "PutInBackpackRPC":
                     if (args.Length >= 1)
                     {
                         byte slot = args[0] is byte b ? b : (byte)0;
                         return $"slot={slot}";
-                    }
-                    break;
-
-                case "RPCA_AddStatusBingBing":
-                    if (args.Length >= 3 && args[0] is int t && args[1] is int sid && args[2] is int mult)
-                    {
-                        string tn = ResolvePhotonViewOwner(t);
-                        return $"target={tn}#{t}, status={StatusName(sid)}, mult={mult}";
                     }
                     break;
 
@@ -734,14 +829,35 @@ namespace WhySoLaggy
 
         public static void OnWindowEnd()
         {
+            QueueWindowStats stats = _queue.TakeWindowStats();
+            if (stats.Dropped > 0)
+            {
+                string message = $"RPC queue overflow: capacity={stats.Capacity}, depth={stats.Depth}, peak={stats.Peak}, dropped={stats.Dropped}";
+                AbuseLogger.Alert(message);
+                try
+                {
+                    StructuredLogger.WriteEvent(new StructuredEvent
+                    {
+                        Timestamp = StructuredLogger.NowStamp(),
+                        FrameNumber = Time.frameCount,
+                        Type = EventType.AbuseAlert,
+                        Fields = new Dictionary<string, object>
+                        {
+                            { "AlertType", "RpcQueueOverflow" },
+                            { "QueueCapacity", stats.Capacity },
+                            { "QueueDepth", stats.Depth },
+                            { "QueuePeak", stats.Peak },
+                            { "QueueDropped", stats.Dropped },
+                        },
+                    });
+                }
+                catch { }
+            }
             _windowByMethod.Clear();
         }
 
         public static void WritePeriodicReport()
         {
-            // 确保队列里的残留事件先消费干净
-            PumpQueue();
-
             bool hasWatched = false;
             foreach (var b in _watchedByMethod.Values)
                 if (b.Total > 0) { hasWatched = true; break; }
@@ -803,6 +919,25 @@ namespace WhySoLaggy
             _totalBytesByMethod.Clear();
             _maxBytesByMethod.Clear();
             foreach (var b in _watchedByMethod.Values) b.Reset();
+        }
+
+        public static void Shutdown()
+        {
+            Enabled = false;
+            _inited = false;
+            _windowTimer = 0f;
+            _queue.Clear();
+            _totalByMethod.Clear();
+            _totalByMethodActor.Clear();
+            _windowByMethod.Clear();
+            _totalBytesByMethod.Clear();
+            _maxBytesByMethod.Clear();
+            _watchedByMethod.Clear();
+            _totalSorted.Clear();
+            _watchedSorted.Clear();
+            _topActorsSorted.Clear();
+            foreach (string extra in _extraWatchMethods) WatchedMethods.Remove(extra);
+            _extraWatchMethods.Clear();
         }
 
         private static string BuildTopActorsString(string methodName)

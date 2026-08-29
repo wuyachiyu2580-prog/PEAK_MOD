@@ -100,5 +100,18 @@ namespace WhySoLaggy
             _textStyle.fontStyle = FontStyle.Bold;
             _textStyle.wordWrap = true;
         }
+
+        public static void Reset()
+        {
+            _notifications.Clear();
+            try
+            {
+                if (_boxStyle?.normal?.background != null)
+                    Object.Destroy(_boxStyle.normal.background);
+            }
+            catch { }
+            _boxStyle = null;
+            _textStyle = null;
+        }
     }
 }

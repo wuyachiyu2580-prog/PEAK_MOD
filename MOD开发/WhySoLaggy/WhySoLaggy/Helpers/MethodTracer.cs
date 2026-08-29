@@ -8,7 +8,7 @@ namespace WhySoLaggy
 {
     /// <summary>
     /// 可配置调用栈追踪器（1.0.3 新增）。
-    /// 通过 Harmony Prefix 挂在配置指定的方法上，每次触发时抓 Environment.StackTrace，
+    /// 通过 Harmony Prefix 挂在配置指定的方法上，每次触发时抓 Environment.StackTrace（开销较高），
     /// 过滤 UnityEngine.*/HarmonyLib.* 帧，限流后写入 StructuredLogger(EventType.MethodTrace)。
     /// 仅按需启用，关闭时零开销。
     /// </summary>
@@ -100,7 +100,7 @@ namespace WhySoLaggy
         {
             if (__originalMethod == null) return;
 
-            string key = (__originalMethod.DeclaringType?.Name ?? "?") + "." + __originalMethod.Name;
+            string key = MethodKey.Canonical(__originalMethod);
 
             if (!CheckRateLimit(key)) return;
 
@@ -193,6 +193,18 @@ namespace WhySoLaggy
         {
             if (string.IsNullOrEmpty(s) || s.Length <= max) return s;
             return s.Substring(0, max) + "...";
+        }
+
+        public static void Shutdown()
+        {
+            _inited = false;
+            _hooked = 0;
+            lock (_rateLock)
+            {
+                _counter.Clear();
+                _windowStartTicks.Clear();
+                _overflowWarnedInWindow.Clear();
+            }
         }
     }
 }

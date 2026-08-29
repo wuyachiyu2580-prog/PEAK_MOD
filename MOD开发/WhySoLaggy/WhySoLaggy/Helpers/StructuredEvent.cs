@@ -18,9 +18,9 @@ namespace WhySoLaggy
         MethodTrace,
         /// <summary>1.0.3 新增：PhotonNetwork.Instantiate 调用追踪，抓刷物品源头。</summary>
         InstantiateTrace,
-        /// <summary>1.0.3 新增：从 Photon OnEvent 解包得到的远端客户端 RPC 事件（主机端抓客户端真实 sender）。</summary>
+        /// <summary>兼容旧日志 schema；1.0.4 起 watched RPC 统一写为 RpcCall。</summary>
         RemoteRpcTrace,
-        /// <summary>1.0.3 新增：PhotonView Ownership 转让/请求事件（EventCode 210/211/215）。</summary>
+        /// <summary>PhotonView Ownership 请求/转让/批量更新事件（EventCode 209/210/212）。</summary>
         OwnershipChange,
     }
 

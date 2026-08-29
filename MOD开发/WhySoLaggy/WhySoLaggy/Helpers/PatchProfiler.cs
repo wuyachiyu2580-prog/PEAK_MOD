@@ -75,10 +75,9 @@ namespace WhySoLaggy
             {
                 if (method == null) continue;
 
-                string methodKey = GetMethodKey(method);
+                string methodKey = MethodKey.Canonical(method);
 
-                // 1.0.3：按配置黑名单跳过
-                if (IgnoreMethods.Count > 0 && IgnoreMethods.Contains(methodKey))
+                if (MethodKey.IsIgnored(method, IgnoreMethods))
                 {
                     ignoredByConfig++;
                     continue;
@@ -138,7 +137,7 @@ namespace WhySoLaggy
         {
             long elapsed = Stopwatch.GetTimestamp() - __state;
             // 1.0.3：__originalMethod 判空，防止极少数 Harmony 内部路径拿不到
-            string key = __originalMethod != null ? GetMethodKey(__originalMethod) : "(unknown)";
+            string key = __originalMethod != null ? MethodKey.Canonical(__originalMethod) : "(unknown)";
             Record(key, elapsed);
         }
 
@@ -153,28 +152,9 @@ namespace WhySoLaggy
                 _timings[methodKey] = data;
             }
 
-            // 1.0.3：低耗时方法节流（平均低于 MinReportMs 则每 10 次才实际记一次）
-            if (MinReportMs > 0f && data.CallCount > 20)
-            {
-                double tickFreq = Stopwatch.Frequency / 1000.0;
-                double avgMs = data.TotalTicks / (double)data.CallCount / tickFreq;
-                if (avgMs < MinReportMs)
-                {
-                    _skipCounter.TryGetValue(methodKey, out int sc);
-                    sc++;
-                    if (sc % 10 != 0)
-                    {
-                        _skipCounter[methodKey] = sc;
-                        return;
-                    }
-                    _skipCounter[methodKey] = sc;
-                }
-            }
+            data.ExactCallCount++;
 
-            data.TotalTicks += elapsedTicks;
-            data.CallCount++;
-
-            // 当前帧即时
+            // 帧级数据始终精确记录，采样只影响周期累计估算。
             if (!_frameTimers.TryGetValue(methodKey, out var fd))
             {
                 fd = new FrameMethodData();
@@ -182,6 +162,26 @@ namespace WhySoLaggy
             }
             fd.Ticks += elapsedTicks;
             fd.Calls++;
+
+            bool takeSample = true;
+            if (MinReportMs > 0f && data.SampledCallCount > 20)
+            {
+                double tickFreq = Stopwatch.Frequency / 1000.0;
+                double avgMs = data.SampledTicks / (double)data.SampledCallCount / tickFreq;
+                if (avgMs < MinReportMs)
+                {
+                    _skipCounter.TryGetValue(methodKey, out int sc);
+                    sc++;
+                    _skipCounter[methodKey] = sc;
+                    takeSample = sc % 10 == 0;
+                }
+            }
+
+            if (takeSample)
+            {
+                data.SampledTicks += elapsedTicks;
+                data.SampledCallCount++;
+            }
         }
 
         // ── 报告 ──
@@ -197,8 +197,8 @@ namespace WhySoLaggy
 
             _reportSorted.Clear();
             foreach (var kv in _timings)
-                if (kv.Value.CallCount > 0) _reportSorted.Add(kv);
-            _reportSorted.Sort((a, b) => b.Value.TotalTicks.CompareTo(a.Value.TotalTicks));
+                if (kv.Value.ExactCallCount > 0) _reportSorted.Add(kv);
+            _reportSorted.Sort((a, b) => EstimateTotalTicks(b.Value).CompareTo(EstimateTotalTicks(a.Value)));
 
             _reportSb.Clear();
             _reportSb.AppendLine("[WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --");
@@ -207,13 +207,13 @@ namespace WhySoLaggy
             foreach (var kv in _reportSorted)
             {
                 if (shown >= TopMethodCount) break;
-                double totalMs = kv.Value.TotalTicks / tickFreq;
+                double totalMs = EstimateTotalTicks(kv.Value) / tickFreq;
                 double avgMs = totalFrames > 0 ? totalMs / totalFrames : totalMs;
-                int avgCalls = totalFrames > 0 ? kv.Value.CallCount / totalFrames : kv.Value.CallCount;
+                double avgCalls = totalFrames > 0 ? kv.Value.ExactCallCount / (double)totalFrames : kv.Value.ExactCallCount;
                 string owners = _ownerMap.TryGetValue(kv.Key, out var o) ? o : "?";
 
                 string warn = avgMs > 2.0 ? " !!!" : avgMs > 0.5 ? " !" : "";
-                _reportSb.AppendLine($"[WHY_LAG]   {kv.Key}: {avgMs:F2}ms x{avgCalls} [{owners}]{warn}");
+                _reportSb.AppendLine($"[WHY_LAG]   {kv.Key}: {avgMs:F2}ms x{avgCalls:F1} [{owners}]{warn}");
 
                 // 1.0.3：结构化事件
                 try
@@ -228,7 +228,7 @@ namespace WhySoLaggy
                             { "Name", kv.Key },
                             { "AvgMs", Math.Round(avgMs, 3) },
                             { "TotalMs", Math.Round(totalMs, 3) },
-                            { "CallCount", kv.Value.CallCount },
+                            { "CallCount", kv.Value.ExactCallCount },
                             { "Owner", owners },
                         },
                     });
@@ -246,8 +246,9 @@ namespace WhySoLaggy
             // 重置
             foreach (var data in _timings.Values)
             {
-                data.TotalTicks = 0;
-                data.CallCount = 0;
+                data.SampledTicks = 0;
+                data.SampledCallCount = 0;
+                data.ExactCallCount = 0;
             }
             _skipCounter.Clear();
         }
@@ -300,17 +301,35 @@ namespace WhySoLaggy
 
         // ── 辅助 ──
 
-        private static string GetMethodKey(MethodBase method)
+        internal static double EstimateTotalTicks(long sampledTicks, int sampledCalls, int exactCalls)
         {
-            if (method == null) return "(null)";
-            string typeName = method.DeclaringType?.Name ?? "?";
-            return $"{typeName}.{method.Name}";
+            if (sampledCalls <= 0 || exactCalls <= 0) return 0d;
+            return sampledTicks / (double)sampledCalls * exactCalls;
+        }
+
+        private static double EstimateTotalTicks(MethodTimingData data)
+        {
+            return EstimateTotalTicks(data.SampledTicks, data.SampledCallCount, data.ExactCallCount);
+        }
+
+        public static void Shutdown()
+        {
+            _initialized = false;
+            _patchedCount = 0;
+            _timings.Clear();
+            _ownerMap.Clear();
+            _frameTimers.Clear();
+            _skipCounter.Clear();
+            _reportSorted.Clear();
+            _spikeSorted.Clear();
+            IgnoreMethods.Clear();
         }
 
         private class MethodTimingData
         {
-            public long TotalTicks;
-            public int CallCount;
+            public long SampledTicks;
+            public int SampledCallCount;
+            public int ExactCallCount;
         }
 
         private class FrameMethodData

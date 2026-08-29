@@ -124,9 +124,10 @@
 
 ## WhySoLaggy
 
-- [ ] 从 `WhySoLaggyPlugin.cs` 反查默认日志级别和各监控项默认开关，写入 `RECENT.md` / `DECISIONS.md`。
 - [ ] 整理与其他 MOD 联合诊断的操作步骤，尤其是 DreamyAscent 生成卡顿、RPC、PhotonView 和 Harmony 耗时归因。
-- [ ] 明确哪些诊断项可能带来额外开销，避免测试时误把诊断开销当成业务 MOD 问题。
+- [ ] 用 PEAK 2.3.a 双客户端实机验证 1.0.4：远端 sender/new owner 归因、Ownership Request/Transfer/Update 分类、单 watched RPC 单 `RpcCall`、队列有界/溢出汇总。
+- [ ] 验证同一进程卸载重载：无重复 Harmony patch、日志可重新初始化、所有监控计数从零开始。
+- [ ] 完成联机实机验收后再建立 `发行\1.0.4`；当前禁止提前发布或打包。
 
 ## TerrainCustomiserCN
 

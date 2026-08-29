@@ -1,5 +1,14 @@
 ﻿# Memory Changelog
 
+## 2026-08-29
+
+- [修改] `mods/WhySoLaggy/FILES.md` / `RECENT.md` / `temp/2026-08-28.md`：构建输出改为 r2modman `2.0.a` profile，并记录 1.0.4 DLL 版本、大小和哈希。
+- [修改] `mods/WhySoLaggy/README.md` / `RECENT.md` / `DECISIONS.md` / `FILES.md`：同步 1.0.4 的 PEAK 2.3.a 全量修复、版本链、网络归因、日志/Profiler/生命周期决策、测试结果和建议开关。
+- [新增] `mods/WhySoLaggy/temp/2026-08-28.md`：记录 1.0.4 当前停点、禁止回退项和双客户端实机验收入口。
+- [修改] `TODO.md`：移除已完成的默认开关调查，新增 1.0.4 双客户端归因、队列、单记录和卸载重载验收待办，并锁定验收前不发布。
+- [索引] `README.md` / `MEMORY_INDEX.md` / `mods/README.md`：WhySoLaggy 更新为 1.0.4 开发维护、PEAK 2.3.a 基线和待双客户端验收状态。
+- [规则] 当前会话未提供专用 `update_memory` 工具；已完成所有可用的本地 MD、索引、TODO、临时记录和变更日志同步。
+
 ## 2026-08-20
 
 - [WhereIsThing] 完成 `发行/0.1.1` 非 ZIP 发行目录，包含 DLL、README、CHANGELOG、manifest 和 icon；发行 DLL 与 `2.0.a` profile 产物版本/hash 一致。

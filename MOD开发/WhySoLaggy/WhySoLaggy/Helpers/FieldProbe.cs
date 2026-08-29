@@ -76,6 +76,7 @@ namespace WhySoLaggy
         private static readonly HashSet<int> _overflowWarned = new HashSet<int>();
         private static readonly long _ticksPerSec = TimeSpan.TicksPerSecond;
         private static int _hookedRules = 0;
+        private static int _hookedMethods = 0;
         private static bool _inited;
 
         public static void Initialize(Harmony harmony)
@@ -213,6 +214,9 @@ namespace WhySoLaggy
             var hFinalizer = new HarmonyMethod(typeof(FieldProbe), nameof(OnFinalizer))
             { priority = Priority.First };
 
+            // 先收集每个目标方法的完整规则组，再为每个方法只注册一次 Harmony 回调。
+            // 回调内部会按规则类型 Dispatch，避免多个同类规则重复执行整个规则组。
+            var hookGroups = new Dictionary<MethodBase, List<Rule>>();
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 Type[] types;
@@ -237,35 +241,13 @@ namespace WhySoLaggy
                             if (mi == null || mi.Name != rule.TargetMethodName) continue;
                             // 泛型 / abstract 无法 Patch，跳过
                             if (mi.IsAbstract || mi.ContainsGenericParameters) continue;
-                            try
+                            if (!hookGroups.TryGetValue(mi, out var list))
                             {
-                                // Postfix/Finalizer 需要读参数时，必须有一个 Prefix 写 __state。
-                                // 优先用 OnPrefix（它顺便 Dispatch Prefix 规则）；若没有 Prefix 规则，退化为纯 capture。
-                                HarmonyMethod chosenPrefix = null;
-                                if (rule.NeedsPrefix) chosenPrefix = hPrefix;
-                                else if (rule.NeedsPostfix || rule.NeedsFinalizer) chosenPrefix = hArgsCapture;
-
-                                harmony.Patch(mi,
-                                    prefix: chosenPrefix,
-                                    postfix: rule.NeedsPostfix ? hPostfix : null,
-                                    finalizer: rule.NeedsFinalizer ? hFinalizer : null);
-                                if (!_methodToRules.TryGetValue(mi, out var list))
-                                {
-                                    list = new List<Rule>();
-                                    _methodToRules[mi] = list;
-                                }
-                                list.Add(rule);
-                                _hookedRules++;
-                                matchedInType++;
-                                string sig = FormatSig(mi);
-                                AbuseLogger.Write($"[FIELD_PROBE] Hooked {rule.TargetKey}{sig} " +
-                                                  $"(mode={(rule.NeedsPostfix ? "Postfix" : rule.NeedsFinalizer ? "Finalizer" : "Prefix")}, " +
-                                                  $"fields={rule.Compiled.Length}, rate={rule.RateLimit}/s, stack={rule.IncludeStack})");
+                                list = new List<Rule>();
+                                hookGroups[mi] = list;
                             }
-                            catch (Exception ex)
-                            {
-                                WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] FieldProbe Patch failed on {rule.TargetKey}{FormatSig(mi)}: {ex.Message}");
-                            }
+                            list.Add(rule);
+                            matchedInType++;
                         }
                         if (matchedInType == 0)
                         {
@@ -276,7 +258,53 @@ namespace WhySoLaggy
                 }
             }
 
-            AbuseLogger.Write($"[FIELD_PROBE] Initialized (rules={parsed.Count}, hooks={_hookedRules}, file={Path.GetFileName(RulesFilePath)})");
+            foreach (var pair in hookGroups)
+            {
+                MethodBase method = pair.Key;
+                List<Rule> rules = pair.Value;
+                bool needsPrefix = false;
+                bool needsPostfix = false;
+                bool needsFinalizer = false;
+                for (int i = 0; i < rules.Count; i++)
+                {
+                    needsPrefix |= rules[i].NeedsPrefix;
+                    needsPostfix |= rules[i].NeedsPostfix;
+                    needsFinalizer |= rules[i].NeedsFinalizer;
+                }
+
+                // Postfix/Finalizer 需要读参数时，必须有一个 Prefix 写 __state。
+                // 如果同一方法有 Prefix 规则，OnPrefix 同时负责参数捕获和 Prefix Dispatch；
+                // 否则只挂载纯 capture 回调。
+                HarmonyMethod chosenPrefix = null;
+                if (needsPrefix) chosenPrefix = hPrefix;
+                else if (needsPostfix || needsFinalizer) chosenPrefix = hArgsCapture;
+
+                try
+                {
+                    harmony.Patch(method,
+                        prefix: chosenPrefix,
+                        postfix: needsPostfix ? hPostfix : null,
+                        finalizer: needsFinalizer ? hFinalizer : null);
+                    _methodToRules[method] = rules;
+                    _hookedMethods++;
+                    _hookedRules += rules.Count;
+
+                    string sig = FormatSig(method);
+                    for (int i = 0; i < rules.Count; i++)
+                    {
+                        var rule = rules[i];
+                        AbuseLogger.Write($"[FIELD_PROBE] Hooked {rule.TargetKey}{sig} " +
+                                          $"(mode={(rule.NeedsPostfix ? "Postfix" : rule.NeedsFinalizer ? "Finalizer" : "Prefix")}, " +
+                                          $"fields={rule.Compiled.Length}, rate={rule.RateLimit}/s, stack={rule.IncludeStack})");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] FieldProbe Patch failed on {method.DeclaringType?.FullName}.{method.Name}{FormatSig(method)}: {ex.Message}");
+                }
+            }
+
+            AbuseLogger.Write($"[FIELD_PROBE] Initialized (rules={parsed.Count}, hookedRules={_hookedRules}, hookedMethods={_hookedMethods}, file={Path.GetFileName(RulesFilePath)})");
         }
 
         // ── Harmony 回调 ──
@@ -452,6 +480,21 @@ namespace WhySoLaggy
         {
             if (string.IsNullOrEmpty(s) || s.Length <= max) return s;
             return s.Substring(0, max) + "...";
+        }
+
+        public static void Shutdown()
+        {
+            _inited = false;
+            _hookedRules = 0;
+            _hookedMethods = 0;
+            _methodToRules.Clear();
+            lock (_rateLock)
+            {
+                _counter.Clear();
+                _windowStart.Clear();
+                _overflowWarned.Clear();
+            }
+            ExpressionEvaluator.ClearCaches();
         }
     }
 }

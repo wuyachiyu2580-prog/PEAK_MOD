@@ -280,6 +280,18 @@ namespace WhySoLaggy
             _frameTimers.Clear();
         }
 
+        public static void Shutdown()
+        {
+            _initialized = false;
+            _patchedCount = 0;
+            _timings.Clear();
+            _displayNames.Clear();
+            _frameTimers.Clear();
+            _reportSorted.Clear();
+            _spikeSorted.Clear();
+            IgnoreGuids.Clear();
+        }
+
         private class PluginTimingData
         {
             public long TotalTicks;

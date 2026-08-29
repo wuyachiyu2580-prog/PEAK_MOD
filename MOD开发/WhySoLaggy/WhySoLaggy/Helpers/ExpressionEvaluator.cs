@@ -157,7 +157,8 @@ namespace WhySoLaggy
             for (int i = 0; i < stepCount; i++)
             {
                 var step = ce.Steps[i];
-                if (cur == null || IsUnityNull(cur))
+                bool isStaticStep = i == 0 && ce.Root == RootKind.StaticType;
+                if (!isStaticStep && (cur == null || IsUnityNull(cur)))
                 {
                     return step.NullSafe ? "null" : ("null-deref:" + (step.IsIndex ? "[" + step.Index + "]" : step.Name));
                 }
@@ -181,7 +182,6 @@ namespace WhySoLaggy
 
                     // 静态或实例反射成员
                     Type targetType;
-                    bool isStaticStep = (i == 0 && ce.Root == RootKind.StaticType);
                     object readFrom;
                     if (isStaticStep)
                     {

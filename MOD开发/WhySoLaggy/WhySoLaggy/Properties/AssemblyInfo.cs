@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: InternalsVisibleTo("WhySoLaggy.Tests")]
 
 // 将 ComVisible 设置为 false 会使此程序集中的类型
 //对 COM 组件不可见。如果需要从 COM 访问此程序集中的类型
@@ -29,5 +30,5 @@ using System.Runtime.InteropServices;
 //      生成号
 //      修订号
 //
-[assembly: AssemblyVersion("1.0.3.0")]
-[assembly: AssemblyFileVersion("1.0.3.0")]
+[assembly: AssemblyVersion("1.0.4.0")]
+[assembly: AssemblyFileVersion("1.0.4.0")]

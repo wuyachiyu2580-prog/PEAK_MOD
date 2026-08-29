@@ -1,6 +1,6 @@
 ﻿# PEAK MOD Memory
 
-更新时间：2026-08-18
+更新时间：2026-08-29
 
 这是项目记忆的唯一入口。目标是让新的 AI 智能体在 1 到 3 分钟内知道：当前有哪些 MOD、近期做了什么、还有什么没做、哪些规则不能违反。
 
@@ -78,7 +78,7 @@
 - `Lantern_ShootZombies_Night`：灯笼、打僵尸、日夜和寒冷/回暖相关功能整合（0.2.1）。入口：`mods/Lantern_ShootZombies_Night/README.md`。
 - `PlayersInfo`：队友状态、物品栏和观战相关 HUD 信息（0.2.1）。项目直接编译输出到 PEAK 2.0.a profile。入口：`mods/PlayersInfo/README.md`。
 - `DreamyAscent`：地形定制中文化与功能修复（永久暂停/归档）。入口：`mods/DreamyAscent/README.md`。
-- `WhySoLaggy`：性能、RPC、Harmony 和异常行为观测（1.0.3）。入口：`mods/WhySoLaggy/README.md`。
+- `WhySoLaggy`：性能、RPC、Harmony 和异常行为观测（1.0.4 开发维护，PEAK 2.3.a；待双客户端验收）。入口：`mods/WhySoLaggy/README.md`。
 - `TerrainCustomiserCN`：TerrainCustomiser 中文 UI 版（0.1.2 已发布，对应原版 0.3.2）。入口：`mods/TerrainCustomiserCN/README.md`。
 - `WhereIsThing`：PEAK 2.1.a 多物品位置显示 MOD（0.1.0 已发布，后续按实机和玩家反馈收口）。入口：`mods/WhereIsThing/README.md`。
 

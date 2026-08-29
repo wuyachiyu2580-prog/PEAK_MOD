@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
@@ -23,7 +24,7 @@ namespace WhereIsThing
     {
         public const string PluginGuid = "com.wuyachiyu.WhereIsThing";
         public const string PluginName = "WhereIsThing";
-        public const string PluginVersion = "0.1.1";
+        public const string PluginVersion = "0.1.2";
         private const int PresetSchemaVersion = 4;
         private const int ShareProtocolVersion = 2;
         private const string ShareModePropertyKey = "WIT.ShareMode";
@@ -33,6 +34,8 @@ namespace WhereIsThing
         private const string SharePayloadPropertyKey = "WIT.Payload";
 
         private readonly Dictionary<string, ThingLabel> _labels = new Dictionary<string, ThingLabel>();
+        private static readonly FieldInfo RopeAttachedAnchorField = typeof(Rope).GetField("attachedToAnchor",
+            BindingFlags.Instance | BindingFlags.NonPublic);
         private readonly List<ThingTargetDefinition> _catalog = new List<ThingTargetDefinition>();
         private readonly List<ThingPresetDefinition> _localPresets = new List<ThingPresetDefinition>();
         private readonly List<ThingPresetDefinition> _sessionPresets = new List<ThingPresetDefinition>();
@@ -843,6 +846,9 @@ namespace WhereIsThing
                 }
             }
 
+            RefreshFixedHazardLabels(seen);
+            RefreshPlacedObjectLabels(seen);
+
             RefreshActiveSceneTargets<Spider>(seen, ThingSceneTargetType.Spider);
             RefreshActiveSceneTargets<BeeSwarm>(seen, ThingSceneTargetType.BeeSwarm);
             RefreshActiveSceneTargets<Scoutmaster>(seen, ThingSceneTargetType.Scoutmaster);
@@ -855,6 +861,389 @@ namespace WhereIsThing
             RefreshActiveSceneTargets<Peak.MovingSawBlade>(seen, ThingSceneTargetType.MovingSawBlade);
             RefreshActiveSceneTargets<Peak.SpikeRoller>(seen, ThingSceneTargetType.SpikeRoller);
             RefreshActiveSceneTargets<SwingingAxe>(seen, ThingSceneTargetType.SwingingAxe);
+        }
+
+        private void RefreshFixedHazardLabels(HashSet<string> seen)
+        {
+            RefreshActiveSceneTargets<SlipperyJellyfish>(seen, ThingSceneTargetType.SlipperyJellyfish,
+                delegate(SlipperyJellyfish target)
+                {
+                    return HasRunSetting(target, RunSettings.SETTINGTYPE.Hazard_Jellyfish);
+                });
+
+            RefreshNamedRunSettingTargets(seen, ThingSceneTargetType.Urch,
+                RunSettings.SETTINGTYPE.Hazard_Urchins, "Urch");
+            RefreshActiveSceneTargets<WindAffectedStatusEmitter>(seen, ThingSceneTargetType.SporeCloud,
+                delegate(WindAffectedStatusEmitter target)
+                {
+                    return HasRunSetting(target, RunSettings.SETTINGTYPE.Hazard_SporeClouds);
+                });
+            RefreshNamedRunSettingTargets(seen, ThingSceneTargetType.ExplodingMushroom,
+                RunSettings.SETTINGTYPE.Hazard_ExplodingMushrooms,
+                "Forest_SporeFungus", "Jungle_SporeMushroom", "Jungle_SporeMushroomExplo");
+            RefreshGeyserLabels(seen);
+            RefreshTrapChestLabels(seen);
+        }
+
+        private void RefreshPlacedObjectLabels(HashSet<string> seen)
+        {
+            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.CheckpointFlagPlaced))
+            {
+                foreach (CheckpointFlag flag in FindObjectsByType<CheckpointFlag>(FindObjectsSortMode.None))
+                {
+                    PhotonView view = GetPlayerCreatedView(flag);
+                    if (flag == null || !flag.gameObject.activeInHierarchy || view == null)
+                    {
+                        continue;
+                    }
+
+                    CheckpointFlag captured = flag;
+                    AddPlacedSceneLabel(seen, ThingSceneTargetType.CheckpointFlagPlaced, captured, view,
+                        delegate
+                        {
+                            return GetPlacedLabelName(ThingSceneTargetType.CheckpointFlagPlaced, captured);
+                        },
+                        delegate
+                        {
+                            return IsPlayerPlacedTargetValid(captured, view) &&
+                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.CheckpointFlagPlaced);
+                        });
+                }
+            }
+
+            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.BounceShroomPlaced))
+            {
+                foreach (MushroomBounceBadgeTracker shroom in FindObjectsByType<MushroomBounceBadgeTracker>(FindObjectsSortMode.None))
+                {
+                    PhotonView view = GetPlayerCreatedView(shroom);
+                    if (shroom == null || !shroom.gameObject.activeInHierarchy ||
+                        !HasObjectNameInHierarchy(shroom, "BounceShroomSpawn") || view == null)
+                    {
+                        continue;
+                    }
+
+                    MushroomBounceBadgeTracker captured = shroom;
+                    AddPlacedSceneLabel(seen, ThingSceneTargetType.BounceShroomPlaced, captured, view,
+                        delegate
+                        {
+                            return GetPlacedLabelName(ThingSceneTargetType.BounceShroomPlaced, captured);
+                        },
+                        delegate
+                        {
+                            return IsPlayerPlacedTargetValid(captured, view) &&
+                                HasObjectNameInHierarchy(captured, "BounceShroomSpawn") &&
+                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.BounceShroomPlaced);
+                        });
+                }
+            }
+
+            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.RopePlaced))
+            {
+                foreach (RopeAnchorWithRope ropeAnchor in FindObjectsByType<RopeAnchorWithRope>(FindObjectsSortMode.None))
+                {
+                    PhotonView view = GetPlayerCreatedView(ropeAnchor);
+                    if (ropeAnchor == null || !ropeAnchor.gameObject.activeInHierarchy || view == null ||
+                        ropeAnchor.rope == null || !ropeAnchor.rope.gameObject.activeInHierarchy ||
+                        ropeAnchor.rope.attachmenState != Rope.ATTACHMENT.anchored ||
+                        ropeAnchor.anchor == null || ropeAnchor.anchor.anchorPoint == null)
+                    {
+                        continue;
+                    }
+
+                    RopeAnchorWithRope captured = ropeAnchor;
+                    AddPlacedSceneLabel(seen, ThingSceneTargetType.RopePlaced, captured, view,
+                        delegate
+                        {
+                            return GetPlacedLabelName(ThingSceneTargetType.RopePlaced, captured);
+                        },
+                        delegate
+                        {
+                            return IsPlayerPlacedTargetValid(captured, view) && IsRopePlacedValid(captured) &&
+                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.RopePlaced);
+                        },
+                        delegate { return captured.anchor.anchorPoint.position; });
+                }
+            }
+
+            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.PitonPlaced))
+            {
+                foreach (ShittyPiton piton in FindObjectsByType<ShittyPiton>(FindObjectsSortMode.None))
+                {
+                    PhotonView view = GetPlayerCreatedView(piton);
+                    ClimbHandle handle = piton == null ? null : piton.GetComponent<ClimbHandle>();
+                    if (piton == null || !piton.gameObject.activeInHierarchy || view == null ||
+                        handle == null || !IsPitonActive(handle))
+                    {
+                        continue;
+                    }
+
+                    ShittyPiton captured = piton;
+                    AddPlacedSceneLabel(seen, ThingSceneTargetType.PitonPlaced, captured, view,
+                        delegate
+                        {
+                            return GetPlacedLabelName(ThingSceneTargetType.PitonPlaced, captured);
+                        },
+                        delegate
+                        {
+                            return IsPlayerPlacedTargetValid(captured, view) &&
+                                IsPitonActive(captured.GetComponent<ClimbHandle>()) &&
+                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.PitonPlaced);
+                        });
+                }
+
+            }
+
+            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.RopePlaced))
+            {
+                foreach (Rope rope in FindObjectsByType<Rope>(FindObjectsSortMode.None))
+                {
+                    PhotonView ropeView = GetPlayerCreatedView(rope);
+                    RopeAnchor anchor = GetAttachedRopeAnchor(rope);
+                    if (rope == null || !rope.gameObject.activeInHierarchy || ropeView == null || anchor == null ||
+                        !anchor.gameObject.activeInHierarchy || anchor.GetComponent<RopeAnchorWithRope>() != null ||
+                        rope.attachmenState != Rope.ATTACHMENT.anchored)
+                    {
+                        continue;
+                    }
+
+                    Rope capturedRope = rope;
+                    RopeAnchor capturedAnchor = anchor;
+                    AddPlacedSceneLabel(seen, ThingSceneTargetType.RopePlaced, capturedAnchor, ropeView,
+                        delegate
+                        {
+                            return GetPlacedLabelName(ThingSceneTargetType.RopePlaced, ropeView);
+                        },
+                        delegate
+                        {
+                            return IsStandaloneRopeValid(capturedRope, capturedAnchor, ropeView) &&
+                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.RopePlaced);
+                        });
+                }
+            }
+
+            RefreshActiveSceneTargets<MagicBeanVine>(seen, ThingSceneTargetType.MagicBeanVine);
+        }
+
+        private void RefreshNamedRunSettingTargets(HashSet<string> seen, ThingSceneTargetType sceneTargetType,
+            RunSettings.SETTINGTYPE setting, params string[] objectNames)
+        {
+            if (!_selectedSceneTargetTypes.Contains(sceneTargetType))
+            {
+                return;
+            }
+
+            foreach (DisableBasedOnRunSettings target in FindObjectsByType<DisableBasedOnRunSettings>(FindObjectsSortMode.None))
+            {
+                if (target == null || !target.gameObject.activeInHierarchy || target.disableIfSettingDisabled != setting ||
+                    !HasObjectNameInHierarchy(target, objectNames))
+                {
+                    continue;
+                }
+
+                DisableBasedOnRunSettings captured = target;
+                AddSceneLabel(seen, sceneTargetType, captured,
+                    delegate { return ThingCatalog.GetSceneTargetDisplayName(sceneTargetType, _nameLanguage.Value); },
+                    delegate
+                    {
+                        return captured != null && captured.gameObject.activeInHierarchy &&
+                            captured.disableIfSettingDisabled == setting && HasObjectNameInHierarchy(captured, objectNames) &&
+                            _selectedSceneTargetTypes.Contains(sceneTargetType);
+                    });
+            }
+        }
+
+        private void RefreshGeyserLabels(HashSet<string> seen)
+        {
+            if (!_selectedSceneTargetTypes.Contains(ThingSceneTargetType.Geyser))
+            {
+                return;
+            }
+
+            foreach (DisableBasedOnRunSettings target in FindObjectsByType<DisableBasedOnRunSettings>(FindObjectsSortMode.None))
+            {
+                if (target == null || !target.gameObject.activeInHierarchy ||
+                    target.disableIfSettingDisabled != RunSettings.SETTINGTYPE.Hazard_Geysers ||
+                    !HasObjectNameInHierarchy(target, "Geyser") || HasObjectNameInHierarchy(target, "Eruption") ||
+                    !HasComponentInHierarchy<TriggerEvent>(target) || !HasComponentInHierarchy<TimeEvent>(target) ||
+                    !HasComponentInHierarchy<MultipleGroundPoints>(target))
+                {
+                    continue;
+                }
+
+                DisableBasedOnRunSettings captured = target;
+                AddSceneLabel(seen, ThingSceneTargetType.Geyser, captured,
+                    delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.Geyser, _nameLanguage.Value); },
+                    delegate
+                    {
+                        return captured != null && captured.gameObject.activeInHierarchy &&
+                            captured.disableIfSettingDisabled == RunSettings.SETTINGTYPE.Hazard_Geysers &&
+                            HasObjectNameInHierarchy(captured, "Geyser") && !HasObjectNameInHierarchy(captured, "Eruption") &&
+                            HasComponentInHierarchy<TriggerEvent>(captured) && HasComponentInHierarchy<TimeEvent>(captured) &&
+                            HasComponentInHierarchy<MultipleGroundPoints>(captured) &&
+                            _selectedSceneTargetTypes.Contains(ThingSceneTargetType.Geyser);
+                    });
+            }
+        }
+
+        private void RefreshTrapChestLabels(HashSet<string> seen)
+        {
+            if (!_selectedSceneTargetTypes.Contains(ThingSceneTargetType.TrapChest))
+            {
+                return;
+            }
+
+            foreach (DisableBasedOnRunSettings target in FindObjectsByType<DisableBasedOnRunSettings>(FindObjectsSortMode.None))
+            {
+                if (target == null || !target.gameObject.activeInHierarchy ||
+                    target.disableIfSettingDisabled != RunSettings.SETTINGTYPE.Hazard_TrapChest ||
+                    !HasObjectNameInHierarchy(target, "LuggageTrick") ||
+                    !HasComponentInHierarchy<Luggage>(target) || !HasComponentInHierarchy<Peak.TrickLuggage>(target) ||
+                    !HasComponentInHierarchy<SpineCheck>(target))
+                {
+                    continue;
+                }
+
+                DisableBasedOnRunSettings captured = target;
+                AddSceneLabel(seen, ThingSceneTargetType.TrapChest, captured,
+                    delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.TrapChest, _nameLanguage.Value); },
+                    delegate
+                    {
+                        return captured != null && captured.gameObject.activeInHierarchy &&
+                            captured.disableIfSettingDisabled == RunSettings.SETTINGTYPE.Hazard_TrapChest &&
+                            HasObjectNameInHierarchy(captured, "LuggageTrick") &&
+                            HasComponentInHierarchy<Luggage>(captured) && HasComponentInHierarchy<Peak.TrickLuggage>(captured) &&
+                            HasComponentInHierarchy<SpineCheck>(captured) &&
+                            _selectedSceneTargetTypes.Contains(ThingSceneTargetType.TrapChest);
+                    });
+            }
+        }
+
+        private void AddPlacedSceneLabel(HashSet<string> seen, ThingSceneTargetType sceneTargetType, Component target,
+            PhotonView networkView, Func<string> titleProvider, Func<bool> isValid, Func<Vector3> positionProvider = null)
+        {
+            if (target == null || target.gameObject == null || networkView == null || !IsWithinLabelDistance(GetTargetPosition(target, positionProvider)))
+            {
+                return;
+            }
+
+            string key = "scene-player:" + sceneTargetType + ":" + networkView.ViewID;
+            seen.Add(key);
+            AddLabel(key, target.transform, titleProvider, isValid, positionProvider);
+        }
+
+        private string GetPlacedLabelName(ThingSceneTargetType sceneTargetType, Component target)
+        {
+            string name = ThingCatalog.GetSceneTargetDisplayName(sceneTargetType, _nameLanguage.Value);
+            PhotonView view = GetPlayerCreatedView(target);
+            return AppendOwnerName(name, view);
+        }
+
+        private string GetPlacedLabelName(ThingSceneTargetType sceneTargetType, PhotonView view)
+        {
+            return AppendOwnerName(ThingCatalog.GetSceneTargetDisplayName(sceneTargetType, _nameLanguage.Value), view);
+        }
+
+        private static string AppendOwnerName(string name, PhotonView view)
+        {
+            string nickName = view == null || view.Owner == null ? null : view.Owner.NickName;
+            return string.IsNullOrWhiteSpace(nickName) ? name : name + "\n" + nickName;
+        }
+
+        private static PhotonView GetPlayerCreatedView(Component target)
+        {
+            PhotonView view = target == null ? null : target.GetComponentInParent<PhotonView>();
+            if (view == null || view.IsRoomView || view.CreatorActorNr <= 0)
+            {
+                return null;
+            }
+            return view;
+        }
+
+        private static bool IsPlayerPlacedTargetValid(Component target, PhotonView view)
+        {
+            return target != null && target.gameObject != null && target.gameObject.activeInHierarchy &&
+                view != null && GetPlayerCreatedView(target) == view;
+        }
+
+        private static bool IsRopePlacedValid(RopeAnchorWithRope ropeAnchor)
+        {
+            return ropeAnchor != null && ropeAnchor.gameObject.activeInHierarchy && ropeAnchor.rope != null &&
+                ropeAnchor.rope.gameObject.activeInHierarchy && ropeAnchor.rope.attachmenState == Rope.ATTACHMENT.anchored &&
+                ropeAnchor.anchor != null && ropeAnchor.anchor.anchorPoint != null;
+        }
+
+        private static bool IsStandaloneRopeValid(Rope rope, RopeAnchor anchor, PhotonView ropeView)
+        {
+            return rope != null && rope.gameObject.activeInHierarchy && ropeView != null &&
+                GetPlayerCreatedView(rope) == ropeView && anchor != null && anchor.gameObject.activeInHierarchy &&
+                anchor.GetComponent<RopeAnchorWithRope>() == null && rope.attachmenState == Rope.ATTACHMENT.anchored &&
+                GetAttachedRopeAnchor(rope) == anchor;
+        }
+
+        private static RopeAnchor GetAttachedRopeAnchor(Rope rope)
+        {
+            return rope == null || RopeAttachedAnchorField == null
+                ? null
+                : RopeAttachedAnchorField.GetValue(rope) as RopeAnchor;
+        }
+
+        private static bool IsPitonActive(ClimbHandle handle)
+        {
+            return handle != null && handle.gameObject.activeInHierarchy &&
+                handle.GetComponentsInChildren<Transform>(true).Any(child => child != handle.transform && child.gameObject.activeInHierarchy);
+        }
+
+        private static bool HasRunSetting(Component target, RunSettings.SETTINGTYPE setting)
+        {
+            DisableBasedOnRunSettings disable = target == null ? null : target.GetComponentInParent<DisableBasedOnRunSettings>();
+            return disable != null && disable.disableIfSettingDisabled == setting;
+        }
+
+        private static bool HasComponentInHierarchy<T>(Component target) where T : Component
+        {
+            return target != null && target.GetComponentInChildren<T>(true) != null;
+        }
+
+        private static bool HasObjectNameInHierarchy(Component target, params string[] objectNames)
+        {
+            if (target == null || objectNames == null)
+            {
+                return false;
+            }
+
+            for (Transform current = target.transform; current != null; current = current.parent)
+            {
+                string currentName = current.gameObject.name;
+                int cloneSuffix = currentName.IndexOf("(Clone)", System.StringComparison.OrdinalIgnoreCase);
+                if (cloneSuffix >= 0)
+                {
+                    currentName = currentName.Substring(0, cloneSuffix).Trim();
+                }
+                foreach (string objectName in objectNames)
+                {
+                    if (string.Equals(currentName, objectName, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private static Vector3 GetTargetPosition(Component target, Func<Vector3> positionProvider)
+        {
+            return positionProvider == null ? target.transform.position : positionProvider();
+        }
+
+        private bool IsWithinLabelDistance(Vector3 position)
+        {
+            if (_maxDistance == null || _maxDistance.Value <= 0f)
+            {
+                return true;
+            }
+
+            Camera camera = Camera.main;
+            return camera == null || Vector3.Distance(camera.transform.position, position) <= _maxDistance.Value;
         }
 
         private void RefreshMobLabels(HashSet<string> seen)
@@ -937,7 +1326,8 @@ namespace WhereIsThing
             return false;
         }
 
-        private void RefreshActiveSceneTargets<T>(HashSet<string> seen, ThingSceneTargetType sceneTargetType) where T : Component
+        private void RefreshActiveSceneTargets<T>(HashSet<string> seen, ThingSceneTargetType sceneTargetType,
+            Func<T, bool> additionalFilter = null) where T : Component
         {
             if (!_selectedSceneTargetTypes.Contains(sceneTargetType))
             {
@@ -946,7 +1336,8 @@ namespace WhereIsThing
 
             foreach (T target in FindObjectsByType<T>(FindObjectsSortMode.None))
             {
-                if (target == null || !target.gameObject.activeInHierarchy)
+                if (target == null || !target.gameObject.activeInHierarchy ||
+                    (additionalFilter != null && !additionalFilter(target)))
                 {
                     continue;
                 }
@@ -965,7 +1356,7 @@ namespace WhereIsThing
         private void AddSceneLabel(HashSet<string> seen, ThingSceneTargetType sceneTargetType, Component target,
             Func<string> titleProvider, Func<bool> isValid, Func<Vector3> positionProvider = null)
         {
-            if (target == null || target.gameObject == null)
+            if (target == null || target.gameObject == null || !IsWithinLabelDistance(GetTargetPosition(target, positionProvider)))
             {
                 return;
             }

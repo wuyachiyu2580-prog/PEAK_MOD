@@ -31,7 +31,7 @@
 - 当天临时文件命名为 `mods/<ModName>/temp/YYYY-MM-DD.md`。
 - 每形成 3 次明确的阶段性判断、排查结论或方案取舍，就追加一次摘要。
 - 上下文压缩、会话中断或换 AI 后，先读该 MOD 最新临时 MD，再读正式四件套。
-- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`WhySoLaggy/temp/2026-05-19.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`。
+- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`。
 
 ### ItemInfoCN（1.0.0 已发布）
 
@@ -72,12 +72,13 @@
 - `MOD开发/DreamyAscent/data/tools/build_map_data_artifacts.py`：从诊断样本生成模板快照、对象注册表输入和样本回归报告的离线工具。
 - `MOD开发/DreamyAscent/data/map-data/generated/`：离线生成产物目录，当前包含 `template-snapshots.json`、`object-registry-input.json`、`sample-regression-report.json`。
 
-### WhySoLaggy（1.0.3）
+### WhySoLaggy（1.0.4 开发维护，PEAK 2.3.a）
 
 - `mods/WhySoLaggy/README.md`：性能和网络诊断项目入口与 mermaid 能力矩阵。
-- `mods/WhySoLaggy/RECENT.md`：帧率/联机/Harmony/结构化日志四类诊断能力。
-- `mods/WhySoLaggy/DECISIONS.md`：只做诊断不改业务、FieldProbe 默认关闭、IMGUI 堆叠淡出。
-- `mods/WhySoLaggy/FILES.md`：源码、项目文件、版本和关键文件。
+- `mods/WhySoLaggy/RECENT.md`：1.0.4 全量修复、自动测试、构建结果和联机测试配置。
+- `mods/WhySoLaggy/DECISIONS.md`：远端入站阈值、Ownership 分类、有界队列、批量日志和卸载顺序等禁止回退项。
+- `mods/WhySoLaggy/FILES.md`：源码、测试项目、1.0.4 版本和关键 Helper。
+- `mods/WhySoLaggy/temp/2026-08-28.md`：本轮修复状态和双客户端实机验收入口。
 
 ### TerrainCustomiserCN（0.1.2 已发布，对应原版 0.3.2）
 

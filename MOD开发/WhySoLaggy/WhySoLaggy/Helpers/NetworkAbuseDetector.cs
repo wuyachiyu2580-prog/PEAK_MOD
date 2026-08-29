@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -28,29 +29,27 @@ namespace WhySoLaggy
         public static int ObjectSpikeThreshold = 30;       // 对象数量单次增量阈值
         public static float CheckIntervalSeconds = 1f;     // 检测周期
         public static float ReportIntervalSeconds = 30f;   // 汇总报告周期
+        public static float AlertCooldownSeconds = 10f;
 
         // ── Photon 事件码 ──
         private const byte EventInstantiate = 202;
         private const byte EventRpc = 200;
         private const byte EventDestroy = 204;
         private const byte EventDestroyPlayer = 207;
-        // 1.0.3：PhotonView Ownership 事件码（PUN2 定义在 PunEvent）
-        private const byte EventOwnershipRequest = 210;
-        private const byte EventOwnershipTransfer = 211;
-        private const byte EventOwnershipUpdate = 215;
-
         // ── 线程安全锁 ──
         private static readonly object _lock = new object();
-
-        // ── 速率计数器（本地 API 调用） ──
-        private static int _localInstantiateCount;
-        private static int _localDestroyCount;
-        private static int _localRpcCount;
 
         // ── 远端事件计数（通过 OnEvent 捕获） ──
         private static int _remoteInstantiateCount;
         private static int _remoteDestroyCount;
         private static int _remoteRpcCount;
+
+        private static int _totalLocalInstantiates;
+        private static int _totalLocalDestroys;
+        private static int _totalLocalRpcs;
+        private static int _totalRemoteInstantiates;
+        private static int _totalRemoteDestroys;
+        private static int _totalRemoteRpcs;
 
         // ── 按玩家统计（远端事件，键=ActorNumber） ──
         private static readonly Dictionary<int, int> _instantiateByActor = new Dictionary<int, int>();
@@ -70,8 +69,12 @@ namespace WhySoLaggy
         // ── 1.0.3 功能 D：Ownership 抢夺频率统计（键=ActorNumber） ──
         /// <summary>快窗：某 Actor 在检查窗口内获取了多少个 PhotonView 的所有权。</summary>
         private static readonly Dictionary<int, int> _ownershipGrabbedByActor = new Dictionary<int, int>();
+        private static readonly Dictionary<int, int> _ownershipRequestedByActor = new Dictionary<int, int>();
+        private static readonly HashSet<byte> _malformedOwnershipWarned = new HashSet<byte>();
+        private static readonly AlertCooldownTracker _alertCooldown = new AlertCooldownTracker();
         /// <summary>单个窗口内 Ownership 转让阈值（超过即告警）。</summary>
         public static int OwnershipGrabRateThreshold = 10;
+        public static int OwnershipRequestRateThreshold = 20;
 
         // ── 按 Prefab 统计（本地钩子） ──
         private static readonly Dictionary<string, int> _prefabCount = new Dictionary<string, int>();
@@ -100,7 +103,10 @@ namespace WhySoLaggy
         // ── 对象计数 ──
         private static int _lastPhotonViewCount;
         private static int _lastZombieCount;
-        private static Type _zombieType;
+        private static Type _zombieManagerType;
+        private static PropertyInfo _zombieManagerInstance;
+        private static FieldInfo _zombiesField;
+        private static bool _zombieWarningIssued;
 
         // ── 计时器 ──
         private static float _checkTimer;
@@ -162,12 +168,14 @@ namespace WhySoLaggy
                     case EventInstantiate:
                         _remoteInstantiateCount++;
                         _totalInstantiates++;
+                        _totalRemoteInstantiates++;
                         IncrementActor(_instantiateByActor, senderActorNumber);
                         break;
 
                     case EventRpc:
                         _remoteRpcCount++;
                         _totalRpcs++;
+                        _totalRemoteRpcs++;
                         IncrementActor(_rpcByActor, senderActorNumber);
                         break;
 
@@ -175,6 +183,7 @@ namespace WhySoLaggy
                     case EventDestroyPlayer:
                         _remoteDestroyCount++;
                         _totalDestroys++;
+                        _totalRemoteDestroys++;
                         IncrementActor(_destroyByActor, senderActorNumber);
                         break;
                 }
@@ -205,8 +214,6 @@ namespace WhySoLaggy
             catch { }
 
             string methodName = null;
-            int viewID = 0;
-            int paramCount = 0;
             try
             {
                 var data = photonEvent.CustomData as Hashtable;
@@ -214,11 +221,6 @@ namespace WhySoLaggy
                 {
                     // PUN2 rpcData 约定：(byte)0=viewID, (byte)3=methodName(string), 
                     // (byte)5=methodIndex(byte 指向 RpcList), (byte)4=parameters(object[])
-                    if (data.ContainsKey((byte)0))
-                    {
-                        object v = data[(byte)0];
-                        if (v is int iv) viewID = iv;
-                    }
                     if (data.ContainsKey((byte)3))
                     {
                         methodName = data[(byte)3] as string;
@@ -235,11 +237,6 @@ namespace WhySoLaggy
                                 methodName = list[bi];
                         }
                         catch { }
-                    }
-                    if (data.ContainsKey((byte)4))
-                    {
-                        var parr = data[(byte)4] as object[];
-                        if (parr != null) paramCount = parr.Length;
                     }
                 }
             }
@@ -281,42 +278,7 @@ namespace WhySoLaggy
                 }
             }
 
-            // 白名单过滤：只有牵涉到“刻诗进背包/物品操作/危险 RPC”的方法才写结构化事件
-            if (string.IsNullOrEmpty(methodName) || !RpcMonitor.WatchedMethods.Contains(methodName))
-                return;
-
-            try
-            {
-                string senderName = null;
-                try
-                {
-                    if (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.Players != null
-                        && PhotonNetwork.CurrentRoom.Players.TryGetValue(sender, out var p))
-                        senderName = p?.NickName;
-                }
-                catch { }
-
-                var fields = new Dictionary<string, object>
-                {
-                    { "RpcMethod", methodName },
-                    { "SenderActor", sender },
-                    { "SenderName", senderName ?? "<unknown>" },
-                    { "TargetViewID", viewID },
-                    { "IsMasterClient", PhotonNetwork.IsMasterClient ? 1 : 0 },
-                    { "ArgsSummary", $"params={paramCount}" },
-                };
-                StructuredLogger.WriteEvent(new StructuredEvent
-                {
-                    Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                    FrameNumber = Time.frameCount,
-                    Type = EventType.RemoteRpcTrace,
-                    Fields = fields,
-                });
-            }
-            catch (Exception ex)
-            {
-                WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] RemoteRpcTrace emit failed: {ex.Message}");
-            }
+            // 详细 RpcCall 统一由 RpcMonitor.ExecuteRpc 生成，避免同一远端 RPC 重复写入。
         }
 
         /// <summary>
@@ -351,58 +313,57 @@ namespace WhySoLaggy
         // ══════════════════════════════════
 
         /// <summary>
-        /// 监听 EventCode 210/211/215 的事件，解出 viewID 与对方 Actor，写结构化事件。
-        /// 同时累加 _ownershipGrabbedByActor 用于抢夺频率告警。
+        /// 监听 Request(209)、Transfer(210)、Update(212)，按 PUN 2.3.a payload 语义审计。
         /// </summary>
         public static void OnOwnershipEvent(EventData photonEvent)
         {
             if (!_initialized) return;
             byte code = photonEvent.Code;
-            if (code != EventOwnershipRequest && code != EventOwnershipTransfer && code != EventOwnershipUpdate)
-                return;
-
-            int viewID = 0;
-            int otherActor = 0;
-            try
-            {
-                var arr = photonEvent.CustomData as int[];
-                if (arr != null && arr.Length >= 2)
-                {
-                    viewID = arr[0];
-                    otherActor = arr[1];
-                }
-            }
-            catch { }
-
-            int sender = photonEvent.Sender;
-            string eventName = code == EventOwnershipRequest ? "Request"
-                             : code == EventOwnershipTransfer ? "Transfer"
-                             : "Update";
-
-            // Transfer/Update 事件中的“获取者”才计入抢夺计数；arr[1]=新 owner
-            int grabber = (code == EventOwnershipTransfer || code == EventOwnershipUpdate) ? otherActor : sender;
-            if (grabber > 0)
+            if (!OwnershipEventParser.IsSupported(code)) return;
+            if (!OwnershipEventParser.TryParse(code, photonEvent.CustomData, photonEvent.Sender, out var parsed))
             {
                 lock (_lock)
                 {
-                    _ownershipGrabbedByActor.TryGetValue(grabber, out int g);
-                    _ownershipGrabbedByActor[grabber] = g + 1;
+                    if (_malformedOwnershipWarned.Add(code))
+                        WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] Ignoring malformed Ownership payload: code={code}, type={photonEvent.CustomData?.GetType().FullName ?? "null"}");
                 }
+                return;
             }
+
+            int localActor = -1;
+            try { localActor = PhotonNetwork.LocalPlayer?.ActorNumber ?? -1; } catch { }
+
+            if (parsed.Kind == OwnershipEventKind.Request && parsed.SenderActor > 0 && parsed.SenderActor != localActor)
+            {
+                lock (_lock) IncrementActor(_ownershipRequestedByActor, parsed.SenderActor);
+            }
+            else if (parsed.Kind == OwnershipEventKind.Transfer && parsed.RelatedOwner > 0 && parsed.RelatedOwner != localActor)
+            {
+                lock (_lock) IncrementActor(_ownershipGrabbedByActor, parsed.RelatedOwner);
+            }
+
+            string eventName = parsed.Kind.ToString();
 
             try
             {
                 var fields = new Dictionary<string, object>
                 {
                     { "RpcMethod", "Ownership" + eventName },
-                    { "SenderActor", sender },
-                    { "TargetViewID", viewID },
-                    { "ArgsSummary", $"otherActor={otherActor}" },
+                    { "SenderActor", parsed.SenderActor },
+                    { "TargetViewID", parsed.ViewId },
+                    { "EventCode", code },
+                    { "OwnershipAction", eventName },
+                    { "PairCount", parsed.PairCount },
+                    { "ArgsSummary", OwnershipEventParser.BuildPairSummary(parsed.ViewOwnerData) },
                 };
+                if (parsed.Kind == OwnershipEventKind.Request)
+                    fields["PreviousOwner"] = parsed.RelatedOwner;
+                else if (parsed.Kind == OwnershipEventKind.Transfer)
+                    fields["NewOwner"] = parsed.RelatedOwner;
                 try
                 {
                     if (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.Players != null
-                        && PhotonNetwork.CurrentRoom.Players.TryGetValue(sender, out var p))
+                        && PhotonNetwork.CurrentRoom.Players.TryGetValue(parsed.SenderActor, out var p))
                         fields["SenderName"] = p?.NickName;
                 }
                 catch { }
@@ -436,8 +397,8 @@ namespace WhySoLaggy
                 // 1.0.3：Actor×Method 和 Ownership 抢夺的阈值告警
                 CheckActorMethodHotspots();
                 CheckOwnershipGrab();
+                CheckOwnershipRequests();
                 ResetCounters();
-                RpcMonitor.OnWindowEnd();
                 _checkTimer = 0f;
             }
 
@@ -516,15 +477,17 @@ namespace WhySoLaggy
         {
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                if (_zombieType != null) break;
+                if (_zombieManagerType != null) break;
                 try
                 {
                     foreach (var t in asm.GetTypes())
                     {
-                        if (t.Name == "MushroomZombie")
+                        if (t.Name == "ZombieManager")
                         {
-                            _zombieType = t;
-                            AbuseLogger.Info($"[ABUSE] Found zombie type: {t.FullName}");
+                            _zombieManagerType = t;
+                            _zombieManagerInstance = t.GetProperty("Instance", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                            _zombiesField = t.GetField("zombies", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                            AbuseLogger.Info($"[ABUSE] Found zombie manager: {t.FullName}");
                             break;
                         }
                     }
@@ -536,8 +499,15 @@ namespace WhySoLaggy
                 }
             }
 
-            if (_zombieType == null)
-                AbuseLogger.Info("[ABUSE] MushroomZombie type not found (zombie counting disabled)");
+            if (_zombieManagerType == null || _zombieManagerInstance == null || _zombiesField == null)
+            {
+                WarnZombieCountingUnavailable("ZombieManager.Instance.zombies not found");
+            }
+            else if (!typeof(ICollection).IsAssignableFrom(_zombiesField.FieldType))
+            {
+                _zombiesField = null;
+                WarnZombieCountingUnavailable("ZombieManager.zombies is not a countable collection");
+            }
         }
 
         // ═══════════════════════════════════════════════
@@ -553,8 +523,8 @@ namespace WhySoLaggy
 
             lock (_lock)
             {
-                _localInstantiateCount++;
                 _totalInstantiates++;
+                _totalLocalInstantiates++;
                 totalSoFar = _totalInstantiates;
 
                 if (!string.IsNullOrEmpty(prefabName))
@@ -696,8 +666,8 @@ namespace WhySoLaggy
         {
             lock (_lock)
             {
-                _localDestroyCount++;
                 _totalDestroys++;
+                _totalLocalDestroys++;
             }
         }
 
@@ -705,8 +675,8 @@ namespace WhySoLaggy
         {
             lock (_lock)
             {
-                _localRpcCount++;
                 _totalRpcs++;
+                _totalLocalRpcs++;
             }
         }
 
@@ -719,6 +689,26 @@ namespace WhySoLaggy
             || Application.systemLanguage == SystemLanguage.ChineseSimplified
             || Application.systemLanguage == SystemLanguage.ChineseTraditional;
 
+        private static bool TryBeginAlert(string key, float value, out AlertCooldownDecision decision)
+        {
+            decision = _alertCooldown.Observe(key, Time.realtimeSinceStartup, value, AlertCooldownSeconds);
+            return decision.Emit;
+        }
+
+        private static string FormatCooldownSuffix(AlertCooldownDecision decision)
+        {
+            if (decision.SuppressedCount <= 0) return "";
+            return $" (suppressed={decision.SuppressedCount}, peak={decision.PeakValue:F1})";
+        }
+
+        private static string FormatCooldownUiSuffix(AlertCooldownDecision decision)
+        {
+            if (decision.SuppressedCount <= 0) return "";
+            return IsChinese
+                ? $"（期间抑制{decision.SuppressedCount}次，峰值{decision.PeakValue:F1}）"
+                : $" (suppressed {decision.SuppressedCount}, peak {decision.PeakValue:F1})";
+        }
+
         private static void CheckRates()
         {
             float interval = CheckIntervalSeconds;
@@ -728,9 +718,9 @@ namespace WhySoLaggy
 
             lock (_lock)
             {
-                totalInst = _localInstantiateCount + _remoteInstantiateCount;
-                totalDest = _localDestroyCount + _remoteDestroyCount;
-                totalRpc = _localRpcCount + _remoteRpcCount;
+                totalInst = _remoteInstantiateCount;
+                totalDest = _remoteDestroyCount;
+                totalRpc = _remoteRpcCount;
 
                 instByActor = new Dictionary<int, int>(_instantiateByActor);
                 rpcByActor = new Dictionary<int, int>(_rpcByActor);
@@ -741,53 +731,53 @@ namespace WhySoLaggy
             float destroyRate = totalDest / interval;
             float rpcRate = totalRpc / interval;
 
-            if (instRate >= InstantiateRateThreshold)
+            if (instRate >= InstantiateRateThreshold && TryBeginAlert("InstantiateFlood", instRate, out var instCooldown))
             {
                 _alertCount++;
-                string logMsg = $"Instantiate flood! Rate: {instRate:F1}/s (threshold: {InstantiateRateThreshold}/s)";
+                string logMsg = $"Instantiate flood! Rate: {instRate:F1}/s (threshold: {InstantiateRateThreshold}/s){FormatCooldownSuffix(instCooldown)}";
                 AbuseLogger.Alert(logMsg);
                 string uiMsg = IsChinese
-                    ? $"⚠ 刷物体洪水！速率: {instRate:F1}/秒（阈值: {InstantiateRateThreshold}/秒）"
-                    : $"⚠ Instantiate flood! Rate: {instRate:F1}/s (threshold: {InstantiateRateThreshold}/s)";
+                    ? $"⚠ 刷物体洪水！速率: {instRate:F1}/秒（阈值: {InstantiateRateThreshold}/秒）{FormatCooldownUiSuffix(instCooldown)}"
+                    : $"⚠ Instantiate flood! Rate: {instRate:F1}/s (threshold: {InstantiateRateThreshold}/s){FormatCooldownUiSuffix(instCooldown)}";
                 AbuseNotificationUI.Show(uiMsg);
                 LogTopActors(instByActor, "Instantiate");
                 LogTopPrefabs();
-                EmitAbuseAlertEvent("InstantiateFlood", instRate, InstantiateRateThreshold, instByActor);
+                EmitAbuseAlertEvent("InstantiateFlood", instRate, InstantiateRateThreshold, instByActor, instCooldown);
                 // 1.0.3：强制下一次 Instantiate 采栈，抓洪水源头
                 ForceTraceNextInstantiate();
             }
         
-            if (destroyRate >= DestroyRateThreshold)
+            if (destroyRate >= DestroyRateThreshold && TryBeginAlert("DestroyFlood", destroyRate, out var destroyCooldown))
             {
                 _alertCount++;
-                string logMsg = $"Destroy flood! Rate: {destroyRate:F1}/s (threshold: {DestroyRateThreshold}/s)";
+                string logMsg = $"Destroy flood! Rate: {destroyRate:F1}/s (threshold: {DestroyRateThreshold}/s){FormatCooldownSuffix(destroyCooldown)}";
                 AbuseLogger.Alert(logMsg);
                 string uiMsg = IsChinese
-                    ? $"⚠ 大量销毁！速率: {destroyRate:F1}/秒（阈值: {DestroyRateThreshold}/秒）"
-                    : $"⚠ Destroy flood! Rate: {destroyRate:F1}/s (threshold: {DestroyRateThreshold}/s)";
+                    ? $"⚠ 大量销毁！速率: {destroyRate:F1}/秒（阈值: {DestroyRateThreshold}/秒）{FormatCooldownUiSuffix(destroyCooldown)}"
+                    : $"⚠ Destroy flood! Rate: {destroyRate:F1}/s (threshold: {DestroyRateThreshold}/s){FormatCooldownUiSuffix(destroyCooldown)}";
                 AbuseNotificationUI.Show(uiMsg);
                 LogTopActors(destByActor, "Destroy");
-                EmitAbuseAlertEvent("DestroyFlood", destroyRate, DestroyRateThreshold, destByActor);
+                EmitAbuseAlertEvent("DestroyFlood", destroyRate, DestroyRateThreshold, destByActor, destroyCooldown);
             }
         
-            if (rpcRate >= RpcRateThreshold)
+            if (rpcRate >= RpcRateThreshold && TryBeginAlert("RpcFlood", rpcRate, out var rpcCooldown))
             {
                 _alertCount++;
-                string logMsg = $"RPC flood! Rate: {rpcRate:F1}/s (threshold: {RpcRateThreshold}/s)";
+                string logMsg = $"RPC flood! Rate: {rpcRate:F1}/s (threshold: {RpcRateThreshold}/s){FormatCooldownSuffix(rpcCooldown)}";
                 AbuseLogger.Alert(logMsg);
                 string uiMsg = IsChinese
-                    ? $"⚠ RPC洪水！速率: {rpcRate:F1}/秒（阈值: {RpcRateThreshold}/秒）"
-                    : $"⚠ RPC flood! Rate: {rpcRate:F1}/s (threshold: {RpcRateThreshold}/s)";
+                    ? $"⚠ RPC洪水！速率: {rpcRate:F1}/秒（阈值: {RpcRateThreshold}/秒）{FormatCooldownUiSuffix(rpcCooldown)}"
+                    : $"⚠ RPC flood! Rate: {rpcRate:F1}/s (threshold: {RpcRateThreshold}/s){FormatCooldownUiSuffix(rpcCooldown)}";
                 AbuseNotificationUI.Show(uiMsg);
                 LogTopActors(rpcByActor, "RPC");
                 // 联动输出当前窗口 top RPC 方法名，让核查更直接
                 RpcMonitor.LogCurrentWindowTopMethods(5);
-                EmitAbuseAlertEvent("RpcFlood", rpcRate, RpcRateThreshold, rpcByActor);
+                EmitAbuseAlertEvent("RpcFlood", rpcRate, RpcRateThreshold, rpcByActor, rpcCooldown);
             }
         }
         
         // 1.0.3：AbuseAlert 结构化事件发射
-        private static void EmitAbuseAlertEvent(string alertType, float rate, int threshold, Dictionary<int, int> actorMap)
+        private static void EmitAbuseAlertEvent(string alertType, float rate, int threshold, Dictionary<int, int> actorMap, AlertCooldownDecision cooldown)
         {
             try
             {
@@ -803,6 +793,8 @@ namespace WhySoLaggy
                     { "AlertType", alertType },
                     { "Rate", Math.Round((double)rate, 2) },
                     { "Threshold", threshold },
+                    { "SuppressedCount", cooldown.SuppressedCount },
+                    { "PeakRate", Math.Round((double)cooldown.PeakValue, 2) },
                 };
                 if (topActor >= 0)
                 {
@@ -851,13 +843,14 @@ namespace WhySoLaggy
 
             foreach (var (actor, method, count) in hits)
             {
+                if (!TryBeginAlert("ActorMethodHotspot:" + actor + ":" + method, count, out var cooldown)) continue;
                 _alertCount++;
                 string name = TryGetNickName(actor);
-                string logMsg = $"Actor×Method hotspot! Actor #{actor} ({name}) sent '{method}' x{count} in {CheckIntervalSeconds:F1}s (threshold: {ActorMethodRateThreshold})";
+                string logMsg = $"Actor×Method hotspot! Actor #{actor} ({name}) sent '{method}' x{count} in {CheckIntervalSeconds:F1}s (threshold: {ActorMethodRateThreshold}){FormatCooldownSuffix(cooldown)}";
                 AbuseLogger.Alert(logMsg);
                 string uiMsg = IsChinese
-                    ? $"⚠ 客户端 RPC 热点！#{actor} {name} {method} ×{count}"
-                    : $"⚠ Actor×Method hotspot! #{actor} {name} {method} ×{count}";
+                    ? $"⚠ 客户端 RPC 热点！#{actor} {name} {method} ×{count}{FormatCooldownUiSuffix(cooldown)}"
+                    : $"⚠ Actor×Method hotspot! #{actor} {name} {method} ×{count}{FormatCooldownUiSuffix(cooldown)}";
                 AbuseNotificationUI.Show(uiMsg);
                 try
                 {
@@ -874,6 +867,8 @@ namespace WhySoLaggy
                             { "RpcMethod", method },
                             { "CurrentCount", count },
                             { "Threshold", ActorMethodRateThreshold },
+                            { "SuppressedCount", cooldown.SuppressedCount },
+                            { "PeakRate", cooldown.PeakValue },
                         },
                     });
                 }
@@ -900,13 +895,14 @@ namespace WhySoLaggy
 
             foreach (var (actor, count) in hits)
             {
+                if (!TryBeginAlert("OwnershipGrab:" + actor, count, out var cooldown)) continue;
                 _alertCount++;
                 string name = TryGetNickName(actor);
-                string logMsg = $"Ownership grab! Actor #{actor} ({name}) took {count} PhotonView ownerships in {CheckIntervalSeconds:F1}s (threshold: {OwnershipGrabRateThreshold})";
+                string logMsg = $"Ownership grab! Actor #{actor} ({name}) took {count} PhotonView ownerships in {CheckIntervalSeconds:F1}s (threshold: {OwnershipGrabRateThreshold}){FormatCooldownSuffix(cooldown)}";
                 AbuseLogger.Alert(logMsg);
                 string uiMsg = IsChinese
-                    ? $"⚠ 所有权抢夺！#{actor} {name} ■{count}"
-                    : $"⚠ Ownership grab! #{actor} {name} ×{count}";
+                    ? $"⚠ 所有权抢夺！#{actor} {name} ■{count}{FormatCooldownUiSuffix(cooldown)}"
+                    : $"⚠ Ownership grab! #{actor} {name} ×{count}{FormatCooldownUiSuffix(cooldown)}";
                 AbuseNotificationUI.Show(uiMsg);
                 try
                 {
@@ -922,10 +918,54 @@ namespace WhySoLaggy
                             { "TopActorName", name },
                             { "CurrentCount", count },
                             { "Threshold", OwnershipGrabRateThreshold },
+                            { "SuppressedCount", cooldown.SuppressedCount },
+                            { "PeakRate", cooldown.PeakValue },
                         },
                     });
                 }
                 catch { }
+            }
+        }
+
+        private static void CheckOwnershipRequests()
+        {
+            List<(int actor, int count)> hits = null;
+            lock (_lock)
+            {
+                foreach (var kv in _ownershipRequestedByActor)
+                {
+                    if (kv.Value < OwnershipRequestRateThreshold) continue;
+                    if (hits == null) hits = new List<(int, int)>(2);
+                    hits.Add((kv.Key, kv.Value));
+                }
+            }
+            if (hits == null) return;
+
+            foreach (var hit in hits)
+            {
+                if (!TryBeginAlert("OwnershipRequest:" + hit.actor, hit.count, out var cooldown)) continue;
+                _alertCount++;
+                string name = TryGetNickName(hit.actor);
+                AbuseLogger.Alert($"Ownership request flood! Actor #{hit.actor} ({name}) sent {hit.count} requests in {CheckIntervalSeconds:F1}s (threshold: {OwnershipRequestRateThreshold}){FormatCooldownSuffix(cooldown)}");
+                AbuseNotificationUI.Show(IsChinese
+                    ? $"⚠ 所有权请求洪水！#{hit.actor} {name} ×{hit.count}{FormatCooldownUiSuffix(cooldown)}"
+                    : $"⚠ Ownership request flood! #{hit.actor} {name} ×{hit.count}{FormatCooldownUiSuffix(cooldown)}");
+                StructuredLogger.WriteEvent(new StructuredEvent
+                {
+                    Timestamp = StructuredLogger.NowStamp(),
+                    FrameNumber = Time.frameCount,
+                    Type = EventType.AbuseAlert,
+                    Fields = new Dictionary<string, object>
+                    {
+                        { "AlertType", "OwnershipRequestFlood" },
+                        { "TopActor", hit.actor },
+                        { "TopActorName", name },
+                        { "CurrentCount", hit.count },
+                        { "Threshold", OwnershipRequestRateThreshold },
+                        { "SuppressedCount", cooldown.SuppressedCount },
+                        { "PeakRate", cooldown.PeakValue },
+                    },
+                });
             }
         }
 
@@ -950,29 +990,29 @@ namespace WhySoLaggy
             int pvDelta = currentPV - _lastPhotonViewCount;
             int zombieDelta = currentZombie - _lastZombieCount;
 
-            if (pvDelta >= ObjectSpikeThreshold)
+            if (pvDelta >= ObjectSpikeThreshold && TryBeginAlert("PhotonViewSpike", pvDelta, out var pvCooldown))
             {
                 _alertCount++;
-                string logMsg = $"PhotonView spike! +{pvDelta} in {CheckIntervalSeconds}s (now: {currentPV})";
+                string logMsg = $"PhotonView spike! +{pvDelta} in {CheckIntervalSeconds}s (now: {currentPV}){FormatCooldownSuffix(pvCooldown)}";
                 AbuseLogger.Alert(logMsg);
                 string uiMsg = IsChinese
-                    ? $"⚠ 对象突增！+{pvDelta} 个/{CheckIntervalSeconds}秒（当前: {currentPV}）"
-                    : $"⚠ PhotonView spike! +{pvDelta} in {CheckIntervalSeconds}s (now: {currentPV})";
+                    ? $"⚠ 对象突增！+{pvDelta} 个/{CheckIntervalSeconds}秒（当前: {currentPV}）{FormatCooldownUiSuffix(pvCooldown)}"
+                    : $"⚠ PhotonView spike! +{pvDelta} in {CheckIntervalSeconds}s (now: {currentPV}){FormatCooldownUiSuffix(pvCooldown)}";
                 AbuseNotificationUI.Show(uiMsg);
                 string topOwners = InvestigatePhotonViewOwners();
-                EmitSpikeEvent("PhotonViewSpike", pvDelta, currentPV, topOwners);
+                EmitSpikeEvent("PhotonViewSpike", pvDelta, currentPV, topOwners, pvCooldown);
             }
             
-            if (zombieDelta >= ObjectSpikeThreshold)
+            if (zombieDelta >= ObjectSpikeThreshold && TryBeginAlert("ZombieSpike", zombieDelta, out var zombieCooldown))
             {
                 _alertCount++;
-                string logMsg = $"Zombie spike! +{zombieDelta} in {CheckIntervalSeconds}s (now: {currentZombie})";
+                string logMsg = $"Zombie spike! +{zombieDelta} in {CheckIntervalSeconds}s (now: {currentZombie}){FormatCooldownSuffix(zombieCooldown)}";
                 AbuseLogger.Alert(logMsg);
                 string uiMsg = IsChinese
-                    ? $"⚠ 僵尸突增！+{zombieDelta} 个/{CheckIntervalSeconds}秒（当前: {currentZombie}）"
-                    : $"⚠ Zombie spike! +{zombieDelta} in {CheckIntervalSeconds}s (now: {currentZombie})";
+                    ? $"⚠ 僵尸突增！+{zombieDelta} 个/{CheckIntervalSeconds}秒（当前: {currentZombie}）{FormatCooldownUiSuffix(zombieCooldown)}"
+                    : $"⚠ Zombie spike! +{zombieDelta} in {CheckIntervalSeconds}s (now: {currentZombie}){FormatCooldownUiSuffix(zombieCooldown)}";
                 AbuseNotificationUI.Show(uiMsg);
-                EmitSpikeEvent("ZombieSpike", zombieDelta, currentZombie);
+                EmitSpikeEvent("ZombieSpike", zombieDelta, currentZombie, null, zombieCooldown);
             }
 
             _lastPhotonViewCount = currentPV;
@@ -995,15 +1035,28 @@ namespace WhySoLaggy
             catch { return 0; }
         }
 
+        private static void WarnZombieCountingUnavailable(string reason)
+        {
+            if (_zombieWarningIssued) return;
+            _zombieWarningIssued = true;
+            WhySoLaggyPlugin.Log?.LogWarning("[WHY_LAG] " + reason + "; zombie spike counting disabled for this plugin lifetime.");
+        }
+
         private static int CountZombies()
         {
-            if (_zombieType == null) return 0;
+            if (_zombieManagerInstance == null || _zombiesField == null) return 0;
             try
             {
-                var objs = UnityEngine.Object.FindObjectsByType(_zombieType, FindObjectsSortMode.None);
-                return objs?.Length ?? 0;
+                object manager = _zombieManagerInstance.GetValue(null, null);
+                if (manager == null) return 0;
+                object zombies = _zombiesField.GetValue(manager);
+                return zombies is ICollection collection ? collection.Count : 0;
             }
-            catch { return 0; }
+            catch (Exception ex)
+            {
+                WarnZombieCountingUnavailable("ZombieManager.zombies read failed: " + ex.Message);
+                return 0;
+            }
         }
 
         // 1.0.4：改为返回 Top5 嫌疑人字符串（格式 "Name#id:count;Name#id:count;..."），供 EmitSpikeEvent 落盘
@@ -1084,7 +1137,9 @@ namespace WhySoLaggy
                 AbuseLogger.Write($"[ABUSE]   Photon Ping: {ping} ms");
             
             float elapsed = ReportIntervalSeconds;
-            AbuseLogger.Write($"[ABUSE]   Period totals ({elapsed:F0}s): Instantiates={_totalInstantiates}, Destroys={_totalDestroys}, RPCs={_totalRpcs}");
+            AbuseLogger.Write($"[ABUSE]   Local totals ({elapsed:F0}s): Instantiates={_totalLocalInstantiates}, Destroys={_totalLocalDestroys}, RPCs={_totalLocalRpcs}");
+            AbuseLogger.Write($"[ABUSE]   Remote inbound totals: Instantiates={_totalRemoteInstantiates}, Destroys={_totalRemoteDestroys}, RPCs={_totalRemoteRpcs}");
+            AbuseLogger.Write($"[ABUSE]   Combined totals: Instantiates={_totalInstantiates}, Destroys={_totalDestroys}, RPCs={_totalRpcs}");
             AbuseLogger.Write($"[ABUSE]   Alerts triggered: {_alertCount}");
             
             // 1.0.3：PeriodicReport 结构化事件
@@ -1112,6 +1167,12 @@ namespace WhySoLaggy
                         { "TotalInstantiates", _totalInstantiates },
                         { "TotalDestroys", _totalDestroys },
                         { "TotalRpcs", _totalRpcs },
+                        { "LocalInstantiates", _totalLocalInstantiates },
+                        { "LocalDestroys", _totalLocalDestroys },
+                        { "LocalRpcs", _totalLocalRpcs },
+                        { "RemoteInstantiates", _totalRemoteInstantiates },
+                        { "RemoteDestroys", _totalRemoteDestroys },
+                        { "RemoteRpcs", _totalRemoteRpcs },
                         { "AlertCount", _alertCount },
                         { "ZombieCount", _lastZombieCount },
                         { "RoomName", roomName ?? "" },
@@ -1179,6 +1240,7 @@ namespace WhySoLaggy
 
             // 联动输出 RpcMonitor 的周期报告（top 方法 + watched 明细）
             RpcMonitor.WritePeriodicReport();
+            StructuredLogger.Flush();
         }
 
         // ═══════════════════════════════════════════════
@@ -1186,7 +1248,7 @@ namespace WhySoLaggy
         // ═══════════════════════════════════════════════
 
         // 1.0.3：ObjectSpike 事件发射；1.0.4：新增 topOwners 参数透传 PhotonView 嫌疑人分布
-        private static void EmitSpikeEvent(string alertType, int delta, int currentCount, string topOwners = null)
+        private static void EmitSpikeEvent(string alertType, int delta, int currentCount, string topOwners = null, AlertCooldownDecision cooldown = default(AlertCooldownDecision))
         {
             try
             {
@@ -1196,6 +1258,8 @@ namespace WhySoLaggy
                     { "Delta", delta },
                     { "CurrentCount", currentCount },
                     { "Threshold", ObjectSpikeThreshold },
+                    { "SuppressedCount", cooldown.SuppressedCount },
+                    { "PeakRate", cooldown.PeakValue },
                 };
                 if (!string.IsNullOrEmpty(topOwners)) fields["TopOwners"] = topOwners;
                 try { fields["Ping"] = PhotonNetwork.GetPing(); } catch { }
@@ -1217,9 +1281,6 @@ namespace WhySoLaggy
         {
             lock (_lock)
             {
-                _localInstantiateCount = 0;
-                _localDestroyCount = 0;
-                _localRpcCount = 0;
                 _remoteInstantiateCount = 0;
                 _remoteDestroyCount = 0;
                 _remoteRpcCount = 0;
@@ -1229,6 +1290,8 @@ namespace WhySoLaggy
                 // 1.0.3：快窗重置
                 _rpcByActorMethod.Clear();
                 _ownershipGrabbedByActor.Clear();
+                _ownershipRequestedByActor.Clear();
+                _malformedOwnershipWarned.Clear();
             }
         }
 
@@ -1239,6 +1302,12 @@ namespace WhySoLaggy
                 _totalInstantiates = 0;
                 _totalDestroys = 0;
                 _totalRpcs = 0;
+                _totalLocalInstantiates = 0;
+                _totalLocalDestroys = 0;
+                _totalLocalRpcs = 0;
+                _totalRemoteInstantiates = 0;
+                _totalRemoteDestroys = 0;
+                _totalRemoteRpcs = 0;
                 _alertCount = 0;
                 _prefabCount.Clear();
                 // 1.0.3：慢窗重置
@@ -1310,6 +1379,29 @@ namespace WhySoLaggy
             }
             catch { }
             return "?";
+        }
+
+        public static void Shutdown()
+        {
+            lock (_lock)
+            {
+                _initialized = false;
+                _checkTimer = 0f;
+                _reportTimer = 0f;
+                _lastPhotonViewCount = 0;
+                _lastZombieCount = 0;
+                ResetCounters();
+                ResetReportStats();
+                _prefabTraceTaken.Clear();
+                _recentClientRpcs.Clear();
+                _forceTraceNext = false;
+                _lastTraceSampleTime = 0f;
+                _zombieManagerType = null;
+                _zombieManagerInstance = null;
+                _zombiesField = null;
+                _zombieWarningIssued = false;
+                _alertCooldown.Clear();
+            }
         }
     }
 }

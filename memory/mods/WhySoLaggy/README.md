@@ -1,6 +1,6 @@
 ﻿# WhySoLaggy
 
-更新时间：2026-05-08
+更新时间：2026-08-28
 
 ## 项目定位
 
@@ -10,8 +10,10 @@ PEAK 的**性能、网络、RPC、Harmony 和异常行为观测** MOD。定位�
 
 ## 当前状态
 
-- 版本号：`.csproj` 记录为 `1.0.3`。
-- 版本号一致性治理已完成：代码注释、CHANGELOG、README 全部统一到 `1.0.3`，不存在旧版本号漂字符串。
+- 当前开发版本：`1.0.4`，兼容基线为 PEAK `2.3.a`；尚未建立 `发行\1.0.4`。
+- 插件、项目、程序集和文件版本已统一为 `1.0.4` / `1.0.4.0`。
+- Release 构建与 9 项 MSTest 均通过，构建为 0 warnings / 0 errors；双客户端远端归因、Ownership 分类和卸载重载仍待实机验收。
+- `发行\1.0.3\WhySoLaggy.dll` 保持不变，SHA-256 为 `29D2B361F956A5AA94C972932A9DCB39DC58562E78180A83D90CA7E1131BC48B`。
 - 诊断模块见 `FILES.md` 的关键源码清单。
 
 ## 能力矩阵
@@ -42,6 +44,13 @@ graph TD
 - **RPC 异常**：查 `RpcMonitor` 输出，单玩家高频 RPC 会被 `NetworkAbuseDetector` 打 warning。
 - **字段采样**：改 `测试环境\BepInEx\config\WhySoLaggy.fieldprobe.json`，用 `Type.Method >> 字段表达式1, ...` 的 DSL（详见 `common/03_日志与诊断规范.md`）。
 - **Harmony 冲突排查**：`HarmonyScanner` 能扫全体注册的补丁。
+
+## 1.0.4 联机测试开关
+
+- 基础联机验收：`AbuseDetection.EnableAbuseDetection=true`、`RpcMonitor.EnableRpcMonitor=true`、`Logging.LogVerbosity=Normal`。
+- 保持默认阈值：`ActorMethodRateThreshold=20`、`OwnershipGrabRateThreshold=10`、`OwnershipRequestRateThreshold=20`、`QueueCapacity=2048`、`PumpBatchSize=32`。
+- 首轮不要开启 `EnablePluginProfiling`、`EnablePatchProfiling` 或 `EnableFieldProbe`，避免额外诊断开销干扰网络行为。
+- 测试卸载重载时，先确认同一进程内日志继续产生且没有重复 RPC 记录或重复 Harmony patch。
 
 ## 接手必读
 

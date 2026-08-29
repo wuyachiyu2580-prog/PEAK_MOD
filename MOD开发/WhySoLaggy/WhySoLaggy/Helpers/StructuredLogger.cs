@@ -1,59 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
 
 namespace WhySoLaggy
 {
-    /// <summary>
-    /// 结构化日志写入器（1.0.3 新增，1.0.3 FieldProbe 追加 Snapshot 列）。
-    /// - whysolaggy_data.csv：固定表头（匹配字段按列名填充，其余留空，全字段 CSV 转义）。
-    /// - whysolaggy_events.jsonl：每行一个 JSON 对象，字段名全小写，保留原始数值类型。
-    /// - 每 10 条事件自动 Flush 一次。
-    /// - 写入前检查文件大小，超过 MaxLogFileSizeMB 则轮转为带时间戳备份并重开。
-    /// - 所有写入在静态锁 <see cref="_lock"/> 内执行。
-    /// </summary>
     internal static class StructuredLogger
     {
-        /// <summary>文件大小上限（MB），触发后轮转。由 Plugin 读取配置传入。</summary>
         public static int MaxLogFileSizeMB = 10;
+        public static int MaxRotatedFiles = 30;
+        public static int MaxRotatedStorageMB = 350;
 
-        // 固定 CSV 列顺序（1.0.4 扩展为 50 列，补齐 AllocRateKBps/Ping/PeriodicReport 字段/TopOwners/Top 插件归因）。
         private static readonly string[] CsvColumns =
         {
             "Timestamp", "FrameNumber", "Type",
             "AvgFps", "MinFps", "MaxFps", "AvgFrameMs", "SpikeThresholdMs", "SpikeCount", "ReportDuration",
-            "AllocRateKBps", "Ping",
-            "Name", "AvgMs", "TotalMs", "CallCount", "Owner",
-            "TopPluginName", "TopPluginMs",
-            "AlertType", "Rate", "Threshold", "Delta", "CurrentCount",
+            "AllocRateKBps", "Ping", "Name", "AvgMs", "TotalMs", "CallCount", "Owner",
+            "TopPluginName", "TopPluginMs", "AlertType", "Rate", "Threshold", "Delta", "CurrentCount",
             "TopActor", "TopActorName", "TopOwners",
-            "TotalInstantiates", "TotalDestroys", "TotalRpcs", "AlertCount",
+            "TotalInstantiates", "TotalDestroys", "TotalRpcs",
+            "LocalInstantiates", "LocalDestroys", "LocalRpcs",
+            "RemoteInstantiates", "RemoteDestroys", "RemoteRpcs", "AlertCount",
             "RoomName", "PlayerCount", "MaxPlayers", "ZombieCount",
-            "RpcMethod", "SenderActor", "SenderName", "TargetViewID", "TargetName",
+            "RpcMethod", "SenderActor", "SenderName", "TargetViewID", "TargetName", "TargetPath",
             "PayloadBytes", "ArgsSummary", "SpecificDesc",
-            "TargetMethod", "PatchType", "OwnerHarmonyId", "Priority",
-            "TraceStack", "TraceCaller",
-            "Snapshot",
-            // 1.0.3 新增：InstantiateTrace 专用字段（抓刷物品源头）
+            "EventCode", "OwnershipAction", "PreviousOwner", "NewOwner", "PairCount",
+            "QueueCapacity", "QueueDepth", "QueuePeak", "QueueDropped",
+            "TargetMethod", "PatchType", "OwnerHarmonyId", "Priority", "TraceStack", "TraceCaller", "Snapshot",
             "PrefabName", "IsMasterClient", "Position", "LocalActor",
-            // 1.0.3 新增：Master 端关联到的客户端请求者（用于 InstantiateTrace 和 RemoteRpcTrace）
             "SuspectedRequesterActor", "SuspectedRequesterName", "SuspectedRequesterRpc", "SuspectedAgeMs",
+            "QueueSequence", "EnqueueTimestamp", "EnqueueFrameNumber", "QueueDelayMs",
+            "RpcQueueDepth", "RpcQueuePeak", "RpcQueueDropped", "RpcProcessedCount", "RpcPumpMs",
+            "StructuredEventsWritten", "StructuredFlushMs",
+            "SuppressedCount", "PeakRate",
         };
 
         private static readonly object _lock = new object();
+        private static readonly StringBuilder _csvRow = new StringBuilder(512);
+        private static readonly StringBuilder _jsonRow = new StringBuilder(512);
+        private static readonly StringBuilder _csvBuffer = new StringBuilder(8192);
+        private static readonly StringBuilder _jsonBuffer = new StringBuilder(8192);
+        private static readonly long FlushIntervalTicks = TimeSpan.TicksPerSecond;
         private static StreamWriter _csvWriter;
         private static StreamWriter _jsonlWriter;
         private static string _dir;
         private static string _csvPath;
         private static string _jsonlPath;
-        private static int _pendingFlush;
+        private static long _lastFlushTicks;
+        private static long _eventsSinceMetrics;
+        private static double _lastFlushMs;
         private static bool _inited;
 
-        // 复用缓冲（均在 _lock 内使用，线程安全）。
-        private static readonly StringBuilder _csvSb = new StringBuilder(512);
-        private static readonly StringBuilder _jsonSb = new StringBuilder(512);
+        internal static string ExpectedCsvHeader => string.Join(",", CsvColumns);
 
         public static void Initialize(string dir)
         {
@@ -65,23 +63,29 @@ namespace WhySoLaggy
                     _dir = dir;
                     _csvPath = Path.Combine(dir, "whysolaggy_data.csv");
                     _jsonlPath = Path.Combine(dir, "whysolaggy_events.jsonl");
-
+                    RotateCsvForSchemaMismatch();
+                    CleanupRotatedFiles(_csvPath);
+                    CleanupRotatedFiles(_jsonlPath);
                     bool needHeader = !File.Exists(_csvPath) || new FileInfo(_csvPath).Length == 0;
-                    _csvWriter = new StreamWriter(_csvPath, append: true, encoding: Encoding.UTF8) { AutoFlush = false };
-                    _jsonlWriter = new StreamWriter(_jsonlPath, append: true, encoding: Encoding.UTF8) { AutoFlush = false };
-
+                    _csvWriter = NewWriter(_csvPath, true);
+                    _jsonlWriter = NewWriter(_jsonlPath, true);
                     if (needHeader)
                     {
-                        _csvWriter.WriteLine(string.Join(",", CsvColumns));
+                        _csvWriter.WriteLine(ExpectedCsvHeader);
                         _csvWriter.Flush();
                     }
+                    _csvBuffer.Clear();
+                    _jsonBuffer.Clear();
+                    _eventsSinceMetrics = 0;
+                    _lastFlushMs = 0;
+                    _lastFlushTicks = DateTime.UtcNow.Ticks;
                     _inited = true;
                 }
                 catch (Exception ex)
                 {
                     WhySoLaggyPlugin.Log?.LogError($"[WHY_LAG] StructuredLogger init failed: {ex.Message}");
-                    _csvWriter = null;
-                    _jsonlWriter = null;
+                    CloseWriters();
+                    _inited = false;
                 }
             }
         }
@@ -94,116 +98,122 @@ namespace WhySoLaggy
                 if (_csvWriter == null || _jsonlWriter == null) return;
                 try
                 {
-                    RotateIfNeeded();
-                    WriteCsvRow(evt);
-                    WriteJsonlRow(evt);
-                    if (++_pendingFlush >= 10)
-                    {
-                        _csvWriter.Flush();
-                        _jsonlWriter.Flush();
-                        _pendingFlush = 0;
-                    }
+                    AppendCsvRow(evt);
+                    AppendJsonlRow(evt);
+                    _eventsSinceMetrics++;
                 }
                 catch (Exception ex)
                 {
-                    WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] StructuredLogger write failed: {ex.Message}");
+                    WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] StructuredLogger buffer failed: {ex.Message}");
                 }
+            }
+        }
+
+        public static void Tick()
+        {
+            if (!_inited) return;
+            lock (_lock)
+            {
+                if (DateTime.UtcNow.Ticks - _lastFlushTicks >= FlushIntervalTicks)
+                    FlushBuffersLocked();
             }
         }
 
         public static void Flush()
         {
             if (!_inited) return;
-            lock (_lock)
-            {
-                try
-                {
-                    _csvWriter?.Flush();
-                    _jsonlWriter?.Flush();
-                    _pendingFlush = 0;
-                }
-                catch { }
-            }
+            lock (_lock) FlushBuffersLocked();
         }
 
         public static void Shutdown()
         {
             lock (_lock)
             {
-                try
-                {
-                    _csvWriter?.Flush();
-                    _csvWriter?.Close();
-                    _jsonlWriter?.Flush();
-                    _jsonlWriter?.Close();
-                }
-                catch { }
-                _csvWriter = null;
-                _jsonlWriter = null;
+                if (_inited) FlushBuffersLocked();
+                CloseWriters();
+                _csvBuffer.Clear();
+                _jsonBuffer.Clear();
                 _inited = false;
+                _lastFlushTicks = 0;
+                _eventsSinceMetrics = 0;
+                _lastFlushMs = 0;
             }
         }
 
-        // ── 内部：CSV 行 ──
-        private static void WriteCsvRow(StructuredEvent evt)
+        private static void FlushBuffersLocked()
         {
-            _csvSb.Clear();
-            // Fields 为 null 时视为空字典
-            var f = evt.Fields;
+            long started = DateTime.UtcNow.Ticks;
+            try
+            {
+                RotateIfNeeded();
+                if (_csvBuffer.Length > 0)
+                {
+                    _csvWriter?.Write(_csvBuffer.ToString());
+                    _csvBuffer.Clear();
+                }
+                if (_jsonBuffer.Length > 0)
+                {
+                    _jsonlWriter?.Write(_jsonBuffer.ToString());
+                    _jsonBuffer.Clear();
+                }
+                _csvWriter?.Flush();
+                _jsonlWriter?.Flush();
+            }
+            catch (Exception ex)
+            {
+                WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] StructuredLogger flush failed: {ex.Message}");
+            }
+            finally
+            {
+                _lastFlushTicks = DateTime.UtcNow.Ticks;
+                _lastFlushMs = Math.Max(0d, (_lastFlushTicks - started) * 1000d / TimeSpan.TicksPerSecond);
+            }
+        }
+
+        private static void AppendCsvRow(StructuredEvent evt)
+        {
+            _csvRow.Clear();
             for (int i = 0; i < CsvColumns.Length; i++)
             {
-                if (i > 0) _csvSb.Append(',');
-                string col = CsvColumns[i];
-                object v;
-                if (col == "Timestamp") v = evt.Timestamp;
-                else if (col == "FrameNumber") v = evt.FrameNumber;
-                else if (col == "Type") v = evt.Type.ToString();
-                else if (f != null && f.TryGetValue(col, out var fv)) v = fv;
-                else v = null;
-                AppendCsvField(_csvSb, v);
+                if (i > 0) _csvRow.Append(',');
+                string column = CsvColumns[i];
+                object value;
+                if (column == "Timestamp") value = evt.Timestamp;
+                else if (column == "FrameNumber") value = evt.FrameNumber;
+                else if (column == "Type") value = evt.Type.ToString();
+                else if (evt.Fields != null && evt.Fields.TryGetValue(column, out var fieldValue)) value = fieldValue;
+                else value = null;
+                AppendCsvField(_csvRow, value);
             }
-            _csvWriter.WriteLine(_csvSb.ToString());
+            _csvBuffer.AppendLine(_csvRow.ToString());
         }
 
-        private static void AppendCsvField(StringBuilder sb, object v)
+        private static void AppendCsvField(StringBuilder sb, object value)
         {
-            if (v == null) return;
-            string s = Convert.ToString(v, CultureInfo.InvariantCulture) ?? "";
-            bool needQuote = false;
-            for (int i = 0; i < s.Length; i++)
-            {
-                char c = s[i];
-                if (c == ',' || c == '"' || c == '\n' || c == '\r') { needQuote = true; break; }
-            }
-            if (!needQuote) { sb.Append(s); return; }
+            if (value == null) return;
+            string text = Convert.ToString(value, CultureInfo.InvariantCulture) ?? "";
+            bool quote = text.IndexOfAny(new[] { ',', '"', '\n', '\r' }) >= 0;
+            if (!quote) { sb.Append(text); return; }
             sb.Append('"');
-            for (int i = 0; i < s.Length; i++)
+            for (int i = 0; i < text.Length; i++)
             {
-                char c = s[i];
-                if (c == '"') sb.Append("\"\"");
-                else sb.Append(c);
+                if (text[i] == '"') sb.Append("\"\"");
+                else sb.Append(text[i]);
             }
             sb.Append('"');
         }
 
-        // ── 内部：JSONL 行 ──
-        private static void WriteJsonlRow(StructuredEvent evt)
+        private static void AppendJsonlRow(StructuredEvent evt)
         {
-            _jsonSb.Clear();
-            _jsonSb.Append('{');
-            AppendJsonKV(_jsonSb, "timestamp", evt.Timestamp, first: true);
-            AppendJsonKV(_jsonSb, "frameNumber", evt.FrameNumber);
-            AppendJsonKV(_jsonSb, "type", evt.Type.ToString());
+            _jsonRow.Clear();
+            _jsonRow.Append('{');
+            AppendJsonKV(_jsonRow, "timestamp", evt.Timestamp, true);
+            AppendJsonKV(_jsonRow, "frameNumber", evt.FrameNumber);
+            AppendJsonKV(_jsonRow, "type", evt.Type.ToString());
             if (evt.Fields != null)
-            {
-                foreach (var kv in evt.Fields)
-                {
-                    // JSONL 使用原始 key 小写首字母（保持与 CSV 对应但 camelCase）
-                    AppendJsonKV(_jsonSb, ToCamel(kv.Key), kv.Value);
-                }
-            }
-            _jsonSb.Append('}');
-            _jsonlWriter.WriteLine(_jsonSb.ToString());
+                foreach (var pair in evt.Fields) AppendJsonKV(_jsonRow, ToCamel(pair.Key), pair.Value);
+            _jsonRow.Append('}');
+            _jsonBuffer.AppendLine(_jsonRow.ToString());
         }
 
         private static void AppendJsonKV(StringBuilder sb, string key, object value, bool first = false)
@@ -213,10 +223,10 @@ namespace WhySoLaggy
             AppendJsonValue(sb, value);
         }
 
-        private static void AppendJsonValue(StringBuilder sb, object v)
+        private static void AppendJsonValue(StringBuilder sb, object value)
         {
-            if (v == null) { sb.Append("null"); return; }
-            switch (v)
+            if (value == null) { sb.Append("null"); return; }
+            switch (value)
             {
                 case string s: sb.Append('"'); AppendJsonString(sb, s); sb.Append('"'); break;
                 case bool b: sb.Append(b ? "true" : "false"); break;
@@ -230,20 +240,19 @@ namespace WhySoLaggy
                 case uint _:
                 case long _:
                 case ulong _:
-                    sb.Append(Convert.ToString(v, CultureInfo.InvariantCulture));
+                    sb.Append(Convert.ToString(value, CultureInfo.InvariantCulture));
                     break;
                 default:
-                    sb.Append('"'); AppendJsonString(sb, Convert.ToString(v, CultureInfo.InvariantCulture) ?? ""); sb.Append('"');
+                    sb.Append('"'); AppendJsonString(sb, Convert.ToString(value, CultureInfo.InvariantCulture) ?? ""); sb.Append('"');
                     break;
             }
         }
 
-        private static void AppendJsonString(StringBuilder sb, string s)
+        private static void AppendJsonString(StringBuilder sb, string value)
         {
-            for (int i = 0; i < s.Length; i++)
+            for (int i = 0; i < value.Length; i++)
             {
-                char c = s[i];
-                switch (c)
+                switch (value[i])
                 {
                     case '"': sb.Append("\\\""); break;
                     case '\\': sb.Append("\\\\"); break;
@@ -253,75 +262,149 @@ namespace WhySoLaggy
                     case '\r': sb.Append("\\r"); break;
                     case '\t': sb.Append("\\t"); break;
                     default:
-                        if (c < 0x20) sb.AppendFormat(CultureInfo.InvariantCulture, "\\u{0:X4}", (int)c);
-                        else sb.Append(c);
+                        if (value[i] < 0x20) sb.AppendFormat(CultureInfo.InvariantCulture, "\\u{0:X4}", (int)value[i]);
+                        else sb.Append(value[i]);
                         break;
                 }
             }
         }
 
-        private static string ToCamel(string s)
+        private static string ToCamel(string value)
         {
-            if (string.IsNullOrEmpty(s)) return s;
-            char c0 = s[0];
-            if (c0 >= 'A' && c0 <= 'Z')
-                return char.ToLowerInvariant(c0) + (s.Length > 1 ? s.Substring(1) : "");
-            return s;
+            if (string.IsNullOrEmpty(value)) return value;
+            return char.IsUpper(value[0])
+                ? char.ToLowerInvariant(value[0]) + (value.Length > 1 ? value.Substring(1) : "")
+                : value;
         }
 
-        // ── 内部：文件轮转 ──
+        private static void RotateCsvForSchemaMismatch()
+        {
+            if (!File.Exists(_csvPath) || new FileInfo(_csvPath).Length == 0) return;
+            string header;
+            using (var reader = new StreamReader(_csvPath, Encoding.UTF8, true)) header = reader.ReadLine();
+            if ((header ?? "").TrimStart('\uFEFF') == ExpectedCsvHeader) return;
+            File.Move(_csvPath, BuildBackupPath(_csvPath, "schema"));
+        }
+
         private static void RotateIfNeeded()
         {
-            try
-            {
-                long maxBytes = (long)MaxLogFileSizeMB * 1024L * 1024L;
-                if (maxBytes <= 0) return;
-                RotateOne(ref _csvWriter, _csvPath, csv: true, maxBytes);
-                RotateOne(ref _jsonlWriter, _jsonlPath, csv: false, maxBytes);
-            }
-            catch { /* 轮转失败不影响主流程 */ }
+            long maxBytes = (long)MaxLogFileSizeMB * 1024L * 1024L;
+            if (maxBytes <= 0) return;
+            RotateOne(ref _csvWriter, _csvPath, true, maxBytes, Encoding.UTF8.GetByteCount(_csvBuffer.ToString()));
+            RotateOne(ref _jsonlWriter, _jsonlPath, false, maxBytes, Encoding.UTF8.GetByteCount(_jsonBuffer.ToString()));
         }
 
-        private static void RotateOne(ref StreamWriter writer, string path, bool csv, long maxBytes)
+        private static void RotateOne(ref StreamWriter writer, string path, bool csv, long maxBytes, int pendingBytes)
         {
             if (writer == null || string.IsNullOrEmpty(path)) return;
+            var info = new FileInfo(path);
+            if (!info.Exists || info.Length + pendingBytes < maxBytes) return;
+            writer.Flush();
+            writer.Close();
+            File.Move(path, BuildBackupPath(path, "size"));
+            writer = NewWriter(path, false);
+            if (csv)
+            {
+                writer.WriteLine(ExpectedCsvHeader);
+                writer.Flush();
+            }
+            CleanupRotatedFiles(path);
+        }
+
+        private static void CleanupRotatedFiles(string activePath)
+        {
+            if (string.IsNullOrEmpty(activePath)) return;
             try
             {
-                var fi = new FileInfo(path);
-                if (!fi.Exists || fi.Length < maxBytes) return;
-
-                writer.Flush();
-                writer.Close();
-
-                string stamp = DateTime.Now.ToString("yyyyMMdd_HHmm", CultureInfo.InvariantCulture);
-                string dir = Path.GetDirectoryName(path);
-                string baseName = Path.GetFileNameWithoutExtension(path);
-                string ext = Path.GetExtension(path);
-                string backup = Path.Combine(dir ?? _dir ?? "", baseName + "_" + stamp + ext);
-                int tries = 0;
-                while (File.Exists(backup) && tries < 100)
+                string directory = Path.GetDirectoryName(activePath) ?? _dir ?? "";
+                string baseName = Path.GetFileNameWithoutExtension(activePath);
+                string extension = Path.GetExtension(activePath);
+                var files = new System.Collections.Generic.List<FileInfo>();
+                foreach (string path in Directory.GetFiles(directory, baseName + "_*" + extension))
                 {
-                    backup = Path.Combine(dir ?? _dir ?? "", baseName + "_" + stamp + "_" + (++tries) + ext);
+                    string name = Path.GetFileNameWithoutExtension(path);
+                    if (name.IndexOf(baseName + "_size_", StringComparison.Ordinal) != 0
+                        && name.IndexOf(baseName + "_schema_", StringComparison.Ordinal) != 0)
+                        continue;
+                    files.Add(new FileInfo(path));
                 }
-                File.Move(path, backup);
-
-                writer = new StreamWriter(path, append: false, encoding: Encoding.UTF8) { AutoFlush = false };
-                if (csv)
+                files.Sort((a, b) => a.LastWriteTimeUtc.CompareTo(b.LastWriteTimeUtc));
+                long maxBytes = Math.Max(0L, (long)MaxRotatedStorageMB * 1024L * 1024L);
+                long totalBytes = 0;
+                foreach (var file in files) totalBytes += file.Length;
+                int keepFrom = 0;
+                while (files.Count - keepFrom > Math.Max(0, MaxRotatedFiles) || (maxBytes > 0 && totalBytes > maxBytes))
                 {
-                    writer.WriteLine(string.Join(",", CsvColumns));
-                    writer.Flush();
+                    if (keepFrom >= files.Count) break;
+                    var old = files[keepFrom++];
+                    totalBytes -= old.Length;
+                    try { old.Delete(); } catch { }
                 }
             }
             catch (Exception ex)
             {
-                WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] StructuredLogger rotate failed: {ex.Message}");
+                WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] StructuredLogger retention cleanup failed: {ex.Message}");
             }
         }
 
-        // ── 辅助：给调用方构造 Event 用 ──
+        private static string BuildBackupPath(string path, string reason)
+        {
+            string directory = Path.GetDirectoryName(path) ?? _dir ?? "";
+            string name = Path.GetFileNameWithoutExtension(path);
+            string extension = Path.GetExtension(path);
+            string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss_fff", CultureInfo.InvariantCulture);
+            string candidate = Path.Combine(directory, name + "_" + reason + "_" + stamp + extension);
+            int suffix = 0;
+            while (File.Exists(candidate))
+                candidate = Path.Combine(directory, name + "_" + reason + "_" + stamp + "_" + (++suffix) + extension);
+            return candidate;
+        }
+
+        private static StreamWriter NewWriter(string path, bool append)
+        {
+            return new StreamWriter(path, append, new UTF8Encoding(true)) { AutoFlush = false };
+        }
+
+        private static void CloseWriters()
+        {
+            try { _csvWriter?.Close(); } catch { }
+            try { _jsonlWriter?.Close(); } catch { }
+            _csvWriter = null;
+            _jsonlWriter = null;
+        }
+
         public static string NowStamp()
         {
             return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
         }
+
+        internal static string StampFromUtcTicks(long ticks)
+        {
+            if (ticks <= 0) return "";
+            return new DateTime(ticks, DateTimeKind.Utc).ToLocalTime()
+                .ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+        }
+
+        internal static StructuredRuntimeMetrics TakeRuntimeMetrics()
+        {
+            lock (_lock)
+            {
+                var result = new StructuredRuntimeMetrics(_eventsSinceMetrics, _lastFlushMs);
+                _eventsSinceMetrics = 0;
+                return result;
+            }
+        }
+    }
+
+    internal struct StructuredRuntimeMetrics
+    {
+        public StructuredRuntimeMetrics(long eventsWritten, double lastFlushMs)
+        {
+            EventsWritten = eventsWritten;
+            LastFlushMs = lastFlushMs;
+        }
+
+        public long EventsWritten { get; }
+        public double LastFlushMs { get; }
     }
 }

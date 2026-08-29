@@ -1,6 +1,29 @@
 ﻿# WhySoLaggy Recent
 
-更新时间：2026-05-13
+更新时间：2026-08-28
+
+## 2026-08-29 部署到 2.0.a profile
+
+- `WhySoLaggy.csproj` 的 `OutputPath` 已改为 `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\`。
+- Release 重新构建成功，0 warnings / 0 errors；profile DLL 为 `1.0.4.0`、127488 字节，SHA-256 `BD141276AD97576C009A74EAC8DCAB99F7E75F354D4DE370A9F76970B3C59172`。
+
+## 2026-08-28 WhySoLaggy 1.0.4 全量修复
+
+- 以 PEAK `2.3.a` 反编译源码为基线，修正 PUN Ownership 事件码为 Request `209`、Transfer `210`、Update `212`，忽略 VacantViewIds `211`；Request、Transfer 分别统计，Update 只审计，畸形 payload 限频告警且不计数。
+- Instantiate、Destroy 和 RPC 洪水阈值只使用远端入站事件；周期报告保留本地、远端和合计三组总量，并绑定 `ActorMethodRateThreshold=20`、`OwnershipGrabRateThreshold=10`、`OwnershipRequestRateThreshold=20`。
+- RPC 队列改为有界队列，默认 `QueueCapacity=2048`，超限丢弃最旧项并每窗口最多输出一条 `RpcQueueOverflow`；周期报告不强制抽空队列。
+- watched RPC 每次只生成一条完整 `RpcCall`，不再写重复 `RemoteRpcTrace`；移除 2.3.a 不存在的 8 个旧 RPC，加入 `OnPickupAccepted`、`SetItemInstanceDataRPC`、`SetKinematicRPC`、`RPCA_StartGrabbing`、`RPCA_GrabCharacter`、`RPC_SpawnItemInHandMaster`，攀爬 Start/Stop 只做聚合。
+- StructuredLogger 改为内存缓冲、每秒统一写入和 Flush，报告/退出强制落盘；CSV schema 不一致时先轮转旧文件。
+- PatchProfiler 保留精确调用数和帧级 spike，周期总耗时按采样均值估算；方法键使用完整类型和参数签名，同时兼容旧 `Type.Method` Ignore。
+- Zombie 数量改为反射读取 `ZombieManager.Instance.zombies.Count`；FieldProbe 静态根和所有监控模块的 Shutdown/Reset 已修复，插件退出会 `UnpatchSelf()`。
+- 新增 `net472` MSTest 项目，9 项测试通过；Release 构建 0 warnings / 0 errors。DLL 版本为 `1.0.4.0`，最终 SHA-256 为 `BD141276AD97576C009A74EAC8DCAB99F7E75F354D4DE370A9F76970B3C59172`。
+- 未创建 `发行\1.0.4`，也未修改已有 `发行\1.0.3`。剩余工作是双客户端实机验收远端归因、Ownership 分类、单 RPC 单记录、队列有界和同进程卸载重载。
+
+## 1.0.4 测试配置
+
+- 联机首轮：打开 AbuseDetection 与 RpcMonitor，将 LogVerbosity 设为 Normal；其余性能 Profiler 和 FieldProbe 先保持关闭。
+- 队列压力测试：保持 `QueueCapacity=2048` 和 `PumpBatchSize=32` 先测真实负载；若要主动触发溢出，可临时把 QueueCapacity 调到允许的最小值 `256`，测完恢复 `2048`。
+- 性能归因另开一轮：只开启 `EnablePluginProfiling` 或 `EnablePatchProfiling` 中需要的一项，不与网络基线测试混跑。
 
 ## 2026-05-13 PEAK 1.62.a 兼容性检查
 

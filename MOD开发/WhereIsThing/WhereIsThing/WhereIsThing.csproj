@@ -3,7 +3,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net4.7.2</TargetFramework>
     <AssemblyName>WhereIsThing</AssemblyName>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <LangVersion>latest</LangVersion>
     <RootNamespace>WhereIsThing</RootNamespace>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

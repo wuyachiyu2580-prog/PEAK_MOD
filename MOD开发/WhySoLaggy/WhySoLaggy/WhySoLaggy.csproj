@@ -4,11 +4,11 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net4.7.2</TargetFramework>
     <AssemblyName>WhySoLaggy</AssemblyName>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <LangVersion>latest</LangVersion>
-    <!-- 编译后直接输出到测试环境 plugins 目录（用户手动同步到正式游戏目录） -->
+    <!-- 编译后直接输出到当前 r2modman 测试 profile。 -->
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\plugins\</OutputPath>
+    <OutputPath>C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +21,6 @@
       <HintPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\core\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-
     <!-- Unity Engine Dependencies -->
     <Reference Include="UnityEngine">
       <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.dll</HintPath>

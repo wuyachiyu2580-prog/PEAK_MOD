@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
@@ -26,10 +27,12 @@ namespace WhereIsMyAmulet
     {
         public const string PluginGuid = "com.wuyachiyu.WhereIsMyAmulet";
         public const string PluginName = "WhereIsMyAmulet";
-        public const string PluginVersion = "1.0.2";
+        public const string PluginVersion = "1.0.3";
 
         private readonly Dictionary<string, AmuletLabel> _labels = new Dictionary<string, AmuletLabel>();
         private readonly Dictionary<int, Item> _amuletDefinitions = new Dictionary<int, Item>();
+        private static readonly FieldInfo ScoutStatueAmuletsField = typeof(ScoutStatue).GetField(
+            "hasAmulets", BindingFlags.Instance | BindingFlags.NonPublic);
         private ManualLogSource _log;
         private Canvas _canvas;
         private TMP_FontAsset _font;
@@ -214,7 +217,7 @@ namespace WhereIsMyAmulet
                     {
                         continue;
                     }
-                    FakeItem statueFragment = FindAmuletStatueFakeItem(statue, statueObject);
+                    FakeItem statueFragment = FindAmuletStatueFakeItem(statueObject);
                     if (statueFragment == null)
                     {
                         continue;
@@ -227,7 +230,7 @@ namespace WhereIsMyAmulet
                     FakeItem capturedStatueFragment = statueFragment;
                     Transform target = capturedStatueFragment.transform;
                     Transform capturedTarget = target;
-                    AddLabel(statueKey, target, () => GetAmuletStatueTitle(capturedStatue, capturedStatueObject), () =>
+                    AddLabel(statueKey, target, () => GetAmuletStatueTitle(capturedStatueFragment), () =>
                         IsAmuletStatueValid(capturedStatue, capturedStatueObject, capturedTarget, capturedStatueFragment));
                 }
 
@@ -276,47 +279,35 @@ namespace WhereIsMyAmulet
             return fallback;
         }
 
-        private string GetAmuletStatueTitle(PropSpawner_AmuletStatues statue, GameObject statueObject)
+        private string GetAmuletStatueTitle(FakeItem statueFragment)
         {
             int index;
-            if (TryGetAmuletIndexFromStatueName(statueObject, out index))
+            if (statueFragment != null && TryGetAmuletIndex(statueFragment.realItemPrefab, out index))
             {
-                return GetAmuletName(index);
+                return GetStatueAmuletTitle(index);
             }
 
-            if (statue != null && statue.props != null && statue.props.Length == 4)
-            {
-                int type = statue.statueIndex;
-                if (type >= 0 && type < 4)
-                {
-                    return GetAmuletName(type);
-                }
-            }
-
-            return IsChineseLanguage() ? "雕像碎片" : "Statue Fragment";
+            return IsChineseLanguage() ? "雕像碎片\n雕像上" : "Statue Fragment\nOn Statue";
         }
 
-        private static FakeItem FindAmuletStatueFakeItem(PropSpawner_AmuletStatues statue, GameObject statueObject)
+        private string GetStatueAmuletTitle(int index)
+        {
+            string name = GetAmuletName(index);
+            return IsChineseLanguage() ? name + "\n雕像上" : name + "\nOn Statue";
+        }
+
+        private static FakeItem FindAmuletStatueFakeItem(GameObject statueObject)
         {
             if (statueObject == null)
             {
                 return null;
             }
 
-            int statueAmuletIndex;
-            bool hasStatueAmuletIndex = TryGetAmuletIndexFromStatueName(statueObject, out statueAmuletIndex);
-            if (!hasStatueAmuletIndex && statue != null && statue.props != null && statue.props.Length == 4 &&
-                statue.statueIndex >= 0 && statue.statueIndex < 4)
-            {
-                statueAmuletIndex = statue.statueIndex;
-                hasStatueAmuletIndex = true;
-            }
-
             FakeItem fallback = null;
             FakeItem[] fakeItems = statueObject.GetComponentsInChildren<FakeItem>(true);
             foreach (FakeItem fakeItem in fakeItems)
             {
-                if (fakeItem == null)
+                if (fakeItem == null || !fakeItem.gameObject.activeInHierarchy)
                 {
                     continue;
                 }
@@ -327,48 +318,13 @@ namespace WhereIsMyAmulet
                 }
 
                 int fakeAmuletIndex;
-                if (hasStatueAmuletIndex && fakeItem.realItemPrefab != null &&
-                    TryGetAmuletIndex(fakeItem.realItemPrefab, out fakeAmuletIndex) &&
-                    fakeAmuletIndex == statueAmuletIndex)
+                if (TryGetAmuletIndex(fakeItem.realItemPrefab, out fakeAmuletIndex))
                 {
                     return fakeItem;
                 }
             }
 
             return fakeItems.Length == 1 ? fallback : null;
-        }
-
-        private static bool TryGetAmuletIndexFromStatueName(GameObject statueObject, out int index)
-        {
-            index = -1;
-            if (statueObject == null)
-            {
-                return false;
-            }
-
-            string name = statueObject.name.ToLowerInvariant();
-            if (name.Contains("doublejump") || name.Contains("double_jump") || name.Contains("superjump") || name.Contains("initiative"))
-            {
-                index = 0;
-                return true;
-            }
-            if (name.Contains("infinitestam") || name.Contains("infinite_stam") || name.Contains("stamina") || name.Contains("ambition"))
-            {
-                index = 1;
-                return true;
-            }
-            if (name.Contains("healing") || name.Contains("heal") || name.Contains("tenacity"))
-            {
-                index = 2;
-                return true;
-            }
-            if (name.Contains("clone") || name.Contains("generosity"))
-            {
-                index = 3;
-                return true;
-            }
-
-            return false;
         }
 
         private static bool IsAmuletStatueValid(PropSpawner_AmuletStatues statue, GameObject statueObject, Transform statueTarget, FakeItem statueFragment)
@@ -407,33 +363,80 @@ namespace WhereIsMyAmulet
             HashSet<int> statueIds = new HashSet<int>();
             foreach (ScoutStatue statue in statues)
             {
+                int[] amuletTypes;
                 if (statue == null || !statue.gameObject.scene.IsValid() || !statue.gameObject.activeInHierarchy ||
-                    !statueIds.Add(statue.gameObject.GetInstanceID()) || statue.amuletObjects == null)
+                    !statueIds.Add(statue.gameObject.GetInstanceID()) || statue.amuletObjects == null ||
+                    !TryGetScoutAmuletTypes(statue, out amuletTypes))
                 {
                     continue;
                 }
 
-                for (int index = 0; index < 4 && index < statue.amuletObjects.Length; index++)
+                for (int slot = 0; slot < amuletTypes.Length; slot++)
                 {
-                    GameObject fragment = statue.amuletObjects[index];
+                    int type = amuletTypes[slot];
+                    if (type < 0 || type >= statue.amuletObjects.Length)
+                    {
+                        continue;
+                    }
+
+                    GameObject fragment = statue.amuletObjects[type];
                     if (fragment == null || !fragment.activeInHierarchy)
                     {
                         continue;
                     }
 
-                    string statueKey = "statue:" + statue.gameObject.GetInstanceID() + ":" + index;
+                    string statueKey = "statue:" + statue.gameObject.GetInstanceID() + ":" + slot;
                     seen.Add(statueKey);
-                    int capturedIndex = index;
+                    int capturedSlot = slot;
+                    int capturedType = type;
                     ScoutStatue capturedStatue = statue;
                     GameObject capturedFragment = fragment;
                     Item capturedFragmentItem = fragment.GetComponentInChildren<Item>(true);
-                    AddLabel(statueKey, capturedFragment.transform, () => GetAmuletName(capturedIndex), () =>
-                        capturedStatue != null && capturedStatue.gameObject.activeInHierarchy &&
-                        capturedStatue.amuletObjects != null && capturedIndex < capturedStatue.amuletObjects.Length &&
-                        capturedStatue.amuletObjects[capturedIndex] == capturedFragment &&
-                        IsStatueFragmentVisible(capturedFragment.transform, capturedFragmentItem));
+                    AddLabel(statueKey, capturedFragment.transform, () => GetStatueAmuletTitle(capturedType), () =>
+                        IsScoutStatueFragmentValid(capturedStatue, capturedSlot, capturedType, capturedFragment,
+                            capturedFragmentItem));
                 }
             }
+        }
+
+        private static bool TryGetScoutAmuletTypes(ScoutStatue statue, out int[] types)
+        {
+            types = null;
+            if (statue == null || ScoutStatueAmuletsField == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                int[] values = ScoutStatueAmuletsField.GetValue(statue) as int[];
+                if (values == null)
+                {
+                    return false;
+                }
+
+                types = (int[])values.Clone();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool IsScoutStatueFragmentValid(ScoutStatue statue, int slot, int type,
+            GameObject fragment, Item fragmentItem)
+        {
+            int[] types;
+            if (statue == null || !statue.gameObject.activeInHierarchy || fragment == null ||
+                statue.amuletObjects == null || type < 0 || type >= statue.amuletObjects.Length ||
+                statue.amuletObjects[type] != fragment || !TryGetScoutAmuletTypes(statue, out types) ||
+                slot < 0 || slot >= types.Length || types[slot] != type)
+            {
+                return false;
+            }
+
+            return IsStatueFragmentVisible(fragment.transform, fragmentItem);
         }
 
         private static bool TryGetAmuletIndex(Item item, out int index)
@@ -796,8 +799,8 @@ namespace WhereIsMyAmulet
             _titleText = CreateText("TitleText", font, _fontSize, new Vector2(0f, 10f));
             _titleText.color = new Color(0.875f, 0.855f, 0.761f, 1f);
 
-            CreateShadowTexts("DistanceShadow_", font, 18f, new Vector2(0f, -16f), _distanceShadowTexts);
-            _distanceText = CreateText("DistanceText", font, 18f, new Vector2(0f, -16f));
+            CreateShadowTexts("DistanceShadow_", font, 18f, new Vector2(0f, -40f), _distanceShadowTexts);
+            _distanceText = CreateText("DistanceText", font, 18f, new Vector2(0f, -40f));
             _distanceText.color = new Color(0.875f, 0.855f, 0.761f, 1f);
 
             GameObject arrowObject = new GameObject("OffscreenDirection");

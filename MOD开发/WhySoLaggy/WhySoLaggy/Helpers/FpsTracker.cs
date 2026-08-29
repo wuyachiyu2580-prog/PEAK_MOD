@@ -142,6 +142,8 @@ namespace WhySoLaggy
             // 1.0.3：结构化事件
             try
             {
+                RpcMonitor.RpcRuntimeMetrics rpcMetrics = RpcMonitor.TakeRuntimeMetrics();
+                StructuredRuntimeMetrics structuredMetrics = StructuredLogger.TakeRuntimeMetrics();
                 var fields = new Dictionary<string, object>
                 {
                     { "AvgFps", Math.Round((double)avgFps, 1) },
@@ -151,6 +153,13 @@ namespace WhySoLaggy
                     { "SpikeThresholdMs", SpikeThresholdMs },
                     { "SpikeCount", _periodSpikeCount },
                     { "ReportDuration", Math.Round((double)_periodTimer, 2) },
+                    { "RpcQueueDepth", rpcMetrics.QueueDepth },
+                    { "RpcQueuePeak", rpcMetrics.QueuePeak },
+                    { "RpcQueueDropped", rpcMetrics.QueueDropped },
+                    { "RpcProcessedCount", rpcMetrics.ProcessedCount },
+                    { "RpcPumpMs", Math.Round(rpcMetrics.PumpMs, 3) },
+                    { "StructuredEventsWritten", structuredMetrics.EventsWritten },
+                    { "StructuredFlushMs", Math.Round(structuredMetrics.LastFlushMs, 3) },
                 };
                 if (EnableMemoryMonitor)
                     fields["AllocRateKBps"] = Math.Round((double)_memLastRateKBps, 2);
@@ -177,6 +186,19 @@ namespace WhySoLaggy
             _periodMinFps = float.MaxValue;
             _periodMaxFps = 0f;
             _periodSpikeCount = 0;
+        }
+
+        public static void Reset()
+        {
+            Array.Clear(_frameTimes, 0, _frameTimes.Length);
+            _writeIndex = 0;
+            _sampleCount = 0;
+            IsSpikeFrame = false;
+            CurrentFrameMs = 0f;
+            _memLastSampleBytes = 0;
+            _memSampleTimer = 0f;
+            _memLastRateKBps = 0f;
+            ResetPeriod();
         }
     }
 }
