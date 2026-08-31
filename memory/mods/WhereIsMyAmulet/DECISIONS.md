@@ -1,5 +1,13 @@
 # WhereIsMyAmulet Decisions
 
+## 1.0.3 映射和显示决策
+
+- Scout Statue 的权威映射固定为 `hasAmulets[slot] -> amuletObjects[type]`；不能按 `amuletObjects` 数组位置直接推断护符名称。
+- Scout Statue 标签以 statue instance ID + slot 区分，运行时有效性必须重新确认当前 slot/type 和对应 GameObject，避免场景状态变化后保留错误标签。
+- 双行标题下的距离文字和阴影使用 anchored Y `-40`；标题/目标位置不随之移动。
+- 启动日志保持安静，普通加载提示不再输出；本地化、字体回退和运行时异常等可行动信息仍可记录。
+- 惊喜模式不是 1.0.3 的现有功能；如后续实现，必须单独确认显示范围、默认值和多人/本地显示边界，不能把历史需求写成当前能力。
+
 ## 显示生命周期
 
 - 默认 `General.ScanMode=Persistent`，保持常驻显示行为。

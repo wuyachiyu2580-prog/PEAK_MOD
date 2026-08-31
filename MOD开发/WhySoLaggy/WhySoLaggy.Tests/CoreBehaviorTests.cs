@@ -331,6 +331,28 @@ namespace WhySoLaggy.Tests
         }
 
         [TestMethod]
+        public void ModConfigLocalization_RecognizesPluginAndAllOwnSections()
+        {
+            foreach (string category in new[]
+            {
+                "WhySoLaggy", "com.wuyachiyu.WhySoLaggy", "General", "常规",
+                "AbuseDetection", "Abuse Detection", "滥用检测", "RpcMonitor", "RPC Monitor", "RPC 监控",
+                "Logging", "日志", "MethodTracer", "Method Tracer", "方法追踪",
+                "FieldProbe", "字段探针", "UI", "界面",
+            })
+            {
+                Assert.IsTrue(ModConfigLocalization.IsOwnCategory(category), category);
+            }
+
+            Assert.IsFalse(ModConfigLocalization.IsOwnCategory("SomeOtherMod"));
+            Assert.IsFalse(ModConfigLocalization.IsOwnCategory("OtherSection"));
+
+            Assert.AreEqual("RPC 监控", ModConfigLocalization.GetLocalizedCategoryText("RpcMonitor", true));
+            Assert.AreEqual("RPC 监控", ModConfigLocalization.GetLocalizedCategoryText("RPCMonitor", true));
+            Assert.AreEqual("RPC Monitor", ModConfigLocalization.GetLocalizedCategoryText("rpcmonitor", false));
+        }
+
+        [TestMethod]
         public void ModConfigLocalization_ShutdownIsIdempotent()
         {
             ModConfigLocalization.Shutdown();

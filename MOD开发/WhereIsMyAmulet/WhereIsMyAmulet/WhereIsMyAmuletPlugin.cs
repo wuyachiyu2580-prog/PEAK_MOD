@@ -83,7 +83,6 @@ namespace WhereIsMyAmulet
             LocalizedText.OnLangugageChanged += OnGameLanguageChanged;
             SceneManager.sceneLoaded += OnSceneLoaded;
             CreateCanvas();
-            _log.LogInfo(PluginName + " v" + PluginVersion + " loaded. Press " + _scanKey.Value + " to scan for dropped fragments.");
         }
 
         private void Start()

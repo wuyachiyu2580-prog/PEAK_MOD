@@ -1,4 +1,4 @@
-# WhereIsMyAmulet 1.0.2
+# WhereIsMyAmulet 1.0.3
 
 Shows dropped amulets, backpacks containing amulets, and uncollected amulet fragments held by statues, along with their distances.
 

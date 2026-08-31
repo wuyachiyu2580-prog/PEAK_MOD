@@ -219,7 +219,7 @@ namespace WhereIsThing
                         key == "ScanMode" || key == "DisplayDurationSeconds";
                 case "Display":
                     return key == "NameLanguage" || key == "MaxDistance" || key == "FontSize" ||
-                        key == "LabelFont" || key == "ShowOffscreenDirection";
+                        key == "LabelFont" || key == "ShowOffscreenDirection" || key == "ShowOwnerNames";
                 case "Presets":
                     return key == "PresetSchemaVersion" || key == "LocalPresets" ||
                         key == "ActiveLocalPresetId" || key == "SelectedSharedPresetId" || key == "ShareMode";
@@ -256,6 +256,7 @@ namespace WhereIsThing
                 case "标签字号": return "FontSize";
                 case "标签字体": return "LabelFont";
                 case "屏外方向提示": return "ShowOffscreenDirection";
+                case "玩家名": return "ShowOwnerNames";
                 case "已选物品ID": return "SelectedItemIds";
                 case "兼容行李箱开关": return "SelectedLuggage";
                 case "已选行李箱类型": return "SelectedLuggageTypes";
@@ -305,6 +306,7 @@ namespace WhereIsThing
                 case "FontSize": return chinese ? "标签字号" : "Label Font Size";
                 case "LabelFont": return chinese ? "标签字体" : "Label Font";
                 case "ShowOffscreenDirection": return chinese ? "屏外方向提示" : "Off-screen Direction";
+                case "ShowOwnerNames": return chinese ? "玩家名" : "Player Names";
                 case "SelectedItemIds": return chinese ? "已选物品 ID" : "Selected Item IDs";
                 case "SelectedLuggage": return chinese ? "兼容行李箱开关" : "Legacy Luggage Toggle";
                 case "SelectedLuggageTypes": return chinese ? "已选行李箱类型" : "Selected Luggage Types";
@@ -371,6 +373,7 @@ namespace WhereIsThing
                 case "FontSize": return chinese ? "位置与距离标签的字号。" : "Font size used by location and distance labels.";
                 case "LabelFont": return chinese ? "选择仅用于英文位置标签的字体；中文可能显示为口口口。" : "Choose a font for English location labels only. Chinese text may display as tofu boxes.";
                 case "ShowOffscreenDirection": return chinese ? "目标在屏幕外时显示方向提示。" : "Show a direction indicator when a target is off-screen.";
+                case "ShowOwnerNames": return chinese ? "在支持的目标后显示放置者玩家名。" : "Show the placer name after supported labels.";
                 case "SelectedItemIds": return chinese ? "由 Alt+C 选择窗口维护的物品 ID，请勿手动编辑。" : "Item IDs managed by the Alt+C selection window. Do not edit manually.";
                 case "SelectedLuggage": return chinese ? "旧版配置兼容项，请使用选择窗口设置行李箱类型。" : "Legacy compatibility setting. Choose luggage types in the selection window.";
                 case "SelectedLuggageTypes": return chinese ? "由 Alt+C 选择窗口维护的行李箱类型，请勿手动编辑。" : "Luggage types managed by the Alt+C selection window. Do not edit manually.";

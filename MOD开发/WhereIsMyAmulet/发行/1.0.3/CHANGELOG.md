@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3
+
+- Fixed incorrect gem name display on statues.
+- Trimmed startup log noise while keeping actionable warnings for localization and font fallback.
+
 ## 1.0.2
 
 - Restored the label display mode setting: keep labels visible or hide them automatically after a timed scan.

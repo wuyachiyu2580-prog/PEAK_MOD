@@ -1,6 +1,6 @@
 ﻿# Memory Index
 
-更新时间：2026-08-20
+更新时间：2026-08-31
 
 ## 当前结构
 
@@ -31,7 +31,7 @@
 - 当天临时文件命名为 `mods/<ModName>/temp/YYYY-MM-DD.md`。
 - 每形成 3 次明确的阶段性判断、排查结论或方案取舍，就追加一次摘要。
 - 上下文压缩、会话中断或换 AI 后，先读该 MOD 最新临时 MD，再读正式四件套。
-- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`。
+- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`WhySoLaggy/temp/2026-08-31.md`、`WhereIsMyAmulet/temp/2026-08-31.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`。
 
 ### ItemInfoCN（1.0.0 已发布）
 
@@ -72,13 +72,20 @@
 - `MOD开发/DreamyAscent/data/tools/build_map_data_artifacts.py`：从诊断样本生成模板快照、对象注册表输入和样本回归报告的离线工具。
 - `MOD开发/DreamyAscent/data/map-data/generated/`：离线生成产物目录，当前包含 `template-snapshots.json`、`object-registry-input.json`、`sample-regression-report.json`。
 
-### WhySoLaggy（1.0.4 开发维护，PEAK 2.3.a）
+### WhySoLaggy（1.0.4 已建立发行包，PEAK 2.3.a）
 
 - `mods/WhySoLaggy/README.md`：性能和网络诊断项目入口与 mermaid 能力矩阵。
 - `mods/WhySoLaggy/RECENT.md`：1.0.4 全量修复、自动测试、构建结果和联机测试配置。
 - `mods/WhySoLaggy/DECISIONS.md`：远端入站阈值、Ownership 分类、有界队列、批量日志和卸载顺序等禁止回退项。
 - `mods/WhySoLaggy/FILES.md`：源码、测试项目、1.0.4 版本和关键 Helper。
 - `mods/WhySoLaggy/temp/2026-08-28.md`：本轮修复状态和双客户端实机验收入口。
+
+### OldPC（0.0.1 开发中）
+
+- `mods/OldPC/README.md`：本地旧电脑画面模式和望远镜清晰模式入口。
+- `mods/OldPC/RECENT.md`：当前功能范围和未完成的构建/实机验收。
+- `mods/OldPC/DECISIONS.md`：本地视觉边界、画质恢复和风险。
+- `mods/OldPC/FILES.md`：源码、工程和构建命令。
 
 ### TerrainCustomiserCN（0.1.2 已发布，对应原版 0.3.2）
 
@@ -104,13 +111,14 @@
 - `mods/WhereIsThing/PLAN.md`：分阶段研究、实机验证、收口和发布计划。
 - `mods/WhereIsThing/temp/2026-08-14.md`：当前阶段压缩恢复摘要。
 
-### WhereIsMyAmulet（1.0.2 已发布）
+### WhereIsMyAmulet（1.0.3 已发布）
 
 - `mods/WhereIsMyAmulet/README.md`：护符定位 MOD 概览和接手入口。
-- `mods/WhereIsMyAmulet/RECENT.md`：1.0.2 常驻/定时显示恢复、构建和发布状态。
-- `mods/WhereIsMyAmulet/DECISIONS.md`：标签生命周期、雕像 FakeItem 识别边界和 ModConfig 本地化规则。
-- `mods/WhereIsMyAmulet/FILES.md`：源码、构建命令、profile 输出和发行包路径。
-- `mods/WhereIsMyAmulet/temp/2026-08-20.md`：本轮实现和验证入口。
+- `mods/WhereIsMyAmulet/RECENT.md`：1.0.3 Scout Statue 映射修复、标签间距、构建和发布状态。
+- `mods/WhereIsMyAmulet/DECISIONS.md`：标签生命周期、雕像映射、FakeItem 识别边界和 ModConfig 本地化规则。
+- `mods/WhereIsMyAmulet/FILES.md`：源码、构建命令、实际 profile 输出和 1.0.3 发行包路径。
+- `mods/WhereIsMyAmulet/temp/2026-08-20.md`：1.0.2 实现和验证入口。
+- `mods/WhereIsMyAmulet/temp/2026-08-31.md`：1.0.3 映射修复、发行产物和剩余验收入口。
 
 ## 当前重点
 

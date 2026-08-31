@@ -1,5 +1,13 @@
 ﻿# Memory Changelog
 
+## 2026-08-31
+
+- [新增] `mods/OldPC/` 四件套：记录 0.0.1 本地旧电脑视觉模式、望远镜清晰模式、网络边界和未完成验收。
+- [修改] `mods/WhereIsMyAmulet/` 四件套：更新为 1.0.3，记录 Scout Statue 槽位/类型映射修复、距离文字间距、实际 profile 路径、发行 DLL hash 和惊喜模式未实现状态。
+- [修改] `mods/WhySoLaggy/` 四件套：更正 1.0.4 已建立发行包，补充发行 DLL/ZIP hash、18 项测试源码现状和未提交本地化测试改动风险。
+- [新增] `mods/WhereIsMyAmulet/temp/2026-08-31.md`、`mods/WhySoLaggy/temp/2026-08-31.md`：保存当前版本、发行产物和剩余验收入口，并修正旧临时记录中的过时 hash/测试数量表述。
+- [修改] `README.md`、`mods/README.md`、`MEMORY_INDEX.md`、`TODO.md`：加入 OldPC，更新 WhereIsMyAmulet/WhySoLaggy 状态，并保留 WhereIsThing 原样不动。
+
 ## 2026-08-29
 
 - [修改] `mods/WhySoLaggy/FILES.md` / `RECENT.md` / `temp/2026-08-28.md`：构建输出改为 r2modman `2.0.a` profile，并记录 1.0.4 DLL 版本、大小和哈希。

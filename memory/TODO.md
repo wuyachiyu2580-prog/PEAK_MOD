@@ -1,6 +1,6 @@
 ﻿# Permanent TODO
 
-更新时间：2026-08-19
+更新时间：2026-08-31
 
 这里只记录未完成、待验证、已知风险和后续优化。已经稳定或已经写入各 MOD `RECENT.md` / `DECISIONS.md` 的内容，不再重复放在这里。
 
@@ -127,7 +127,18 @@
 - [ ] 整理与其他 MOD 联合诊断的操作步骤，尤其是 DreamyAscent 生成卡顿、RPC、PhotonView 和 Harmony 耗时归因。
 - [ ] 用 PEAK 2.3.a 双客户端实机验证 1.0.4：远端 sender/new owner 归因、Ownership Request/Transfer/Update 分类、单 watched RPC 单 `RpcCall`、队列有界/溢出汇总。
 - [ ] 验证同一进程卸载重载：无重复 Harmony patch、日志可重新初始化、所有监控计数从零开始。
-- [ ] 完成联机实机验收后再建立 `发行\1.0.4`；当前禁止提前发布或打包。
+- [ ] 重新运行当前 18 项 `CoreBehaviorTests`，特别确认最近新增的 ModConfig 分类测试；通过后再把当前工作区本地化改动视为可发布状态。
+
+## OldPC
+
+- [ ] 完成 `OldPC.slnx` 的 Release 构建并核对 `0.0.1.0`、profile DLL 和 0 warnings / 0 errors。
+- [ ] 实机验证旧电脑模式与望远镜模式的画质捕获/恢复、F8 切换、场景切换和禁用配置。
+- [ ] 实机确认 OldPC 不影响其他玩家、不发送 RPC、不修改房间属性，并评估 CRT 覆盖层和低渲染比例的性能。
+
+## WhereIsMyAmulet
+
+- [ ] 实机验证 1.0.3 的 Scout Statue 名称映射、双行标签间距、定时到期清理和多人显示。
+- [ ] 惊喜模式尚未实现；后续需求确认后再定义配置、默认值和显示范围，不要从历史记忆推断为已完成。
 
 ## TerrainCustomiserCN
 

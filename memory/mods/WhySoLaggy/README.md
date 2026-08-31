@@ -1,6 +1,6 @@
 ﻿# WhySoLaggy
 
-更新时间：2026-08-28
+更新时间：2026-08-31
 
 ## 项目定位
 
@@ -10,10 +10,13 @@ PEAK 的**性能、网络、RPC、Harmony 和异常行为观测** MOD。定位�
 
 ## 当前状态
 
-- 当前开发版本：`1.0.4`，兼容基线为 PEAK `2.3.a`；尚未建立 `发行\1.0.4`。
+- 当前发布/维护版本：`1.0.4`，兼容基线为 PEAK `2.3.a`；`发行\1.0.4` 已建立并包含 ZIP。
 - 插件、项目、程序集和文件版本已统一为 `1.0.4` / `1.0.4.0`。
-- Release 构建与 9 项 MSTest 均通过，构建为 0 warnings / 0 errors；双客户端远端归因、Ownership 分类和卸载重载仍待实机验收。
+- Release 构建曾以 0 warnings / 0 errors 通过；双客户端远端归因、Ownership 分类和卸载重载仍待实机验收。当前测试源码包含 18 个 `[TestMethod]`，其中最近增加的 ModConfig 分类测试尚需重新跑测试确认。
 - `发行\1.0.3\WhySoLaggy.dll` 保持不变，SHA-256 为 `29D2B361F956A5AA94C972932A9DCB39DC58562E78180A83D90CA7E1131BC48B`。
+- `发行\1.0.4\WhySoLaggy.dll` 为 `157184` 字节、程序集版本 `1.0.4.0`，SHA-256 为 `CC9FCC52E825088AE254754BF30BF5E58A6A1FA8FA78C5E3DDA0A121B3B71431`；profile DLL 与发行 DLL 一致。
+- 1.0.4 ZIP 内为五个发行文件：DLL、README、CHANGELOG、manifest 和 icon；ZIP SHA-256 为 `A2B6960F9FA5893EBC3434D391306A4142DAE422F744325D047327F369A0C809`。
+- 当前工作区另有未提交的 ModConfig 本地化源码和测试改动；不要把它们视为新的已验收发行版本。
 - 诊断模块见 `FILES.md` 的关键源码清单。
 
 ## 能力矩阵

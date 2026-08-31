@@ -27,6 +27,7 @@ namespace WhereIsThing
         private readonly TextMeshProUGUI _durationText;
         private readonly Button _durationMinusButton;
         private readonly Button _durationPlusButton;
+        private readonly Toggle _ownerNamesToggle;
         private readonly Dictionary<ThingLocationScope, Toggle> _scopeToggles = new Dictionary<ThingLocationScope, Toggle>();
         private readonly List<ThingPresetDefinition> _presets = new List<ThingPresetDefinition>();
         private GameObject _renameOverlay;
@@ -44,6 +45,7 @@ namespace WhereIsThing
         private Action<ThingLocationScope, bool> _setScope;
         private Action _cycleScanMode;
         private Action<int> _adjustDisplayDuration;
+        private Action<bool> _setShowOwnerNames;
         private bool _usingFallbackPresets;
         private bool _allowEditing;
         private bool _isOpen;
@@ -54,6 +56,7 @@ namespace WhereIsThing
         private ThingLocationScope _scopes;
         private ThingScanMode _scanMode;
         private float _displayDuration;
+        private bool _showOwnerNames;
         private string _activePresetId;
         private string _renamingPresetId;
 
@@ -140,10 +143,18 @@ namespace WhereIsThing
 
             CreateText(panel.transform, "ScopeTitle", ThingUi.ScopeTitle(), 13f, TextAlignmentOptions.Left,
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(22f, 18f), new Vector2(128f, 44f), false, true);
-            CreateScopeToggle(panel.transform, ThingUi.Ground(), ThingLocationScope.Ground, 110f);
-            CreateScopeToggle(panel.transform, ThingUi.Held(), ThingLocationScope.Held, 250f);
-            CreateScopeToggle(panel.transform, ThingUi.Backpack(), ThingLocationScope.Backpack, 390f);
-            CreateScopeToggle(panel.transform, ThingUi.Statue(), ThingLocationScope.Statue, 530f);
+            GameObject scopeOptions = CreateRect("ScopeOptions", panel.transform);
+            RectTransform scopeOptionsRect = scopeOptions.GetComponent<RectTransform>();
+            scopeOptionsRect.anchorMin = new Vector2(0f, 0f);
+            scopeOptionsRect.anchorMax = new Vector2(1f, 0f);
+            scopeOptionsRect.offsetMin = new Vector2(136f, 4f);
+            scopeOptionsRect.offsetMax = new Vector2(-22f, 32f);
+            CreateScopeToggle(scopeOptions.transform, ThingUi.Ground(), ThingLocationScope.Ground, 0f, 0.25f);
+            CreateScopeToggle(scopeOptions.transform, ThingUi.Held(), ThingLocationScope.Held, 0.25f, 0.5f);
+            CreateScopeToggle(scopeOptions.transform, ThingUi.Backpack(), ThingLocationScope.Backpack, 0.5f, 0.75f);
+            CreateScopeToggle(scopeOptions.transform, ThingUi.Statue(), ThingLocationScope.Statue, 0.75f, 1f);
+            _ownerNamesToggle = CreateBoolToggle(panel.transform, "OwnerNames", ThingUi.PlayerNames(),
+                new Vector2(-97f, 110f), new Vector2(150f, 28f), SetOwnerNamesInternal);
 
             CreateRenameDialog();
 
@@ -153,11 +164,12 @@ namespace WhereIsThing
         public bool IsOpen { get { return _isOpen; } }
 
         public void Open(IEnumerable<ThingPresetDefinition> presets, string activePresetId, bool allowEditing, bool usingFallbackPresets, ThingPresetShareMode shareMode,
-            ThingLocationScope scopes, ThingScanMode scanMode, float displayDurationSeconds,
+            ThingLocationScope scopes, ThingScanMode scanMode, float displayDurationSeconds, bool showOwnerNames,
             Func<ThingPresetDefinition, string> summaryProvider, Action<string> usePreset, Action<string> editPreset,
             Action<string, string> renamePreset, Action<string> togglePublished, Action<string> deletePreset, Action createPreset,
             Action<ThingPresetShareMode> setShareMode,
-            Action<ThingLocationScope, bool> setScope, Action cycleScanMode, Action<int> adjustDisplayDuration)
+            Action<ThingLocationScope, bool> setScope, Action cycleScanMode, Action<int> adjustDisplayDuration,
+            Action<bool> setShowOwnerNames)
         {
             _presets.Clear();
             _presets.AddRange((presets ?? Enumerable.Empty<ThingPresetDefinition>()).Where(preset => preset != null).Select(preset => preset.Clone()).ToList());
@@ -168,6 +180,7 @@ namespace WhereIsThing
             _scopes = scopes;
             _scanMode = scanMode;
             _displayDuration = Mathf.Clamp(displayDurationSeconds, 2f, 60f);
+            _showOwnerNames = showOwnerNames;
             _summaryProvider = summaryProvider;
             _usePreset = usePreset;
             _editPreset = editPreset;
@@ -179,6 +192,7 @@ namespace WhereIsThing
             _setScope = setScope;
             _cycleScanMode = cycleScanMode;
             _adjustDisplayDuration = adjustDisplayDuration;
+            _setShowOwnerNames = setShowOwnerNames;
             _isOpen = true;
             _previousCursorVisible = Cursor.visible;
             _previousCursorLockState = Cursor.lockState;
@@ -277,6 +291,7 @@ namespace WhereIsThing
             _durationText.gameObject.SetActive(timed);
             _durationMinusButton.gameObject.SetActive(timed);
             _durationPlusButton.gameObject.SetActive(timed);
+            _ownerNamesToggle.isOn = _showOwnerNames;
 
             foreach (KeyValuePair<ThingLocationScope, Toggle> entry in _scopeToggles)
             {
@@ -519,6 +534,19 @@ namespace WhereIsThing
             }
         }
 
+        private void SetOwnerNamesInternal(bool value)
+        {
+            if (_isRebuilding)
+            {
+                return;
+            }
+
+            if (_setShowOwnerNames != null)
+            {
+                _setShowOwnerNames(value);
+            }
+        }
+
         private void RegisterCursorWindow()
         {
             if (_cursorWindow == null || MenuWindow.AllActiveWindows.Contains(_cursorWindow))
@@ -546,14 +574,14 @@ namespace WhereIsThing
             Cursor.lockState = _previousCursorLockState;
         }
 
-        private Toggle CreateScopeToggle(Transform parent, string label, ThingLocationScope scope, float left)
+        private Toggle CreateScopeToggle(Transform parent, string label, ThingLocationScope scope, float anchorMinX, float anchorMaxX)
         {
             GameObject toggleObject = CreateRect("Scope_" + scope, parent);
             RectTransform toggleRect = toggleObject.GetComponent<RectTransform>();
-            toggleRect.anchorMin = new Vector2(0f, 0f);
-            toggleRect.anchorMax = new Vector2(0f, 0f);
-            toggleRect.sizeDelta = new Vector2(128f, 28f);
-            toggleRect.anchoredPosition = new Vector2(left + 64f, 18f);
+            toggleRect.anchorMin = new Vector2(anchorMinX, 0f);
+            toggleRect.anchorMax = new Vector2(anchorMaxX, 1f);
+            toggleRect.sizeDelta = new Vector2(-8f, 0f);
+            toggleRect.anchoredPosition = Vector2.zero;
             Image background = toggleObject.AddComponent<Image>();
             background.color = new Color(0.2f, 0.2f, 0.18f, 1f);
 
@@ -573,6 +601,38 @@ namespace WhereIsThing
             CreateText(toggleObject.transform, "Label", label, 12f, TextAlignmentOptions.Left,
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(30f, 0f), new Vector2(-4f, 0f), false, true);
             _scopeToggles[scope] = toggle;
+            return toggle;
+        }
+
+        private Toggle CreateBoolToggle(Transform parent, string name, string label, Vector2 position, Vector2 size, Action<bool> onValueChanged)
+        {
+            GameObject toggleObject = CreateRect(name, parent);
+            RectTransform toggleRect = toggleObject.GetComponent<RectTransform>();
+            toggleRect.anchorMin = new Vector2(1f, 0f);
+            toggleRect.anchorMax = new Vector2(1f, 0f);
+            toggleRect.sizeDelta = size;
+            toggleRect.anchoredPosition = position;
+            Image background = toggleObject.AddComponent<Image>();
+            background.color = new Color(0.2f, 0.2f, 0.18f, 1f);
+
+            GameObject checkObject = CreateRect("Checkmark", toggleObject.transform);
+            RectTransform checkRect = checkObject.GetComponent<RectTransform>();
+            checkRect.anchorMin = new Vector2(0f, 0.5f);
+            checkRect.anchorMax = new Vector2(0f, 0.5f);
+            checkRect.sizeDelta = new Vector2(18f, 18f);
+            checkRect.anchoredPosition = new Vector2(12f, 0f);
+            Image check = checkObject.AddComponent<Image>();
+            check.color = new Color(0.85f, 0.72f, 0.28f, 1f);
+
+            Toggle toggle = toggleObject.AddComponent<Toggle>();
+            toggle.targetGraphic = background;
+            toggle.graphic = check;
+            if (onValueChanged != null)
+            {
+                toggle.onValueChanged.AddListener(delegate(bool value) { onValueChanged(value); });
+            }
+            CreateText(toggleObject.transform, "Label", label, 12f, TextAlignmentOptions.Left,
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(30f, 0f), new Vector2(-4f, 0f), false, true);
             return toggle;
         }
 

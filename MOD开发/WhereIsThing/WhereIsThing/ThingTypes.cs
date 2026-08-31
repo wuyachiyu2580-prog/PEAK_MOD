@@ -302,12 +302,7 @@ namespace WhereIsThing
             ThingSceneTargetType.SporeCloud,
             ThingSceneTargetType.ExplodingMushroom,
             ThingSceneTargetType.Geyser,
-            ThingSceneTargetType.TrapChest,
-            ThingSceneTargetType.CheckpointFlagPlaced,
-            ThingSceneTargetType.BounceShroomPlaced,
-            ThingSceneTargetType.RopePlaced,
-            ThingSceneTargetType.PitonPlaced,
-            ThingSceneTargetType.MagicBeanVine
+            ThingSceneTargetType.TrapChest
         };
 
         private static readonly string[] SpecialWords = { "scoutmaster's soul", "scoutmastersoul" };
@@ -495,7 +490,7 @@ namespace WhereIsThing
                     case ThingSceneTargetType.Geyser: return "间歇泉";
                     case ThingSceneTargetType.TrapChest: return "陷阱箱";
                     case ThingSceneTargetType.CheckpointFlagPlaced: return "检查点旗";
-                    case ThingSceneTargetType.BounceShroomPlaced: return "踏板菇";
+                    case ThingSceneTargetType.BounceShroomPlaced: return "弹力菇";
                     case ThingSceneTargetType.RopePlaced: return "绳索";
                     case ThingSceneTargetType.PitonPlaced: return "岩钉";
                     case ThingSceneTargetType.MagicBeanVine: return "魔豆藤";

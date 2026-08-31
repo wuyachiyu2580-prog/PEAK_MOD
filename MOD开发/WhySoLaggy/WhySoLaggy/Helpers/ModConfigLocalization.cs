@@ -243,6 +243,12 @@ namespace WhySoLaggy
             return entry == null ? null : (chinese ? entry.ChineseDescription : entry.EnglishDescription);
         }
 
+        internal static string GetLocalizedCategoryText(string category, bool chinese)
+        {
+            string canonical = FindCanonicalToken(category);
+            return string.IsNullOrEmpty(canonical) ? null : GetLocalizedToken(canonical, chinese);
+        }
+
         private static void DisplayNamePostfix(object __instance, ref string __result)
         {
             ConfigEntryBase entry = TryGetConfigEntry(__instance);
@@ -262,7 +268,8 @@ namespace WhySoLaggy
         {
             _activeMenu = __instance;
             if (__originalMethod != null &&
-                (__originalMethod.Name == "ShowSettings" || __originalMethod.Name == "UpdateSectionTabs"))
+                (__originalMethod.Name == "ShowSettings" || __originalMethod.Name == "SetSection" ||
+                    __originalMethod.Name == "UpdateSectionTabs"))
             {
                 string category = __args == null ? null : __args.OfType<string>().FirstOrDefault();
                 if (!string.IsNullOrEmpty(category))
@@ -495,8 +502,9 @@ namespace WhySoLaggy
 
             foreach (TokenText token in Tokens)
             {
-                if (string.Equals(normalized, Normalize(token.English), StringComparison.Ordinal) ||
-                    string.Equals(normalized, Normalize(token.Chinese), StringComparison.Ordinal))
+                if (string.Equals(normalized, Normalize(token.English), StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(normalized, Normalize(token.Chinese), StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(normalized, Normalize(token.Key), StringComparison.OrdinalIgnoreCase))
                 {
                     return token.Key;
                 }
@@ -634,10 +642,27 @@ namespace WhySoLaggy
             }
         }
 
-        private static bool IsOwnCategory(string category)
+        internal static bool IsOwnCategory(string category)
         {
-            return string.Equals(category, WhySoLaggyPlugin.PluginName, StringComparison.Ordinal) ||
-                string.Equals(category, WhySoLaggyPlugin.PluginGuid, StringComparison.Ordinal);
+            if (string.Equals(category, WhySoLaggyPlugin.PluginName, StringComparison.Ordinal) ||
+                string.Equals(category, WhySoLaggyPlugin.PluginGuid, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            string canonical = FindCanonicalToken(category);
+            if (string.Equals(canonical, "WhySoLaggy", StringComparison.Ordinal) ||
+                ConfigEntries.Any(entry => string.Equals(entry.Section, canonical, StringComparison.Ordinal)))
+            {
+                return true;
+            }
+
+            // ModConfig uses the selected section as the category after the
+            // plugin panel has been opened. Keep this check scoped to our
+            // stable section names so another MOD's section is never treated
+            // as ours.
+            return ConfigEntries.Any(entry =>
+                string.Equals(entry.Section, category, StringComparison.Ordinal));
         }
 
         private static bool IsChinese

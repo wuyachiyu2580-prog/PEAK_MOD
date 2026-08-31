@@ -1,11 +1,19 @@
 ﻿# WhySoLaggy Recent
 
-更新时间：2026-08-28
+更新时间：2026-08-31
+
+## 1.0.4 发行包已建立
+
+- `发行/1.0.4` 已建立，包含 DLL、README、CHANGELOG、manifest、icon 和 `wuyachiyu-WhySoLaggy-1.0.4.zip`。
+- 发行 DLL 与 2.0.a profile DLL 均为 `1.0.4.0`、`157184` 字节，SHA-256 为 `CC9FCC52E825088AE254754BF30BF5E58A6A1FA8FA78C5E3DDA0A121B3B71431`。
+- ZIP SHA-256 为 `A2B6960F9FA5893EBC3434D391306A4142DAE422F744325D047327F369A0C809`，包内五个文件与发行目录对应文件一致。
+- 当前 `CoreBehaviorTests.cs` 有 18 个测试方法；旧记忆中的 9 项是过时数量。最近的 ModConfig 分类测试尚未在本轮重新执行。
+- 当前工作区还有未提交的 `ModConfigLocalization` 与测试改动，后续重新跑测试后再决定是否制作下一版包。
 
 ## 2026-08-29 部署到 2.0.a profile
 
 - `WhySoLaggy.csproj` 的 `OutputPath` 已改为 `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\`。
-- Release 重新构建成功，0 warnings / 0 errors；profile DLL 为 `1.0.4.0`、127488 字节，SHA-256 `BD141276AD97576C009A74EAC8DCAB99F7E75F354D4DE370A9F76970B3C59172`。
+- 1.0.4 Release 发行 DLL 与 profile DLL 当前均为 `1.0.4.0`、`157184` 字节，SHA-256 `CC9FCC52E825088AE254754BF30BF5E58A6A1FA8FA78C5E3DDA0A121B3B71431`。
 
 ## 2026-08-28 WhySoLaggy 1.0.4 全量修复
 
@@ -16,8 +24,8 @@
 - StructuredLogger 改为内存缓冲、每秒统一写入和 Flush，报告/退出强制落盘；CSV schema 不一致时先轮转旧文件。
 - PatchProfiler 保留精确调用数和帧级 spike，周期总耗时按采样均值估算；方法键使用完整类型和参数签名，同时兼容旧 `Type.Method` Ignore。
 - Zombie 数量改为反射读取 `ZombieManager.Instance.zombies.Count`；FieldProbe 静态根和所有监控模块的 Shutdown/Reset 已修复，插件退出会 `UnpatchSelf()`。
-- 新增 `net472` MSTest 项目，9 项测试通过；Release 构建 0 warnings / 0 errors。DLL 版本为 `1.0.4.0`，最终 SHA-256 为 `BD141276AD97576C009A74EAC8DCAB99F7E75F354D4DE370A9F76970B3C59172`。
-- 未创建 `发行\1.0.4`，也未修改已有 `发行\1.0.3`。剩余工作是双客户端实机验收远端归因、Ownership 分类、单 RPC 单记录、队列有界和同进程卸载重载。
+- 新增 `net472` MSTest 项目；历史首轮有 9 项测试通过。当前测试源码扩展到 18 项，最近的 ModConfig 分类测试需要重新执行。
+- 1.0.4 发行包已经建立；剩余工作是双客户端实机验收远端归因、Ownership 分类、单 RPC 单记录、队列有界和同进程卸载重载，以及重新执行当前 18 项测试。
 
 ## 1.0.4 测试配置
 

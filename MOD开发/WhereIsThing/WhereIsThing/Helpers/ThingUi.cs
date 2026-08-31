@@ -195,6 +195,11 @@ namespace WhereIsThing
             return Text("Locations", "显示范围");
         }
 
+        public static string PlayerNames()
+        {
+            return Text("Player names", "玩家名");
+        }
+
         public static string Ground()
         {
             return Text("Ground", "地面");
