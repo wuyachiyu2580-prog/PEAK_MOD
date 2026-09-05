@@ -42,7 +42,7 @@ namespace PlayersInfo.MonoBehaviours
         private float _lastJetpackFuel = -1f;
         private float _rowWidth;
         private float _nextRefreshTime;
-        private const float RefreshInterval = 0.15f; // 降频刷新，减少 GC
+        private const float RefreshInterval = 0.25f; // 与队友条数据刷新统一，减少 GC
         private const float JetpackFuelOffsetX = 122f;
         private const float JetpackFuelWidth = 320f;
 

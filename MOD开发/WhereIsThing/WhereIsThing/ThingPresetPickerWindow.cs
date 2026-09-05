@@ -10,6 +10,8 @@ namespace WhereIsThing
 {
     internal sealed class ThingPresetPickerWindow
     {
+        private const float MaxDistanceStep = 20f;
+        private const float MaxDistanceMaximum = 500f;
         private readonly Canvas _canvas;
         private readonly TMP_FontAsset _font;
         private readonly GameObject _root;
@@ -28,6 +30,8 @@ namespace WhereIsThing
         private readonly Button _durationMinusButton;
         private readonly Button _durationPlusButton;
         private readonly Toggle _ownerNamesToggle;
+        private readonly Slider _maxDistanceSlider;
+        private readonly TextMeshProUGUI _maxDistanceText;
         private readonly Dictionary<ThingLocationScope, Toggle> _scopeToggles = new Dictionary<ThingLocationScope, Toggle>();
         private readonly List<ThingPresetDefinition> _presets = new List<ThingPresetDefinition>();
         private GameObject _renameOverlay;
@@ -46,6 +50,7 @@ namespace WhereIsThing
         private Action _cycleScanMode;
         private Action<int> _adjustDisplayDuration;
         private Action<bool> _setShowOwnerNames;
+        private Action<float> _setMaxDistance;
         private bool _usingFallbackPresets;
         private bool _allowEditing;
         private bool _isOpen;
@@ -56,6 +61,7 @@ namespace WhereIsThing
         private ThingLocationScope _scopes;
         private ThingScanMode _scanMode;
         private float _displayDuration;
+        private float _maxDistance;
         private bool _showOwnerNames;
         private string _activePresetId;
         private string _renamingPresetId;
@@ -141,20 +147,31 @@ namespace WhereIsThing
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(270f, 52f), new Vector2(350f, 88f), false, true);
             _durationPlusButton = CreateActionButton(panel.transform, "DurationPlus", ThingUi.TimePlus(), new Vector2(358f, 52f), new Vector2(36f, 36f), delegate { AdjustDurationInternal(1); }, false);
 
-            CreateText(panel.transform, "ScopeTitle", ThingUi.ScopeTitle(), 13f, TextAlignmentOptions.Left,
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(22f, 18f), new Vector2(128f, 44f), false, true);
+            GameObject maxDistanceRow = CreateRect("MaxDistanceRow", panel.transform);
+            RectTransform maxDistanceRowRect = maxDistanceRow.GetComponent<RectTransform>();
+            maxDistanceRowRect.anchorMin = new Vector2(1f, 1f);
+            maxDistanceRowRect.anchorMax = new Vector2(1f, 1f);
+            maxDistanceRowRect.pivot = new Vector2(1f, 0.5f);
+            maxDistanceRowRect.sizeDelta = new Vector2(360f, 36f);
+            maxDistanceRowRect.anchoredPosition = new Vector2(-22f, 52f);
+            _maxDistanceText = CreateText(maxDistanceRow.transform, "MaxDistanceText", string.Empty, 12f,
+                TextAlignmentOptions.Left, new Vector2(0f, 0f), new Vector2(0f, 0.5f), new Vector2(0.3f, 1f),
+                Vector2.zero, Vector2.zero, false, true);
+            _maxDistanceSlider = CreateSlider(maxDistanceRow.transform, "MaxDistanceSlider", new Vector2(0.3f, 0.5f),
+                new Vector2(1f, 0.5f), new Vector2(0f, 0f), new Vector2(-4f, 0f), SetMaxDistanceInternal);
+
             GameObject scopeOptions = CreateRect("ScopeOptions", panel.transform);
             RectTransform scopeOptionsRect = scopeOptions.GetComponent<RectTransform>();
             scopeOptionsRect.anchorMin = new Vector2(0f, 0f);
-            scopeOptionsRect.anchorMax = new Vector2(1f, 0f);
-            scopeOptionsRect.offsetMin = new Vector2(136f, 4f);
-            scopeOptionsRect.offsetMax = new Vector2(-22f, 32f);
-            CreateScopeToggle(scopeOptions.transform, ThingUi.Ground(), ThingLocationScope.Ground, 0f, 0.25f);
-            CreateScopeToggle(scopeOptions.transform, ThingUi.Held(), ThingLocationScope.Held, 0.25f, 0.5f);
-            CreateScopeToggle(scopeOptions.transform, ThingUi.Backpack(), ThingLocationScope.Backpack, 0.5f, 0.75f);
-            CreateScopeToggle(scopeOptions.transform, ThingUi.Statue(), ThingLocationScope.Statue, 0.75f, 1f);
-            _ownerNamesToggle = CreateBoolToggle(panel.transform, "OwnerNames", ThingUi.PlayerNames(),
-                new Vector2(-97f, 110f), new Vector2(150f, 28f), SetOwnerNamesInternal);
+            scopeOptionsRect.anchorMax = new Vector2(0.78f, 0f);
+            scopeOptionsRect.offsetMin = new Vector2(22f, 28f);
+            scopeOptionsRect.offsetMax = new Vector2(-8f, 56f);
+            CreateScopeToggle(scopeOptions.transform, ThingUi.Ground(), ThingLocationScope.Ground, 0f, 0.2f);
+            CreateScopeToggle(scopeOptions.transform, ThingUi.Held(), ThingLocationScope.Held, 0.2f, 0.4f);
+            CreateScopeToggle(scopeOptions.transform, ThingUi.Backpack(), ThingLocationScope.Backpack, 0.4f, 0.6f);
+            CreateScopeToggle(scopeOptions.transform, ThingUi.Statue(), ThingLocationScope.Statue, 0.6f, 0.8f);
+            _ownerNamesToggle = CreateInlineBoolToggle(scopeOptions.transform, "OwnerNames", ThingUi.PlayerNames(),
+                0.8f, 1f, SetOwnerNamesInternal);
 
             CreateRenameDialog();
 
@@ -164,12 +181,12 @@ namespace WhereIsThing
         public bool IsOpen { get { return _isOpen; } }
 
         public void Open(IEnumerable<ThingPresetDefinition> presets, string activePresetId, bool allowEditing, bool usingFallbackPresets, ThingPresetShareMode shareMode,
-            ThingLocationScope scopes, ThingScanMode scanMode, float displayDurationSeconds, bool showOwnerNames,
+            ThingLocationScope scopes, ThingScanMode scanMode, float displayDurationSeconds, float maxDistance, bool showOwnerNames,
             Func<ThingPresetDefinition, string> summaryProvider, Action<string> usePreset, Action<string> editPreset,
             Action<string, string> renamePreset, Action<string> togglePublished, Action<string> deletePreset, Action createPreset,
             Action<ThingPresetShareMode> setShareMode,
             Action<ThingLocationScope, bool> setScope, Action cycleScanMode, Action<int> adjustDisplayDuration,
-            Action<bool> setShowOwnerNames)
+            Action<bool> setShowOwnerNames, Action<float> setMaxDistance)
         {
             _presets.Clear();
             _presets.AddRange((presets ?? Enumerable.Empty<ThingPresetDefinition>()).Where(preset => preset != null).Select(preset => preset.Clone()).ToList());
@@ -180,6 +197,7 @@ namespace WhereIsThing
             _scopes = scopes;
             _scanMode = scanMode;
             _displayDuration = Mathf.Clamp(displayDurationSeconds, 2f, 60f);
+            _maxDistance = Mathf.Round(Mathf.Clamp(maxDistance, 0f, MaxDistanceMaximum) / MaxDistanceStep) * MaxDistanceStep;
             _showOwnerNames = showOwnerNames;
             _summaryProvider = summaryProvider;
             _usePreset = usePreset;
@@ -193,6 +211,7 @@ namespace WhereIsThing
             _cycleScanMode = cycleScanMode;
             _adjustDisplayDuration = adjustDisplayDuration;
             _setShowOwnerNames = setShowOwnerNames;
+            _setMaxDistance = setMaxDistance;
             _isOpen = true;
             _previousCursorVisible = Cursor.visible;
             _previousCursorLockState = Cursor.lockState;
@@ -292,6 +311,8 @@ namespace WhereIsThing
             _durationMinusButton.gameObject.SetActive(timed);
             _durationPlusButton.gameObject.SetActive(timed);
             _ownerNamesToggle.isOn = _showOwnerNames;
+            _maxDistanceSlider.SetValueWithoutNotify(_maxDistance / MaxDistanceStep);
+            _maxDistanceText.text = ThingUi.MaxDistanceLabel(_maxDistance);
 
             foreach (KeyValuePair<ThingLocationScope, Toggle> entry in _scopeToggles)
             {
@@ -547,6 +568,21 @@ namespace WhereIsThing
             }
         }
 
+        private void SetMaxDistanceInternal(float value)
+        {
+            if (_isRebuilding)
+            {
+                return;
+            }
+
+            if (_setMaxDistance != null)
+            {
+                float snapped = Mathf.Round(Mathf.Clamp(value, 0f, MaxDistanceMaximum / MaxDistanceStep)) * MaxDistanceStep;
+                _maxDistanceSlider.SetValueWithoutNotify(snapped / MaxDistanceStep);
+                _setMaxDistance(snapped);
+            }
+        }
+
         private void RegisterCursorWindow()
         {
             if (_cursorWindow == null || MenuWindow.AllActiveWindows.Contains(_cursorWindow))
@@ -604,14 +640,15 @@ namespace WhereIsThing
             return toggle;
         }
 
-        private Toggle CreateBoolToggle(Transform parent, string name, string label, Vector2 position, Vector2 size, Action<bool> onValueChanged)
+        private Toggle CreateInlineBoolToggle(Transform parent, string name, string label, float anchorMinX,
+            float anchorMaxX, Action<bool> onValueChanged)
         {
             GameObject toggleObject = CreateRect(name, parent);
             RectTransform toggleRect = toggleObject.GetComponent<RectTransform>();
-            toggleRect.anchorMin = new Vector2(1f, 0f);
-            toggleRect.anchorMax = new Vector2(1f, 0f);
-            toggleRect.sizeDelta = size;
-            toggleRect.anchoredPosition = position;
+            toggleRect.anchorMin = new Vector2(anchorMinX, 0f);
+            toggleRect.anchorMax = new Vector2(anchorMaxX, 1f);
+            toggleRect.sizeDelta = new Vector2(-8f, 0f);
+            toggleRect.anchoredPosition = Vector2.zero;
             Image background = toggleObject.AddComponent<Image>();
             background.color = new Color(0.2f, 0.2f, 0.18f, 1f);
 
@@ -627,41 +664,59 @@ namespace WhereIsThing
             Toggle toggle = toggleObject.AddComponent<Toggle>();
             toggle.targetGraphic = background;
             toggle.graphic = check;
-            if (onValueChanged != null)
-            {
-                toggle.onValueChanged.AddListener(delegate(bool value) { onValueChanged(value); });
-            }
+            toggle.onValueChanged.AddListener(delegate(bool value) { onValueChanged(value); });
             CreateText(toggleObject.transform, "Label", label, 12f, TextAlignmentOptions.Left,
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(30f, 0f), new Vector2(-4f, 0f), false, true);
             return toggle;
         }
 
-        private TextMeshProUGUI CreateRowButton(Transform parent, string name, string label, float right, UnityAction action, float width)
+        private Slider CreateSlider(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax,
+            Vector2 offsetMin, Vector2 offsetMax, Action<float> onValueChanged)
         {
-            return CreateButton(parent, name, new Vector2(right - width, -16f), new Vector2(width, 28f), label, action, true);
-        }
+            GameObject sliderObject = CreateRect(name, parent);
+            RectTransform sliderRect = sliderObject.GetComponent<RectTransform>();
+            sliderRect.anchorMin = anchorMin;
+            sliderRect.anchorMax = anchorMax;
+            sliderRect.offsetMin = offsetMin + new Vector2(0f, -10f);
+            sliderRect.offsetMax = offsetMax + new Vector2(0f, 10f);
 
-        private TextMeshProUGUI CreateLayoutText(Transform parent, string name, string value, float size, float preferredHeight, bool wrap,
-            TextAlignmentOptions alignment = TextAlignmentOptions.Left)
-        {
-            GameObject textObject = CreateRect(name, parent);
-            LayoutElement element = textObject.AddComponent<LayoutElement>();
-            element.minHeight = preferredHeight;
-            element.preferredHeight = preferredHeight;
-            TextMeshProUGUI text = textObject.AddComponent<TextMeshProUGUI>();
-            text.font = _font;
-            text.fontSize = Mathf.Clamp(size, 8f, 24f);
-            text.alignment = alignment;
-            text.text = value;
-            text.color = new Color(0.9f, 0.88f, 0.8f, 1f);
-            text.raycastTarget = false;
-            text.enableAutoSizing = true;
-            text.fontSizeMin = Mathf.Max(9f, size - 4f);
-            text.fontSizeMax = Mathf.Clamp(size, 9f, 24f);
-            text.textWrappingMode = wrap ? TextWrappingModes.Normal : TextWrappingModes.NoWrap;
-            text.overflowMode = wrap ? TextOverflowModes.Truncate : TextOverflowModes.Ellipsis;
-            text.margin = new Vector4(2f, 0f, 2f, 0f);
-            return text;
+            Image background = sliderObject.AddComponent<Image>();
+            background.color = new Color(0.2f, 0.2f, 0.18f, 1f);
+
+            GameObject fillArea = CreateRect("FillArea", sliderObject.transform);
+            RectTransform fillAreaRect = fillArea.GetComponent<RectTransform>();
+            fillAreaRect.anchorMin = new Vector2(0f, 0.25f);
+            fillAreaRect.anchorMax = new Vector2(1f, 0.75f);
+            fillAreaRect.offsetMin = new Vector2(8f, 0f);
+            fillAreaRect.offsetMax = new Vector2(-8f, 0f);
+            GameObject fill = CreateRect("Fill", fillArea.transform);
+            RectTransform fillRect = fill.GetComponent<RectTransform>();
+            fillRect.anchorMin = Vector2.zero;
+            fillRect.anchorMax = Vector2.one;
+            fillRect.offsetMin = Vector2.zero;
+            fillRect.offsetMax = Vector2.zero;
+            Image fillImage = fill.AddComponent<Image>();
+            fillImage.color = new Color(0.85f, 0.72f, 0.28f, 1f);
+
+            GameObject handle = CreateRect("Handle", sliderObject.transform);
+            RectTransform handleRect = handle.GetComponent<RectTransform>();
+            handleRect.sizeDelta = new Vector2(18f, 28f);
+            Image handleImage = handle.AddComponent<Image>();
+            handleImage.color = new Color(0.92f, 0.9f, 0.82f, 1f);
+
+            Slider slider = sliderObject.AddComponent<Slider>();
+            slider.minValue = 0f;
+            slider.maxValue = MaxDistanceMaximum / MaxDistanceStep;
+            slider.wholeNumbers = true;
+            slider.direction = Slider.Direction.LeftToRight;
+            slider.fillRect = fillRect;
+            slider.handleRect = handleRect;
+            slider.targetGraphic = handleImage;
+            if (onValueChanged != null)
+            {
+                slider.onValueChanged.AddListener(delegate(float value) { onValueChanged(value); });
+            }
+            return slider;
         }
 
         private TextMeshProUGUI CreateLayoutButton(Transform parent, string name, string label, float preferredWidth, UnityAction action)

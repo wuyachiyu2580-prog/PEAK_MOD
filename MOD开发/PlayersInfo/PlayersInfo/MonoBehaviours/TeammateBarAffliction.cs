@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayersInfo.MonoBehaviours
 {
@@ -11,6 +12,7 @@ namespace PlayersInfo.MonoBehaviours
         public CharacterAfflictions.STATUSTYPE afflictionType;
         public bool isPetrify;
         public RectTransform rtf;
+        public Image icon;
         public float size;
 
         public float width
@@ -26,17 +28,22 @@ namespace PlayersInfo.MonoBehaviours
             }
         }
 
-        public void Initialize(BarAffliction source)
+        public void Initialize(BarAffliction source, Transform ownershipRoot)
         {
             if (source == null) return;
             afflictionType = source.afflictionType;
             isPetrify = source.isPetrify;
             rtf = source.rtf != null ? source.rtf : GetComponent<RectTransform>();
+            icon = source.icon != null && ownershipRoot != null
+                && source.icon.transform.IsChildOf(ownershipRoot)
+                    ? source.icon
+                    : null;
             size = 0f;
             width = 0f;
 
-            if (source.icon != null)
-                source.icon.transform.localScale = Vector3.one;
+            if (icon != null)
+                icon.transform.localScale = Vector3.one;
+            ApplyConfiguredIconVisibility();
         }
 
         public void ResetVisual()
@@ -48,6 +55,7 @@ namespace PlayersInfo.MonoBehaviours
 
         public void UpdateVisual(Character target, float fullWidth, float minWidth)
         {
+            ApplyConfiguredIconVisibility();
             if (target == null || target.Equals(null) || target.data == null)
             {
                 ResetVisual();
@@ -73,6 +81,7 @@ namespace PlayersInfo.MonoBehaviours
 
         public void SyncVisualImmediate(Character target, float fullWidth, float minWidth)
         {
+            ApplyConfiguredIconVisibility();
             if (target == null || target.Equals(null) || target.data == null)
             {
                 ResetVisual();
@@ -105,6 +114,15 @@ namespace PlayersInfo.MonoBehaviours
             {
                 return 0f;
             }
+        }
+
+        private void ApplyConfiguredIconVisibility()
+        {
+            if (icon == null) return;
+            bool visible = PlayersInfoPlugin.CfgAfflictionIconDisplayMode == null
+                || PlayersInfoPlugin.CfgAfflictionIconDisplayMode.Value
+                    == PlayersInfoPlugin.AfflictionIconDisplayMode.ShowAll;
+            if (icon.enabled != visible) icon.enabled = visible;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿# PEAK MOD Memory
 
-更新时间：2026-08-31
+更新时间：2026-09-06
 
 这是项目记忆的唯一入口。目标是让新的 AI 智能体在 1 到 3 分钟内知道：当前有哪些 MOD、近期做了什么、还有什么没做、哪些规则不能违反。
 
@@ -35,14 +35,13 @@
 - 用户明确要求 `DreamyAscent永久暂停`。
 - `DreamyAscent` 现在是永久暂停/归档项目；除非用户明确恢复，不再继续 DA 的功能、日志、构建、诊断或 TODO。
 
-## 2026-08-17 PlayersInfo 状态
+## 2026-09-06 PlayersInfo 状态
 
-- `PlayersInfo` 当前源码和 profile DLL 版本为 `0.2.1`。
-- 0.2.1 已整合稳定玩家条绑定、统一观战目标、独立异常组件、饥饿倒计时、队友耐久条、熟食图标颜色，以及按背包实际容量显示内容/喷气背包燃料的三级配置。
-- 本地额外体力条不再由 PlayersInfo 重挂层级或强制改宽度，恢复交给 PEAK 原版 `StaminaBar.Update()` 控制缩放、动画、黑边、闪电图标和石化布局；PlayersInfo 只在绿色填充内部显示当前额外体力整数，例如 `40`。
-- 观战/灵魂状态继续使用 `observedCharacter -> localCharacter` 的统一目标；队友额外图形条继续隐藏。队友物品栏中的紧凑喷气背包燃料条是独立成熟改动，本轮明确保留。
-- PlayersInfo 直接编译输出 DLL 路径：`C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`；后续构建直接写入该 profile，不再输出到测试环境。
-- 当前 Release 构建为 `0` warnings / `0` errors；profile DLL 为 `0.2.1.0`、`83968` 字节，时间 `2026/8/17 18:25:47`。本地额外条和 0.2.1 新增功能仍需 PEAK 2.1.a 实机验证。
+- `PlayersInfo` 当前版本为 `0.2.3`，目标 PEAK `2.4.b`。新增三档异常图标显示、死亡/晕倒队友距离过滤修复、零体力饥饿倒计时原生可用区域居中，以及统一 `0.25s` 低频刷新。
+- 图标配置默认 `ShowAll`，可隐藏队友或全部异常图标；中英文 BepInEx/ModConfig 名称、说明和枚举值已同步，异常条颜色、宽度和数字保持不变。
+- 正常及晕倒队友使用当前躯干位置；死亡队友使用死亡前 `VirtualCenter`。名册内超距成员不再误用 1.5 秒丢失保留，5 米滞回仍保留。
+- 当前 Release 构建为 `0 warnings / 0 errors`；profile 与发行 DLL 均为 `0.2.3.0`、`98304` 字节、SHA-256 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`。`发行/0.2.3` 已有完整 DLL/文档/manifest/icon/ZIP。
+- 日志审计未发现 PlayersInfo warning/error；旧 `[PI-DIAG]` 来自调试门控前 DLL。三档图标、死亡/晕倒跨范围、零体力倒计时、观战中心及 2.4.b 多人边界仍需干净会话实机验证。下次接手先读 `mods/PlayersInfo/temp/2026-09-06.md`。
 
 ## 2026-06-04 PlayersInfo 历史发布状态
 
@@ -76,12 +75,13 @@
 
 - `ItemInfoCN`：物品信息中文化（1.0.0 已发布）。入口：`mods/ItemInfoCN/README.md`。
 - `Lantern_ShootZombies_Night`：灯笼、打僵尸、日夜和寒冷/回暖相关功能整合（0.2.1）。入口：`mods/Lantern_ShootZombies_Night/README.md`。
-- `PlayersInfo`：队友状态、物品栏和观战相关 HUD 信息（0.2.1）。项目直接编译输出到 PEAK 2.0.a profile。入口：`mods/PlayersInfo/README.md`。
+- `PlayersInfo`：队友状态、物品栏和观战相关 HUD 信息（0.2.3 / PEAK 2.4.b，发行包已建立，功能验收未完全结束）。项目直接编译输出到 PEAK 2.0.a profile。入口：`mods/PlayersInfo/README.md`。
+- `StateKeeper`：PEAK 局数据采集 MOD，当前 0.1.0 开发中；已完成 StateKeeper 改名、本机旧数据一次迁移、5Hz 核心采样、GZip 分块和后台写盘。入口：`mods/StateKeeper/README.md`。
 - `OldPC`：本地旧电脑视觉模式和望远镜清晰模式（0.0.1 开发中）。入口：`mods/OldPC/README.md`。
 - `DreamyAscent`：地形定制中文化与功能修复（永久暂停/归档）。入口：`mods/DreamyAscent/README.md`。
 - `WhySoLaggy`：性能、RPC、Harmony 和异常行为观测（1.0.4 已建立发行包，PEAK 2.3.a；待双客户端/卸载重载验收）。入口：`mods/WhySoLaggy/README.md`。
 - `TerrainCustomiserCN`：TerrainCustomiser 中文 UI 版（0.1.2 已发布，对应原版 0.3.2）。入口：`mods/TerrainCustomiserCN/README.md`。
-- `WhereIsThing`：PEAK 2.1.a 多物品位置显示 MOD（0.1.0 已发布，后续按实机和玩家反馈收口）。入口：`mods/WhereIsThing/README.md`。
+- `WhereIsThing`：多物品位置显示 MOD，当前 `0.1.2` / PEAK `2.4.b` 测试中；放置体来源、绳索/蘑菇 owner、系统目标排除和 ItemSpawnerEnhanced 分类校正已编译到正式测试 profile，待房主/客户端实机验收，尚未更新发行目录。入口：`mods/WhereIsThing/README.md`。
 - `WhereIsMyAmulet`：护符定位 MOD（1.0.3 已发布）；Scout Statue 映射已修正，定时/多人验收和惊喜模式仍待补充。入口：`mods/WhereIsMyAmulet/README.md`。
 
 ## 写入规则（四同步铁律）

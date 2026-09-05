@@ -81,6 +81,9 @@ namespace PlayersInfo.Helpers
                 SetDescription(PlayersInfoPlugin.CfgShowExtraStaminaCap,
                     LanguageHelper.L("Show teammate extra stamina as current/cap. Off shows current only.",
                         "队友额外体力显示为 当前/上限。关闭后只显示当前值。"));
+                SetDescription(PlayersInfoPlugin.CfgAfflictionIconDisplayMode,
+                    LanguageHelper.L("Show status icons for everyone, hide teammate icons, or hide all status icons.",
+                        "选择不隐藏状态图标、隐藏队友状态图标，或隐藏所有人的状态图标。"));
                 SetDescription(PlayersInfoPlugin.CfgInventoryDisplayMode,
                     LanguageHelper.L("Choose whether teammate inventory is hidden, shows contents only, or also shows jetpack fuel.",
                         "选择隐藏队友物品栏、仅显示物品内容，或同时显示喷气背包燃料。"));
@@ -223,6 +226,7 @@ namespace PlayersInfo.Helpers
                 case "EnableStaminaBar": return zh ? "队友体力条" : "Teammate Bars";
                 case "ShowStaminaValue": return zh ? "显示体力数字" : "Stamina Values";
                 case "ShowExtraStaminaCap": return zh ? "显示额外体力上限" : "Extra Stamina Cap";
+                case "AfflictionIconDisplayMode": return zh ? "状态图标显示" : "Status Icons";
                 case "EnableInventoryRow": return zh ? "队友物品栏显示" : "Teammate Inventory Display";
                 case "Anchor": return zh ? "HUD 锚点" : "HUD Anchor";
                 case "OffsetX": return zh ? "水平偏移" : "Offset X";
@@ -237,6 +241,9 @@ namespace PlayersInfo.Helpers
                 case "ContentsOnly": return zh ? "仅显示物品内容" : "Contents Only";
                 case "ContentsAndJetpackFuel": return zh ? "物品内容与喷气背包燃料" : "Contents and Jetpack Fuel";
                 case "ContentsandJetpackFuel": return zh ? "物品内容与喷气背包燃料" : "Contents and Jetpack Fuel";
+                case "ShowAll": return zh ? "不隐藏图标" : "Show All Icons";
+                case "HideTeammates": return zh ? "隐藏队友图标" : "Hide Teammate Icons";
+                case "HideAll": return zh ? "隐藏全部图标" : "Hide All Icons";
                 case "RoundStaminaValue": return zh ? "体力取整" : "Round Stamina";
                 case "DebugLogging": return zh ? "诊断日志" : "Debug Logging";
                 case "TopLeft": return zh ? "左上" : "Top Left";

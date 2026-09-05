@@ -1,10 +1,32 @@
 # WhereIsThing Decisions
 
-更新时间：2026-08-19
+更新时间：2026-09-06
+
+## 物品分类决策
+
+- WhereIsThing 保持一个物品只属于一个展示分类；不得直接改成 ItemSpawnerEnhanced 的可重叠过滤标签，否则会改变现有选择窗口语义。
+- 分类优先级固定为：特殊物品游戏标签、神秘游戏标签、精确 prefab 覆盖、食物游戏标签、用途关键词、`Misc`。精确覆盖用于解决 `pack`、`dart`、`fungus` 等子串造成的误判。
+- ItemSpawnerEnhanced 的审阅名单只作为分类证据和回归清单；其插件自述基线为 PEAK 2.1.a。当前 137 个审阅 prefab 虽已确认仍存在于 2.4.b 资源中，仍不得自动覆盖 WhereIsThing 的定位用途分类。
+- 可食用性不覆盖定位用途：Early Worm、Beehive 归生物，Scorpion 与场景目标合并归危险生物，棋子归玩具，Honeycomb 归食物。
+- `Deployable` 不新增为窗口分类，也不代表能可靠显示放置者；玩家放置目标继续按攀爬、生存、武器等用途分类，owner 仍由现有纯客户端证据决定。
+- 不直接采用 ItemSpawnerEnhanced 的默认隐藏名单；Prop、Variant 和内部物品继续由同名合并与现有目录规则处理，避免漏掉真实场景实例。
+
+## PEAK 2.4.b 放置体与 owner 决策
+
+- 当前反编译/编译基线是 `C:\SteamLibrary\steamapps\common\PEAK` 的 `2.4.b`，不得回到 1.65.a 或 2.3.a 地址作为当前事实。
+- 玩家放置体使用物品目录行为组件指向的生成 prefab 做正向识别，不得只看通用组件类型或对象名黑名单。
+- 绳索 owner 的权威来源是已知物品锚点上的玩家 PhotonView；绳索本体只提供 anchored 状态和显示位置关系。系统、机场、神庙、`PeakSequence` 和可破坏锚点绳索一律排除。
+- `JungleVine` 本身不足以证明来自锁链发射器；必须命中 `VineShooter.vinePrefab`，同时排除 `BreakableBridge`。
+- 蘑菇的玩家名不增加 RPC/房间属性。仅使用本地收到的 `OnItemThrown` 与 `lastThrownCharacter` 证据做严格唯一匹配；无法确认放置者时显示标签但不显示玩家名。
+- 魔豆仍然只显示名称和距离：`InstantiateRoomObject` 不保留可靠种植者，纯客户端条件下不得猜 owner。
+- owner 只在首次分类、有限延迟重试或状态变化时解析并缓存；不得恢复每帧父子层级搜索。
+- 未分类 PhotonView 只允许 2 秒内有限重试，并受每帧数量/时间预算限制；5 秒校验不得恢复成单帧全量重分类。
+- WhereIsThing 必须是只读定位工具：不得为修标签或 owner 逻辑销毁道具、清空物品栏、补调消耗或拦截原版放置流程。
+- `0.1.2` 仍处于测试收口；未经房主/客户端验收前，不更新发行目录、不重打 ZIP。
 
 ## 数据来源
 
-- 物品名单必须来自 2.1.a `ItemDatabase.itemLookup`，不维护容易过期的硬编码 ID 清单。
+- 物品名单必须来自当前游戏的 `ItemDatabase.itemLookup`，不维护容易过期的硬编码 ID 清单；早期规则最初在 2.1.a 建立，2.4.b 继续沿用动态目录原则。
 - 地面和手持目标按真实 `Item` 实例跟踪；背包内槽位没有独立可用的地面 Transform，因此显示承载该物品的落地背包位置。
 - 同一英文游戏显示名的多个 Item prefab 合并为一个选择组；组内保留全部 itemID，避免窗口出现大量重名项，也不丢失实际变体。
 - 旧版 `SelectedItemIds` 若只命中组内一个 ID，首次加载目录时扩展为该组所有 ID，避免窗口合并但扫描仍只跟踪单一变体。
@@ -30,7 +52,7 @@
 
 ## 禁止回退
 
-- 不要将 2.1.a 动态数据库改回固定物品名单。
+- 不要将动态 `ItemDatabase` 改回固定物品名单。
 - 不要把背包槽位 prefab 当成真实场景物体直接创建或移动。
 - 不要把 `Luggage` 强行伪装成 Item 或分配虚构 itemID；它是 Spawner，应走 `Luggage.ALL_LUGGAGE`。
 - 不要用 MOD 自造名称覆盖游戏已有翻译；新增翻译只能作为游戏表缺失时的兜底。

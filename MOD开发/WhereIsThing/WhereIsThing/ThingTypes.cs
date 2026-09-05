@@ -317,7 +317,66 @@ namespace WhereIsThing
         private static readonly string[] CreatureWords = { "beehive", "bird", "beetle", "scorpion", "spider", "frog", "bug", "egg", "moth", "snake" };
         private static readonly string[] SurvivalToolWords = { "checkpoint flag", "conch", "magic bean", "megaphone", "portable stove", "firewood", "stick", "stone" };
         private static readonly string[] ToyWords = { "bishop", "basketball", "ball", "frisbee", "king", "knight", "pawn", "queen", "rook", "toy", "bingbong", "boombox", "record" };
+        private static readonly Dictionary<string, string> ExactCategoryOverrides = BuildExactCategoryOverrides();
         private static readonly MethodInfo GetSpawnPoolMethod = typeof(Spawner).GetMethod("GetSpawnPool", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        private static Dictionary<string, string> BuildExactCategoryOverrides()
+        {
+            return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "Jetpack", "Mobility" },
+                { "Rocketpack", "Mobility" },
+                { "Heat Pack", "Medicine" },
+                { "HealingDart Variant", "Medicine" },
+                { "HealingPuffShroom", "Medicine" },
+                { "Anti-Rope Spool", "Mystical" },
+                { "RopeShooterAnti", "Mystical" },
+                { "Bugle_Magic", "Mystical" },
+                { "Bugle_Scoutmaster Variant", "Mystical" },
+                { "Warp Compass", "Mystical" },
+                { "Faerie Lantern", "Mystical" },
+                { "Lantern_Faerie", "Mystical" },
+                { "RitualDagger", "Mystical" },
+                { "Cure-All", "Mystical" },
+                { "PandorasBox", "Mystical" },
+                { "ScoutEffigy", "Mystical" },
+                { "Cursed Skull", "Mystical" },
+                { "BookOfBones", "Mystical" },
+                { "EarlyWorm", "Creatures" },
+                { "Beehive", "Creatures" },
+                { "Item_Honeycomb", "Food" },
+                { "Scorpion", "Hostile Creatures" },
+                { "C_Bishop_f", "Toys and Sports" },
+                { "C_Bishop_f Variant", "Toys and Sports" },
+                { "C_Bishop_m", "Toys and Sports" },
+                { "C_Bishop_m Variant", "Toys and Sports" },
+                { "C_King", "Toys and Sports" },
+                { "C_King Variant", "Toys and Sports" },
+                { "C_Knight", "Toys and Sports" },
+                { "C_Knight Variant", "Toys and Sports" },
+                { "C_Pawn_f", "Toys and Sports" },
+                { "C_Pawn_f Variant", "Toys and Sports" },
+                { "C_Pawn_m", "Toys and Sports" },
+                { "C_Pawn_m Variant", "Toys and Sports" },
+                { "C_Queen", "Toys and Sports" },
+                { "C_Queen Variant", "Toys and Sports" },
+                { "C_Rook_f", "Toys and Sports" },
+                { "C_Rook_f Variant", "Toys and Sports" },
+                { "C_Rook_m", "Toys and Sports" },
+                { "C_Rook_m Variant", "Toys and Sports" },
+                { "ShelfShroom", "Survival Tools" },
+                { "BounceShroom", "Survival Tools" },
+                { "CloudFungus", "Survival Tools" },
+                { "MagicBean", "Survival Tools" },
+                { "Flag_Plantable_Checkpoint", "Survival Tools" },
+                { "PortableStovetopItem", "Survival Tools" },
+                { "ChainShooter", "Weapons and Explosives" },
+                { "ScoutCannonItem", "Weapons and Explosives" },
+                { "RopeSpool", "Climbing Gear" },
+                { "RopeShooter", "Climbing Gear" },
+                { "ClimbingSpike", "Climbing Gear" }
+            };
+        }
 
         public static List<ThingTargetDefinition> Load()
         {
@@ -751,13 +810,19 @@ namespace WhereIsThing
             }
 
             Item.ItemTags tags = item.itemTags;
-            if ((tags & (Item.ItemTags.ScoutAmulet | Item.ItemTags.GoldenIdol | Item.ItemTags.BookOfBones | Item.ItemTags.BingBong)) != 0)
+            if ((tags & (Item.ItemTags.ScoutAmulet | Item.ItemTags.GoldenIdol | Item.ItemTags.BingBong)) != 0)
             {
                 return "Special";
             }
             if ((tags & Item.ItemTags.Mystical) != 0)
             {
                 return "Mystical";
+            }
+
+            string exactCategory;
+            if (item.gameObject != null && ExactCategoryOverrides.TryGetValue(item.gameObject.name, out exactCategory))
+            {
+                return exactCategory;
             }
 
             if (item.GetComponent<Peak.EarlyWorm>() != null || ContainsAny(item.gameObject.name.ToLowerInvariant(), new[] { "earlyworm" }))

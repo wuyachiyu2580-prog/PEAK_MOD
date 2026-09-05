@@ -6,6 +6,7 @@ namespace PlayersInfo.Helpers
 {
     /// <summary>
     /// 统一日志入口 + 节流。所有模块只用 PluginLogger.Info/Warn/Error，不要直接 Debug.Log。
+    /// 诊断信息使用 Debug/ThrottleDebug，由 DebugLogging 配置控制。
     /// ThrottleInfo 在同 key 的 intervalSec 秒内只打一次，避免刷屏。
     /// </summary>
     internal static class PluginLogger

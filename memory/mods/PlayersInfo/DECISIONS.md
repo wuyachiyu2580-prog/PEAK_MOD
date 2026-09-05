@@ -1,6 +1,6 @@
 # PlayersInfo Decisions
 
-Last updated: 2026-08-19
+Last updated: 2026-09-06
 
 ## Architecture
 
@@ -50,6 +50,15 @@ Last updated: 2026-08-19
 - Teammate infinite stamina is detected from the synchronized `Peak.Afflictions.AfflictionType.InfiniteStamina` entry, with `Character.infiniteStam` used only where locally available. Do not assume the remote `infiniteStam` flag is networked.
 - While a teammate infinite-stamina effect is active, freeze the last reliable pre-effect main-stamina value for both the fill width and number. Restore live `CharacterSyncData` stamina after the effect ends. Reset this state when the driver target changes or the HUD is rebuilt.
 - Do not center a teammate green fill against the full 100% bar as a fallback. A valid fill must be sized from the explicit teammate display value and the bar's full width; the number must remain attached to the green fill.
+
+## 0.2.3 Decisions
+
+- `AfflictionIconDisplayMode` has exactly three values: `ShowAll` (default), `HideTeammates`, and `HideAll`. Icon hiding is display-only: it toggles only `Image.enabled` on icon components that are proven to belong to the teammate clone or the local vanilla stamina HUD. It must not alter affliction bar width, color, value text, extra-stamina, shield, campfire, or inventory visuals.
+- Teammate distance filtering uses a finite safe-position resolver. Normal, `passedOut`, and `fullyPassedOut` states use the current torso position. `dead` uses `VirtualCenter` from the last living position, avoiding the death-space teleport. A failed position read skips that character only. The 1.5-second missing-roster grace applies only to players absent from the current roster, never to roster members that are merely out of range; the 5 m hysteresis and `NearbyRange=0` unlimited mode remain.
+- Zero-stamina local hunger countdown uses a separately created text under the native `StaminaBar.maxStaminaBar`. Its width and position follow the live native bar, whose available region is reduced by `statusSum`; the countdown is shown only when the host is active and its measured width fits. Before true zero, the countdown stays after the stamina value only when the green fill has enough measured space, otherwise it is hidden rather than moved.
+- Low-frequency local and teammate refreshes use `0.25s` consistently. This cadence does not replace higher-frequency bar animation or other dirty-driven visual updates that need responsiveness.
+- Diagnostic snapshots and implementation probes must go through `Advanced.DebugLogging`; normal gameplay logs stay quiet. Warnings/errors retain their normal severity and are not hidden by the debug switch.
+- The 0.2.3 change set remains display-only and targets PEAK 2.4.b. Do not copy PeakStatsEx's hard-coded hierarchy lookup, per-frame distance sort, or gameplay/state handling; only the independent local countdown host and isolated icon ownership ideas are retained.
 
 ## Diagnostics
 

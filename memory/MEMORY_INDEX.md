@@ -1,6 +1,6 @@
 ﻿# Memory Index
 
-更新时间：2026-08-31
+更新时间：2026-09-06
 
 ## 当前结构
 
@@ -31,7 +31,7 @@
 - 当天临时文件命名为 `mods/<ModName>/temp/YYYY-MM-DD.md`。
 - 每形成 3 次明确的阶段性判断、排查结论或方案取舍，就追加一次摘要。
 - 上下文压缩、会话中断或换 AI 后，先读该 MOD 最新临时 MD，再读正式四件套。
-- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`WhySoLaggy/temp/2026-08-31.md`、`WhereIsMyAmulet/temp/2026-08-31.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`。
+- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`WhySoLaggy/temp/2026-08-31.md`、`WhereIsMyAmulet/temp/2026-08-31.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`、`StateKeeper/temp/2026-09-06.md`。
 
 ### ItemInfoCN（1.0.0 已发布）
 
@@ -53,6 +53,14 @@
 - `mods/PlayersInfo/RECENT.md`：含 2026-08-17 本地额外体力条恢复原版层级/缩放控制、当前值内嵌显示、观战目标保留、队友额外图形条隐藏和物品栏燃料条保留结论，以及此前 0.2.1 功能历史。
 - `mods/PlayersInfo/DECISIONS.md`：只读展示不发 RPC、HUD 架构、原版负责本地额外条布局、观战目标、队友额外条抑制、燃料条保留和禁止整体回退边界。
 - `mods/PlayersInfo/FILES.md`：源码路径、项目文件、0.2.1 版本和当前 DLL 输出路径（含 `Helpers/FontHelper.cs`、`Helpers/DisplayCharacterHelper.cs`、`MonoBehaviours/TeammateBarAffliction.cs`）。
+
+### StateKeeper（0.1.0 / 开发中）
+
+- `mods/StateKeeper/README.md`：项目定位、采集内容、RunId 结束判定、存储结构和当前路径。
+- `mods/StateKeeper/RECENT.md`：StateKeeper 改名、本机旧数据迁移、体力阈值和性能优化停点。
+- `mods/StateKeeper/DECISIONS.md`：版本、GUID、采样频率、事件降噪、后台写盘和禁止回退项。
+- `mods/StateKeeper/FILES.md`：源码、测试工程、构建命令、profile 输出和数据结构。
+- `mods/StateKeeper/temp/2026-09-06.md`：本轮恢复入口，含旧数据分析结果和下一步实机验证。
 
 ### DreamyAscent（永久暂停/归档）
 
@@ -102,14 +110,16 @@
 - `mods/PeakMapBrowser/FILES.md`：客户端/服务端路径、关键源码、API 文档和构建命令。
 - `mods/PeakMapBrowser/temp/2026-07-30.md`：0.1.1 发布、安全改动和线上退出接口验证摘要。
 
-### WhereIsThing（0.1.1 已发布，待反馈收口）
+### WhereIsThing（0.1.2 / PEAK 2.4.b / 测试中）
 
-- `mods/WhereIsThing/README.md`：多物品位置显示能力、动态类别初稿、0.1.1 发布状态和接手入口。
-- `mods/WhereIsThing/RECENT.md`：2.1.a 接口复查、已实现功能、发布状态和剩余验证。
-- `mods/WhereIsThing/DECISIONS.md`：动态 ItemDatabase、游戏 Localization、快捷键、窗口和背包位置边界。
-- `mods/WhereIsThing/FILES.md`：源码路径、依赖、构建命令和输出位置。
-- `mods/WhereIsThing/PLAN.md`：分阶段研究、实机验证、收口和发布计划。
-- `mods/WhereIsThing/temp/2026-08-14.md`：当前阶段压缩恢复摘要。
+- `mods/WhereIsThing/README.md`：0.1.2 当前能力、2.4.b 测试状态、owner 边界和分类审计入口。
+- `mods/WhereIsThing/RECENT.md`：2.4.b 放置来源索引、绳索/蘑菇 owner 修复、分类校正、正式测试 DLL 和未完成验收。
+- `mods/WhereIsThing/DECISIONS.md`：互斥用途分类、ItemSpawnerEnhanced 证据边界、纯客户端 owner、系统排除和禁止回退项。
+- `mods/WhereIsThing/FILES.md`：拆分后的 discovery/scene/placed-source 源码、2.4.b 依赖、测试 DLL/hash 和发行目录边界。
+- `mods/WhereIsThing/PLAN.md`：0.1.2 房主/客户端正反例、分类回归、生命周期和性能验收计划。
+- `mods/WhereIsThing/temp/2026-09-04.md`：2.4.b 当前停点、测试 DLL hash 和下一步恢复摘要。
+- `mods/WhereIsThing/temp/2026-09-06.md`：ItemSpawnerEnhanced 分类审计、51 项精确覆盖、正式 profile 构建和最新 DLL hash。
+- `mods/WhereIsThing/temp/2026-08-14.md`、`temp/2026-08-16.md`：2.1.a 早期开发历史。
 
 ### WhereIsMyAmulet（1.0.3 已发布）
 
@@ -122,7 +132,9 @@
 
 ## 当前重点
 
-- `WhereIsThing` 0.1.1 非 ZIP 发行目录已完成；当前重点是根据实机和玩家反馈继续确认重名合并、行李箱目标、场景危险/地标、雕像碎片、自适应窗口、中文字体、鼠标恢复和大量目标性能。
+- `WhereIsThing` 当前为 `0.1.2` / PEAK `2.4.b` 测试阶段；分类校正已编译到正式测试 profile，重点是实机验证分类窗口、四种绳索、岩钉、三种蘑菇及 owner，并确认机场/神庙/PeakSequence/可破坏绳索和海滩桥不会误报。验收前不更新发行目录、不创建 ZIP。
+
+- `StateKeeper` 当前为 `0.1.0` 开发阶段；重点是使用改名后的 DLL 进行长时间多人实机验证，比较 `StaminaEventThreshold=0.01` 的事件量、GZip 体积、GC 和结算尖峰。分析面板和发行包均暂缓。
 
 - `Lantern_ShootZombies_Night` 当前重点是实机验证客机本地燃料权威：有备用池时只降备用池、不降灯燃料，且远端 fuel 下降不覆盖本地。
 - `PlayersInfo` 的 0.2.0 发布准备记录已归档；当前状态以 0.2.1 专属 memory 四件套和 2026-08-17 临时记忆为准。本地额外条已恢复 PEAK 原版层级/缩放控制，仍待实机确认布局、石化、观战、队友额外条抑制、背包燃料和性能。

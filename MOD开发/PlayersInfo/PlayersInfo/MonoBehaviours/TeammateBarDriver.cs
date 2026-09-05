@@ -82,7 +82,7 @@ namespace PlayersInfo.MonoBehaviours
         private int _lastExtraCapShownInt = int.MinValue;
         private bool _lastExtraShownWithCap = true;
         private float _nextValueRefreshTime;
-        private const float ValueRefreshInterval = 0.15f;
+        private const float ValueRefreshInterval = 0.25f;
         private float _nextAfflictionTextRefreshTime;
         private const float AfflictionTextRefreshInterval = 0.5f;
         private float _nextIdentityRefreshTime;
@@ -189,7 +189,7 @@ namespace PlayersInfo.MonoBehaviours
                 }
             }
             _nextDiagnosticLogTime = 0f;
-            PluginLogger.Info("[PI-DIAG][Bind] driver=" + GetInstanceID()
+            PluginLogger.Debug("[PI-DIAG][Bind] driver=" + GetInstanceID()
                 + " target=" + SafeGetName(c)
                 + " rootSelf=" + gameObject.activeSelf
                 + " rootHierarchy=" + gameObject.activeInHierarchy
@@ -207,7 +207,7 @@ namespace PlayersInfo.MonoBehaviours
         {
             if (Target == null || Target.Equals(null) || Target.data == null)
             {
-                PluginLogger.ThrottleInfo(
+                PluginLogger.ThrottleDebug(
                     "pi_diag_target_" + GetInstanceID(),
                     "[PI-DIAG][DriverSkip] driver=" + GetInstanceID() + " reason=invalid-target",
                     2f);
@@ -215,7 +215,7 @@ namespace PlayersInfo.MonoBehaviours
             }
             if (fullBar == null || staminaBar == null)
             {
-                PluginLogger.ThrottleInfo(
+                PluginLogger.ThrottleDebug(
                     "pi_diag_bar_refs_" + GetInstanceID(),
                     "[PI-DIAG][DriverSkip] driver=" + GetInstanceID()
                         + " target=" + SafeGetName(Target)
@@ -538,7 +538,7 @@ namespace PlayersInfo.MonoBehaviours
                                 : "<missing>");
                     }
                 }
-                PluginLogger.Info(sb.ToString());
+                PluginLogger.Debug(sb.ToString());
             }
             catch (Exception ex)
             {

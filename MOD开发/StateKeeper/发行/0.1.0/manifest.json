@@ -1,0 +1,9 @@
+{
+  "name": "PeakRunAnalytics",
+  "version_number": "0.1.0",
+  "website_url": "",
+  "description": "PEAK远征数据分析：采集每局体力、状态、距离、物品栏和物品事件。",
+  "dependencies": [
+    "BepInEx-BepInExPack_PEAK-5.4.2403"
+  ]
+}

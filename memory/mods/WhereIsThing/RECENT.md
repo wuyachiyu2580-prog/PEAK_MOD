@@ -1,6 +1,30 @@
 # WhereIsThing Recent
 
-更新时间：2026-08-20
+更新时间：2026-09-06
+
+## 2026-09-06 ItemSpawnerEnhanced 分类审计与正式测试目录构建
+
+- 新增参考源码 `引用参考代码\反编译\BepInEx\plugins\ItemSpawnerEnhanced`；其 `1.3.0` 自述基线仍为 PEAK `2.1.a`，不能整套当作 2.4.b 分类真值。
+- 使用 PEAK 2.4.b `resources.assets` 只读核对：ItemSpawnerEnhanced 审阅的 137 个 prefab 名称及 37 个默认隐藏名称目前仍全部存在。
+- WhereIsThing 保留互斥细分类，不改成 Food/Consumable/Equipment/Deployable/Mystical 多标签 UI；在 `ThingTypes.cs` 增加 51 项按 prefab 名精确匹配的分类覆盖，执行顺序为特殊标签、神秘标签、精确覆盖、食物标签、关键词、Misc。
+- 主要修正：Jetpack/Rocketpack 归移动装备；Heat Pack、Healing Dart、Healing Puff Shroom 归医疗；神秘变体归神秘物品；EarlyWorm/Beehive 归生物；Honeycomb 归食物；Scorpion 归危险生物；棋子归玩具；三种放置蘑菇、魔豆、检查点旗、便携炉归生存工具；链条发射器/童子军大炮归武器；绳索/岩钉归攀爬装备。
+- `Deployable` 仅作分类审计概念，不新增 UI 分类、不等同于可显示 owner；不直接采用 ItemSpawnerEnhanced 的 37 项隐藏策略，不改变玩家名、放置来源、预设或共享协议。
+- Release 已成功覆盖到 `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\WhereIsThing.dll`，`0 warnings / 0 errors`；DLL 为 `0.1.2.0`、`158720` 字节、SHA-256 `AC1D98407D52BAA61E1B7B4EF33F5AB4B09CEC168E28D65E019587B048DCEFA9`。
+- 本轮仍未更新 `MOD开发\WhereIsThing\发行\1.0.3`，未创建 ZIP；分类结果和既有 owner/标签功能仍需实机回归。
+
+## 2026-09-04 PEAK 2.4.b 兼容修复（待实机验收）
+
+- 当前游戏基线已确认为 `C:\SteamLibrary\steamapps\common\PEAK` 的 `2.4.b`；`Assembly-CSharp.dll` SHA-256 为 `21CBF3A6585A72778A2E5FB007E36CA246002DA5AE8209A6D998673633D82759`。
+- 版本已调整为 `0.1.2` / `0.1.2.0`，本轮仍是测试阶段：只编译到现有 r2modman `profiles\2.0.a\BepInEx\plugins\WhereIsThing.dll`，没有更新 `发行/1.0.3`，没有新建 ZIP。
+- 新增 `WhereIsThingPlugin.PlacedSources.cs`：从物品目录中的 `VineShooter.vinePrefab`、`RopeShooter.ropeAnchorWithRopePref`、`RopeTier.anchorPrefab`、`ShelfShroom/CloudFungus.instantiateOnBreak`、`ClimbingSpikeComponent.hammeredVersionPrefab` 和 `Constructable.constructedPrefab` 建立放置体正向来源索引。
+- 绳索必须同时命中已知绳索物品锚点 prefab 与玩家创建的锚点 PhotonView；明确排除 `isHelicopterRope`、`TempleEntranceRope`、`BreakableRopeAnchor`、`PeakSequence` 绳索和 room/system view。
+- 锁链发射器必须命中 `VineShooter` 的生成 prefab，且继续排除 `BreakableBridge`，避免海滩桥被识别为锁链发射器。
+- 蘑菇 owner 保持纯客户端：订阅 `GlobalEvents.OnItemThrown`，读取游戏已写入的 `Item.lastThrownCharacter`，仅当物品、生成 prefab、2 秒窗口、12 米距离均匹配且候选唯一时显示玩家名；野生、超时或歧义实例保留标签/距离，不显示 owner。
+- 场景载入后重新订阅 `OnItemThrown`，因为原版 `GlobalEvents.ResetAllRunEvents()` 会清空事件；切场景同时清理投掷证据和发现缓存。
+- 删除按 `rope/piton/climbing` 对象名决定是否重试的旧路径；未分类非 room PhotonView 在 0.05/0.15/0.30/0.50/1.0/2.0 秒有限重试，每帧最多 32 个或 0.25ms。
+- 已移除任意父子层级“第一个玩家 PhotonView” owner 回退。构建程序集不包含 `PhotonNetwork.Destroy`、`Player.EmptySlot`、`ConsumeDelayed`、RopeShooter 消耗补丁或 Constructable 清理补丁。
+- `dotnet build MOD开发\WhereIsThing\WhereIsThing\WhereIsThing.csproj --configuration Release` 通过，`0 warnings / 0 errors`；profile DLL 版本为 `0.1.2.0`，大小 `156672` 字节，SHA-256 为 `20298B319CC160337D78842165BADBCDC5E9B48D7E9636CE57EFC2415A6E3C55`。
+- 尚未完成房主/客户端实机验收；当前不得记为已发布或已全量验证。
 
 ## 2026-08-20 发布 0.1.1
 

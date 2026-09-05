@@ -1,5 +1,24 @@
 ﻿# Memory Changelog
 
+## 2026-09-06
+
+- [新增] `mods/StateKeeper/` 四件套和 `temp/2026-09-06.md`：记录 StateKeeper 0.1.0 的采集范围、RunId/存储决策、性能优化、旧数据迁移和实机数据调研结果。
+- [修改] `README.md`、`mods/README.md`、`MEMORY_INDEX.md`：加入 StateKeeper 项目入口、四件套索引、当前重点和临时恢复入口。
+- [修改] `TODO.md`：加入 StateKeeper 的长时间多人性能、时间倒退、角色生命周期和精确分块封存待办。
+- [规则] `StateKeeper` 正式发布不会再改名；本机旧数据已一次迁移，运行时代码不保留旧目录兼容层，发行草稿暂不更新。
+- [修改] `mods/WhereIsThing/`：记录 ItemSpawnerEnhanced 分类审计、PEAK 2.4.b 资源核对、51 项精确 prefab 覆盖和正式测试 profile 构建结果。
+- [新增] `mods/WhereIsThing/temp/2026-09-06.md`：记录 WhereIsThing `0.1.2` / `0.1.2.0`、测试 DLL 大小与 SHA-256，以及未更新发行目录、未创建 ZIP 的边界。
+- [索引] `README.md`、`mods/README.md`、`MEMORY_INDEX.md`、`TODO.md`：同步 WhereIsThing 当前测试状态和后续实机验收重点。
+
+## 2026-09-04
+
+- [修改] `MOD开发/WhereIsThing/`：将测试版本从 `1.0.3` 调整为 `0.1.2`，同步 BepInEx 插件常量、项目版本、程序集版本和开发 changelog，并重新编译测试 DLL（`0.1.2.0`，0 warnings / 0 errors）。
+- [修改] `mods/WhereIsThing/RECENT.md`、`DECISIONS.md`、`PLAN.md`、`README.md`、`FILES.md`：同步 WhereIsThing `1.0.3` / PEAK `2.4.b` 测试状态，记录放置 prefab 来源索引、绳索与蘑菇 owner 规则、系统目标排除、有限重试、构建结果和发行边界。
+- [新增] `mods/WhereIsThing/temp/2026-09-04.md`：保存 2.4.b 当前停点、profile 测试 DLL hash、未发行状态和房主/客户端验收入口。
+- [修改] `TODO.md`：将旧 2.1.a 通用待办替换为 2.4.b 放置目标正例、系统目标负例、owner、生命周期和可选性能验收矩阵。
+- [索引] `README.md`、`mods/README.md`、`MEMORY_INDEX.md`：将 WhereIsThing 当前状态更新为 `1.0.3` / PEAK `2.4.b` 测试中，并保留 0.1.x/2.1.a 内容作为历史。
+- [规则] 当前会话没有专用 `update_memory` 工具；工作区 `memory` Markdown 知识库及其索引、TODO、临时摘要和本变更日志是本次可用的权威记忆记录。
+
 ## 2026-08-31
 
 - [新增] `mods/OldPC/` 四件套：记录 0.0.1 本地旧电脑视觉模式、望远镜清晰模式、网络边界和未完成验收。

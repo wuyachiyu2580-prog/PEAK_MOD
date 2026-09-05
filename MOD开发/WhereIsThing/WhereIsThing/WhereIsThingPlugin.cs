@@ -21,12 +21,12 @@ using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 namespace WhereIsThing
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-    public sealed class WhereIsThingPlugin : BaseUnityPlugin, IInRoomCallbacks
+    public sealed partial class WhereIsThingPlugin : BaseUnityPlugin, IInRoomCallbacks
     {
         public const string PluginGuid = "com.wuyachiyu.WhereIsThing";
         public const string PluginName = "WhereIsThing";
-        public const string PluginVersion = "1.0.3";
-        private const int PresetSchemaVersion = 5;
+        public const string PluginVersion = "0.1.2";
+        private const int PresetSchemaVersion = 6;
         private const int ShareProtocolVersion = 2;
         private const string ShareModePropertyKey = "WIT.ShareMode";
         private const string ShareProtocolPropertyKey = "WIT.Protocol";
@@ -35,7 +35,24 @@ namespace WhereIsThing
         private const string SharePayloadPropertyKey = "WIT.Payload";
 
         private readonly Dictionary<string, ThingLabel> _labels = new Dictionary<string, ThingLabel>();
+        private readonly List<ThingLabel> _labelUpdateBuffer = new List<ThingLabel>();
+        private readonly List<string> _labelKeyRemovalBuffer = new List<string>();
+        private readonly List<int> _networkRecordRemovalBuffer = new List<int>();
+        private readonly HashSet<string> _scanSeenBuffer = new HashSet<string>(StringComparer.Ordinal);
+        private readonly Dictionary<int, string> _ownerNamesByActor = new Dictionary<int, string>();
+        private readonly Dictionary<int, NetworkObjectRecord> _networkObjects = new Dictionary<int, NetworkObjectRecord>();
+        private readonly Dictionary<string, Item> _itemDefinitionsByPrefabName =
+            new Dictionary<string, Item>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, List<PlacedPrefabSource>> _placedSourcesByPrefabName =
+            new Dictionary<string, List<PlacedPrefabSource>>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<ushort, List<PlacedPrefabSource>> _throwableSourcesByItemId =
+            new Dictionary<ushort, List<PlacedPrefabSource>>();
+        private readonly List<ThrownItemEvidence> _thrownItemEvidence = new List<ThrownItemEvidence>(32);
+        private readonly List<NetworkObjectRecord> _classificationRetries = new List<NetworkObjectRecord>();
+        private readonly List<PeakSequence> _peakSequences = new List<PeakSequence>();
         private static readonly FieldInfo RopeAttachedAnchorField = typeof(Rope).GetField("attachedToAnchor",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo ItemLastThrownCharacterField = typeof(Item).GetField("lastThrownCharacter",
             BindingFlags.Instance | BindingFlags.NonPublic);
         private readonly List<ThingTargetDefinition> _catalog = new List<ThingTargetDefinition>();
         private readonly List<ThingPresetDefinition> _localPresets = new List<ThingPresetDefinition>();
@@ -50,6 +67,9 @@ namespace WhereIsThing
         private ThingPresetPickerWindow _pickerWindow;
         private TMP_FontAsset _font;
         private TMP_FontAsset _labelFont;
+        private Material _labelTitleMaterial;
+        private Material _labelDetailMaterial;
+        private Camera _mainCamera;
         private bool _displayActive;
         private float _hideAt;
         private float _nextRefresh;
@@ -74,6 +94,57 @@ namespace WhereIsThing
         private float _lastObservedFontSize;
         private ThingNameLanguage _lastObservedNameLanguage;
         private bool _labelFontWarningLogged;
+        private NonAllocDictionary<int, PhotonView>.ValueIterator _photonViewIterator;
+        private bool _photonDiscoveryActive;
+        private int _photonDiscoveryGeneration;
+        private int _lastPhotonViewCount = -1;
+        private float _nextNetworkDiscovery;
+        private float _nextNetworkCleanup;
+        private int _sceneDiscoveryStep = SceneDiscoveryStepCount;
+        private float _nextSceneDiscovery;
+        private int _sceneGeneration;
+        private int _classificationRetryCursor;
+
+        private const int NetworkObjectsPerFrame = 128;
+        private const int ClassificationRetriesPerFrame = 32;
+        private const double DiscoveryBudgetMilliseconds = 0.75;
+        private const double ClassificationRetryBudgetMilliseconds = 0.25;
+        private const float NetworkDiscoveryInterval = 0.5f;
+        private const float FullValidationInterval = 5f;
+        private const int SceneDiscoveryStepCount = 18;
+        private static readonly float[] ClassificationRetryDelays = { 0.05f, 0.15f, 0.30f, 0.50f, 1f, 2f };
+
+        private sealed class NetworkObjectRecord
+        {
+            public int LastSeenGeneration;
+            public PhotonView View;
+            public Item Item;
+            public bool PreferPlacedItemLabel;
+            public bool NeedsLateClassification;
+            public float FirstSeenAt;
+            public int NextRetryIndex;
+            public readonly List<PlacedTargetRecord> PlacedTargets = new List<PlacedTargetRecord>();
+            public readonly HashSet<string> LabelKeys = new HashSet<string>(StringComparer.Ordinal);
+            public readonly HashSet<string> DesiredLabelKeys = new HashSet<string>(StringComparer.Ordinal);
+        }
+
+        private sealed class PlacedTargetRecord
+        {
+            public string Key;
+            public string FallbackName;
+            public Component Target;
+            public Item Definition;
+            public PhotonView View;
+            public PhotonView OwnerView;
+            public int OwnerActorNumber;
+            public ThingSceneTargetType? LegacySceneTargetType;
+            public Rope Rope;
+            public bool IsRope;
+            public RopeAnchor RopeAnchor;
+            public ClimbHandle PitonHandle;
+            public Func<Vector3> PositionProvider;
+            public bool ShowOwner = true;
+        }
 
         private ConfigEntry<bool> _enabled;
         private ConfigEntry<KeyCode> _scanKey;
@@ -155,6 +226,7 @@ namespace WhereIsThing
             CreateCanvas();
             SceneManager.sceneLoaded += OnSceneLoaded;
             PhotonNetwork.AddCallbackTarget(this);
+            SubscribeToItemThrown();
             _log.LogInfo(PluginName + " v" + PluginVersion + " loaded. Hold Alt and press " + _windowKey.Value + " to manage presets; press " + _scanKey.Value + " to scan.");
         }
 
@@ -221,11 +293,16 @@ namespace WhereIsThing
             if (Time.unscaledTime >= _nextRefresh)
             {
                 RefreshLabels();
-                _nextRefresh = Time.unscaledTime + 0.5f;
+                _nextRefresh = Time.unscaledTime + NetworkDiscoveryInterval;
             }
 
-            Camera camera = Camera.main;
-            foreach (ThingLabel label in _labels.Values.ToList())
+            ProcessPhotonDiscovery();
+            ProcessSceneDiscovery();
+
+            Camera camera = GetMainCamera();
+            _labelUpdateBuffer.Clear();
+            _labelUpdateBuffer.AddRange(_labels.Values);
+            foreach (ThingLabel label in _labelUpdateBuffer)
             {
                 if (label.IsValid)
                 {
@@ -255,6 +332,7 @@ namespace WhereIsThing
             SceneManager.sceneLoaded -= OnSceneLoaded;
             LocalizedText.OnLangugageChanged -= OnGameLanguageChanged;
             PhotonNetwork.RemoveCallbackTarget(this);
+            UnsubscribeFromItemThrown();
             if (_harmony != null)
             {
                 _harmony.UnpatchSelf();
@@ -268,6 +346,8 @@ namespace WhereIsThing
                 _pickerWindow.Dispose();
             }
             ClearLabels();
+            ClearDiscoveryCaches();
+            ReleaseLabelMaterial();
             if (_canvas != null)
             {
                 Destroy(_canvas.gameObject);
@@ -313,6 +393,7 @@ namespace WhereIsThing
             FontHelper.InvalidateCache();
             _font = null;
             _labelFont = null;
+            ReleaseLabelMaterial();
             _labelFontWarningLogged = false;
             ApplyLabelStyleToExisting(true);
             ScheduleModConfigRefresh();
@@ -360,9 +441,15 @@ namespace WhereIsThing
                 _pickerWindow = null;
             }
             ClearLabels();
+            ClearDiscoveryCaches();
+            _sceneGeneration++;
+            _thrownItemEvidence.Clear();
+            StartCoroutine(RefreshSceneEventSubscriptions());
             FontHelper.InvalidateCache();
             _font = null;
             _labelFont = null;
+            ReleaseLabelMaterial();
+            _mainCamera = null;
             _labelFontWarningLogged = false;
             _nextRefresh = Time.unscaledTime + 1f;
         }
@@ -451,1057 +538,61 @@ namespace WhereIsThing
                 return;
             }
 
-            HashSet<string> seen = new HashSet<string>();
-            Item[] items = FindObjectsByType<Item>(FindObjectsSortMode.None);
-            foreach (Item item in items)
+            StartPhotonDiscoveryCycle();
+            RefreshRegisteredTargets();
+            if (_sceneDiscoveryStep >= SceneDiscoveryStepCount && Time.unscaledTime >= _nextSceneDiscovery)
             {
-                if (item == null || item.gameObject == null || !item.gameObject.activeInHierarchy)
-                {
-                    continue;
-                }
-
-                if (ShouldPreferMobSceneLabel(item) || ShouldPreferPlayerPlacedItemLabel(item))
-                {
-                    continue;
-                }
-
-                if ((_effectiveScopes & ThingLocationScope.Ground) != 0 && item.itemState == ItemState.Ground && _selectedIds.Contains(item.itemID))
-                {
-                    string key = "item:" + item.GetInstanceID();
-                    seen.Add(key);
-                    Item captured = item;
-                    AddLabel(key, captured.transform, delegate { return ThingCatalog.GetDisplayName(captured, _nameLanguage.Value); },
-                        delegate { return captured != null && captured.gameObject.activeInHierarchy && captured.itemState == ItemState.Ground && _selectedIds.Contains(captured.itemID); });
-                }
-                else if ((_effectiveScopes & ThingLocationScope.Held) != 0 && item.itemState == ItemState.Held &&
-                    _selectedIds.Contains(item.itemID) && ShouldShowHeldItem(item))
-                {
-                    string key = "held:" + item.GetInstanceID();
-                    seen.Add(key);
-                    Item captured = item;
-                    AddLabel(key, captured.transform, delegate { return ThingCatalog.GetDisplayName(captured, _nameLanguage.Value); },
-                        delegate
-                        {
-                            return captured != null && captured.gameObject.activeInHierarchy &&
-                                captured.itemState == ItemState.Held && _selectedIds.Contains(captured.itemID) &&
-                                ShouldShowHeldItem(captured);
-                        });
-                }
-
-                Backpack backpack = item as Backpack;
-                if ((_effectiveScopes & ThingLocationScope.Backpack) == 0 || backpack == null || backpack.itemState != ItemState.Ground || !TryGetBackpackData(backpack.data, out BackpackData backpackData))
-                {
-                    continue;
-                }
-
-                foreach (ItemSlot slot in backpackData.itemSlots)
-                {
-                    if (slot == null || slot.IsEmpty() || slot.prefab == null || !_selectedIds.Contains(slot.prefab.itemID))
-                    {
-                        continue;
-                    }
-
-                    Item contentPrefab = slot.prefab;
-                    string key = "backpack:" + backpack.GetInstanceID() + ":" + slot.itemSlotID;
-                    seen.Add(key);
-                    AddLabel(key, backpack.transform,
-                        delegate { return ThingCatalog.GetDisplayName(contentPrefab, _nameLanguage.Value) + "\n" + ThingCatalog.GetContainerSuffix(_nameLanguage.Value); },
-                        delegate { return backpack != null && backpack.gameObject.activeInHierarchy && backpack.itemState == ItemState.Ground && BackpackContains(backpack, contentPrefab.itemID); });
-                }
+                _sceneDiscoveryStep = 0;
+                _nextSceneDiscovery = Time.unscaledTime + FullValidationInterval;
             }
 
-            if (_selectedLuggageTypes.Count > 0)
+            foreach (ThingLabel label in _labels.Values)
             {
-                foreach (Luggage luggage in Luggage.ALL_LUGGAGE.ToList())
-                {
-                    if (luggage == null || !luggage.gameObject.activeInHierarchy || luggage.IsOpen)
-                    {
-                        continue;
-                    }
-
-                    ThingLuggageType luggageType = ThingCatalog.GetLuggageType(luggage);
-                    if (!_selectedLuggageTypes.Contains(luggageType))
-                    {
-                        continue;
-                    }
-
-                    string key = "luggage:" + luggage.GetInstanceID();
-                    seen.Add(key);
-                    Luggage captured = luggage;
-                    AddLabel(key, captured.transform,
-                        delegate { return ThingCatalog.GetLuggageLabelName(captured, _nameLanguage.Value); },
-                        delegate
-                        {
-                            return captured != null && captured.gameObject.activeInHierarchy && !captured.IsOpen &&
-                                _selectedLuggageTypes.Contains(ThingCatalog.GetLuggageType(captured)) &&
-                                _selectedLuggageTypes.Count > 0;
-                        }, delegate { return captured.Center(); });
-                }
-            }
-
-            RefreshAmuletStatueLabels(seen);
-
-            RefreshSceneLabels(seen);
-
-            foreach (string key in _labels.Keys.ToList())
-            {
-                if (!seen.Contains(key))
-                {
-                    RemoveLabel(key);
-                }
+                label.RefreshContent();
             }
         }
 
-        private void RefreshAmuletStatueLabels(HashSet<string> seen)
-        {
-            if ((_effectiveScopes & ThingLocationScope.Statue) == 0 || _selectedIds.Count == 0)
-            {
-                return;
-            }
 
-            foreach (Peak.PropSpawner_AmuletStatues statue in Resources.FindObjectsOfTypeAll<Peak.PropSpawner_AmuletStatues>())
-            {
-                if (statue == null || !statue.gameObject.scene.IsValid() || !statue.gameObject.activeInHierarchy ||
-                    statue.transform.childCount == 0)
-                {
-                    continue;
-                }
 
-                GameObject statueObject = statue.transform.GetChild(0).gameObject;
-                if (statueObject == null || !statueObject.activeInHierarchy)
-                {
-                    continue;
-                }
-
-                FakeItem statueFragment = FindAmuletStatueFakeItem(statue, statueObject);
-                if (statueFragment == null)
-                {
-                    continue;
-                }
-
-                ushort itemId;
-                Item definition;
-                if (!TryGetAmuletStatueItem(statue, statueObject, statueFragment, out itemId, out definition) || !_selectedIds.Contains(itemId))
-                {
-                    continue;
-                }
-
-                Peak.PropSpawner_AmuletStatues capturedStatue = statue;
-                GameObject capturedStatueObject = statueObject;
-                FakeItem capturedStatueFragment = statueFragment;
-                Item capturedDefinition = definition;
-                ushort capturedItemId = itemId;
-                string key = "statue:" + capturedStatue.GetInstanceID();
-                seen.Add(key);
-                Transform target = capturedStatueFragment.transform;
-                AddLabel(key, target,
-                    delegate { return GetAmuletStatueLabelName(capturedDefinition); },
-                    delegate
-                    {
-                        return IsAmuletStatueValid(capturedStatue, capturedStatueObject, capturedStatueFragment) &&
-                            _selectedIds.Contains(capturedItemId) &&
-                            (_effectiveScopes & ThingLocationScope.Statue) != 0;
-                    });
-            }
-        }
-
-        private static FakeItem FindAmuletStatueFakeItem(Peak.PropSpawner_AmuletStatues statue, GameObject statueObject)
-        {
-            if (statueObject == null)
-            {
-                return null;
-            }
-
-            int statueAmuletIndex;
-            bool hasStatueAmuletIndex = TryGetAmuletIndexFromStatue(statue, statueObject, out statueAmuletIndex);
-            FakeItem fallback = null;
-            FakeItem[] fakeItems = statueObject.GetComponentsInChildren<FakeItem>(true);
-            foreach (FakeItem fakeItem in fakeItems)
-            {
-                if (fakeItem == null)
-                {
-                    continue;
-                }
-
-                if (fallback == null)
-                {
-                    fallback = fakeItem;
-                }
-
-                int fakeAmuletIndex;
-                if (hasStatueAmuletIndex && fakeItem.realItemPrefab != null &&
-                    TryGetAmuletIndex(fakeItem.realItemPrefab, out fakeAmuletIndex) &&
-                    fakeAmuletIndex == statueAmuletIndex)
-                {
-                    return fakeItem;
-                }
-            }
-
-            return fakeItems.Length == 1 ? fallback : null;
-        }
-
-        private bool TryGetAmuletStatueItem(Peak.PropSpawner_AmuletStatues statue, GameObject statueObject, FakeItem statueFragment, out ushort itemId, out Item definition)
-        {
-            itemId = ushort.MaxValue;
-            definition = null;
-
-            Item fragmentPrefab = statueFragment != null ? statueFragment.realItemPrefab : null;
-            int fragmentIndex;
-            if (fragmentPrefab != null && TryGetAmuletIndex(fragmentPrefab, out fragmentIndex))
-            {
-                definition = fragmentPrefab;
-                itemId = definition.itemID;
-                return true;
-            }
-
-            int amuletIndex;
-            if (!TryGetAmuletIndexFromStatue(statue, statueObject, out amuletIndex))
-            {
-                return false;
-            }
-
-            definition = FindAmuletDefinition(amuletIndex);
-            if (definition == null)
-            {
-                return false;
-            }
-
-            itemId = definition.itemID;
-            return true;
-        }
-
-        private static bool TryGetAmuletIndexFromStatue(Peak.PropSpawner_AmuletStatues statue, GameObject statueObject, out int index)
-        {
-            index = -1;
-            if (TryGetAmuletIndexFromName(statueObject == null ? null : statueObject.name, out index))
-            {
-                return true;
-            }
-
-            if (statue != null && statue.props != null && statue.props.Length == 4 && statue.statueIndex >= 0 && statue.statueIndex < 4)
-            {
-                index = statue.statueIndex;
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool TryGetAmuletIndexFromName(string value, out int index)
-        {
-            index = -1;
-            if (string.IsNullOrEmpty(value))
-            {
-                return false;
-            }
-
-            string name = value.ToLowerInvariant();
-            if (name.Contains("doublejump") || name.Contains("double_jump") || name.Contains("superjump") || name.Contains("initiative"))
-            {
-                index = 0;
-                return true;
-            }
-            if (name.Contains("infinitestam") || name.Contains("infinite_stam") || name.Contains("stamina") || name.Contains("ambition"))
-            {
-                index = 1;
-                return true;
-            }
-            if (name.Contains("healing") || name.Contains("heal") || name.Contains("tenacity"))
-            {
-                index = 2;
-                return true;
-            }
-            if (name.Contains("clone") || name.Contains("generosity"))
-            {
-                index = 3;
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool TryGetAmuletIndex(Item item, out int index)
-        {
-            index = -1;
-            if (item == null || !item.TryGetComponent<Peak.AmuletBase>(out Peak.AmuletBase amulet))
-            {
-                return false;
-            }
-
-            index = amulet.amuletIndex;
-            return index >= 0 && index < 4;
-        }
-
-        private Item FindAmuletDefinition(int amuletIndex)
-        {
-            foreach (ThingTargetDefinition definition in _catalog)
-            {
-                if (definition == null || definition.IsLuggage || definition.IsSceneTarget)
-                {
-                    continue;
-                }
-
-                foreach (Item item in definition.Prefabs)
-                {
-                    int index;
-                    if (item != null && TryGetAmuletIndex(item, out index) && index == amuletIndex)
-                    {
-                        return item;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private string GetAmuletStatueLabelName(Item definition)
-        {
-            string suffix = ThingCatalog.GetStatueSuffix(_nameLanguage.Value);
-            if (definition == null)
-            {
-                return suffix;
-            }
-
-            return ThingCatalog.GetDisplayName(definition, _nameLanguage.Value) + "\n" + suffix;
-        }
-
-        private static bool IsAmuletStatueValid(Peak.PropSpawner_AmuletStatues statue, GameObject statueObject, FakeItem statueFragment)
-        {
-            return statue != null && statue.gameObject.activeInHierarchy && statue.transform.childCount > 0 &&
-                statueObject != null && statueObject.activeInHierarchy &&
-                statue.transform.GetChild(0).gameObject == statueObject &&
-                statueFragment != null && statueFragment.gameObject.activeInHierarchy && !statueFragment.pickedUp;
-        }
-
-        private void RefreshSceneLabels(HashSet<string> seen)
-        {
-            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.MushroomZombie))
-            {
-                ZombieManager zombieManager = ZombieManager.Instance;
-                if (zombieManager != null && zombieManager.zombies != null)
-                {
-                    foreach (MushroomZombie zombie in zombieManager.zombies.ToList())
-                    {
-                        if (zombie == null || !zombie.gameObject.activeInHierarchy || zombie.currentState == MushroomZombie.State.Dead)
-                        {
-                            continue;
-                        }
-
-                        MushroomZombie captured = zombie;
-                        Character zombieCharacter = captured.GetComponent<Character>();
-                        AddSceneLabel(seen, ThingSceneTargetType.MushroomZombie, captured,
-                            delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.MushroomZombie, _nameLanguage.Value); },
-                            delegate
-                            {
-                                return captured != null && captured.gameObject.activeInHierarchy &&
-                                    captured.currentState != MushroomZombie.State.Dead &&
-                                    _selectedSceneTargetTypes.Contains(ThingSceneTargetType.MushroomZombie);
-                            }, delegate
-                            {
-                                return zombieCharacter != null ? zombieCharacter.Center : captured.transform.position;
-                            });
-                    }
-                }
-            }
-
-            RefreshMobLabels(seen);
-
-            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.TumbleWeed))
-            {
-                foreach (TumbleWeed tumbleWeed in FindObjectsByType<TumbleWeed>(FindObjectsSortMode.None))
-                {
-                    if (tumbleWeed == null || !tumbleWeed.gameObject.activeInHierarchy)
-                    {
-                        continue;
-                    }
-
-                    TumbleWeed captured = tumbleWeed;
-                    AddSceneLabel(seen, ThingSceneTargetType.TumbleWeed, captured,
-                        delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.TumbleWeed, _nameLanguage.Value); },
-                        delegate
-                        {
-                            return captured != null && captured.gameObject.activeInHierarchy &&
-                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.TumbleWeed);
-                        });
-                }
-            }
-
-            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.GhostBall))
-            {
-                Peak.GhostBallSpawner ghostBallSpawner = Peak.GhostBallSpawner.Instance;
-                Peak.GhostBall ghostBall = ghostBallSpawner == null ? null : ghostBallSpawner.currentGhostBall;
-                if (ghostBall != null && ghostBall.gameObject.activeInHierarchy)
-                {
-                    Peak.GhostBall captured = ghostBall;
-                    AddSceneLabel(seen, ThingSceneTargetType.GhostBall, captured,
-                        delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.GhostBall, _nameLanguage.Value); },
-                        delegate
-                        {
-                            return captured != null && captured.gameObject.activeInHierarchy &&
-                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.GhostBall);
-                        });
-                }
-            }
-
-            if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.GloomBellTower))
-            {
-                foreach (GhostFire ghostFire in Peak.GloomSafeZone.ALL_GLOOM_SAFE_ZONES.OfType<GhostFire>().ToList())
-                {
-                    if (ghostFire == null || !ghostFire.gameObject.activeInHierarchy)
-                    {
-                        continue;
-                    }
-
-                    GhostFire captured = ghostFire;
-                    AddSceneLabel(seen, ThingSceneTargetType.GloomBellTower, captured,
-                        delegate { return ThingCatalog.GetGloomBellTowerLabelName(captured, _nameLanguage.Value); },
-                        delegate
-                        {
-                            return captured != null && captured.gameObject.activeInHierarchy &&
-                                _selectedSceneTargetTypes.Contains(ThingSceneTargetType.GloomBellTower);
-                    });
-                }
-            }
-
-            RefreshFixedHazardLabels(seen);
-            RefreshPlacedObjectLabels(seen);
-
-            RefreshActiveSceneTargets<Spider>(seen, ThingSceneTargetType.Spider);
-            RefreshActiveSceneTargets<BeeSwarm>(seen, ThingSceneTargetType.BeeSwarm);
-            RefreshActiveSceneTargets<Scoutmaster>(seen, ThingSceneTargetType.Scoutmaster);
-            RefreshActiveSceneTargets<Peak.SpikeTrap>(seen, ThingSceneTargetType.SpikeTrap);
-            RefreshActiveSceneTargets<Antlion>(seen, ThingSceneTargetType.Antlion);
-            RefreshActiveSceneTargets<VenusFlyTrap>(seen, ThingSceneTargetType.VenusFlyTrap);
-            RefreshActiveSceneTargets<Tornado>(seen, ThingSceneTargetType.Tornado);
-            RefreshActiveSceneTargets<OrbThatMakesYouSleepy>(seen, ThingSceneTargetType.NapberryHypnoOrb);
-            RefreshActiveSceneTargets<ArrowShooter>(seen, ThingSceneTargetType.ArrowShooter);
-            RefreshActiveSceneTargets<Peak.MovingSawBlade>(seen, ThingSceneTargetType.MovingSawBlade);
-            RefreshActiveSceneTargets<Peak.SpikeRoller>(seen, ThingSceneTargetType.SpikeRoller);
-            RefreshActiveSceneTargets<SwingingAxe>(seen, ThingSceneTargetType.SwingingAxe);
-        }
-
-        private void RefreshFixedHazardLabels(HashSet<string> seen)
-        {
-            RefreshActiveSceneTargets<SlipperyJellyfish>(seen, ThingSceneTargetType.SlipperyJellyfish,
-                delegate(SlipperyJellyfish target)
-                {
-                    return HasRunSetting(target, RunSettings.SETTINGTYPE.Hazard_Jellyfish);
-                });
-
-            RefreshNamedRunSettingTargets(seen, ThingSceneTargetType.Urch,
-                RunSettings.SETTINGTYPE.Hazard_Urchins, "Urch");
-            RefreshActiveSceneTargets<WindAffectedStatusEmitter>(seen, ThingSceneTargetType.SporeCloud,
-                delegate(WindAffectedStatusEmitter target)
-                {
-                    return HasRunSetting(target, RunSettings.SETTINGTYPE.Hazard_SporeClouds);
-                });
-            RefreshNamedRunSettingTargets(seen, ThingSceneTargetType.ExplodingMushroom,
-                RunSettings.SETTINGTYPE.Hazard_ExplodingMushrooms,
-                "Forest_SporeFungus", "Jungle_SporeMushroom", "Jungle_SporeMushroomExplo");
-            RefreshGeyserLabels(seen);
-            RefreshTrapChestLabels(seen);
-        }
-
-        private void RefreshPlacedObjectLabels(HashSet<string> seen)
-        {
-            RefreshCheckpointFlagLabels(seen);
-            RefreshBounceShroomLabels(seen);
-            RefreshPlayerPlacedComponentLabels<ShelfShroom>(seen, "shelf-shroom", "Shelf Shroom", "ShelfShroom");
-            RefreshPlayerPlacedComponentLabels<CloudFungus>(seen, "cloud-fungus", "Cloud Fungus", "CloudFungus");
-            RefreshScoutCannonLabels(seen);
-            RefreshChainShooterLabels(seen);
-            RefreshRopeLabels(seen);
-            RefreshPitonLabels(seen);
-            RefreshMagicBeanVineLabels(seen);
-        }
-
-        private void RefreshCheckpointFlagLabels(HashSet<string> seen)
-        {
-            Item definition;
-            if (!TryResolvePlacedItem(ThingSceneTargetType.CheckpointFlagPlaced, out definition, "Flag_Plantable_Checkpoint"))
-            {
-                return;
-            }
-
-            foreach (CheckpointFlag flag in FindObjectsByType<CheckpointFlag>(FindObjectsSortMode.None))
-            {
-                PhotonView view = GetPlayerCreatedView(flag);
-                if (flag == null || !flag.gameObject.activeInHierarchy || view == null)
-                {
-                    continue;
-                }
-
-                CheckpointFlag captured = flag;
-                AddPlacedItemLabel(seen, "checkpoint", captured, view, definition,
-                    ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.CheckpointFlagPlaced, _nameLanguage.Value),
-                    delegate
-                    {
-                        return IsPlayerPlacedTargetValid(captured, view) &&
-                            IsPlacedItemSelected(ThingSceneTargetType.CheckpointFlagPlaced, "Flag_Plantable_Checkpoint");
-                    });
-            }
-        }
-
-        private void RefreshBounceShroomLabels(HashSet<string> seen)
-        {
-            Item definition;
-            if (!TryResolvePlacedItem(ThingSceneTargetType.BounceShroomPlaced, out definition, "BounceShroom"))
-            {
-                return;
-            }
-
-            foreach (MushroomBounceBadgeTracker shroom in FindObjectsByType<MushroomBounceBadgeTracker>(FindObjectsSortMode.None))
-            {
-                PhotonView view = GetPlayerCreatedView(shroom);
-                if (shroom == null || !shroom.gameObject.activeInHierarchy || view == null ||
-                    !HasObjectNameInHierarchy(shroom, "BounceShroomSpawn"))
-                {
-                    continue;
-                }
-
-                MushroomBounceBadgeTracker captured = shroom;
-                AddPlacedItemLabel(seen, "bounce-shroom", captured, view, definition,
-                    ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.BounceShroomPlaced, _nameLanguage.Value),
-                    delegate
-                    {
-                        return IsPlayerPlacedTargetValid(captured, view) &&
-                            HasObjectNameInHierarchy(captured, "BounceShroomSpawn") &&
-                            IsPlacedItemSelected(ThingSceneTargetType.BounceShroomPlaced, "BounceShroom");
-                    });
-            }
-        }
-
-        private void RefreshPlayerPlacedComponentLabels<T>(HashSet<string> seen, string keyPrefix, string fallbackName,
-            params string[] itemPrefabNames) where T : Component
-        {
-            Item definition;
-            if (!TryResolvePlacedComponentItem<T>(null, out definition) &&
-                !TryResolvePlacedItem(null, out definition, itemPrefabNames))
-            {
-                return;
-            }
-
-            foreach (Item item in FindObjectsByType<Item>(FindObjectsSortMode.None))
-            {
-                T target = item == null ? null : item.GetComponentInChildren<T>(true);
-                PhotonView view = GetPlayerCreatedView(target);
-                if (item == null || item.itemState != ItemState.Ground || target == null ||
-                    !target.gameObject.activeInHierarchy || view == null)
-                {
-                    continue;
-                }
-
-                Item capturedItem = item;
-                T captured = target;
-                PhotonView capturedView = view;
-                AddPlacedItemLabel(seen, keyPrefix, captured, capturedView, definition, fallbackName,
-                    delegate
-                    {
-                        return capturedItem != null && capturedItem.itemState == ItemState.Ground &&
-                            IsPlayerPlacedTargetValid(captured, capturedView) &&
-                            (IsPlacedComponentItemSelected<T>() || IsPlacedItemSelected(null, itemPrefabNames));
-                    });
-            }
-        }
-
-        private void RefreshScoutCannonLabels(HashSet<string> seen)
-        {
-            Item definition;
-            if (!TryResolvePlacedItem(null, out definition, "ScoutCannonItem"))
-            {
-                return;
-            }
-
-            foreach (ScoutCannon cannon in FindObjectsByType<ScoutCannon>(FindObjectsSortMode.None))
-            {
-                PhotonView view = GetPlayerCreatedView(cannon);
-                if (cannon == null || !cannon.gameObject.activeInHierarchy || view == null)
-                {
-                    continue;
-                }
-
-                ScoutCannon captured = cannon;
-                AddPlacedItemLabel(seen, "scout-cannon", captured, view, definition, "Scout Cannon",
-                    delegate
-                    {
-                        return IsPlayerPlacedTargetValid(captured, view) &&
-                            IsPlacedItemSelected(null, "ScoutCannonItem");
-                    });
-            }
-        }
-
-        private void RefreshChainShooterLabels(HashSet<string> seen)
-        {
-            Item definition;
-            if (!TryResolvePlacedItem(null, out definition, "ChainShooter"))
-            {
-                return;
-            }
-
-            foreach (JungleVine vine in FindObjectsByType<JungleVine>(FindObjectsSortMode.None))
-            {
-                PhotonView view = GetPlayerCreatedView(vine);
-                if (vine == null || !vine.gameObject.activeInHierarchy || view == null)
-                {
-                    continue;
-                }
-
-                JungleVine captured = vine;
-                AddPlacedItemLabel(seen, "chain-shooter", captured, view, definition, "Chain Launcher",
-                    delegate
-                    {
-                        return IsPlayerPlacedTargetValid(captured, view) &&
-                            IsPlacedItemSelected(null, "ChainShooter");
-                    },
-                    delegate { return captured.hangCenter == null ? captured.transform.position : captured.hangCenter.position; });
-            }
-        }
-
-        private void RefreshRopeLabels(HashSet<string> seen)
-        {
-            foreach (Rope rope in FindObjectsByType<Rope>(FindObjectsSortMode.None))
-            {
-                RopeAnchor anchor = GetAttachedRopeAnchor(rope);
-                if (rope == null || anchor == null || anchor.anchorPoint == null)
-                {
-                    continue;
-                }
-
-                string itemPrefabName = GetRopeAnchorItemPrefabName(anchor, rope.antigrav);
-                Item definition;
-                if (itemPrefabName == null ||
-                    !TryResolvePlacedItem(ThingSceneTargetType.RopePlaced, out definition, itemPrefabName))
-                {
-                    continue;
-                }
-
-                PhotonView view = GetPlayerCreatedView(rope);
-                if (!IsPlacedRopeValid(rope, anchor, view))
-                {
-                    continue;
-                }
-
-                Rope capturedRope = rope;
-                RopeAnchor capturedAnchor = anchor;
-                string capturedPrefabName = itemPrefabName;
-                AddPlacedItemLabel(seen, "rope-spool-" + capturedPrefabName, capturedAnchor, view, definition, "Rope",
-                    delegate
-                    {
-                        return IsPlacedRopeValid(capturedRope, capturedAnchor, view) &&
-                            IsPlacedItemSelected(ThingSceneTargetType.RopePlaced, capturedPrefabName);
-                    },
-                    delegate { return capturedAnchor.anchorPoint.position; });
-            }
-        }
-
-        private void RefreshPitonLabels(HashSet<string> seen)
-        {
-            Item definition;
-            if (!TryResolvePlacedComponentItem<ClimbingSpikeComponent>(ThingSceneTargetType.PitonPlaced, out definition) &&
-                !TryResolvePlacedItem(ThingSceneTargetType.PitonPlaced, out definition, "ClimbingSpike"))
-            {
-                return;
-            }
-
-            foreach (ShittyPiton piton in FindObjectsByType<ShittyPiton>(FindObjectsSortMode.None))
-            {
-                PhotonView view = GetPlayerCreatedView(piton);
-                ClimbHandle handle = piton == null ? null : piton.GetComponent<ClimbHandle>();
-                if (piton == null || view == null || handle == null || !IsPitonActive(handle))
-                {
-                    continue;
-                }
-
-                ShittyPiton captured = piton;
-                AddPlacedItemLabel(seen, "piton", captured, view, definition,
-                    ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.PitonPlaced, _nameLanguage.Value),
-                    delegate
-                    {
-                        return IsPlayerPlacedTargetValid(captured, view) &&
-                            IsPitonActive(captured.GetComponent<ClimbHandle>()) &&
-                            (IsPlacedComponentItemSelected<ClimbingSpikeComponent>() ||
-                                IsPlacedItemSelected(ThingSceneTargetType.PitonPlaced, "ClimbingSpike"));
-                    });
-            }
-        }
-
-        private void RefreshMagicBeanVineLabels(HashSet<string> seen)
-        {
-            Item definition;
-            if (!TryResolvePlacedItem(ThingSceneTargetType.MagicBeanVine, out definition, "MagicBean"))
-            {
-                return;
-            }
-
-            foreach (MagicBeanVine vine in FindObjectsByType<MagicBeanVine>(FindObjectsSortMode.None))
-            {
-                if (vine == null || !vine.gameObject.activeInHierarchy)
-                {
-                    continue;
-                }
-
-                MagicBeanVine captured = vine;
-                AddSceneLabel(seen, ThingSceneTargetType.MagicBeanVine, captured,
-                    delegate { return GetPlacedItemName(definition, "Magic Bean Vine"); },
-                    delegate
-                    {
-                        return captured != null && captured.gameObject.activeInHierarchy &&
-                            IsPlacedItemSelected(ThingSceneTargetType.MagicBeanVine, "MagicBean");
-                    });
-            }
-        }
-
-        private void RefreshNamedRunSettingTargets(HashSet<string> seen, ThingSceneTargetType sceneTargetType,
-            RunSettings.SETTINGTYPE setting, params string[] objectNames)
-        {
-            if (!_selectedSceneTargetTypes.Contains(sceneTargetType))
-            {
-                return;
-            }
-
-            foreach (DisableBasedOnRunSettings target in FindObjectsByType<DisableBasedOnRunSettings>(FindObjectsSortMode.None))
-            {
-                if (target == null || !target.gameObject.activeInHierarchy || target.disableIfSettingDisabled != setting ||
-                    !HasObjectNameInHierarchy(target, objectNames))
-                {
-                    continue;
-                }
-
-                DisableBasedOnRunSettings captured = target;
-                AddSceneLabel(seen, sceneTargetType, captured,
-                    delegate { return ThingCatalog.GetSceneTargetDisplayName(sceneTargetType, _nameLanguage.Value); },
-                    delegate
-                    {
-                        return captured != null && captured.gameObject.activeInHierarchy &&
-                            captured.disableIfSettingDisabled == setting && HasObjectNameInHierarchy(captured, objectNames) &&
-                            _selectedSceneTargetTypes.Contains(sceneTargetType);
-                    });
-            }
-        }
-
-        private void RefreshGeyserLabels(HashSet<string> seen)
-        {
-            if (!_selectedSceneTargetTypes.Contains(ThingSceneTargetType.Geyser))
-            {
-                return;
-            }
-
-            foreach (DisableBasedOnRunSettings target in FindObjectsByType<DisableBasedOnRunSettings>(FindObjectsSortMode.None))
-            {
-                if (target == null || !target.gameObject.activeInHierarchy ||
-                    target.disableIfSettingDisabled != RunSettings.SETTINGTYPE.Hazard_Geysers ||
-                    !HasObjectNameInHierarchy(target, "Geyser") || HasObjectNameInHierarchy(target, "Eruption") ||
-                    !HasComponentInHierarchy<TriggerEvent>(target) || !HasComponentInHierarchy<TimeEvent>(target) ||
-                    !HasComponentInHierarchy<MultipleGroundPoints>(target))
-                {
-                    continue;
-                }
-
-                DisableBasedOnRunSettings captured = target;
-                AddSceneLabel(seen, ThingSceneTargetType.Geyser, captured,
-                    delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.Geyser, _nameLanguage.Value); },
-                    delegate
-                    {
-                        return captured != null && captured.gameObject.activeInHierarchy &&
-                            captured.disableIfSettingDisabled == RunSettings.SETTINGTYPE.Hazard_Geysers &&
-                            HasObjectNameInHierarchy(captured, "Geyser") && !HasObjectNameInHierarchy(captured, "Eruption") &&
-                            HasComponentInHierarchy<TriggerEvent>(captured) && HasComponentInHierarchy<TimeEvent>(captured) &&
-                            HasComponentInHierarchy<MultipleGroundPoints>(captured) &&
-                            _selectedSceneTargetTypes.Contains(ThingSceneTargetType.Geyser);
-                    },
-                    delegate { return GetMultipleGroundPointsPosition(captured); });
-            }
-        }
-
-        private void RefreshTrapChestLabels(HashSet<string> seen)
-        {
-            if (!_selectedSceneTargetTypes.Contains(ThingSceneTargetType.TrapChest))
-            {
-                return;
-            }
-
-            foreach (DisableBasedOnRunSettings target in FindObjectsByType<DisableBasedOnRunSettings>(FindObjectsSortMode.None))
-            {
-                if (target == null || !target.gameObject.activeInHierarchy ||
-                    target.disableIfSettingDisabled != RunSettings.SETTINGTYPE.Hazard_TrapChest ||
-                    !HasObjectNameInHierarchy(target, "LuggageTrick") ||
-                    !HasComponentInHierarchy<Luggage>(target) || !HasComponentInHierarchy<Peak.TrickLuggage>(target) ||
-                    !HasComponentInHierarchy<SpineCheck>(target))
-                {
-                    continue;
-                }
-
-                DisableBasedOnRunSettings captured = target;
-                AddSceneLabel(seen, ThingSceneTargetType.TrapChest, captured,
-                    delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.TrapChest, _nameLanguage.Value); },
-                    delegate
-                    {
-                        return captured != null && captured.gameObject.activeInHierarchy &&
-                            captured.disableIfSettingDisabled == RunSettings.SETTINGTYPE.Hazard_TrapChest &&
-                            HasObjectNameInHierarchy(captured, "LuggageTrick") &&
-                            HasComponentInHierarchy<Luggage>(captured) && HasComponentInHierarchy<Peak.TrickLuggage>(captured) &&
-                            HasComponentInHierarchy<SpineCheck>(captured) &&
-                            _selectedSceneTargetTypes.Contains(ThingSceneTargetType.TrapChest);
-                    });
-            }
-        }
-
-        private void AddPlacedItemLabel(HashSet<string> seen, string keyPrefix, Component target,
-            PhotonView networkView, Item definition, string fallbackName, Func<bool> isValid,
-            Func<Vector3> positionProvider = null)
-        {
-            if (target == null || target.gameObject == null || networkView == null || !IsWithinLabelDistance(GetTargetPosition(target, positionProvider)))
-            {
-                return;
-            }
-
-            string key = "placed:" + keyPrefix + ":" + networkView.ViewID;
-            seen.Add(key);
-            AddLabel(key, target.transform,
-                delegate { return GetPlacedItemName(definition, fallbackName); },
-                isValid, positionProvider, delegate { return GetOwnerName(networkView); });
-        }
-
-        private string GetPlacedItemName(Item definition, string fallbackName)
-        {
-            return definition == null ? fallbackName : ThingCatalog.GetDisplayName(definition, _nameLanguage.Value);
-        }
-
-        private bool TryResolvePlacedItem(ThingSceneTargetType? legacySceneTargetType, out Item definition,
-            params string[] itemPrefabNames)
-        {
-            definition = FindCatalogItemPrefab(true, itemPrefabNames);
-            if (definition != null)
-            {
-                return true;
-            }
-
-            if (!legacySceneTargetType.HasValue || !_selectedSceneTargetTypes.Contains(legacySceneTargetType.Value))
-            {
-                return false;
-            }
-
-            definition = FindCatalogItemPrefab(false, itemPrefabNames);
-            return true;
-        }
-
-        private bool TryResolvePlacedComponentItem<T>(ThingSceneTargetType? legacySceneTargetType, out Item definition)
-            where T : Component
-        {
-            definition = FindCatalogItemComponent<T>(true);
-            if (definition != null)
-            {
-                return true;
-            }
-
-            if (!legacySceneTargetType.HasValue || !_selectedSceneTargetTypes.Contains(legacySceneTargetType.Value))
-            {
-                return false;
-            }
-
-            definition = FindCatalogItemComponent<T>(false);
-            return true;
-        }
-
-        private bool IsPlacedItemSelected(ThingSceneTargetType? legacySceneTargetType, params string[] itemPrefabNames)
-        {
-            return FindCatalogItemPrefab(true, itemPrefabNames) != null ||
-                (legacySceneTargetType.HasValue && _selectedSceneTargetTypes.Contains(legacySceneTargetType.Value));
-        }
-
-        private bool IsPlacedComponentItemSelected<T>() where T : Component
-        {
-            return FindCatalogItemComponent<T>(true) != null;
-        }
-
-        private Item FindCatalogItemPrefab(bool selectedOnly, params string[] itemPrefabNames)
-        {
-            if (itemPrefabNames == null || itemPrefabNames.Length == 0)
-            {
-                return null;
-            }
-
-            foreach (ThingTargetDefinition definition in _catalog)
-            {
-                if (definition == null || definition.IsLuggage || definition.IsSceneTarget ||
-                    (selectedOnly && !definition.ItemIds.Any(_selectedIds.Contains)))
-                {
-                    continue;
-                }
-
-                foreach (Item prefab in definition.Prefabs)
-                {
-                    if (prefab == null || prefab.gameObject == null)
-                    {
-                        continue;
-                    }
-
-                    if (itemPrefabNames.Any(name => string.Equals(prefab.gameObject.name, name, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        return prefab;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private Item FindCatalogItemComponent<T>(bool selectedOnly) where T : Component
-        {
-            foreach (ThingTargetDefinition definition in _catalog)
-            {
-                if (definition == null || definition.IsLuggage || definition.IsSceneTarget ||
-                    (selectedOnly && !definition.ItemIds.Any(_selectedIds.Contains)))
-                {
-                    continue;
-                }
-
-                foreach (Item prefab in definition.Prefabs)
-                {
-                    if (prefab != null && prefab.GetComponentInChildren<T>(true) != null)
-                    {
-                        return prefab;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        private string GetOwnerName(PhotonView view)
+        private string GetOwnerName(int actorNumber, PhotonView fallbackView = null)
         {
             if (_showOwnerNames == null || !_showOwnerNames.Value)
             {
                 return string.Empty;
             }
 
-            Photon.Realtime.Player player = null;
-            if (view != null)
+            if (actorNumber <= 0)
             {
-                if (PhotonNetwork.CurrentRoom != null && view.CreatorActorNr > 0)
-                {
-                    player = PhotonNetwork.CurrentRoom.GetPlayer(view.CreatorActorNr);
-                }
+                return string.Empty;
+            }
 
-                if (player == null)
-                {
-                    player = view.Owner;
-                }
+            string cachedName;
+            if (_ownerNamesByActor.TryGetValue(actorNumber, out cachedName))
+            {
+                return cachedName;
+            }
+
+            Photon.Realtime.Player player = PhotonNetwork.CurrentRoom == null
+                ? null
+                : PhotonNetwork.CurrentRoom.GetPlayer(actorNumber);
+            if (player == null && PhotonNetwork.CurrentRoom == null && fallbackView != null)
+            {
+                player = fallbackView.Owner;
             }
 
             string nickName = player == null ? null : player.NickName;
-            return string.IsNullOrWhiteSpace(nickName) ? string.Empty : nickName.Trim();
-        }
-
-        private static PhotonView GetPlayerCreatedView(Component target)
-        {
-            if (target == null)
+            string result = string.IsNullOrWhiteSpace(nickName) ? string.Empty : nickName.Trim();
+            if (player != null)
             {
-                return null;
+                _ownerNamesByActor[actorNumber] = result;
             }
-
-            foreach (PhotonView view in target.GetComponentsInParent<PhotonView>(true))
-            {
-                if (IsPlayerCreatedView(view))
-                {
-                    return view;
-                }
-            }
-
-            foreach (PhotonView view in target.GetComponentsInChildren<PhotonView>(true))
-            {
-                if (IsPlayerCreatedView(view))
-                {
-                    return view;
-                }
-            }
-
-            return null;
+            return result;
         }
 
         private static bool IsPlayerCreatedView(PhotonView view)
         {
             return view != null && view.gameObject != null && view.gameObject.activeInHierarchy &&
                 !view.IsRoomView && (view.CreatorActorNr > 0 || (view.Owner != null && view.Owner.ActorNumber > 0));
-        }
-
-        private static bool IsPlayerPlacedTargetValid(Component target, PhotonView view)
-        {
-            return target != null && target.gameObject != null && target.gameObject.activeInHierarchy &&
-                view != null && GetPlayerCreatedView(target) == view;
-        }
-
-        private static string GetRopeAnchorItemPrefabName(RopeAnchorWithRope ropeAnchor)
-        {
-            if (ropeAnchor == null || ropeAnchor.gameObject == null)
-            {
-                return null;
-            }
-
-            switch (NormalizeObjectName(ropeAnchor.gameObject.name))
-            {
-                case "RopeAnchorWithRope": return "RopeSpool";
-                case "RopeAnchorWithAntiRope": return "Anti-Rope Spool";
-                case "RopeAnchorForRopeShooter": return "RopeShooter";
-                case "RopeAnchorForRopeShooterAnti": return "RopeShooterAnti";
-                default: return null;
-            }
-        }
-
-        private static string GetRopeAnchorItemPrefabName(RopeAnchor anchor, bool antigrav)
-        {
-            if (anchor != null)
-            {
-                foreach (Transform current in anchor.GetComponentsInParent<Transform>(true))
-                {
-                    string name = GetRopeAnchorItemPrefabNameFromObject(current);
-                    if (name != null)
-                    {
-                        return name;
-                    }
-                }
-
-                foreach (Transform current in anchor.GetComponentsInChildren<Transform>(true))
-                {
-                    string name = GetRopeAnchorItemPrefabNameFromObject(current);
-                    if (name != null)
-                    {
-                        return name;
-                    }
-                }
-            }
-
-            return antigrav ? "Anti-Rope Spool" : "RopeSpool";
-        }
-
-        private static string GetRopeAnchorItemPrefabNameFromObject(Transform target)
-        {
-            if (target == null)
-            {
-                return null;
-            }
-
-            string name = GetRopeAnchorItemPrefabName(target.GetComponent<RopeAnchorWithRope>());
-            if (name != null)
-            {
-                return name;
-            }
-
-            switch (NormalizeObjectName(target.gameObject.name))
-            {
-                case "RopeAnchorWithRope": return "RopeSpool";
-                case "RopeAnchorWithAntiRope": return "Anti-Rope Spool";
-                case "RopeAnchorForRopeShooter": return "RopeShooter";
-                case "RopeAnchorForRopeShooterAnti": return "RopeShooterAnti";
-                default: return null;
-            }
-        }
-
-        private static bool IsPlacedRopeValid(Rope rope, RopeAnchor anchor, PhotonView ropeView)
-        {
-            return rope != null && rope.gameObject.activeInHierarchy && ropeView != null &&
-                GetPlayerCreatedView(rope) == ropeView && anchor != null && anchor.gameObject.activeInHierarchy &&
-                anchor.anchorPoint != null && rope.attachmenState == Rope.ATTACHMENT.anchored && GetAttachedRopeAnchor(rope) == anchor;
         }
 
         private static RopeAnchor GetAttachedRopeAnchor(Rope rope)
@@ -1574,10 +665,6 @@ namespace WhereIsThing
             return cloneSuffix < 0 ? name.Trim() : name.Substring(0, cloneSuffix).Trim();
         }
 
-        private static Vector3 GetTargetPosition(Component target, Func<Vector3> positionProvider)
-        {
-            return positionProvider == null ? target.transform.position : positionProvider();
-        }
 
         private static Vector3 GetMultipleGroundPointsPosition(Component target)
         {
@@ -1609,15 +696,14 @@ namespace WhereIsThing
             return count == 0 ? target.transform.position : total / count;
         }
 
-        private bool IsWithinLabelDistance(Vector3 position)
-        {
-            if (_maxDistance == null || _maxDistance.Value <= 0f)
-            {
-                return true;
-            }
 
-            Camera camera = Camera.main;
-            return camera == null || Vector3.Distance(camera.transform.position, position) <= _maxDistance.Value;
+        private Camera GetMainCamera()
+        {
+            if (_mainCamera == null || !_mainCamera.gameObject.activeInHierarchy)
+            {
+                _mainCamera = Camera.main;
+            }
+            return _mainCamera;
         }
 
         private void RefreshMobLabels(HashSet<string> seen)
@@ -1634,7 +720,7 @@ namespace WhereIsThing
                 return;
             }
 
-            foreach (Mob mob in mobManager.mobs.ToList())
+            foreach (Mob mob in mobManager.mobs)
             {
                 if (mob == null || !mob.gameObject.activeInHierarchy)
                 {
@@ -1683,24 +769,6 @@ namespace WhereIsThing
                 _selectedSceneTargetTypes.Contains(sceneTargetType);
         }
 
-        private bool ShouldPreferPlayerPlacedItemLabel(Item item)
-        {
-            if (item == null || item.itemState != ItemState.Ground)
-            {
-                return false;
-            }
-
-            if (item.GetComponentInChildren<ShelfShroom>(true) != null)
-            {
-                return IsPlacedComponentItemSelected<ShelfShroom>() || IsPlacedItemSelected(null, "ShelfShroom");
-            }
-            if (item.GetComponentInChildren<CloudFungus>(true) != null)
-            {
-                return IsPlacedComponentItemSelected<CloudFungus>() || IsPlacedItemSelected(null, "CloudFungus");
-            }
-
-            return false;
-        }
 
         private static bool TryGetMobSceneTargetType(Mob mob, out ThingSceneTargetType sceneTargetType)
         {
@@ -1749,7 +817,7 @@ namespace WhereIsThing
         private void AddSceneLabel(HashSet<string> seen, ThingSceneTargetType sceneTargetType, Component target,
             Func<string> titleProvider, Func<bool> isValid, Func<Vector3> positionProvider = null)
         {
-            if (target == null || target.gameObject == null || !IsWithinLabelDistance(GetTargetPosition(target, positionProvider)))
+            if (target == null || target.gameObject == null)
             {
                 return;
             }
@@ -1779,7 +847,7 @@ namespace WhereIsThing
             }
 
             _labels.Add(key, new ThingLabel(key, _canvas.transform, target, titleProvider, isValid,
-                positionProvider, ownerProvider, _labelFont, _fontSize.Value));
+                positionProvider, ownerProvider, _labelFont, _labelTitleMaterial, _labelDetailMaterial, _fontSize.Value));
         }
 
         private void UpdateLabelStyleIfChanged()
@@ -1795,6 +863,7 @@ namespace WhereIsThing
             _lastObservedFontSize = _fontSize.Value;
             _lastObservedNameLanguage = _nameLanguage.Value;
             _labelFont = null;
+            ReleaseLabelMaterial();
             _labelFontWarningLogged = false;
             ApplyLabelStyleToExisting(true);
         }
@@ -1803,6 +872,7 @@ namespace WhereIsThing
         {
             if (_labelFont != null)
             {
+                EnsureLabelMaterial();
                 return true;
             }
 
@@ -1818,7 +888,65 @@ namespace WhereIsThing
             }
 
             _labelFontWarningLogged = false;
+            EnsureLabelMaterial();
             return true;
+        }
+
+        private void EnsureLabelMaterial()
+        {
+            if ((_labelTitleMaterial != null && _labelDetailMaterial != null) ||
+                _labelFont == null || _labelFont.material == null)
+            {
+                return;
+            }
+
+            ReleaseLabelMaterial();
+            _labelTitleMaterial = CreateLabelMaterial(
+                "WhereIsThing Label Title", 0.055f, 0.80f, 0.35f, 0.05f, 0.05f);
+            _labelDetailMaterial = CreateLabelMaterial(
+                "WhereIsThing Label Detail", 0.035f, 0.72f, 0.30f, 0f, 0.08f);
+        }
+
+        private Material CreateLabelMaterial(string name, float outlineWidth, float underlayAlpha,
+            float underlayOffset, float underlayDilate, float underlaySoftness)
+        {
+            Material material = new Material(_labelFont.material)
+            {
+                name = name,
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            if (material.HasProperty("_OutlineColor") && material.HasProperty("_OutlineWidth"))
+            {
+                material.EnableKeyword("OUTLINE_ON");
+                material.SetColor("_OutlineColor", new Color(0f, 0f, 0f, 0.88f));
+                material.SetFloat("_OutlineWidth", outlineWidth);
+            }
+            if (material.HasProperty("_UnderlayColor") && material.HasProperty("_UnderlayOffsetX") &&
+                material.HasProperty("_UnderlayOffsetY") && material.HasProperty("_UnderlayDilate") &&
+                material.HasProperty("_UnderlaySoftness"))
+            {
+                material.EnableKeyword("UNDERLAY_ON");
+                material.SetColor("_UnderlayColor", new Color(0f, 0f, 0f, underlayAlpha));
+                material.SetFloat("_UnderlayOffsetX", underlayOffset);
+                material.SetFloat("_UnderlayOffsetY", -underlayOffset);
+                material.SetFloat("_UnderlayDilate", underlayDilate);
+                material.SetFloat("_UnderlaySoftness", underlaySoftness);
+            }
+            return material;
+        }
+
+        private void ReleaseLabelMaterial()
+        {
+            if (_labelTitleMaterial != null)
+            {
+                Destroy(_labelTitleMaterial);
+                _labelTitleMaterial = null;
+            }
+            if (_labelDetailMaterial != null)
+            {
+                Destroy(_labelDetailMaterial);
+                _labelDetailMaterial = null;
+            }
         }
 
         private void ApplyLabelStyleToExisting(bool logResolution)
@@ -1830,7 +958,7 @@ namespace WhereIsThing
 
             foreach (ThingLabel label in _labels.Values)
             {
-                label.ApplyStyle(_labelFont, _fontSize.Value);
+                label.ApplyStyle(_labelFont, _labelTitleMaterial, _labelDetailMaterial, _fontSize.Value);
             }
         }
 
@@ -1870,6 +998,7 @@ namespace WhereIsThing
             }
 
             _catalog.AddRange(loaded);
+            BuildCatalogIndexes();
             MigratePlacedSceneTargetsToItems();
             BuildBuiltInPresetCache();
             ResolveBuiltInPresetTargets();
@@ -1957,6 +1086,7 @@ namespace WhereIsThing
                 _localPresets.Add(ThingPresetFactory.CreateAchievementPreset());
                 _localPresets.Add(ThingPresetFactory.CreateSurvivalPreset());
                 _localPresets.Add(ThingPresetFactory.CreateAscentEightPreset());
+                _localPresets.Add(ThingPresetFactory.CreatePlayerPlacedPreset());
                 if (_selectedIds.Count > 0 || _selectedLuggageTypes.Count > 0 || _selectedSceneTargetTypes.Count > 0)
                 {
                     ThingPresetDefinition migrated = new ThingPresetDefinition("preset-migrated", ThingUi.MigratedPresetName())
@@ -1986,6 +1116,10 @@ namespace WhereIsThing
                 {
                     UpsertBuiltInPreset(ThingPresetFactory.CreateAscentEightPreset(), 2, false);
                 }
+                if (_presetSchemaVersion.Value < 6)
+                {
+                    UpsertBuiltInPreset(ThingPresetFactory.CreatePlayerPlacedPreset(), 3, false);
+                }
             }
 
             EnsureDefaultLocalPresets();
@@ -2011,6 +1145,7 @@ namespace WhereIsThing
             UpsertBuiltInPreset(ThingPresetFactory.CreateAchievementPreset(), 0, false);
             UpsertBuiltInPreset(ThingPresetFactory.CreateSurvivalPreset(), 1, false);
             UpsertBuiltInPreset(ThingPresetFactory.CreateAscentEightPreset(), 2, false);
+            UpsertBuiltInPreset(ThingPresetFactory.CreatePlayerPlacedPreset(), 3, false);
         }
 
         private void UpsertBuiltInPreset(ThingPresetDefinition builtInPreset, int insertIndex, bool overwrite)
@@ -2055,11 +1190,14 @@ namespace WhereIsThing
             ThingPresetDefinition achievement = ThingPresetFactory.CreateAchievementPreset();
             ThingPresetDefinition survival = ThingPresetFactory.CreateSurvivalPreset();
             ThingPresetDefinition ascentEight = ThingPresetFactory.CreateAscentEightPreset();
+            ThingPresetDefinition playerPlaced = ThingPresetFactory.CreatePlayerPlacedPreset();
             ThingPresetFactory.ResolveBuiltInItemTargets(survival, _catalog);
             ThingPresetFactory.ResolveBuiltInItemTargets(ascentEight, _catalog);
+            ThingPresetFactory.ResolveBuiltInItemTargets(playerPlaced, _catalog);
             _builtInPresets.Add(achievement);
             _builtInPresets.Add(survival);
             _builtInPresets.Add(ascentEight);
+            _builtInPresets.Add(playerPlaced);
         }
 
         private void MigratePlacedSceneTargetsToItems()
@@ -2124,7 +1262,8 @@ namespace WhereIsThing
                     }
                 }
                 else if ((string.Equals(preset.Id, ThingPresetFactory.SurvivalPresetId, StringComparison.Ordinal) ||
-                    string.Equals(preset.Id, ThingPresetFactory.AscentEightPresetId, StringComparison.Ordinal)) &&
+                    string.Equals(preset.Id, ThingPresetFactory.AscentEightPresetId, StringComparison.Ordinal) ||
+                    string.Equals(preset.Id, ThingPresetFactory.PlayerPlacedPresetId, StringComparison.Ordinal)) &&
                     preset.SelectedItemIds.Count == 0)
                 {
                     _log.LogWarning("[Presets] Built-in target resolution found no items for '" +
@@ -2255,7 +1394,7 @@ namespace WhereIsThing
             string activePresetId = allowEditing ? _activeLocalPresetId : _selectedSharedPresetId;
             bool usingFallbackPresets = !allowEditing && !HasUsableSessionPresets();
             _pickerWindow.Open(presets, activePresetId, allowEditing, usingFallbackPresets, _shareModeConfig.Value,
-                _locationScopes.Value, _scanMode.Value, _displayDuration.Value, _showOwnerNames.Value,
+                _locationScopes.Value, _scanMode.Value, _displayDuration.Value, _maxDistance.Value, _showOwnerNames.Value,
                 delegate(ThingPresetDefinition preset) { return ThingPresetFactory.BuildSummary(preset, _catalog); },
                 allowEditing ? (Action<string>)SelectLocalPreset : SelectSharedPreset,
                 allowEditing ? (Action<string>)OpenSelectionEditor : null,
@@ -2267,7 +1406,8 @@ namespace WhereIsThing
                 SetLocationScope,
                 CycleLocalScanMode,
                 AdjustLocalDisplayDuration,
-                SetShowOwnerNames);
+                SetShowOwnerNames,
+                SetMaxDistance);
         }
 
         private void SelectLocalPreset(string presetId)
@@ -2475,6 +1615,23 @@ namespace WhereIsThing
             RefreshLabels();
         }
 
+        private void SetMaxDistance(float distance)
+        {
+            float next = Mathf.Clamp(Mathf.Round(distance / 20f) * 20f, 0f, 500f);
+            if (_maxDistance != null && Mathf.Approximately(_maxDistance.Value, next))
+            {
+                return;
+            }
+
+            _maxDistance.Value = next;
+            PersistConfig();
+            RefreshLabels();
+            if (_pickerWindow != null && _pickerWindow.IsOpen)
+            {
+                OpenPresetPicker();
+            }
+        }
+
         private bool IsClientPresetRestricted()
         {
             return PhotonNetwork.InRoom && !PhotonNetwork.OfflineMode && !PhotonNetwork.IsMasterClient;
@@ -2518,6 +1675,7 @@ namespace WhereIsThing
             if (!string.Equals(roomName, _activeRoomName, StringComparison.Ordinal))
             {
                 _activeRoomName = roomName;
+                _ownerNamesByActor.Clear();
                 if (PhotonNetwork.IsMasterClient)
                 {
                     ClearSessionOverlay();
@@ -2752,9 +1910,29 @@ namespace WhereIsThing
             }
         }
 
-        public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer) { }
-        public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) { }
-        public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, PhotonHashtable changedProps) { }
+        public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+        {
+            if (newPlayer != null)
+            {
+                _ownerNamesByActor.Remove(newPlayer.ActorNumber);
+            }
+        }
+
+        public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+        {
+            if (otherPlayer != null)
+            {
+                _ownerNamesByActor.Remove(otherPlayer.ActorNumber);
+            }
+        }
+
+        public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, PhotonHashtable changedProps)
+        {
+            if (targetPlayer != null)
+            {
+                _ownerNamesByActor.Remove(targetPlayer.ActorNumber);
+            }
+        }
 
         private static string SerializeLuggageTypes(IEnumerable<ThingLuggageType> luggageTypes)
         {
@@ -2780,15 +1958,6 @@ namespace WhereIsThing
             return data != null && data.TryGetDataEntry<BackpackData>(DataEntryKey.BackpackData, out backpackData) && backpackData != null && backpackData.itemSlots != null;
         }
 
-        private static bool BackpackContains(Backpack backpack, ushort itemId)
-        {
-            BackpackData data;
-            if (!TryGetBackpackData(backpack == null ? null : backpack.data, out data))
-            {
-                return false;
-            }
-            return data.itemSlots.Any(slot => slot != null && !slot.IsEmpty() && slot.prefab != null && slot.prefab.itemID == itemId);
-        }
 
         private void RemoveLabel(string key)
         {
@@ -2807,104 +1976,6 @@ namespace WhereIsThing
                 label.Dispose();
             }
             _labels.Clear();
-        }
-
-        [HarmonyPatch(typeof(RopeShooter), "OnPrimaryFinishedCast")]
-        private static class RopeShooterConsumePatch
-        {
-            private static void Prefix(RopeShooter __instance, out bool __state)
-            {
-                __state = __instance != null && __instance.HasAmmo;
-            }
-
-            private static void Postfix(RopeShooter __instance, bool __state)
-            {
-                if (!__state || __instance == null || __instance.HasAmmo)
-                {
-                    return;
-                }
-
-                Item item = __instance.GetComponent<Item>();
-                if (item == null || item.holderCharacter == null || !item.holderCharacter.IsLocal)
-                {
-                    return;
-                }
-
-                item.StartCoroutine(item.ConsumeDelayed());
-            }
-        }
-
-        [HarmonyPatch(typeof(Constructable), "FinishConstruction")]
-        private static class ConstructablePlacementCleanupPatch
-        {
-            private sealed class PlacementState
-            {
-                public ushort ItemId;
-                public bool IsLocalCurrent;
-            }
-
-            private static void Prefix(Constructable __instance, out PlacementState __state)
-            {
-                Item item = __instance == null ? null : __instance.GetComponent<Item>();
-                Character localCharacter = Character.localCharacter;
-                __state = new PlacementState
-                {
-                    ItemId = item == null ? ushort.MaxValue : item.itemID,
-                    IsLocalCurrent = item != null && localCharacter != null && localCharacter.IsLocal &&
-                        localCharacter.data.currentItem == item
-                };
-            }
-
-            private static void Postfix(GameObject __result, PlacementState __state)
-            {
-                if (__result == null || __state == null || !__state.IsLocalCurrent)
-                {
-                    return;
-                }
-
-                Player player = Player.localPlayer;
-                if (player == null)
-                {
-                    return;
-                }
-
-                ItemSlot slot = null;
-                if (Character.localCharacter.refs.items.currentSelectedSlot.IsSome)
-                {
-                    ItemSlot selected = player.GetItemSlot(Character.localCharacter.refs.items.currentSelectedSlot.Value);
-                    if (Matches(selected, __state.ItemId))
-                    {
-                        slot = selected;
-                    }
-                }
-
-                if (slot == null)
-                {
-                    foreach (ItemSlot candidate in player.itemSlots)
-                    {
-                        if (Matches(candidate, __state.ItemId))
-                        {
-                            slot = candidate;
-                            break;
-                        }
-                    }
-                }
-
-                if (slot == null && Matches(player.tempFullSlot, __state.ItemId))
-                {
-                    slot = player.tempFullSlot;
-                }
-
-                if (slot != null)
-                {
-                    player.EmptySlot(Optionable<byte>.Some(slot.itemSlotID));
-                }
-            }
-
-            private static bool Matches(ItemSlot slot, ushort itemId)
-            {
-                return slot != null && !slot.IsEmpty() && slot.prefab != null && slot.prefab.itemID == itemId;
-            }
         }
 
         private static bool IsAltHeld()

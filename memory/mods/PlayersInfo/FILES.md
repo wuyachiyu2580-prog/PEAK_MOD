@@ -1,31 +1,30 @@
 # PlayersInfo Files
 
-Last updated: 2026-08-17
+Last updated: 2026-09-06
 
 ## Paths
 
 - Source: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\PlayersInfo`
 - Project: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\PlayersInfo\PlayersInfo.csproj`
 - Direct build output: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`
-- Current release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.1`
+- Current release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.3`
 
 The project `<OutputPath>` now points directly to the 2.0.a profile above. Future PlayersInfo builds should write the DLL there; do not redirect it back to the workspace test environment.
 
-## Current source 0.2.1
+## Current source 0.2.3
 
-- Version chain currently verified: `.csproj <Version> = 0.2.1`, `PlayersInfoPlugin.PluginVersion = 0.2.1`, `AssemblyInfo = 0.2.1.0`.
-- The current profile DLL at the path above reports `0.2.1.0`; the project is configured to overwrite this file directly on the next build.
-- Current implementation includes stableId-bound teammate bars, unified observed/local display-character resolution, an independent `TeammateBarAffliction`, local hunger countdown, teammate item durability bars, cooked-food icon coloring, dynamic TMP-width placement, and native PEAK ownership of the local extra-stamina bar layout.
+- Version chain currently verified: `.csproj <Version> = 0.2.3`, `PlayersInfoPlugin.PluginVersion = 0.2.3`, `AssemblyVersion/FileVersion = 0.2.3.0`.
+- The current profile DLL at the path above reports `0.2.3.0`, size `98304` bytes, and SHA-256 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`; the project is configured to overwrite this file directly on future builds.
+- Current implementation includes stableId-bound teammate bars, unified observed/local display-character resolution, an independent `TeammateBarAffliction`, local hunger countdown, teammate item durability bars, cooked-food icon coloring, dynamic TMP-width placement, native PEAK ownership of the local extra-stamina bar layout, three-mode affliction icon visibility, safe dead/downed distance positions, zero-stamina countdown centering, and the unified `0.25s` low-frequency refresh cadence.
 - The old `Display.EnableInventoryRow` key is retained as a compatibility key but is now a three-level enum: `Disabled`, `ContentsOnly`, and `ContentsAndJetpackFuel`. Legacy `true` maps to `ContentsOnly`; legacy `false` maps to `Disabled`.
 - Backpack contents use the actual backpack capacity: fanny packs show 2 slots, normal backpacks show 4, and backpacks without contents show no inner slots. Jetpack fuel is shown only in the third mode.
 
-## Release 0.2.1
+## Release 0.2.3
 
-- Release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.1`.
-- Contents: `PlayersInfo.dll`, `README.md`, `CHANGELOG.md`, `manifest.json`, and `icon.png`.
-- No ZIP was created, as requested.
-- Release DLL version is `0.2.1.0`, size `83968` bytes, SHA-256 `7732C6A23AB4C1AC9493A9BB25EA8B9AF14AE292DF5AAEE11E231C170896A2CF`; it matches the deployed profile DLL.
-- README and changelog cover stable player binding, spectator targeting/center selection, hunger countdown, durability bars, cooked-food colors, backpack capacities, inventory display modes, jetpack fuel, local/teammate extra-stamina rules, UI update reduction, and the local HUD/consumable regression fixes.
+- Release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.3`.
+- Contents: `PlayersInfo.dll`, `README.md`, `CHANGELOG.md`, `manifest.json`, `icon.png`, and `wuyachiyu-PlayersInfo-0.2.3.zip`.
+- Release DLL version is `0.2.3.0`, size `98304` bytes, SHA-256 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`; it matches the deployed profile DLL.
+- README and changelog cover the three icon modes and localization, dead/downed range fixes, zero-stamina hunger countdown placement, unified refresh timing, and debug-log gating in addition to the retained 0.2.1 features.
 
 ## Release 0.2.0
 

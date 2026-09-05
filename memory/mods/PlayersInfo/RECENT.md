@@ -1,5 +1,16 @@
 # PlayersInfo Recent
 
+## 2026-09-06 PlayersInfo 0.2.3 release and log audit
+
+- PlayersInfo 0.2.3 targets PEAK 2.4.b. The Release build completed with `0 warnings / 0 errors`.
+- The deployed profile DLL and `发行/0.2.3/PlayersInfo.dll` are identical: version `0.2.3.0`, size `98304` bytes, SHA-256 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`. The release directory also contains the synchronized README, CHANGELOG, manifest, icon, and ZIP.
+- Added `AfflictionIconDisplayMode`: `ShowAll`, `HideTeammates`, and `HideAll`. Teammate icon references are restricted to the clone tree; local hiding only considers icons owned by the local vanilla HUD, so extra stamina, shield, campfire, and item icons are not targeted. Status bars, colors, widths, and numbers remain intact.
+- Added English/Chinese BepInEx and PEAKLib.ModConfig labels, descriptions, and enum display names. Chinese enum names are `不隐藏图标`, `隐藏队友图标`, and `隐藏全部图标`.
+- Distance resolution now uses safe finite positions. Normal and `passedOut`/`fullyPassedOut` teammates use their current torso position; dead teammates use the last living `VirtualCenter`. A position failure skips only that character. The 1.5-second missing-roster grace is no longer used for roster members that are simply out of range; the 5 m hysteresis remains.
+- When local stamina is truly zero, the hunger countdown is centered in the live `maxStaminaBar` area after status widths are excluded. Before zero, it remains after the stamina number only when the measured green-bar space is sufficient; it is hidden when there is not enough room instead of jumping to the full-bar center.
+- Low-frequency refreshes were unified to `0.25s`. Diagnostic snapshots, binding/build details, layout probes, and clone validation success now go through the debug gate. The reviewed log had no PlayersInfo warning/error entries; old `[PI-DIAG]` lines were from the pre-gating DLL. `WhySoLaggy` traffic and missing `quicksave.peak` errors were unrelated.
+- Full clean-session functional verification remains pending for the three icon modes, dead/downed range transitions, spectator distance centers, zero-stamina countdown under changing affliction widths, and PEAK 2.4.b multiplayer edge cases.
+
 ## 2026-08-19 Teammate stamina display fixes confirmed
 
 - The teammate green main-stamina bar/value issue was fixed and confirmed in-game.

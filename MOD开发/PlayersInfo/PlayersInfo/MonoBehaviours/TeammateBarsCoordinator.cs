@@ -130,7 +130,7 @@ namespace PlayersInfo.MonoBehaviours
                     return;
 
                 var extra = _origBar.extraBar;
-                PluginLogger.Info("[LocalExtraLayout] extraParent=" + GetParentName(extra)
+                PluginLogger.Debug("[LocalExtraLayout] extraParent=" + GetParentName(extra)
                     + " outlineParent=" + GetParentName(_origBar.extraBarOutline)
                     + " staminaParent=" + GetParentName(_origBar.extraBarStamina)
                     + " iconParent=" + (_origBar.extraStaminaIcon != null
@@ -271,7 +271,11 @@ namespace PlayersInfo.MonoBehaviours
             s_displayOrderSet.Clear();
             for (int doi = 0; doi < _displayOrder.Count; doi++) s_displayOrderSet.Add(_displayOrder[doi]);
             var mates = tracker.Teammates;
-            Vector3 focusPosition = focus.Center;
+            if (!TryGetDistancePosition(focus, out Vector3 focusPosition))
+            {
+                HideAll();
+                return;
+            }
             s_currentStableIds.Clear();
             for (int i = 0; i < mates.Count; i++)
             {
@@ -287,7 +291,8 @@ namespace PlayersInfo.MonoBehaviours
                 if (c == displayCharacter && !useLocalCenter) continue;
                 // Owner 短暂为 null 不再剔除（网络抖动期间）：依靠 GetStableCharacterId 的 viewId→actor 缓存
                 // 把同一玩家识别成同一 stableId，避免被当作新玩家造成体力条切换。
-                float d = Vector3.Distance(focusPosition, c.Center);
+                if (!TryGetDistancePosition(c, out Vector3 teammatePosition)) continue;
+                float d = Vector3.Distance(focusPosition, teammatePosition);
                 if (range > 0f)
                 {
                     // 已显示玩家用宽松阈值 range+HysteresisMargin，避免边缘抹动 → 体力条反复闪烁
@@ -319,6 +324,12 @@ namespace PlayersInfo.MonoBehaviours
                 if (s_visibleById.TryGetValue(sid, out var visibleCh))
                 {
                     s_retainedById[sid] = new RetainedEntry { ch = visibleCh, lostTime = -1f };
+                    continue;
+                }
+                // 仍在当前名册说明只是明确超距、被人数上限淘汰或位置无效，不能按网络丢失保留。
+                if (s_currentStableIds.Contains(sid))
+                {
+                    s_retainedById.Remove(sid);
                     continue;
                 }
                 if (s_visibleScratch.Count >= maxN)
@@ -431,7 +442,7 @@ namespace PlayersInfo.MonoBehaviours
                 _stableIdByDriver[driver] = stableId;
                 _pool.Add(driver);
                 driver.BindTarget(target);
-                PluginLogger.Info("[PI-DIAG][DriverCreated] stableId=" + stableId
+                PluginLogger.Debug("[PI-DIAG][DriverCreated] stableId=" + stableId
                     + " driver=" + driver.GetInstanceID()
                     + " target=" + GetCharacterDebugName(target)
                     + " rootSelf=" + driver.gameObject.activeSelf
@@ -474,7 +485,7 @@ namespace PlayersInfo.MonoBehaviours
                         .Append(" aff=").Append(driver.afflictions != null ? driver.afflictions.Length : -1)
                         .Append(" txt=").Append(driver.afflictionTexts != null ? driver.afflictionTexts.Length : -1);
                 }
-                PluginLogger.Info(sb.ToString());
+                PluginLogger.Debug(sb.ToString());
             }
             catch (Exception ex)
             {
@@ -573,7 +584,7 @@ namespace PlayersInfo.MonoBehaviours
                     return null;
                 }
 
-                PluginLogger.ThrottleInfo(
+                PluginLogger.ThrottleDebug(
                     "affliction_template_source",
                     "Teammate affliction templates: source=" + afflictionTemplateSource
                         + " count=" + afflictionTemplates.Length,
@@ -833,7 +844,7 @@ namespace PlayersInfo.MonoBehaviours
                         .Append(" rtf=").Append(template.rtf != null ? template.rtf.name : "null")
                         .Append(" icon=").Append(template.icon != null ? template.icon.name : "null");
                 }
-                PluginLogger.Info(templateLog.ToString());
+                PluginLogger.Debug(templateLog.ToString());
             }
             catch (Exception ex)
             {
@@ -911,7 +922,7 @@ namespace PlayersInfo.MonoBehaviours
                         .Append(" hierarchy=").Append(affliction.gameObject.activeInHierarchy)
                         .Append(" rtf=").Append(affliction.rtf != null ? affliction.rtf.name : "null");
                 }
-                PluginLogger.Info(buildLog.ToString());
+                PluginLogger.Debug(buildLog.ToString());
             }
             catch (Exception ex)
             {
@@ -1113,7 +1124,7 @@ namespace PlayersInfo.MonoBehaviours
                 var target = source.gameObject.GetComponent<TeammateBarAffliction>();
                 if (target == null) target = source.gameObject.AddComponent<TeammateBarAffliction>();
                 source.enabled = false;
-                target.Initialize(source);
+                target.Initialize(source, ownershipRoot);
                 result.Add(target);
                 UnityEngine.Object.Destroy(source);
             }
@@ -1564,7 +1575,7 @@ namespace PlayersInfo.MonoBehaviours
                 + " vanillaEnabled=" + enabledVanilla
                 + " owned=" + ownedCount
                 + " expected=" + expectedAfflictions;
-            if (valid) PluginLogger.ThrottleInfo("clone_validation_ok", "[PI-DIAG]" + summary, 5f);
+            if (valid) PluginLogger.ThrottleDebug("clone_validation_ok", "[PI-DIAG]" + summary, 5f);
             else PluginLogger.ThrottleWarn("clone_validation", summary);
         }
 
@@ -1663,6 +1674,27 @@ namespace PlayersInfo.MonoBehaviours
             }
             catch { }
             return viewId;
+        }
+
+        private static bool TryGetDistancePosition(Character character, out Vector3 position)
+        {
+            position = default(Vector3);
+            if (character == null || character.Equals(null) || character.data == null) return false;
+            try
+            {
+                // PEAK 会把死亡角色的躯干传送到死亡空间；VirtualCenter 此时返回最后存活位置。
+                position = character.data.dead ? character.VirtualCenter : character.Center;
+                return IsFinite(position.x) && IsFinite(position.y) && IsFinite(position.z);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool IsFinite(float value)
+        {
+            return !float.IsNaN(value) && !float.IsInfinity(value);
         }
 
         private void ResolveDisplayOrder(List<Character> desiredCharacters)

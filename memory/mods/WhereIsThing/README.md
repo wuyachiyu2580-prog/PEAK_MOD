@@ -1,8 +1,10 @@
 # WhereIsThing
 
-更新时间：2026-08-20
+更新时间：2026-09-06
 
-WhereIsThing 是参考 `WhereIsMyAmulet` 为 PEAK 2.1.a 准备的多物品位置显示 MOD。当前 0.1.1 已完成非 ZIP 发行目录，已经接入物品数据库、选择窗口、实时标签、快捷键、配置持久化、护符雕像碎片范围和安全的 ModConfig 本地化；后续仍需根据玩家反馈和实机结果继续收口。
+WhereIsThing 是参考 `WhereIsMyAmulet` 开发的 PEAK 多物品位置显示 MOD。当前开发/测试版本为 `0.1.2`（程序集 `0.1.2.0`），游戏基线为 PEAK `2.4.b`；本轮放置体识别和 owner 修复已通过 `0 warnings / 0 errors` 编译，但尚未完成房主/客户端实机验收，因此不得记为已发布。现有 `发行/1.0.3` 未在本轮更新，也没有创建新 ZIP。
+
+PEAK `2.1.a`、WhereIsThing `0.1.0`/`0.1.1`/`1.0.3` 的内容是早期开发和发布历史；若与本页顶部、`RECENT.md` 或最新 `temp/` 记录冲突，以 `2.4.b` / `0.1.2` 当前状态为准。
 
 ## 当前能力
 
@@ -19,10 +21,14 @@ WhereIsThing 是参考 `WhereIsMyAmulet` 为 PEAK 2.1.a 准备的多物品位置
 - 窗口打开期间持续显示并解锁鼠标，关闭时恢复打开前的鼠标状态。
 - 物品名称使用游戏 `LocalizedText` 的名称表，窗口可切换跟随游戏、English、简体中文。
 - 扫描显示支持常驻或按秒数自动隐藏。
+- 支持预设选择和共享；owner 显示由一个全局开关控制，关闭后不改变目标标签和距离。
+- 玩家放置目标使用物品目录行为组件指向的生成 prefab 做正向识别；绳索 owner 取锚点 PhotonView，并排除机场、神庙、`PeakSequence`、可破坏系统绳索和海滩桥。
+- 踏板菇、弹力菇、云雾菇通过本地 `OnItemThrown` 证据尝试匹配放置者；无法唯一确认时仍显示名称和距离，但不显示玩家名。魔豆始终不猜测 owner。
+- 物品继续使用互斥的用途分类；ItemSpawnerEnhanced 审计只用于精确 prefab 覆盖，不新增 Deployable/Consumable 多标签 UI。Jetpack/Rocketpack、Heat Pack、Healing Dart、放置工具、神秘变体、棋子等已修正分类，仍待实机检查窗口显示。
 
-## 可显示类别初稿
+## 历史分类基线（2.1.a）
 
-物品列表不是硬编码名单，而是从 2.1.a `ItemDatabase.itemLookup` 动态读取。当前窗口会按以下类别归类：
+物品列表不是硬编码名单，而是从 `ItemDatabase.itemLookup` 动态读取。以下类别与 194 个物品 ID 审计来自 PEAK `2.1.a`，保留为历史分类依据；2.4.b 的运行时目录仍需实机确认：
 
 - 特殊物品：Scout Amulet、Golden Idol、Book of Bones、Bing Bong 标签。
 - 神秘物品：Mystical 标签。
@@ -41,7 +47,7 @@ WhereIsThing 是参考 `WhereIsMyAmulet` 为 PEAK 2.1.a 准备的多物品位置
 
 这些类别用于窗口筛选，不限制实际可追踪物品。后续实机发现特殊物品或误分类时，优先增加游戏标签判断或精确名称规则。
 
-## 2026-08-16 杂项审计
+## 2026-08-16 杂项审计（历史）
 
 初次审计时的 33 个 `Misc` 显示名组已经按本轮方案重分类：早起虫儿归入生物，Aloe Vera 和 First Aid Kit 归入医疗，AK 和 Chain Launcher 归入武器，Frisbee 和棋子归入玩具与运动，莓蕉皮、椰子、热狗、棉花糖、王莓、怪脆莓和 Fungus 归入食物，Checkpoint Flag、Conch、Magic Bean、Megaphone、Portable Stove、Stick、Stone 归入生存工具，Scoutmaster's Soul 归入特殊物品，Beehive 归入生物。
 

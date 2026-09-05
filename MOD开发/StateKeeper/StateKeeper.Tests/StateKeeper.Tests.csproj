@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.4" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <ProjectReference Include="..\StateKeeper\StateKeeper.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="BepInEx"><HintPath>C:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\core\BepInEx.dll</HintPath></Reference>
+    <Reference Include="0Harmony"><HintPath>C:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\core\0Harmony.dll</HintPath></Reference>
+    <Reference Include="Assembly-CSharp"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Assembly-CSharp.dll</HintPath></Reference>
+    <Reference Include="Assembly-CSharp-firstpass"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath></Reference>
+    <Reference Include="UnityEngine"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.dll</HintPath></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.CoreModule.dll</HintPath></Reference>
+    <Reference Include="PhotonRealtime"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\PhotonRealtime.dll</HintPath></Reference>
+    <Reference Include="PhotonUnityNetworking"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\PhotonUnityNetworking.dll</HintPath></Reference>
+    <Reference Include="Photon3Unity3D"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Photon3Unity3D.dll</HintPath></Reference>
+    <Reference Include="netstandard"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\netstandard.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

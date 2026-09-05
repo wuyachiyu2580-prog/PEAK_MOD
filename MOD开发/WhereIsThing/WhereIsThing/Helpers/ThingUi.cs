@@ -195,6 +195,13 @@ namespace WhereIsThing
             return Text("Locations", "显示范围");
         }
 
+        public static string MaxDistanceLabel(float distance)
+        {
+            return distance <= 0f
+                ? Text("Max distance: unlimited", "最大距离：不限")
+                : string.Format(CultureInfo.InvariantCulture, Text("Max distance: {0:0}m", "最大距离：{0:0}米"), distance);
+        }
+
         public static string PlayerNames()
         {
             return Text("Player names", "玩家名");
@@ -278,6 +285,11 @@ namespace WhereIsThing
         public static string AscentEightPresetName()
         {
             return Text("Ascent 8", "天阶 8");
+        }
+
+        public static string PlayerPlacedPresetName()
+        {
+            return Text("Player Placed", "玩家放置");
         }
 
         public static string GetLanguageDisplay(ThingNameLanguage language)

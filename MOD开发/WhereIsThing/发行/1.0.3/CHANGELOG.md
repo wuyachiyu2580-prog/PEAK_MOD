@@ -2,6 +2,9 @@
 
 ## 1.0.3
 
+- Restored the compact scan-settings layout and aligned the player-name switch with the scan-mode controls.
+- Added a built-in `Player Placed` fallback preset containing every currently supported owner-labelled item.
+- Fixed hammered pitons not receiving labels or player names when their PhotonView sits above or below the named prefab object.
 - Added a global `Player names` switch for player-placed targets with reliable Photon creator information.
 - Added client-side labels for placed checkpoint flags, shelf shrooms, bounce shrooms, cloud fungus, scout cannons, chain-shooter vines, pitons, and rope variants.
 - Kept magic bean vines client-side without showing a planter name because their room-object lifecycle does not preserve that owner information.

@@ -17,12 +17,13 @@ namespace PlayersInfo
     {
         public const string PluginGuid = "com.players.info";
         public const string PluginName = "PlayersInfo";
-        public const string PluginVersion = "0.2.2";
+        public const string PluginVersion = "0.2.3";
 
         public enum HudAnchor { TopLeft, TopRight, BottomLeft, BottomRight }
         public enum TeammateSortMode { Stable, Distance }
         public enum SpectatorNearbyCenterMode { LocalCharacter, ObservedCharacter }
         public enum TeammateInventoryDisplayMode { Disabled, ContentsOnly, ContentsAndJetpackFuel }
+        public enum AfflictionIconDisplayMode { ShowAll, HideTeammates, HideAll }
 
         // ========== Config Entries（全局共享） ==========
         public static ConfigEntry<bool> CfgModEnabled;
@@ -30,6 +31,7 @@ namespace PlayersInfo
         public static ConfigEntry<bool> CfgEnableStaminaBar;
         public static ConfigEntry<bool> CfgShowStaminaValue;
         public static ConfigEntry<bool> CfgShowExtraStaminaCap;
+        public static ConfigEntry<AfflictionIconDisplayMode> CfgAfflictionIconDisplayMode;
 
         public static ConfigEntry<TeammateInventoryDisplayMode> CfgInventoryDisplayMode;
 
@@ -106,6 +108,12 @@ namespace PlayersInfo
                 "ShowExtraStaminaCap", true,
                 LanguageHelper.L("Show teammate extra stamina as current/cap. Turn off to show current only.",
                                  "队友额外体力显示为 当前/上限。关闭后只显示当前值。"));
+
+            CfgAfflictionIconDisplayMode = Config.Bind(DisplaySection,
+                "AfflictionIconDisplayMode",
+                AfflictionIconDisplayMode.ShowAll,
+                LanguageHelper.L("Choose whether status icons are shown for everyone, hidden for teammates, or hidden for everyone.",
+                                 "选择不隐藏状态图标、隐藏队友状态图标，或隐藏所有人的状态图标。"));
 
             TeammateInventoryDisplayMode inventoryMode = ReadInventoryDisplayMode();
             RemoveConfigEntry(DisplaySection, "EnableInventoryRow");

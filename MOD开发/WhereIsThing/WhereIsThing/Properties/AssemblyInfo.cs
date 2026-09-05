@@ -6,5 +6,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("WhereIsThing")]
 [assembly: ComVisible(false)]
 [assembly: Guid("f9d08f85-c8c7-4b51-97f9-f3a2f32f6f8a")]
-[assembly: AssemblyVersion("1.0.3.0")]
-[assembly: AssemblyFileVersion("1.0.3.0")]
+[assembly: AssemblyVersion("0.1.2.0")]
+[assembly: AssemblyFileVersion("0.1.2.0")]

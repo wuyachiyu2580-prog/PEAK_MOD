@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -15,14 +15,21 @@ namespace WhereIsThing
         private readonly Func<string> _ownerProvider;
         private readonly GameObject _root;
         private readonly CanvasGroup _group;
-        private readonly List<TextMeshProUGUI> _shadowTitles = new List<TextMeshProUGUI>();
-        private readonly List<TextMeshProUGUI> _shadowOwners = new List<TextMeshProUGUI>();
-        private readonly List<TextMeshProUGUI> _shadowDistances = new List<TextMeshProUGUI>();
         private readonly TextMeshProUGUI _mainTitle;
         private readonly TextMeshProUGUI _mainOwner;
         private readonly TextMeshProUGUI _mainDistance;
         private readonly TextMeshProUGUI _arrow;
         private float _fontSize;
+        private string _cachedTitle = string.Empty;
+        private string _cachedOwner = string.Empty;
+        private string _lastTitle = string.Empty;
+        private string _lastOwner = string.Empty;
+        private string _lastDistance = string.Empty;
+        private int _lastDistanceMeters;
+        private bool _contentDirty = true;
+        private bool _hasTextState;
+        private bool _lastPlaceAboveTarget;
+        private bool _visible;
 
         private const float LabelWidth = 420f;
         private const float OwnerFontScale = 0.78f;
@@ -30,19 +37,20 @@ namespace WhereIsThing
         private const float RowGap = 1f;
 
         public ThingLabel(string key, Transform canvas, Transform target, Func<string> titleProvider, Func<bool> isValid,
-            TMP_FontAsset font, float fontSize)
-            : this(key, canvas, target, titleProvider, isValid, null, null, font, fontSize)
+            TMP_FontAsset font, Material titleMaterial, Material detailMaterial, float fontSize)
+            : this(key, canvas, target, titleProvider, isValid, null, null, font, titleMaterial, detailMaterial, fontSize)
         {
         }
 
         public ThingLabel(string key, Transform canvas, Transform target, Func<string> titleProvider, Func<bool> isValid,
-            Func<Vector3> positionProvider, TMP_FontAsset font, float fontSize)
-            : this(key, canvas, target, titleProvider, isValid, positionProvider, null, font, fontSize)
+            Func<Vector3> positionProvider, TMP_FontAsset font, Material titleMaterial, Material detailMaterial, float fontSize)
+            : this(key, canvas, target, titleProvider, isValid, positionProvider, null, font, titleMaterial, detailMaterial, fontSize)
         {
         }
 
         public ThingLabel(string key, Transform canvas, Transform target, Func<string> titleProvider, Func<bool> isValid,
-            Func<Vector3> positionProvider, Func<string> ownerProvider, TMP_FontAsset font, float fontSize)
+            Func<Vector3> positionProvider, Func<string> ownerProvider, TMP_FontAsset font, Material titleMaterial,
+            Material detailMaterial, float fontSize)
         {
             _key = key;
             _target = target;
@@ -58,23 +66,11 @@ namespace WhereIsThing
             _group = _root.AddComponent<CanvasGroup>();
             _group.blocksRaycasts = false;
             _group.interactable = false;
+            _group.alpha = 0f;
 
-            for (int i = 0; i < ShadowOffsets.Length; i++)
-            {
-                TextMeshProUGUI title = CreateText("ShadowTitle_" + i, font, _fontSize);
-                TextMeshProUGUI owner = CreateText("ShadowOwner_" + i, font, _fontSize * OwnerFontScale);
-                TextMeshProUGUI distance = CreateText("ShadowDistance_" + i, font, _fontSize * DistanceFontScale);
-                title.color = ShadowColor;
-                owner.color = ShadowColor;
-                distance.color = ShadowColor;
-                _shadowTitles.Add(title);
-                _shadowOwners.Add(owner);
-                _shadowDistances.Add(distance);
-            }
-
-            _mainTitle = CreateText("MainTitle", font, _fontSize);
-            _mainOwner = CreateText("OwnerName", font, _fontSize * OwnerFontScale);
-            _mainDistance = CreateText("Distance", font, _fontSize * DistanceFontScale);
+            _mainTitle = CreateText("MainTitle", font, titleMaterial, _fontSize);
+            _mainOwner = CreateText("OwnerName", font, detailMaterial, _fontSize * OwnerFontScale);
+            _mainDistance = CreateText("Distance", font, detailMaterial, _fontSize * DistanceFontScale);
             _mainTitle.color = new Color(0.875f, 0.855f, 0.761f, 1f);
             _mainOwner.color = new Color(0.847f, 0.788f, 0.584f, 1f);
             _mainDistance.color = new Color(0.784f, 0.745f, 0.600f, 1f);
@@ -84,6 +80,8 @@ namespace WhereIsThing
             arrowObject.layer = 5;
             _arrow = arrowObject.AddComponent<TextMeshProUGUI>();
             _arrow.font = font;
+            _arrow.fontSharedMaterial = font.material;
+            _arrow.UpdateMeshPadding();
             _arrow.text = "^";
             _arrow.alignment = TextAlignmentOptions.Center;
             _arrow.fontSize = 22f;
@@ -97,7 +95,7 @@ namespace WhereIsThing
         public string Key { get { return _key; } }
         public bool IsValid { get { return _target != null && _isValid != null && _isValid(); } }
 
-        public void ApplyStyle(TMP_FontAsset font, float fontSize)
+        public void ApplyStyle(TMP_FontAsset font, Material titleMaterial, Material detailMaterial, float fontSize)
         {
             if (font == null)
             {
@@ -105,16 +103,20 @@ namespace WhereIsThing
             }
 
             _fontSize = Mathf.Clamp(fontSize, 10f, 64f);
-            ApplyFont(_mainTitle, font, _fontSize);
-            ApplyFont(_mainOwner, font, _fontSize * OwnerFontScale);
-            ApplyFont(_mainDistance, font, _fontSize * DistanceFontScale);
-            for (int i = 0; i < _shadowTitles.Count; i++)
-            {
-                ApplyFont(_shadowTitles[i], font, _fontSize);
-                ApplyFont(_shadowOwners[i], font, _fontSize * OwnerFontScale);
-                ApplyFont(_shadowDistances[i], font, _fontSize * DistanceFontScale);
-            }
+            _hasTextState = false;
+            ApplyFont(_mainTitle, font, titleMaterial, _fontSize);
+            ApplyFont(_mainOwner, font, detailMaterial, _fontSize * OwnerFontScale);
+            ApplyFont(_mainDistance, font, detailMaterial, _fontSize * DistanceFontScale);
             _arrow.font = font;
+            _arrow.fontSharedMaterial = font.material;
+            _arrow.UpdateMeshPadding();
+        }
+
+        public void RefreshContent()
+        {
+            _cachedTitle = _titleProvider == null ? string.Empty : (_titleProvider() ?? string.Empty);
+            _cachedOwner = _ownerProvider == null ? string.Empty : (_ownerProvider() ?? string.Empty).Trim();
+            _contentDirty = false;
         }
 
         public void Update(Camera camera, float maxDistance, bool showOffscreen)
@@ -136,9 +138,8 @@ namespace WhereIsThing
             if (onScreen && withinDistance)
             {
                 _root.transform.position = camera.WorldToScreenPoint(worldPosition);
-                string title = _titleProvider == null ? string.Empty : (_titleProvider() ?? string.Empty);
-                string owner = _ownerProvider == null ? string.Empty : (_ownerProvider() ?? string.Empty).Trim();
-                SetText(title, owner, string.Format("{0:F0}m", distance), true);
+                EnsureContent();
+                SetText(_cachedTitle, _cachedOwner, GetDistanceText(distance), true);
                 _arrow.enabled = false;
                 SetVisible(true);
                 return;
@@ -163,7 +164,7 @@ namespace WhereIsThing
             Vector2 screenCenter = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
             float edge = Mathf.Min(Screen.width, Screen.height) * 0.42f;
             _root.transform.position = screenCenter + direction * edge;
-            SetText(string.Empty, string.Empty, string.Format("{0:F0}m", distance), false);
+            SetText(string.Empty, string.Empty, GetDistanceText(distance), false);
             _arrow.enabled = true;
             _arrow.rectTransform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f);
             SetVisible(true);
@@ -177,7 +178,7 @@ namespace WhereIsThing
             }
         }
 
-        private TextMeshProUGUI CreateText(string name, TMP_FontAsset font, float size)
+        private TextMeshProUGUI CreateText(string name, TMP_FontAsset font, Material material, float size)
         {
             GameObject textObject = new GameObject(name);
             textObject.transform.SetParent(_root.transform, false);
@@ -188,6 +189,8 @@ namespace WhereIsThing
             text.overflowMode = TextOverflowModes.Ellipsis;
             text.richText = false;
             text.font = font;
+            text.fontSharedMaterial = material;
+            text.UpdateMeshPadding();
             text.fontStyle = FontStyles.Normal;
             text.fontSize = Mathf.Clamp(size, 8f, 64f);
             text.fontSizeMax = text.fontSize;
@@ -199,9 +202,11 @@ namespace WhereIsThing
             return text;
         }
 
-        private static void ApplyFont(TextMeshProUGUI text, TMP_FontAsset font, float size)
+        private static void ApplyFont(TextMeshProUGUI text, TMP_FontAsset font, Material material, float size)
         {
             text.font = font;
+            text.fontSharedMaterial = material;
+            text.UpdateMeshPadding();
             text.fontSize = Mathf.Clamp(size, 8f, 64f);
             text.fontSizeMax = text.fontSize;
             text.fontSizeMin = Mathf.Max(8f, text.fontSize * 0.65f);
@@ -209,22 +214,35 @@ namespace WhereIsThing
 
         private void SetVisible(bool visible)
         {
+            if (_visible == visible)
+            {
+                return;
+            }
+
+            _visible = visible;
             _group.alpha = visible ? 1f : 0f;
         }
 
         private void SetText(string title, string owner, string distance, bool placeAboveTarget)
         {
+            if (_hasTextState && string.Equals(_lastTitle, title, StringComparison.Ordinal) &&
+                string.Equals(_lastOwner, owner, StringComparison.Ordinal) &&
+                string.Equals(_lastDistance, distance, StringComparison.Ordinal) &&
+                _lastPlaceAboveTarget == placeAboveTarget)
+            {
+                return;
+            }
+
+            _hasTextState = true;
+            _lastTitle = title;
+            _lastOwner = owner;
+            _lastDistance = distance;
+            _lastPlaceAboveTarget = placeAboveTarget;
             if (!placeAboveTarget)
             {
                 SetTextPart(_mainTitle, string.Empty, false, 0f, 24f, new Vector2(0.5f, 0.5f), Vector2.zero);
                 SetTextPart(_mainOwner, string.Empty, false, 0f, 24f, new Vector2(0.5f, 0.5f), Vector2.zero);
                 SetTextPart(_mainDistance, distance, true, 0f, 24f, new Vector2(0.5f, 0.5f), Vector2.zero);
-                for (int i = 0; i < _shadowTitles.Count; i++)
-                {
-                    SetTextPart(_shadowTitles[i], string.Empty, false, 0f, 24f, new Vector2(0.5f, 0.5f), ShadowOffsets[i]);
-                    SetTextPart(_shadowOwners[i], string.Empty, false, 0f, 24f, new Vector2(0.5f, 0.5f), ShadowOffsets[i]);
-                    SetTextPart(_shadowDistances[i], distance, true, 0f, 24f, new Vector2(0.5f, 0.5f), ShadowOffsets[i]);
-                }
                 return;
             }
 
@@ -239,12 +257,26 @@ namespace WhereIsThing
             SetTextPart(_mainTitle, title, true, titleY, titleHeight, new Vector2(0.5f, 0f), Vector2.zero);
             SetTextPart(_mainOwner, owner, !string.IsNullOrEmpty(owner), ownerY, ownerHeight, new Vector2(0.5f, 0f), Vector2.zero);
             SetTextPart(_mainDistance, distance, true, distanceY, distanceHeight, new Vector2(0.5f, 0f), Vector2.zero);
-            for (int i = 0; i < _shadowTitles.Count; i++)
+        }
+
+        private void EnsureContent()
+        {
+            if (_contentDirty)
             {
-                SetTextPart(_shadowTitles[i], title, true, titleY, titleHeight, new Vector2(0.5f, 0f), ShadowOffsets[i]);
-                SetTextPart(_shadowOwners[i], owner, !string.IsNullOrEmpty(owner), ownerY, ownerHeight, new Vector2(0.5f, 0f), ShadowOffsets[i]);
-                SetTextPart(_shadowDistances[i], distance, true, distanceY, distanceHeight, new Vector2(0.5f, 0f), ShadowOffsets[i]);
+                RefreshContent();
             }
+        }
+
+        private string GetDistanceText(float distance)
+        {
+            int distanceMeters = Mathf.RoundToInt(distance);
+            if (distanceMeters == _lastDistanceMeters && !string.IsNullOrEmpty(_lastDistance))
+            {
+                return _lastDistance;
+            }
+
+            _lastDistanceMeters = distanceMeters;
+            return distanceMeters.ToString(CultureInfo.InvariantCulture) + "m";
         }
 
         private static void SetTextPart(TextMeshProUGUI text, string value, bool enabled, float y, float height,
@@ -273,14 +305,5 @@ namespace WhereIsThing
             return lines;
         }
 
-        private static readonly Color ShadowColor = new Color(0f, 0f, 0f, 0.9f);
-
-        private static readonly Vector2[] ShadowOffsets =
-        {
-            new Vector2(0f, 1f),
-            new Vector2(0f, -1f),
-            new Vector2(-1f, 0f),
-            new Vector2(1f, 0f)
-        };
     }
 }

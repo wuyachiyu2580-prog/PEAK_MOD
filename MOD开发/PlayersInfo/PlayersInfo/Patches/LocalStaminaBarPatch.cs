@@ -1,6 +1,7 @@
 ﻿using System;
 using HarmonyLib;
 using PlayersInfo.Helpers;
+using PlayersInfo.MonoBehaviours;
 using TMPro;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ namespace PlayersInfo.Patches
     {
         private static TMP_Text _staminaValueText;
         private static TMP_Text _extraValueText;
-        private static TMP_Text _hungerCountdownText;
+        private static TMP_Text _zeroStaminaHungerCountdownText;
         private static TMP_Text[] _afflictionTexts;
         private static StaminaBar _initedFor;
         private static float _nextValueRefreshTime;
@@ -31,7 +32,7 @@ namespace PlayersInfo.Patches
         private static Character _infiniteDisplayCharacter;
         private static bool _wasInfiniteStamina;
         private static float _frozenInfiniteStamina01;
-        private const float ValueRefreshInterval = 0.15f;
+        private const float ValueRefreshInterval = 0.25f;
         private const float AfflictionRefreshInterval = 0.5f;
 
         [HarmonyPostfix]
@@ -47,6 +48,7 @@ namespace PlayersInfo.Patches
                 // 主开关
                 if (PlayersInfoPlugin.CfgModEnabled != null && !PlayersInfoPlugin.CfgModEnabled.Value)
                 {
+                    SetLocalAfflictionIcons(__instance, true);
                     HideAll();
                     ResetInfiniteStaminaDisplay();
                     return;
@@ -59,6 +61,7 @@ namespace PlayersInfo.Patches
                 }
 
                 EnsureInit(__instance);
+                ApplyLocalAfflictionIconVisibility(__instance);
 
                 bool showValue = PlayersInfoPlugin.CfgShowStaminaValue == null
                                  || PlayersInfoPlugin.CfgShowStaminaValue.Value;
@@ -101,7 +104,8 @@ namespace PlayersInfo.Patches
                 }
 
                 if (refreshValues || displayDead || displayCharacter == null)
-                    UpdateHungerCountdown(__instance, displayCharacter, displayDead);
+                    UpdateHungerCountdown(__instance, displayCharacter, displayDead,
+                        showValue, displayedMainStam01);
 
                 // 临时体力
                 if (_extraValueText != null)
@@ -183,7 +187,7 @@ namespace PlayersInfo.Patches
         {
             _staminaValueText = null;
             _extraValueText = null;
-            _hungerCountdownText = null;
+            _zeroStaminaHungerCountdownText = null;
             _afflictionTexts = null;
             _initedFor = null;
             _nextValueRefreshTime = 0f;
@@ -264,8 +268,13 @@ namespace PlayersInfo.Patches
                     _extraValueText = AddStretchText(bar.extraBarStamina.gameObject,
                         "PI_LocalExtraStaminaValue", 20f, false);
 
-                if (bar.fullBar != null && _hungerCountdownText == null)
-                    _hungerCountdownText = AddFloatingText(bar.fullBar.gameObject, "PI_LocalHungerCountdown", 14f);
+                if (bar.maxStaminaBar != null && _zeroStaminaHungerCountdownText == null)
+                {
+                    _zeroStaminaHungerCountdownText = AddStretchText(bar.maxStaminaBar.gameObject,
+                        "PI_LocalZeroStaminaHungerCountdown", 20f, false);
+                    if (_zeroStaminaHungerCountdownText != null)
+                        _zeroStaminaHungerCountdownText.color = new Color(1f, 0.9f, 0.25f, 1f);
+                }
 
                 if (bar.afflictions != null && _afflictionTexts == null)
                 {
@@ -323,15 +332,18 @@ namespace PlayersInfo.Patches
             SetActive(txt, true);
         }
 
-        private static void UpdateHungerCountdown(StaminaBar bar, Character displayCharacter, bool displayDead)
+        private static void UpdateHungerCountdown(
+            StaminaBar bar,
+            Character displayCharacter,
+            bool displayDead,
+            bool showValue,
+            float displayedMainStamina)
         {
-            if (_hungerCountdownText == null || _staminaValueText == null || bar == null
-                || displayCharacter == null || displayDead
+            SetActive(_zeroStaminaHungerCountdownText, false);
+            if (_staminaValueText == null || bar == null || bar.staminaBar == null
+                || !showValue || displayCharacter == null || displayDead
                 || !DisplayCharacterHelper.IsLocalDisplay(displayCharacter))
-            {
-                SetActive(_hungerCountdownText, false);
                 return;
-            }
 
             if (Time.unscaledTime >= _nextHungerCalculationTime)
             {
@@ -340,34 +352,61 @@ namespace PlayersInfo.Patches
                 _cachedHungerTime = seconds > 0f ? AfflictionTimeHelper.FormatTime(seconds) : string.Empty;
             }
 
-            if (string.IsNullOrEmpty(_cachedHungerTime) || !_staminaValueText.gameObject.activeSelf)
+            if (string.IsNullOrEmpty(_cachedHungerTime)) return;
+
+            string countdown = "(" + _cachedHungerTime + ")";
+            if (displayedMainStamina <= 0.005f)
             {
-                SetActive(_hungerCountdownText, false);
+                if (_zeroStaminaHungerCountdownText == null || bar.maxStaminaBar == null
+                    || !bar.maxStaminaBar.gameObject.activeInHierarchy)
+                    return;
+
+                float availableWidth = bar.maxStaminaBar.sizeDelta.x;
+                float preferredWidth = _zeroStaminaHungerCountdownText.GetPreferredValues(countdown).x;
+                if (availableWidth <= 0f || preferredWidth > availableWidth) return;
+
+                if (_zeroStaminaHungerCountdownText.text != countdown)
+                    _zeroStaminaHungerCountdownText.text = countdown;
+                SetActive(_zeroStaminaHungerCountdownText, true);
                 return;
             }
 
-            string suffix = " (" + _cachedHungerTime + ")";
-            float width = bar.staminaBar != null ? bar.staminaBar.sizeDelta.x : 0f;
+            float width = bar.staminaBar.sizeDelta.x;
+            if (!_staminaValueText.gameObject.activeInHierarchy
+                || !bar.staminaBar.gameObject.activeInHierarchy
+                || width <= bar.minStaminaBarWidth)
+                return;
+
+            string suffix = " " + countdown;
             float preferred = _staminaValueText.GetPreferredValues(_staminaValueText.text + suffix).x;
             if (preferred <= width)
             {
                 string combined = _staminaValueText.text + suffix;
                 if (_staminaValueText.text != combined) _staminaValueText.text = combined;
-                SetActive(_hungerCountdownText, false);
             }
-            else
+        }
+
+        private static void ApplyLocalAfflictionIconVisibility(StaminaBar bar)
+        {
+            bool visible = PlayersInfoPlugin.CfgAfflictionIconDisplayMode == null
+                || PlayersInfoPlugin.CfgAfflictionIconDisplayMode.Value
+                    != PlayersInfoPlugin.AfflictionIconDisplayMode.HideAll;
+            SetLocalAfflictionIcons(bar, visible);
+        }
+
+        private static void SetLocalAfflictionIcons(StaminaBar bar, bool visible)
+        {
+            if (bar == null || bar.afflictions == null || bar.transform.parent == null) return;
+            Transform localRoot = bar.transform.parent;
+            for (int i = 0; i < bar.afflictions.Length; i++)
             {
-                string floating = "(" + _cachedHungerTime + ")";
-                if (_hungerCountdownText.text != floating) _hungerCountdownText.text = floating;
-                float floatingWidth = _hungerCountdownText.GetPreferredValues(floating).x + 8f;
-                var rt = _hungerCountdownText.rectTransform;
-                var size = rt.sizeDelta;
-                if (Mathf.Abs(size.x - floatingWidth) > 0.1f)
-                {
-                    size.x = floatingWidth;
-                    rt.sizeDelta = size;
-                }
-                SetActive(_hungerCountdownText, true);
+                var affliction = bar.afflictions[i];
+                if (affliction == null || affliction.icon == null || affliction.transform == null) continue;
+                if (!affliction.transform.IsChildOf(localRoot)) continue;
+                if (!affliction.icon.transform.IsChildOf(localRoot)) continue;
+                if (affliction.GetComponentInParent<TeammateBarDriver>() != null) continue;
+                if (affliction.icon.GetComponentInParent<TeammateBarDriver>() != null) continue;
+                if (affliction.icon.enabled != visible) affliction.icon.enabled = visible;
             }
         }
 
@@ -382,7 +421,7 @@ namespace PlayersInfo.Patches
         {
             SetActive(_staminaValueText, false);
             SetActive(_extraValueText, false);
-            SetActive(_hungerCountdownText, false);
+            SetActive(_zeroStaminaHungerCountdownText, false);
             if (_afflictionTexts != null)
             {
                 for (int i = 0; i < _afflictionTexts.Length; i++) SetActive(_afflictionTexts[i], false);
@@ -421,19 +460,6 @@ namespace PlayersInfo.Patches
                 PluginLogger.ThrottleWarn("local_bar_text", "LocalStaminaBarPatch.AddStretchText failed: " + ex.Message);
                 return null;
             }
-        }
-
-        private static TMP_Text AddFloatingText(GameObject host, string name, float fontSize)
-        {
-            var text = AddStretchText(host, name, fontSize, false);
-            if (text == null) return null;
-            var rt = text.rectTransform;
-            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
-            rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.sizeDelta = new Vector2(120f, 20f);
-            rt.anchoredPosition = new Vector2(0f, -20f);
-            text.color = new Color(1f, 0.9f, 0.25f, 1f);
-            return text;
         }
 
     }

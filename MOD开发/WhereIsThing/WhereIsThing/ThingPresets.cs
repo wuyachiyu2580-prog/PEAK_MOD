@@ -168,6 +168,7 @@ namespace WhereIsThing
         public const string AchievementPresetId = "preset-achievement";
         public const string SurvivalPresetId = "preset-survival";
         public const string AscentEightPresetId = "preset-ascent-8";
+        public const string PlayerPlacedPresetId = "preset-player-placed";
 
         public static ThingPresetDefinition CreateAchievementPreset()
         {
@@ -201,6 +202,16 @@ namespace WhereIsThing
             return preset;
         }
 
+        public static ThingPresetDefinition CreatePlayerPlacedPreset()
+        {
+            ThingPresetDefinition preset = new ThingPresetDefinition(PlayerPlacedPresetId, ThingUi.PlayerPlacedPresetName())
+            {
+                Published = true
+            };
+            preset.Normalize();
+            return preset;
+        }
+
         public static ThingPresetDefinition CreateCustomPreset(int index)
         {
             return new ThingPresetDefinition(Guid.NewGuid().ToString("N"), ThingUi.CustomPresetName(index))
@@ -213,7 +224,8 @@ namespace WhereIsThing
         {
             return string.Equals(presetId, AchievementPresetId, StringComparison.Ordinal) ||
                 string.Equals(presetId, SurvivalPresetId, StringComparison.Ordinal) ||
-                string.Equals(presetId, AscentEightPresetId, StringComparison.Ordinal);
+                string.Equals(presetId, AscentEightPresetId, StringComparison.Ordinal) ||
+                string.Equals(presetId, PlayerPlacedPresetId, StringComparison.Ordinal);
         }
 
         public static string GetDisplayName(ThingPresetDefinition preset)
@@ -236,6 +248,11 @@ namespace WhereIsThing
             if (string.Equals(preset.Id, AscentEightPresetId, StringComparison.Ordinal))
             {
                 return ThingUi.AscentEightPresetName();
+            }
+
+            if (string.Equals(preset.Id, PlayerPlacedPresetId, StringComparison.Ordinal))
+            {
+                return ThingUi.PlayerPlacedPresetName();
             }
 
             return preset.Name;
@@ -278,6 +295,11 @@ namespace WhereIsThing
                     "Scout's Ambition"
                 };
             }
+            else if (string.Equals(preset.Id, PlayerPlacedPresetId, StringComparison.Ordinal))
+            {
+                localizationKeys = new string[0];
+                englishNames = new string[0];
+            }
             else
             {
                 return 0;
@@ -296,7 +318,11 @@ namespace WhereIsThing
                     localizationKeys.Any(key => string.Equals(item.UIData.itemName, key, StringComparison.OrdinalIgnoreCase)));
                 bool nameMatch = englishNames.Any(name => string.Equals(NormalizeTargetName(displayName),
                     NormalizeTargetName(name), StringComparison.OrdinalIgnoreCase));
-                if (keyMatch || nameMatch)
+                bool prefabMatch = string.Equals(preset.Id, PlayerPlacedPresetId, StringComparison.Ordinal) &&
+                    definition.Prefabs.Any(item => item != null && item.gameObject != null &&
+                        PlayerPlacedPrefabNames.Any(name => string.Equals(item.gameObject.name, name,
+                            StringComparison.OrdinalIgnoreCase)));
+                if (keyMatch || nameMatch || prefabMatch)
                 {
                     preset.SelectedItemIds.UnionWith(definition.ItemIds);
                 }
@@ -308,6 +334,21 @@ namespace WhereIsThing
         {
             return (value ?? string.Empty).Trim().Replace('\u2018', '\'').Replace('\u2019', '\'');
         }
+
+        private static readonly string[] PlayerPlacedPrefabNames =
+        {
+            "Flag_Plantable_Checkpoint",
+            "BounceShroom",
+            "ShelfShroom",
+            "CloudFungus",
+            "ScoutCannonItem",
+            "ChainShooter",
+            "ClimbingSpike",
+            "RopeSpool",
+            "Anti-Rope Spool",
+            "RopeShooter",
+            "RopeShooterAnti"
+        };
 
         public static string BuildSummary(ThingPresetDefinition preset, IEnumerable<ThingTargetDefinition> catalog)
         {

@@ -28,11 +28,12 @@ The preset window has one global `Player names` switch for supported player-plac
 
 ## Presets and multiplayer
 
-The three built-in presets are available even when the host does not have WhereIsThing installed:
+The four built-in presets are available even when the host does not have WhereIsThing installed:
 
 1. Survival Medical
 2. Achievement
 3. Ascent 8 amulets
+4. Player Placed objects with supported owner labels
 
 Hosts can create, edit, rename, publish, hide, and delete custom presets. Clients receive published presets when the sharing mode is set to `Share: Published presets`.
 
