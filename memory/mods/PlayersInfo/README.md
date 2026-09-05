@@ -36,7 +36,7 @@ The mod should not change game business logic and should not actively send gamep
 - 0.2.3 keeps the hunger countdown in the green stamina text while there is room. When stamina is truly zero (`<= 0.005`), it uses a separate yellow text centered in the live `maxStaminaBar` region after status width is excluded, and hides it when that region is inactive or too narrow. It never moves early because the green bar is temporarily small.
 - Low-frequency local and teammate HUD refreshes use the unified `0.25s` cadence. High-frequency visual updates remain separately controlled where needed for responsive bar animation.
 - Direct build output DLL path: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`. Future PlayersInfo builds write here directly.
-- The 2026-05-24 temporary-stamina clipping fix is retained as historical `0.1.1` release context; the current DLL is the `0.2.1` profile deployment listed above.
+- The 2026-05-24 temporary-stamina clipping fix is retained as historical `0.1.1` release context; the current DLL is the `0.2.3` profile deployment listed above.
 - 2026-05-30 release docs are synced with that fix. `发行/0.1.1/wuyachiyu-PlayersInfo-0.1.1.zip` exists as of 2026-06-04 and contains the synced docs plus the fixed 64000-byte DLL.
 - `发行/0.2.3/` contains the current DLL, manifest, README, CHANGELOG, icon, and `wuyachiyu-PlayersInfo-0.2.3.zip`. The release DLL matches the profile DLL: version `0.2.3.0`, size `98304` bytes, SHA-256 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`.
 

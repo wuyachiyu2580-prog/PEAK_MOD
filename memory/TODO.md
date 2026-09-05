@@ -118,6 +118,15 @@
 - [ ] 重新确认 BlackPeakRemix 最新版本兼容边界，尤其是灯笼功能重叠时是否仍能让渡补丁。
 - [ ] 继续从源码和 BepInEx 日志抽取 0.2.1 之后更细的稳定结论，写入 `RECENT.md`。
 
+## PlayersInfo 0.2.3 / PEAK 2.4.b
+
+- [ ] Clean-session verify `AfflictionIconDisplayMode`: `ShowAll`, `HideTeammates`, and `HideAll`; confirm local/team/spectator ownership isolation and no impact on extra stamina, shield, campfire, or inventory icons.
+- [ ] Verify normal, `passedOut`, `fullyPassedOut`, and `dead` teammate range transitions, including last-living position for dead players, no out-of-range roster retention, 5 m hysteresis, `NearbyRange=0`, max count, stable/distance sorting, revive, and reconnect.
+- [ ] Verify zero-stamina hunger countdown behavior while status widths change: after-value placement while space exists, hidden when the green fill is too narrow, centered only at true zero in the available `maxStaminaBar` region, and hidden immediately after recovery.
+- [ ] Verify countdown suppression for hidden stamina values, local death, remote spectator targets, no hunger growth, immunity, and airport scenes.
+- [ ] Confirm `Advanced.DebugLogging=false` produces no diagnostic snapshot/binding/layout spam; distinguish unrelated `WhySoLaggy` and PEAK save errors from PlayersInfo warnings/errors.
+- [ ] Complete PEAK 2.4.b multiplayer and spectator regression testing before declaring 0.2.3 behavior fully verified.
+
 ## PlayersInfo historical 0.2.1 verification
 
 - [ ] 实机验证本地额外体力条已恢复图一/原版布局：保持原缩进和短宽度、黑色内边框与闪电图标正常、石化段不跑出条外，绿色填充内部只显示当前值（例如 `40`），不出现 `+40/100` 或 `40/100`。

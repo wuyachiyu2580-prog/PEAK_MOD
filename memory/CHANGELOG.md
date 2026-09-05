@@ -2,6 +2,13 @@
 
 ## 2026-09-06
 
+- [修改] `mods/PlayersInfo/` 四件套：同步 PlayersInfo `0.2.3` / PEAK `2.4.b` 的三档异常图标显示、死亡/晕倒距离过滤、零体力饥饿倒计时居中、统一 `0.25s` 低频刷新和 debug 日志门控决策。
+- [新增] `mods/PlayersInfo/temp/2026-09-06.md`：记录 0.2.3 的实现范围、构建产物、日志审计结果和仍待实机验证的边界。
+- [修改] `README.md`、`mods/README.md`、`MEMORY_INDEX.md`、`TODO.md`：将 PlayersInfo 当前状态从 0.2.1 更新为 0.2.3 / PEAK 2.4.b，并把旧 2.1.a 条目标为历史验证记录。
+- [验证] PlayersInfo Release 构建为 `0 warnings / 0 errors`；profile 与 `发行/0.2.3` DLL 版本均为 `0.2.3.0`、大小 `98304` 字节，SHA-256 为 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`。当前发行目录包含 DLL、README、CHANGELOG、manifest、icon 和 ZIP。
+- [审计] 查看当前 BepInEx 日志未发现 PlayersInfo warning/error；约 `5992` 条旧 `[PI-DIAG]` 来自 debug 门控前版本，`WhySoLaggy` RPC 噪声和缺失 `quicksave.peak` 错误与 PlayersInfo 无关。当前仍需 PEAK 2.4.b 干净会话功能验证。
+- [规则] 当前会话没有专用 `update_memory` 工具；工作区 memory Markdown、索引、TODO、临时摘要和本变更日志是本次可用的权威记忆记录。
+
 - [新增] `mods/StateKeeper/` 四件套和 `temp/2026-09-06.md`：记录 StateKeeper 0.1.0 的采集范围、RunId/存储决策、性能优化、旧数据迁移和实机数据调研结果。
 - [修改] `README.md`、`mods/README.md`、`MEMORY_INDEX.md`：加入 StateKeeper 项目入口、四件套索引、当前重点和临时恢复入口。
 - [修改] `TODO.md`：加入 StateKeeper 的长时间多人性能、时间倒退、角色生命周期和精确分块封存待办。
