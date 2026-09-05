@@ -31,7 +31,7 @@
 - 当天临时文件命名为 `mods/<ModName>/temp/YYYY-MM-DD.md`。
 - 每形成 3 次明确的阶段性判断、排查结论或方案取舍，就追加一次摘要。
 - 上下文压缩、会话中断或换 AI 后，先读该 MOD 最新临时 MD，再读正式四件套。
-- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`WhySoLaggy/temp/2026-08-31.md`、`WhereIsMyAmulet/temp/2026-08-31.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`、`StateKeeper/temp/2026-09-06.md`。
+- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`PlayersInfo/temp/2026-09-06.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`WhySoLaggy/temp/2026-08-31.md`、`WhereIsMyAmulet/temp/2026-08-31.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`、`StateKeeper/temp/2026-09-06.md`。
 
 ### ItemInfoCN（1.0.0 已发布）
 
@@ -47,12 +47,13 @@
 - `mods/Lantern_ShootZombies_Night/DECISIONS.md`：版本、灯笼同步、本地燃料权威、配置同步、兼容和禁止回退。
 - `mods/Lantern_ShootZombies_Night/FILES.md`：源码路径、构建命令、关键 Helper / Patch 清单。
 
-### PlayersInfo（0.2.1）
+### PlayersInfo（0.2.3 / PEAK 2.4.b）
 
 - `mods/PlayersInfo/README.md`：队友 HUD 聚合概览与功能轮廓。
-- `mods/PlayersInfo/RECENT.md`：含 2026-08-17 本地额外体力条恢复原版层级/缩放控制、当前值内嵌显示、观战目标保留、队友额外图形条隐藏和物品栏燃料条保留结论，以及此前 0.2.1 功能历史。
-- `mods/PlayersInfo/DECISIONS.md`：只读展示不发 RPC、HUD 架构、原版负责本地额外条布局、观战目标、队友额外条抑制、燃料条保留和禁止整体回退边界。
-- `mods/PlayersInfo/FILES.md`：源码路径、项目文件、0.2.1 版本和当前 DLL 输出路径（含 `Helpers/FontHelper.cs`、`Helpers/DisplayCharacterHelper.cs`、`MonoBehaviours/TeammateBarAffliction.cs`）。
+- `mods/PlayersInfo/RECENT.md`：含 0.2.3 三档异常图标、死亡/晕倒距离修复、零体力饥饿倒计时、统一刷新、日志审计和发行产物结论，以及此前 0.2.1 功能历史。
+- `mods/PlayersInfo/DECISIONS.md`：只读展示不发 RPC、HUD 架构、图标所有权隔离、安全位置解析、原生 `maxStaminaBar` 倒计时、统一刷新和日志门控边界。
+- `mods/PlayersInfo/FILES.md`：源码路径、项目文件、0.2.3 版本、profile/发行 DLL 校验信息和当前 DLL 输出路径。
+- `mods/PlayersInfo/temp/2026-09-06.md`：本轮 0.2.3 实现、构建、日志审计和待实机验证入口。
 
 ### StateKeeper（0.1.0 / 开发中）
 
@@ -137,7 +138,7 @@
 - `StateKeeper` 当前为 `0.1.0` 开发阶段；重点是使用改名后的 DLL 进行长时间多人实机验证，比较 `StaminaEventThreshold=0.01` 的事件量、GZip 体积、GC 和结算尖峰。分析面板和发行包均暂缓。
 
 - `Lantern_ShootZombies_Night` 当前重点是实机验证客机本地燃料权威：有备用池时只降备用池、不降灯燃料，且远端 fuel 下降不覆盖本地。
-- `PlayersInfo` 的 0.2.0 发布准备记录已归档；当前状态以 0.2.1 专属 memory 四件套和 2026-08-17 临时记忆为准。本地额外条已恢复 PEAK 原版层级/缩放控制，仍待实机确认布局、石化、观战、队友额外条抑制、背包燃料和性能。
+- `PlayersInfo` 当前为 `0.2.3` / PEAK `2.4.b`，发行目录和 ZIP 已建立；重点是实机验证三档图标所有权、死亡/晕倒跨距离、零体力倒计时居中、观战中心、多人边界，并确认 debug 关闭时日志保持安静。
 - `DreamyAscent` 已于 2026-05-24 永久暂停/归档。此前预览、模板库、Snapshot V2、官方生成链和 zero-output 恢复等资料仅作为历史记录，不作为当前重点推进。
 - `TerrainCustomiserCN` 已发布 0.1.2，对应原版 0.3.2。当前重点是后续玩家反馈漏翻时补 `DisplayNameTranslator.cs`、重建 Release、更新发布包；若玩家反馈旧地图缺失，先核对新持久化目录和旧插件目录，不要自动迁移；任何功能改动前先读 `DECISIONS.md` 的联机/存档兼容禁止回退项。
 - 其他 MOD 新增功能前先读对应 `RECENT.md` 和 `DECISIONS.md` 的"禁止回退"条款。
