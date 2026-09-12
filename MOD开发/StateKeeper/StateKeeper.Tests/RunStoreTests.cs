@@ -93,7 +93,7 @@ namespace StateKeeper.Tests
             Assert.AreEqual(10, Directory.GetFiles(runs, "*.json").Length);
             Assert.AreEqual(10, Directory.GetFiles(runs, "*.json.gz").Length);
 
-            store.ToggleLatestFavorite();
+            Assert.IsTrue(store.ToggleFavorite("run-10"));
             Assert.AreEqual(1, Directory.GetFiles(favorites, "*.json").Length);
             Assert.AreEqual(1, Directory.GetFiles(favorites, "*.json.gz").Length);
             Assert.AreEqual(9, Directory.GetFiles(runs, "*.json").Length);
@@ -102,6 +102,96 @@ namespace StateKeeper.Tests
             RunIndexFile index = JsonConvert.DeserializeObject<RunIndexFile>(File.ReadAllText(Path.Combine(_root, "index.json")));
             Assert.AreEqual(10, index.entries.Count);
             Assert.AreEqual(1, index.entries.Count(entry => entry.favorite));
+        }
+
+        [TestMethod]
+        public void Schema3Fields_RoundTripAndOptionalUsesRemainDistinguishable()
+        {
+            var record = CreateRun("schema3");
+            record.header.customName = "中文 expedition";
+            record.inventorySnapshots.Add(new InventorySnapshot
+            {
+                playerIndex = 0,
+                slots = new List<ItemSnapshot>
+                {
+                    new ItemSnapshot
+                    {
+                        guid = "item-guid",
+                        hasUsesEntry = true,
+                        hasUsesValue = false,
+                        hasPetterItemUses = true,
+                        petterItemUses = 3,
+                        hasUsed = true,
+                        used = true,
+                        hasFlareActive = true,
+                        flareActive = true,
+                        hasPowerEnabled = true,
+                        powerEnabled = false
+                    }
+                }
+            });
+            record.events.Add(new StatsEvent { type = "ItemResourceChanged", itemGuid = "item-guid", previousItemGuid = "old-guid", resourceKey = "fuel", definitionKey = "Lantern", value = 0.5f, previousValue = 1f });
+            string manifestJson = JsonConvert.SerializeObject(record);
+            RunRecord roundTrip = JsonConvert.DeserializeObject<RunRecord>(manifestJson);
+            ItemSnapshot item = JsonConvert.DeserializeObject<ItemSnapshot>(JsonConvert.SerializeObject(record.inventorySnapshots[0].slots[0]));
+            StatsEvent eventRoundTrip = JsonConvert.DeserializeObject<StatsEvent>(JsonConvert.SerializeObject(record.events[0]));
+            Assert.AreEqual(3, roundTrip.schemaVersion);
+            Assert.AreEqual("中文 expedition", roundTrip.header.customName);
+            Assert.IsTrue(item.hasUsesEntry);
+            Assert.IsFalse(item.hasUsesValue);
+            Assert.IsTrue(item.hasPetterItemUses);
+            Assert.AreEqual(3, item.petterItemUses);
+            Assert.IsTrue(item.used);
+            Assert.IsTrue(item.flareActive);
+            Assert.IsFalse(item.powerEnabled);
+            Assert.AreEqual("old-guid", eventRoundTrip.previousItemGuid);
+        }
+
+        [TestMethod]
+        public void OptionalItemData_HasDataFalseDoesNotProduceValidUses()
+        {
+            var data = new ItemInstanceData(Guid.NewGuid());
+            data.data.Add(DataEntryKey.ItemUses, new OptionableIntItemData { HasData = false, Value = 99 });
+            ItemSnapshot snapshot = RunCollector.CaptureItemResourcesForTests(data);
+            Assert.IsTrue(snapshot.hasUsesEntry);
+            Assert.IsFalse(snapshot.hasUsesValue);
+            Assert.AreEqual(0, snapshot.uses);
+        }
+
+        [TestMethod]
+        public void CustomNameFavoriteAndOldSchema_AreStableAcrossRestart()
+        {
+            var store = new RunStore(_root);
+            RunRecord record = CreateRun("named-run");
+            record.samples.Add(CreateEightPlayerSample(12.5f));
+            store.Complete(record, RunStatus.Completed, RunOutcome.Victory);
+            store.FlushPendingWrites();
+            Assert.IsTrue(store.RenameRun("named-run", "  A\tlong\nname  "));
+            Assert.IsTrue(store.ToggleFavorite("named-run"));
+            var restarted = new RunStore(_root);
+            RunIndexEntry entry = restarted.GetFavoriteEntries().Single();
+            Assert.AreEqual("Alongname", entry.customName);
+            Assert.AreEqual(8, entry.playerCount);
+            Assert.AreEqual(1, entry.sampleCount);
+            Assert.IsTrue(entry.favorite);
+
+            string indexPath = Path.Combine(_root, "index.json");
+            RunIndexFile mixedIndex = new RunIndexFile
+            {
+                schemaVersion = 3,
+                entries = new List<RunIndexEntry>
+                {
+                    new RunIndexEntry { schemaVersion = 2, runId = "legacy", fileName = "legacy.json" },
+                    new RunIndexEntry { schemaVersion = 3, runId = "named-run", favorite = true, fileName = "named-run.json" }
+                }
+            };
+            File.WriteAllText(indexPath, JsonConvert.SerializeObject(mixedIndex));
+            var filtered = new RunStore(_root);
+            Assert.AreEqual(1, filtered.GetRecentEntries().Count + filtered.GetFavoriteEntries().Count);
+            string activePath = Path.Combine(_root, "active-run.json");
+            File.WriteAllText(activePath, "{\"schemaVersion\":2,\"header\":{\"runId\":\"legacy\"}}");
+            Assert.IsNull(restarted.LoadActive());
+            Assert.IsTrue(File.Exists(activePath));
         }
 
         private static RunRecord CreateRun(string runId)

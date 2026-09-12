@@ -1,23 +1,31 @@
 # PlayersInfo Files
 
-Last updated: 2026-09-06
+Last updated: 2026-09-07
 
 ## Paths
 
 - Source: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\PlayersInfo`
 - Project: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\PlayersInfo\PlayersInfo.csproj`
 - Direct build output: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`
-- Current release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.3`
+- Current release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.4`
 
 The project `<OutputPath>` now points directly to the 2.0.a profile above. Future PlayersInfo builds should write the DLL there; do not redirect it back to the workspace test environment.
 
-## Current source 0.2.3
+## Current source 0.2.4
 
-- Version chain currently verified: `.csproj <Version> = 0.2.3`, `PlayersInfoPlugin.PluginVersion = 0.2.3`, `AssemblyVersion/FileVersion = 0.2.3.0`.
-- The current profile DLL at the path above reports `0.2.3.0`, size `98304` bytes, and SHA-256 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`; the project is configured to overwrite this file directly on future builds.
+- Version chain currently verified: `.csproj <Version> = 0.2.4`, `PlayersInfoPlugin.PluginVersion = 0.2.4`, `AssemblyVersion/FileVersion = 0.2.4.0`.
+- The current profile DLL at the path above reports `0.2.4.0`, size `98304` bytes, and SHA-256 `973E9279F70ED5CC25CBC481673D2942394A35100001D4B027C3BD4E1E850BBB`; the project is configured to overwrite this file directly on future builds.
 - Current implementation includes stableId-bound teammate bars, unified observed/local display-character resolution, an independent `TeammateBarAffliction`, local hunger countdown, teammate item durability bars, cooked-food icon coloring, dynamic TMP-width placement, native PEAK ownership of the local extra-stamina bar layout, three-mode affliction icon visibility, safe dead/downed distance positions, zero-stamina countdown centering, and the unified `0.25s` low-frequency refresh cadence.
 - The old `Display.EnableInventoryRow` key is retained as a compatibility key but is now a three-level enum: `Disabled`, `ContentsOnly`, and `ContentsAndJetpackFuel`. Legacy `true` maps to `ContentsOnly`; legacy `false` maps to `Disabled`.
 - Backpack contents use the actual backpack capacity: fanny packs show 2 slots, normal backpacks show 4, and backpacks without contents show no inner slots. Jetpack fuel is shown only in the third mode.
+
+## Trial Release 0.2.4
+
+- Release directory: `C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\PlayersInfo\发行\0.2.4`.
+- Contents: `PlayersInfo.dll`, `README.md`, `CHANGELOG.md`, `manifest.json`, `icon.png`, and `wuyachiyu-PlayersInfo-0.2.4.zip`.
+- Release DLL version is `0.2.4.0`, size `98304` bytes, SHA-256 `973E9279F70ED5CC25CBC481673D2942394A35100001D4B027C3BD4E1E850BBB`.
+- Release ZIP SHA-256 is `C64A4154F7903EF4E1FA2CDBAC030AE11B8689C2BAD480987AB0DE2C330F95FA`; zip root contains only README, CHANGELOG, manifest, DLL, and icon.
+- `CHANGELOG.md` prepends 0.2.4 while preserving all previous version sections. README and manifest are synchronized to `0.2.4`.
 
 ## Release 0.2.3
 
@@ -25,6 +33,7 @@ The project `<OutputPath>` now points directly to the 2.0.a profile above. Futur
 - Contents: `PlayersInfo.dll`, `README.md`, `CHANGELOG.md`, `manifest.json`, `icon.png`, and `wuyachiyu-PlayersInfo-0.2.3.zip`.
 - Release DLL version is `0.2.3.0`, size `98304` bytes, SHA-256 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`; it matches the deployed profile DLL.
 - README and changelog cover the three icon modes and localization, dead/downed range fixes, zero-stamina hunger countdown placement, unified refresh timing, and debug-log gating in addition to the retained 0.2.1 features.
+- This directory is retained as the previous `0.2.3` release and was not overwritten by the `0.2.4` trial release.
 
 ## Release 0.2.0
 

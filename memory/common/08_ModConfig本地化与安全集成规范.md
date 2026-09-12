@@ -1,6 +1,6 @@
 # PEAKLib.ModConfig 本地化与安全集成规范
 
-更新时间：2026-08-19
+更新时间：2026-09-09
 
 适用范围：所有需要在 PEAK 游戏中让 BepInEx MOD 配置跟随游戏语言显示的项目。
 
@@ -271,3 +271,48 @@ rg -n "RefreshCache|EntriesProcessed|ModdedKeys|GetValidKeyPaths|ProcessModEntri
 - WhereIsThing 已按这套安全原则移除全局 ModConfig 缓存重建，并改为稳定键本地化。
 - PlayersInfo、LanternShootZombiesNight 以及其他没有迁移的 MOD 仍需按本规范审查。
 - 本规范是后续新增中英文 ModConfig 功能的默认实现标准；除非确认 ModConfig 提供正式公开 API，不得恢复全局缓存反射刷新。
+
+## 十三、PEAK 2.4.b / ModConfig 1.8.0 的 `LOC: 0`
+
+2026-09-09 实测环境：
+
+```text
+PEAK 2.4.b
+PEAKLib.ModConfig 1.8.0
+PEAKLib.UI 1.7.0
+PEAKLib.Core 1.7.2
+```
+
+诊断报告没有发现重复 DLL、配置身份或包装设置。唯一 `LOC: 0` 位于未激活的 `SettingsCell/Text (TMP)`。反编译链路如下：
+
+1. PEAK 2.4.b 的 `LocalizedText.OnEnable()` 在 `index` 为空时使用 `row.ToString()`；默认 `row=0`。
+2. 本地化表缺少 ID `0` 时，`LocalizedText.GetText()` 返回 `LOC: 0`。
+3. PEAKLib.UI 1.7.0 使用全局资源搜索取得名为 `SettingsCell` 的原版对象作为模板。
+4. ModConfig 1.8.0 克隆该模板后直接写 `component.m_text.text = item.GetDisplayName()`，但未禁用克隆上的 `LocalizedText`。
+5. 初次直接写入可能暂时覆盖 `LOC: 0`，但后续 `LocalizedText.RefreshAllText()` 仍可能重新覆盖活动配置名称。
+
+公共依赖的首选修复是在每个克隆的 `SettingsUICell` 上保留 `localizedText` 引用但设置 `autoSet=false`，随后写入最终显示名。不要向原版本地化表伪造 ID `0`，也不要让每个业务 MOD分别修改共享模板。
+
+模板查找也应从明确的 `SharedSettingsMenu.m_settingsCellPrefab` 或已知菜单层级取得，避免使用无上下文的 `First(name == "SettingsCell")`。需要跨场景持有时，应克隆并规范化模板后再持有，而不是保存场景对象引用。
+
+## 十四、新旧菜单类型迁移
+
+ModConfig 1.8.0 的实际类型为：
+
+```text
+PEAKLib.ModConfig.Components.ModSettingsMenu
+```
+
+旧类型 `PEAKLib.ModConfig.Components.ModdedSettingsMenu` 已不存在。兼容代码应先解析新类型，再把旧类型作为旧版回退，并按真实方法签名补丁：
+
+```text
+ShowSettings()
+SetSection(string)
+UpdateSectionTabs(string)
+```
+
+当前需要迁移的开发区项目：PlayersInfo、Lantern&ShootZombies&Night、WhereIsThing、WhereIsMyAmulet、WhySoLaggy。
+
+扫描各 `BepInEx*` 类型的 `GetDisplayName()` 时，只补丁真正声明该方法的实现，或者按 `MethodBase` 去重。不要重复补丁继承自同一泛型基类的方法；PlayersInfo、WhereIsThing 和 WhySoLaggy 已在 2.4.b 日志中产生 HarmonyX 警告。
+
+详细实施顺序和诊断增强见 `mods/ModConfigDiagnostics/PLAN.md`。

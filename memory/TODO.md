@@ -1,21 +1,36 @@
 ﻿# Permanent TODO
 
-更新时间：2026-09-06
+更新时间：2026-09-09
 
 这里只记录未完成、待验证、已知风险和后续优化。已经稳定或已经写入各 MOD `RECENT.md` / `DECISIONS.md` 的内容，不再重复放在这里。
 
 ## ModConfig 本地化安全迁移
 
-- [ ] 将 PlayersInfo、LanternShootZombiesNight 和其他包含 `RefreshCache` 全局重注册逻辑的 MOD 按 `common/08_ModConfig本地化与安全集成规范.md` 迁移。
-- [ ] 在同时安装多个 MOD 的环境中连续切换游戏语言至少 5 次，确认 ModConfig 配置项数量不增长。
+- [ ] P0：在 PEAKLib.ModConfig/PEAKLib.UI 的 `SettingsCell` 克隆链修复 `LOC: 0`：禁用克隆 `SettingsUICell.localizedText.autoSet` 后再写配置显示名；不要伪造本地化 ID `0`，不要让业务 MOD各自修改共享模板。
+- [ ] P0：移除 PlayersInfo、Lantern&ShootZombies&Night 的 `RefreshCache()` 调用和全局重注册实现；语言变化只更新自身描述和当前可见 UI。
+- [ ] P1：将 PlayersInfo、Lantern&ShootZombies&Night、WhereIsThing、WhereIsMyAmulet、WhySoLaggy 的菜单反射迁移到 `ModSettingsMenu`，旧 `ModdedSettingsMenu` 只作兼容回退。
+- [ ] P1：对 ModConfig `GetDisplayName()` Harmony 补丁按声明方法或 `MethodBase` 去重，消除 PlayersInfo、WhereIsThing、WhySoLaggy 当前的 inherited-method 警告。
+- [ ] 增强 ModConfigDiagnostics：活动 UI 与预制体分栏，输出 `LocalizedText` 字段、当前 mod/section/filter/search、cell 到配置身份映射和相关 Harmony owner。
+- [ ] 保持问题页面可见时按 `F9` 再生成报告；当前报告只确认未激活 `SettingsCell/Text (TMP)` 上存在 `LOC: 0`，不能冒充已捕获屏幕活动实例。
+- [ ] 在同时安装多个 MOD 的环境中连续切换游戏语言至少 5 次，确认活动 UI 不再出现 `LOC: 0`，且配置项数量不增长。
 
 ## StateKeeper
 
-- [ ] 用当前 `StateKeeper.dll` 跑一局长时间多人实机，比较 `StaminaEventThreshold=0.01` 前后的 `StaminaChanged` 数量、GZip 体积、GC 和 WhySoLaggy 耗时。
-- [ ] 调查旧数据中 `RunManager.TimeSinceRunStarted` 少量倒退，决定分析层使用单调修正时间、双时间戳还是时间校正事件。
+- [ ] 09-09英文按钮/重命名修复已部署并同步0.1.0包，需重启确认显示、输入、确认/取消、语言切换与再次打开。资源已确认原版Resume持久监听和PauseMenu204/旧弹窗100排序问题，不能把静态字体核查当实机验收。
+- [ ] 当前发布见 `mods/StateKeeper/RELEASE_AUDIT_2026-09-08.md`；0.1.0本地包已生成但未上传Thunderstore。短时实机验证新版六页报告、中英文/长名称、1080p/1440p、IME、鼠标/键盘/控制器、命名遮罩和返回取消，不能把64项测试当实机通过。
+- [ ] 实机核对Enabled开关在已有局禁用/恢复、正式结束时保存和封存，以及DebugLogging性能日志开关；普通.NET无法执行Unity原生ObserveSync回调。
+- [ ] 短时验证collectionRevision3单调时钟、恢复中断和切图；已有七局回归完成，不要求再录两小时长局。
+- [ ] 分别测采集器/库存/UI/后台分析帧耗时与GC；插件入口0.00ms/frame不能排除StateKeeper开销。实例摘要100行、聚合桶回放精度及历史跨块时钟边界见报告。
+- [ ] 按 `mods/StateKeeper/PLAN.md` 实现后台碎块合并为单局完整 `*.data.json.gz`，完成校验后再清理碎块，失败/取消必须保留可恢复数据。
+- [ ] 独立的整体合并进度仍为后续范围；已有后台分析真实进度/取消、统计引擎、双语面板、收藏和自动测试，不再按早期“尚未实现”重做。
+- [ ] 在 `PEAK-MAP` 新增独立 StateKeeper 匿名提交接口、Supabase 表和私有 Cloudflare R2 前缀；加入用户确认、双重脱敏、限流、压缩炸弹防护和可关闭开关。
+- [ ] 实现适度脱敏导出：每次提交重新生成“玩家 A/B/C”编号，删除账号/连接标识和 GUID，保留局内相对时间，距离按约 5-10 米粗化，坐标默认删除或粗粒度化；默认不上传原始详细数据。
+- [ ] 用真实 8 人长局验证整体合并、按需加载和分析内存峰值，不能在 Unity 主线程执行合并/分析/上传前大 JSON 构建。
+- [ ] 先用已有长局与短时采集比较事件量、GZip体积和工作路径耗时；必要的多人压力测试不作为用户再次录两小时才能使用分析的前提。
+- [ ] 调查旧数据中 `RunManager.TimeSinceRunStarted` 少量倒退；基础分析暂采用原始时间保留 + 单调 `analysisTime`/质量警告，后续再决定是否增加独立时间校正事件。
 - [ ] 调查单次采样短时出现 9-10 个角色是实际加入/离开，还是离场角色对象暂存。
 - [ ] 结合新数据决定是否把分块封存改为精确 150 个样本，而不是 5 秒检查点封存。
-- [ ] 真实数据足够后再单独设计分析面板；`发行/0.1.0` 当前仍是旧名草稿，不更新、不发布。
+- [ ] 按五局数据确定的基础分析结果设计分析面板；综合评分、最佳队友和复杂战术评级继续后置。`发行/0.1.0` 当前仍是旧名草稿，不更新、不发布。
 
 ## PEAK 2.1.a
 
@@ -118,14 +133,15 @@
 - [ ] 重新确认 BlackPeakRemix 最新版本兼容边界，尤其是灯笼功能重叠时是否仍能让渡补丁。
 - [ ] 继续从源码和 BepInEx 日志抽取 0.2.1 之后更细的稳定结论，写入 `RECENT.md`。
 
-## PlayersInfo 0.2.3 / PEAK 2.4.b
+## PlayersInfo 0.2.4 / PEAK 2.4.b
 
 - [ ] Clean-session verify `AfflictionIconDisplayMode`: `ShowAll`, `HideTeammates`, and `HideAll`; confirm local/team/spectator ownership isolation and no impact on extra stamina, shield, campfire, or inventory icons.
 - [ ] Verify normal, `passedOut`, `fullyPassedOut`, and `dead` teammate range transitions, including last-living position for dead players, no out-of-range roster retention, 5 m hysteresis, `NearbyRange=0`, max count, stable/distance sorting, revive, and reconnect.
+- [ ] Verify a teammate turned into a skeleton by Book of Bones still shows a teammate bar unless PEAK also marks that character `dead=true`.
 - [ ] Verify zero-stamina hunger countdown behavior while status widths change: after-value placement while space exists, hidden when the green fill is too narrow, centered only at true zero in the available `maxStaminaBar` region, and hidden immediately after recovery.
 - [ ] Verify countdown suppression for hidden stamina values, local death, remote spectator targets, no hunger growth, immunity, and airport scenes.
 - [ ] Confirm `Advanced.DebugLogging=false` produces no diagnostic snapshot/binding/layout spam; distinguish unrelated `WhySoLaggy` and PEAK save errors from PlayersInfo warnings/errors.
-- [ ] Complete PEAK 2.4.b multiplayer and spectator regression testing before declaring 0.2.3 behavior fully verified.
+- [ ] Complete PEAK 2.4.b multiplayer and spectator regression testing before declaring 0.2.4 behavior fully verified.
 
 ## PlayersInfo historical 0.2.1 verification
 

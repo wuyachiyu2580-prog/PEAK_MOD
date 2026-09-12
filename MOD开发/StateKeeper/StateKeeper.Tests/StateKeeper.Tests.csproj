@@ -22,5 +22,6 @@
     <Reference Include="PhotonUnityNetworking"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\PhotonUnityNetworking.dll</HintPath></Reference>
     <Reference Include="Photon3Unity3D"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Photon3Unity3D.dll</HintPath></Reference>
     <Reference Include="netstandard"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\netstandard.dll</HintPath></Reference>
+    <Reference Include="Zorro.Core.Runtime"><HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\Zorro.Core.Runtime.dll</HintPath></Reference>
   </ItemGroup>
 </Project>

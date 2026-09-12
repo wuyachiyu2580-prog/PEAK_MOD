@@ -17,7 +17,7 @@ namespace PlayersInfo
     {
         public const string PluginGuid = "com.players.info";
         public const string PluginName = "PlayersInfo";
-        public const string PluginVersion = "0.2.3";
+        public const string PluginVersion = "0.2.4";
 
         public enum HudAnchor { TopLeft, TopRight, BottomLeft, BottomRight }
         public enum TeammateSortMode { Stable, Distance }

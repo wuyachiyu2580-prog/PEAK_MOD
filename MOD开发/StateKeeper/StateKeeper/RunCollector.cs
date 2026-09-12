@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using Peak.Afflictions;
 using UnityEngine;
+using Zorro.Core;
 
 namespace StateKeeper
 {
@@ -11,18 +13,24 @@ namespace StateKeeper
         private const float SampleInterval = 0.2f;
         private const float CharacterRefreshInterval = 0.5f;
         private const float InventoryScanInterval = 0.5f;
+        private const float MountainScanInterval = 0.5f;
         private const float SaveInterval = 5f;
         private RunStore _store;
         private RunRecord _record;
         private float _nextSample;
         private float _nextCharacterRefresh;
         private float _nextInventoryScan;
+        private float _nextMountainScan;
         private float _nextSave;
         private bool _sawVictory;
         private string _finalizedRunId;
-        private float _fallbackRunTime;
+        private readonly RecordingClock _clock = new RecordingClock();
+        private float _nextClockAnchor;
+        private readonly PerformanceWindow _captureTiming = new PerformanceWindow();
+        private readonly PerformanceWindow _inventoryTiming = new PerformanceWindow();
         private readonly Dictionary<int, ItemFingerprint> _lastInventory = new Dictionary<int, ItemFingerprint>();
         private readonly Dictionary<int, int> _lastState = new Dictionary<int, int>();
+        private readonly Dictionary<int, bool> _lastMountainReached = new Dictionary<int, bool>();
         private readonly Dictionary<string, int> _playerIndexByUserId = new Dictionary<string, int>(StringComparer.Ordinal);
         private readonly List<Character> _characterBuffer = new List<Character>(8);
         private readonly int[] _characterPlayerIndices = new int[16];
@@ -33,8 +41,22 @@ namespace StateKeeper
             "backpack:0", "backpack:1", "backpack:2", "backpack:3"
         };
         private bool _characterCacheReady;
+        private bool _mountainProgressInitialized;
+        private string _mountainSignature;
+        private readonly Dictionary<int, int> _observationContexts = new Dictionary<int, int>();
+        private readonly Dictionary<int, float> _lastSyncReceived = new Dictionary<int, float>();
 
-        public bool CollectionEnabled { get; set; } = true;
+        private bool _collectionEnabled = true;
+        private bool _resumePending;
+        public bool CollectionEnabled
+        {
+            get { return _collectionEnabled; }
+            set
+            {
+                if (_collectionEnabled && !value && _record != null) _resumePending = true;
+                _collectionEnabled = value;
+            }
+        }
 
         public static RunCollector Instance { get; private set; }
 
@@ -44,9 +66,18 @@ namespace StateKeeper
             Instance = this;
             _record = store.LoadActive();
             PrepareRecordMetadata();
+            if (_record != null)
+            {
+                float end = 0;
+                foreach (RunChunkInfo chunk in _record.chunks) end = Math.Max(end, chunk.endTime);
+                if (_record.activeChunk != null) end = Math.Max(end, _record.activeChunk.endTime);
+                _clock.Reset(end + .001f);
+                CaptureClockAnchor("RecordingResumed");
+            }
             _nextSample = 0f;
             _nextCharacterRefresh = 0f;
             _nextInventoryScan = 0f;
+            _nextMountainScan = 0f;
             _nextSave = 0f;
         }
 
@@ -78,9 +109,22 @@ namespace StateKeeper
                     _nextSample = now + SampleInterval;
                     CollectFrame(false);
                 }
+                if (now >= _nextMountainScan)
+                {
+                    _nextMountainScan = now + MountainScanInterval;
+                    CaptureMountainProgress();
+                    CaptureEffectContext();
+                }
                 if (now >= _nextSave)
                 {
                     _nextSave = now + SaveInterval;
+                    if (now >= _nextClockAnchor)
+                    {
+                        CaptureClockAnchor("ClockAnchor"); _nextClockAnchor = now + 30;
+                        string capture = _captureTiming.Take("collector"), inventory = _inventoryTiming.Take("inventory");
+                        if (StateKeeperPlugin.IsDebugLogging)
+                            StateKeeperPlugin.LogInfo("Performance | " + capture + " | " + inventory + " | process managed=" + GC.GetTotalMemory(false) + " bytes; GC collections=" + GC.CollectionCount(0));
+                    }
                     _store.SaveActive(_record);
                 }
             }
@@ -92,11 +136,22 @@ namespace StateKeeper
 
         private void HandleRunBinding()
         {
+            if (!CollectionEnabled) return;
             Guid runId = GetCurrentRunId();
             if (runId == Guid.Empty) return;
             string runIdText = runId.ToString();
             if (_record == null && string.Equals(_finalizedRunId, runIdText, StringComparison.OrdinalIgnoreCase)) return;
-            if (_record != null && string.Equals(_record.header.runId, runIdText, StringComparison.OrdinalIgnoreCase)) return;
+            if (_record != null && string.Equals(_record.header.runId, runIdText, StringComparison.OrdinalIgnoreCase))
+            {
+                if (_resumePending)
+                {
+                    _resumePending = false;
+                    CaptureClockAnchor("RecordingResumed");
+                    _lastInventory.Clear(); _lastState.Clear(); _observationContexts.Clear(); _lastSyncReceived.Clear();
+                    _characterCacheReady = false; _nextCharacterRefresh = _nextInventoryScan = 0;
+                }
+                return;
+            }
 
             if (_record != null && !string.IsNullOrEmpty(_record.header.runId))
             {
@@ -104,18 +159,37 @@ namespace StateKeeper
             }
 
             _record = new RunRecord();
+            _resumePending = false;
             _record.header.runId = runIdText;
             _record.header.startedUtc = DateTime.UtcNow.ToString("o");
             _record.header.lastSavedUtc = _record.header.startedUtc;
+            try
+            {
+                _record.header.hasAscentLevel = true;
+                _record.header.ascentLevel = Ascents.currentAscent;
+                _record.header.hasCustomRun = true;
+                _record.header.isCustomRun = RunSettings.IsCustomRun;
+            }
+            catch { }
             _record.statusTypeOrder = Enum.GetNames(typeof(CharacterAfflictions.STATUSTYPE));
+            _record.collectionRevision = 3;
+            _record.collectionCapabilities = new[] { "MonotonicClock", "PetrifyAmount", "ItemActor", "NestedDefinitions", "MushroomContext", "ObservationContext", "LocalRecipientTreatment", "BroadcastRescuePull", "ReviveTargetOnly" };
+            _record.afflictionTypeOrder = Enum.GetNames(typeof(Affliction.AfflictionType));
+            _record.distanceUnitsToMeters = CharacterStats.unitsToMeters;
+            _record.definitions = ItemDefinitionCatalog.Capture();
             _sawVictory = false;
             _finalizedRunId = null;
-            _fallbackRunTime = 0f;
+            _clock.Reset(0); _nextClockAnchor = 0;
             _characterCacheReady = false;
             _nextCharacterRefresh = 0f;
             _nextInventoryScan = 0f;
+            _nextMountainScan = 0f;
             _lastInventory.Clear();
             _lastState.Clear();
+            _observationContexts.Clear();
+            _lastMountainReached.Clear();
+            _mountainProgressInitialized = false;
+            _mountainSignature = null;
             _playerIndexByUserId.Clear();
             _store.SaveActive(_record);
             StateKeeperPlugin.LogInfo("Bound to RunId " + runIdText);
@@ -133,14 +207,83 @@ namespace StateKeeper
 
         private float GetRunTime()
         {
+            return _clock.Time;
+        }
+
+        private void CaptureClockAnchor(string kind)
+        {
+            if (_record == null) return;
             try
             {
-                if (RunManager.Instance != null)
-                    return RunManager.Instance.TimeSinceRunStarted;
+                float gameTime = RunManager.Instance == null ? -1 : RunManager.Instance.TimeSinceRunStarted;
+                AddEvent(kind, EventSource.LocalAuthoritative, null, null, null, null, "MonotonicClock", gameTime, GetRunTime(), resourceKey: "gameRunTime");
             }
             catch { }
-            _fallbackRunTime += Time.deltaTime;
-            return _fallbackRunTime;
+        }
+
+        private void CaptureMountainProgress()
+        {
+            if (_record == null) return;
+            MountainProgressHandler handler;
+            try { handler = Singleton<MountainProgressHandler>.Instance; }
+            catch { return; }
+            if (handler == null || handler.progressPoints == null || handler.progressPoints.Length == 0) return;
+
+            var definitions = new List<MountainSegmentDefinition>(handler.progressPoints.Length);
+            var signature = new StringBuilder();
+            for (int i = 0; i < handler.progressPoints.Length; i++)
+            {
+                MountainProgressHandler.ProgressPoint point = handler.progressPoints[i];
+                if (point == null) continue;
+                string capturedTitle = point.title;
+                try { capturedTitle = point.localizedTitle; } catch { }
+                bool hasBoundary = point.transform != null;
+                float boundary = hasBoundary ? Round(point.transform.position.z, 3) : 0f;
+                string biome = point.biome.ToString();
+                definitions.Add(new MountainSegmentDefinition
+                {
+                    index = i,
+                    titleKey = point.title,
+                    capturedTitle = capturedTitle,
+                    biomeKey = biome,
+                    hasBoundaryZ = hasBoundary,
+                    boundaryZ = boundary
+                });
+                signature.Append(i).Append('|').Append(point.title).Append('|').Append(biome).Append('|')
+                    .Append(hasBoundary ? boundary.ToString("R", CultureInfo.InvariantCulture) : "none").Append(';');
+            }
+
+            string currentSignature = signature.ToString();
+            if (!string.Equals(_mountainSignature, currentSignature, StringComparison.Ordinal))
+            {
+                _mountainSignature = currentSignature;
+                _record.mountainSegments = definitions;
+                _lastMountainReached.Clear();
+                _mountainProgressInitialized = false;
+            }
+
+            int furthestReached = -1;
+            for (int i = 0; i < handler.progressPoints.Length; i++)
+            {
+                MountainProgressHandler.ProgressPoint point = handler.progressPoints[i];
+                bool reached = point != null && point.Reached;
+                bool previous;
+                if (_mountainProgressInitialized && _lastMountainReached.TryGetValue(i, out previous) && !previous && reached)
+                    AddSegmentEvent("MountainSegmentReached", i, point, "ProgressAdvanced");
+                _lastMountainReached[i] = reached;
+                if (reached) furthestReached = i;
+            }
+            if (!_mountainProgressInitialized && furthestReached >= 0)
+                AddSegmentEvent("MountainProgressObserved", furthestReached, handler.progressPoints[furthestReached], "InitialObservation");
+            _mountainProgressInitialized = true;
+        }
+
+        private void AddSegmentEvent(string type, int segmentIndex, MountainProgressHandler.ProgressPoint point, string detail)
+        {
+            Character subject = null;
+            try { subject = Character.localCharacter; } catch { }
+            AddEvent(type, EventSource.LocalAuthoritative, subject, null, null, null, detail,
+                segmentIndex, segmentIndex - 1, null, null, segmentIndex, point == null ? null : point.title);
         }
 
         private List<Character> GetCharacters(float now)
@@ -167,6 +310,14 @@ namespace StateKeeper
         }
 
         private void CollectFrame(bool forceInventory)
+        {
+            if (!CollectionEnabled) return;
+            long start = System.Diagnostics.Stopwatch.GetTimestamp();
+            try { CollectFrameCore(forceInventory); }
+            finally { _captureTiming.Record(start); }
+        }
+
+        private void CollectFrameCore(bool forceInventory)
         {
             if (_record == null) return;
             float time = Round(GetRunTime(), 3);
@@ -273,12 +424,14 @@ namespace StateKeeper
 
         private PlayerTelemetry CaptureTelemetry(Character character, int playerIndex, Vector3 position)
         {
+            CaptureObservationContext(character, playerIndex);
             var telemetry = new PlayerTelemetry
             {
                 playerIndex = playerIndex,
                 regularStamina = Round(character.data.currentStamina, 4),
                 extraStamina = Round(character.data.extraStamina, 4),
                 maxStamina = Round(character.GetMaxStamina(), 4),
+                petrifyAmount = character.data.petrifyAmount,
                 passOutValue = Round(character.data.passOutValue, 4),
                 dead = character.data.dead,
                 passedOut = character.data.passedOut,
@@ -295,7 +448,7 @@ namespace StateKeeper
                 positionX = Round(position.x, 3),
                 positionY = Round(position.y, 3),
                 positionZ = Round(position.z, 3),
-                statuses = new float[CharacterAfflictions.NumStatusTypes]
+                statuses = character.refs.afflictions == null ? null : new float[CharacterAfflictions.NumStatusTypes]
             };
             try
             {
@@ -315,6 +468,42 @@ namespace StateKeeper
                         if (affliction != null) telemetry.activeAfflictionTypes.Add((int)affliction.GetAfflictionType());
             }
             return telemetry;
+        }
+
+        internal void ObserveSync(Character character)
+        {
+            if (!CollectionEnabled) return;
+            if (character != null && _record != null) _lastSyncReceived[character.GetInstanceID()] = Time.unscaledTime;
+        }
+
+        private void CaptureObservationContext(Character character, int playerIndex)
+        {
+            float last;
+            bool known = character.IsLocal || _lastSyncReceived.TryGetValue(character.GetInstanceID(), out last);
+            bool fresh = character.IsLocal || (_lastSyncReceived.TryGetValue(character.GetInstanceID(), out last) && Time.unscaledTime - last <= Math.Max(1f, 4f / Math.Max(1, Photon.Pun.PhotonNetwork.SerializationRate)));
+            int context = (character.warping ? 1 : 0) | (character.data.isSkeleton ? 2 : 0) | (character.isZombie ? 4 : 0) | (known ? 8 : 0) | (fresh ? 16 : 0);
+            int old;
+            if (!_observationContexts.TryGetValue(playerIndex, out old) || old != context)
+            {
+                _observationContexts[playerIndex] = context;
+                AddEvent("ObservationContextChanged", character.IsLocal ? EventSource.LocalAuthoritative : EventSource.RemoteObserved, character, null, null, null, "warp/skeleton/zombie/syncKnown/syncFresh", context, old);
+            }
+        }
+
+        private void CaptureEffectContext()
+        {
+            if (_record == null || MushroomManager.instance == null) return;
+            int[] effects = MushroomManager.instance.mushroomEffects, stamina = MushroomManager.instance.mushroomStamAmt;
+            if (effects == null || stamina == null || effects.Length == 0 || effects.Length != stamina.Length) return;
+            // The uninitialized manager contains zero-filled arrays, not a generated mapping.
+            bool generated = false;
+            for (int i = 0; i < effects.Length; i++) if (effects[i] != 0) { generated = true; break; }
+            if (!generated) return;
+            if (_record.effectContexts == null) _record.effectContexts = new List<RunEffectContext>();
+            RunEffectContext previous = _record.effectContexts.Count == 0 ? null : _record.effectContexts[_record.effectContexts.Count - 1];
+            bool same = previous != null && previous.mushroomEffects.Length == effects.Length;
+            if (same) for (int i = 0; i < effects.Length; i++) if (previous.mushroomEffects[i] != effects[i] || previous.mushroomStaminaAmounts[i] != stamina[i]) { same = false; break; }
+            if (!same) _record.effectContexts.Add(new RunEffectContext { observedTime = Round(GetRunTime(), 3), mushroomEffects = (int[])effects.Clone(), mushroomStaminaAmounts = (int[])stamina.Clone() });
         }
 
         private void DetectStateChange(Character character, PlayerTelemetry telemetry)
@@ -340,6 +529,13 @@ namespace StateKeeper
         }
 
         private void CaptureInventory(Character character, int playerIndex, float time)
+        {
+            long start = System.Diagnostics.Stopwatch.GetTimestamp();
+            try { CaptureInventoryCore(character, playerIndex, time); }
+            finally { _inventoryTiming.Record(start); }
+        }
+
+        private void CaptureInventoryCore(Character character, int playerIndex, float time)
         {
             global::Player player = character.player;
             if (player == null) return;
@@ -392,13 +588,25 @@ namespace StateKeeper
             if (previous.Equals(current)) return false;
 
             _lastInventory[key] = current;
-            ItemSnapshot item = CaptureItem(slot, location);
+            ItemSnapshot currentItem = CaptureItem(slot, location);
+            ItemSnapshot previousItem = SnapshotFromFingerprint(previous, location);
             string eventType;
             if (!current.occupied) eventType = "ItemRemovedObserved";
             else if (!previous.occupied || previous.itemId != current.itemId || previous.guid != current.guid) eventType = "ItemChangedObserved";
             else eventType = "ItemResourceChanged";
-            AddEvent(eventType, character.IsLocal ? EventSource.LocalAuthoritative : EventSource.RemoteObserved,
-                character, null, item, location, "inventory snapshot changed");
+            EventSource source = character.IsLocal ? EventSource.LocalAuthoritative : EventSource.RemoteObserved;
+            if (eventType == "ItemResourceChanged")
+            {
+                List<ResourceChange> changes = FindChangedResources(previous, current);
+                foreach (ResourceChange change in changes)
+                    AddEvent(eventType, source, character, null, currentItem, location, "inventory snapshot changed",
+                        change.value, change.previousValue, previousItem, change.key);
+            }
+            else
+            {
+                AddEvent(eventType, source, character, null, current.occupied ? currentItem : previousItem, location,
+                    "inventory snapshot changed", 0f, 0f, previousItem);
+            }
             return true;
         }
 
@@ -420,18 +628,41 @@ namespace StateKeeper
         {
             if (data == null) return;
             OptionableIntItemData uses;
+            IntItemData petterItemUses;
+            OptionableBoolItemData used;
+            BoolItemData usedValue;
+            BoolItemData flareActive;
+            BoolItemData powerEnabled;
             IntItemData cooked;
             FloatItemData useRemaining;
             FloatItemData fuel;
-            if (data.TryGetDataEntry<OptionableIntItemData>(DataEntryKey.ItemUses, out uses)) { item.hasUses = true; item.uses = uses.Value; }
+            if (data.TryGetDataEntry<OptionableIntItemData>(DataEntryKey.ItemUses, out uses))
+            {
+                item.hasUsesEntry = true;
+                item.hasUsesValue = uses.HasData;
+                if (uses.HasData) item.uses = uses.Value;
+            }
+            if (data.TryGetDataEntry<IntItemData>(DataEntryKey.PetterItemUses, out petterItemUses)) { item.hasPetterItemUses = true; item.petterItemUses = petterItemUses.Value; }
+            if (data.TryGetDataEntry<OptionableBoolItemData>(DataEntryKey.Used, out used)) { item.hasUsed = used.HasData; if (used.HasData) item.used = used.Value; }
+            else if (data.TryGetDataEntry<BoolItemData>(DataEntryKey.Used, out usedValue)) { item.hasUsed = true; item.used = usedValue.Value; }
+            if (data.TryGetDataEntry<BoolItemData>(DataEntryKey.FlareActive, out flareActive)) { item.hasFlareActive = true; item.flareActive = flareActive.Value; }
+            if (data.TryGetDataEntry<BoolItemData>(DataEntryKey.PowerEnabled, out powerEnabled)) { item.hasPowerEnabled = true; item.powerEnabled = powerEnabled.Value; }
             if (data.TryGetDataEntry<FloatItemData>(DataEntryKey.UseRemainingPercentage, out useRemaining)) { item.hasUseRemaining = true; item.useRemaining = Round(useRemaining.Value, 4); }
             if (data.TryGetDataEntry<FloatItemData>(DataEntryKey.Fuel, out fuel)) { item.hasFuel = true; item.fuel = Round(fuel.Value, 4); }
             if (data.TryGetDataEntry<IntItemData>(DataEntryKey.CookedAmount, out cooked)) { item.hasCookedAmount = true; item.cookedAmount = cooked.Value; }
         }
 
+        internal static ItemSnapshot CaptureItemResourcesForTests(ItemInstanceData data)
+        {
+            ItemSnapshot result = new ItemSnapshot();
+            PopulateItemResources(data, result);
+            return result;
+        }
+
         public void MarkVictory()
         {
             HandleRunBinding();
+            if (_record == null) return;
             _sawVictory = true;
             AddEvent("RunVictoryObserved", EventSource.RemoteObserved, null, null, null, null, "TriggerSomeoneWonRun");
         }
@@ -452,6 +683,7 @@ namespace StateKeeper
 
         public void RecordItemEvent(string type, Item item, Character subject, Character target, EventSource source, string detail)
         {
+            if (!CollectionEnabled) return;
             HandleRunBinding();
             if (_record == null) return;
             string slot = null;
@@ -459,13 +691,68 @@ namespace StateKeeper
             {
                 slot = FindItemSlot(subject.player, item);
             }
-            AddEvent(type, source, subject, target, item == null ? null : ToItemSnapshot(item), slot, detail);
+            AddEvent(type, source, subject, target, item == null ? null : ToItemSnapshot(item), slot, detail,
+                0f, 0f, null, type == "ItemUsesReduced" ? "uses" : null, actor: item == null ? null : item.trueHolderCharacter);
+        }
+
+        internal void RecordItemOutcome(string type, Item item, Character subject, Character target, Character actor, float value, string detail, string resourceKey = null, float previousValue = 0f)
+        {
+            if (!CollectionEnabled) return;
+            HandleRunBinding();
+            if (_record == null || item == null) return;
+            AddEvent(type, target != null && target.IsLocal ? EventSource.LocalAuthoritative : EventSource.RemoteObserved,
+                subject, target, ToItemSnapshot(item), FindItemSlot(subject == null ? null : subject.player, item), detail, value, previousValue, null, resourceKey, -1, null, actor);
+        }
+
+        internal sealed class ItemEventCapture
+        {
+            internal ItemSnapshot item;
+            internal Character subject, target, actor;
+        }
+        internal ItemEventCapture CaptureItemEvent(Item item, Character subject, Character target)
+        {
+            if (!CollectionEnabled) return null;
+            return item == null ? null : new ItemEventCapture { item = ToItemSnapshot(item), subject = subject, target = target, actor = item.trueHolderCharacter };
+        }
+        internal void RecordCapturedItemEvent(string type, ItemEventCapture capture)
+        {
+            if (!CollectionEnabled) return;
+            if (capture == null || _record == null) return;
+            AddEvent(type, capture.subject != null && capture.subject.IsLocal ? EventSource.LocalAuthoritative : EventSource.RemoteObserved,
+                capture.subject, capture.target, capture.item, null, type, actor: capture.actor);
+        }
+
+        public void RecordItemSlotEvent(string type, ItemSlot itemSlot, Character subject, EventSource source, string detail)
+        {
+            if (!CollectionEnabled) return;
+            HandleRunBinding();
+            if (_record == null) return;
+            string slot = itemSlot == null ? null : SlotName(itemSlot.itemSlotID);
+            AddEvent(type, source, subject, null, CaptureItem(itemSlot, slot), slot, detail);
+        }
+
+        private static string SlotName(byte slotId)
+        {
+            if (slotId < 3) return "main:" + slotId.ToString(CultureInfo.InvariantCulture);
+            if (slotId == 3) return "backpack";
+            if (slotId == 250) return "temporary";
+            return "slot:" + slotId.ToString(CultureInfo.InvariantCulture);
         }
 
         public void RecordSimpleEvent(string type, Character subject, EventSource source, string detail)
         {
+            if (!CollectionEnabled) return;
             HandleRunBinding();
             if (_record != null) AddEvent(type, source, subject, null, null, null, detail);
+        }
+
+        public void RecordJump(Character character)
+        {
+            if (!CollectionEnabled) return;
+            HandleRunBinding();
+            if (_record == null || character == null) return;
+            AddEvent("PlayerJumped", character.IsLocal ? EventSource.LocalAuthoritative : EventSource.RemoteObserved,
+                character, null, null, null, "Character.OnJump");
         }
 
         private static string FindItemSlot(global::Player player, Item item)
@@ -493,9 +780,10 @@ namespace StateKeeper
         }
 
         private void AddEvent(string type, EventSource source, Character subject, Character target, ItemSnapshot item, string slot, string detail,
-            float value = 0f, float previousValue = 0f)
+            float value = 0f, float previousValue = 0f, ItemSnapshot previousItem = null, string resourceKey = null,
+            int segmentIndex = -1, string segmentKey = null, Character actor = null)
         {
-            if (_record == null) return;
+            if (!CollectionEnabled || _record == null) return;
             _record.events.Add(new StatsEvent
             {
                 time = Round(GetRunTime(), 3),
@@ -503,12 +791,19 @@ namespace StateKeeper
                 source = source,
                 subjectPlayerIndex = GetPlayerIndex(subject),
                 targetPlayerIndex = GetPlayerIndex(target),
+                actorPlayerIndex = actor == null ? (int?)null : GetPlayerIndex(actor),
                 itemId = item == null ? (ushort)0 : item.itemId,
                 itemName = item == null ? null : item.itemName,
+                itemGuid = item == null ? null : item.guid,
+                previousItemGuid = previousItem == null ? null : previousItem.guid,
+                resourceKey = resourceKey,
+                definitionKey = item == null ? null : item.prefabName,
                 slot = slot,
                 detail = detail,
                 value = value,
-                previousValue = previousValue
+                previousValue = previousValue,
+                segmentIndex = segmentIndex,
+                segmentKey = segmentKey
             });
         }
 
@@ -517,11 +812,6 @@ namespace StateKeeper
             if (character == null || _record == null) return -1;
             try { return EnsureIdentity(character).playerIndex; }
             catch { return -1; }
-        }
-
-        public void ToggleFavoriteLatest()
-        {
-            if (_store != null) _store.ToggleLatestFavorite();
         }
 
         private void OnDestroy()
@@ -552,8 +842,19 @@ namespace StateKeeper
             public bool occupied;
             public ushort itemId;
             public Guid guid;
-            public bool hasUses;
+            public string itemName;
+            public string prefabName;
+            public bool hasUsesEntry;
+            public bool hasUsesValue;
             public int uses;
+            public bool hasPetterItemUses;
+            public int petterItemUses;
+            public bool hasUsed;
+            public bool used;
+            public bool hasFlareActive;
+            public bool flareActive;
+            public bool hasPowerEnabled;
+            public bool powerEnabled;
             public bool hasUseRemaining;
             public float useRemaining;
             public bool hasFuel;
@@ -567,14 +868,26 @@ namespace StateKeeper
                 if (slot == null || slot.IsEmpty() || slot.prefab == null) return result;
                 result.occupied = true;
                 result.itemId = slot.prefab.itemID;
+                result.itemName = slot.prefab.UIData == null ? slot.prefab.name : slot.prefab.UIData.itemName;
+                result.prefabName = slot.prefab.gameObject == null ? slot.prefab.name : slot.prefab.gameObject.name;
                 if (slot.data == null) return result;
                 result.guid = slot.data.guid;
 
                 OptionableIntItemData uses;
+                IntItemData petterItemUses;
+                OptionableBoolItemData used;
+                BoolItemData usedValue;
+                BoolItemData flareActive;
+                BoolItemData powerEnabled;
                 IntItemData cooked;
                 FloatItemData useRemaining;
                 FloatItemData fuel;
-                if (slot.data.TryGetDataEntry<OptionableIntItemData>(DataEntryKey.ItemUses, out uses)) { result.hasUses = true; result.uses = uses.Value; }
+                if (slot.data.TryGetDataEntry<OptionableIntItemData>(DataEntryKey.ItemUses, out uses)) { result.hasUsesEntry = true; result.hasUsesValue = uses.HasData; if (uses.HasData) result.uses = uses.Value; }
+                if (slot.data.TryGetDataEntry<IntItemData>(DataEntryKey.PetterItemUses, out petterItemUses)) { result.hasPetterItemUses = true; result.petterItemUses = petterItemUses.Value; }
+                if (slot.data.TryGetDataEntry<OptionableBoolItemData>(DataEntryKey.Used, out used)) { result.hasUsed = used.HasData; if (used.HasData) result.used = used.Value; }
+                else if (slot.data.TryGetDataEntry<BoolItemData>(DataEntryKey.Used, out usedValue)) { result.hasUsed = true; result.used = usedValue.Value; }
+                if (slot.data.TryGetDataEntry<BoolItemData>(DataEntryKey.FlareActive, out flareActive)) { result.hasFlareActive = true; result.flareActive = flareActive.Value; }
+                if (slot.data.TryGetDataEntry<BoolItemData>(DataEntryKey.PowerEnabled, out powerEnabled)) { result.hasPowerEnabled = true; result.powerEnabled = powerEnabled.Value; }
                 if (slot.data.TryGetDataEntry<FloatItemData>(DataEntryKey.UseRemainingPercentage, out useRemaining)) { result.hasUseRemaining = true; result.useRemaining = Round(useRemaining.Value, 4); }
                 if (slot.data.TryGetDataEntry<FloatItemData>(DataEntryKey.Fuel, out fuel)) { result.hasFuel = true; result.fuel = Round(fuel.Value, 4); }
                 if (slot.data.TryGetDataEntry<IntItemData>(DataEntryKey.CookedAmount, out cooked)) { result.hasCookedAmount = true; result.cookedAmount = cooked.Value; }
@@ -584,10 +897,77 @@ namespace StateKeeper
             public bool Equals(ItemFingerprint other)
             {
                 return occupied == other.occupied && itemId == other.itemId && guid == other.guid &&
-                       hasUses == other.hasUses && uses == other.uses &&
+                       string.Equals(itemName, other.itemName, StringComparison.Ordinal) && string.Equals(prefabName, other.prefabName, StringComparison.Ordinal) &&
+                       hasUsesEntry == other.hasUsesEntry && hasUsesValue == other.hasUsesValue && uses == other.uses &&
+                       hasPetterItemUses == other.hasPetterItemUses && petterItemUses == other.petterItemUses &&
+                       hasUsed == other.hasUsed && used == other.used &&
+                       hasFlareActive == other.hasFlareActive && flareActive == other.flareActive &&
+                       hasPowerEnabled == other.hasPowerEnabled && powerEnabled == other.powerEnabled &&
                        hasUseRemaining == other.hasUseRemaining && useRemaining.Equals(other.useRemaining) &&
                        hasFuel == other.hasFuel && fuel.Equals(other.fuel) &&
                        hasCookedAmount == other.hasCookedAmount && cookedAmount == other.cookedAmount;
+            }
+
+            public ItemSnapshot ToSnapshot(string location)
+            {
+                return new ItemSnapshot
+                {
+                    slot = location,
+                    itemId = itemId,
+                    itemName = itemName,
+                    prefabName = prefabName,
+                    guid = guid == Guid.Empty ? null : guid.ToString(),
+                    hasUsesEntry = hasUsesEntry,
+                    hasUsesValue = hasUsesValue,
+                    uses = uses,
+                    hasPetterItemUses = hasPetterItemUses,
+                    petterItemUses = petterItemUses,
+                    hasUsed = hasUsed,
+                    used = used,
+                    hasFlareActive = hasFlareActive,
+                    flareActive = flareActive,
+                    hasPowerEnabled = hasPowerEnabled,
+                    powerEnabled = powerEnabled,
+                    hasUseRemaining = hasUseRemaining,
+                    useRemaining = useRemaining,
+                    hasFuel = hasFuel,
+                    fuel = fuel,
+                    hasCookedAmount = hasCookedAmount,
+                    cookedAmount = cookedAmount
+                };
+            }
+        }
+
+        private static ItemSnapshot SnapshotFromFingerprint(ItemFingerprint fingerprint, string location)
+        {
+            return fingerprint.occupied ? fingerprint.ToSnapshot(location) : new ItemSnapshot { slot = location };
+        }
+
+        private static List<ResourceChange> FindChangedResources(ItemFingerprint previous, ItemFingerprint current)
+        {
+            var result = new List<ResourceChange>(4);
+            if (previous.hasUsesValue && current.hasUsesValue && previous.uses != current.uses) result.Add(new ResourceChange("uses", previous.uses, current.uses));
+            if (previous.hasPetterItemUses && current.hasPetterItemUses && previous.petterItemUses != current.petterItemUses) result.Add(new ResourceChange("petterItemUses", previous.petterItemUses, current.petterItemUses));
+            if (previous.hasUsed && current.hasUsed && previous.used != current.used) result.Add(new ResourceChange("used", previous.used ? 1f : 0f, current.used ? 1f : 0f));
+            if (previous.hasFlareActive && current.hasFlareActive && previous.flareActive != current.flareActive) result.Add(new ResourceChange("flareActive", previous.flareActive ? 1f : 0f, current.flareActive ? 1f : 0f));
+            if (previous.hasPowerEnabled && current.hasPowerEnabled && previous.powerEnabled != current.powerEnabled) result.Add(new ResourceChange("powerEnabled", previous.powerEnabled ? 1f : 0f, current.powerEnabled ? 1f : 0f));
+            if (previous.hasUseRemaining && current.hasUseRemaining && !previous.useRemaining.Equals(current.useRemaining)) result.Add(new ResourceChange("useRemaining", previous.useRemaining, current.useRemaining));
+            if (previous.hasFuel && current.hasFuel && !previous.fuel.Equals(current.fuel)) result.Add(new ResourceChange("fuel", previous.fuel, current.fuel));
+            if (previous.hasCookedAmount && current.hasCookedAmount && previous.cookedAmount != current.cookedAmount) result.Add(new ResourceChange("cookedAmount", previous.cookedAmount, current.cookedAmount));
+            return result;
+        }
+
+        private struct ResourceChange
+        {
+            public readonly string key;
+            public readonly float previousValue;
+            public readonly float value;
+
+            public ResourceChange(string key, float previousValue, float value)
+            {
+                this.key = key;
+                this.previousValue = previousValue;
+                this.value = value;
             }
         }
     }

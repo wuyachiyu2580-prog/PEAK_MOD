@@ -15,8 +15,9 @@ namespace StateKeeper
 
         internal static BepInEx.Logging.ManualLogSource Log { get; private set; }
         internal static RunCollector Collector { get; private set; }
+        internal static RunStore Store { get; private set; }
+        internal static RunAnalysisService Analysis { get; private set; }
         private ConfigEntry<bool> _enabled;
-        private ConfigEntry<KeyCode> _favoriteHotkey;
         private ConfigEntry<bool> _debugLogging;
         private ConfigEntry<float> _staminaEventThreshold;
         private Harmony _harmony;
@@ -27,8 +28,6 @@ namespace StateKeeper
             try
             {
                 _enabled = Config.Bind("General", "Enabled", true, "Enable PEAK expedition data collection.");
-                _favoriteHotkey = Config.Bind("General", "FavoriteHotkey", KeyCode.F8,
-                    "Favorite or unfavorite the latest completed run.");
                 _debugLogging = Config.Bind("Advanced", "DebugLogging", false,
                     "Write detailed collector diagnostics to the BepInEx log.");
                 _staminaEventThreshold = Config.Bind("Advanced", "StaminaEventThreshold", 0.01f,
@@ -37,11 +36,14 @@ namespace StateKeeper
                         new AcceptableValueRange<float>(0f, 1f)));
 
                 var store = new RunStore();
+                Store = store;
+                Analysis = new RunAnalysisService(store);
                 Collector = gameObject.AddComponent<RunCollector>();
-                Collector.Initialize(store);
                 Collector.CollectionEnabled = _enabled.Value;
+                Collector.Initialize(store);
                 _harmony = new Harmony(PluginGuid);
                 _harmony.PatchAll();
+                StateKeeperUi.Register();
                 LogInfo("Loaded. Data path: " + store.RootPath);
             }
             catch (Exception ex)
@@ -52,10 +54,8 @@ namespace StateKeeper
 
         private void Update()
         {
-            if (_enabled == null || _favoriteHotkey == null) return;
+            if (_enabled == null) return;
             if (Collector != null) Collector.CollectionEnabled = _enabled.Value;
-            if (_enabled.Value && Input.GetKeyDown(_favoriteHotkey.Value) && Collector != null)
-                Collector.ToggleFavoriteLatest();
         }
 
         internal static void LogInfo(string message)
@@ -91,9 +91,12 @@ namespace StateKeeper
 
         private void OnDestroy()
         {
+            StateKeeperUi.Dispose();
             try { _harmony?.UnpatchSelf(); } catch { }
             if (Instance == this) Instance = null;
             if (Collector != null) Collector = null;
+            Store = null;
+            Analysis = null;
         }
     }
 }

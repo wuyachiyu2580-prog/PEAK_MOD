@@ -225,6 +225,15 @@ namespace PlayersInfo.MonoBehaviours
                 return;
             }
 
+            // 死亡角色可能在名册中继续存在，且协调器只每 0.25s 刷新一次。
+            // 在下一次名册刷新前立即隐藏整条队友 HUD，避免留下没有数值的空体力条。
+            // 复活后由协调器重新激活同一 stableId 对应的 driver。
+            if (Target.data.dead)
+            {
+                if (gameObject.activeSelf) gameObject.SetActive(false);
+                return;
+            }
+
             // 玩家名与颜色很少变化，低频刷新即可。
             if (nameLabel != null && Time.unscaledTime >= _nextIdentityRefreshTime)
             {
@@ -239,27 +248,17 @@ namespace PlayersInfo.MonoBehaviours
             }
 
             float fullWidth = fullBar.sizeDelta.x;
-            bool targetDead = Target.data.dead;
-
             float maxStamina01;
             try { maxStamina01 = Mathf.Max(0f, Target.GetMaxStamina()); }
             catch { maxStamina01 = 1f; }
-            if (targetDead)
-            {
-                ResetInfiniteStaminaDisplay();
-                _displayedMainStamina01 = 0f;
-            }
-            else
-            {
-                _displayedMainStamina01 = ResolveDisplayedMainStamina(
-                    Target.data.currentStamina,
-                    maxStamina01,
-                    HasInfiniteStaminaEffect(Target));
-            }
+            _displayedMainStamina01 = ResolveDisplayedMainStamina(
+                Target.data.currentStamina,
+                maxStamina01,
+                HasInfiniteStaminaEffect(Target));
 
             // === Main Stamina ===
             desiredStaminaSize = Mathf.Max(0f, _displayedMainStamina01 * fullWidth + staminaBarOffset);
-            if (!targetDead && Target.data.currentStamina <= 0.005f)
+            if (Target.data.currentStamina <= 0.005f)
             {
                 if (!outOfStamina) { outOfStamina = true; OutOfStaminaPulse(); }
             }
@@ -457,11 +456,7 @@ namespace PlayersInfo.MonoBehaviours
 
             if (sinTime > TAU) sinTime -= TAU;
 
-            // 死亡状态下 CharacterData 可能仍保留上一帧的体力/临时体力数值。
-            // 保留灰暗的队友条，但清理数值文字，避免死亡过渡时旧值与 0/新值重叠。
-            if (targetDead)
-                HideValueTexts();
-            else if (Time.unscaledTime >= _nextValueRefreshTime)
+            if (Time.unscaledTime >= _nextValueRefreshTime)
             {
                 _nextValueRefreshTime = Time.unscaledTime + ValueRefreshInterval;
                 UpdateValueTexts();

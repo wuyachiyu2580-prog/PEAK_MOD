@@ -2,17 +2,17 @@
 
 Last updated: 2026-09-06
 
-## 2026-09-06 0.2.3 verification
+## 2026-09-06 0.2.4 verification
 
 - [ ] In a clean PEAK 2.4.b session, switch `AfflictionIconDisplayMode` between `ShowAll`, `HideTeammates`, and `HideAll`; verify skull/cold/hunger and similar icons toggle in real time while status bars, colors, widths, and numbers remain visible.
 - [ ] Verify local, teammate, and spectator icon ownership independently. Extra stamina, shield, campfire, and inventory icons must not be hidden by the affliction setting.
-- [ ] Test normal, `passedOut`, `fullyPassedOut`, and `dead` teammates entering/leaving range. Confirm dead entries use last living position, out-of-range roster members are not retained by the missing-roster grace, the 5 m hysteresis still works, and `NearbyRange=0` remains unlimited.
+- [ ] Test normal, `passedOut`, and `fullyPassedOut` teammates entering/leaving range. Confirm dead teammates never show a bar, out-of-range roster members are not retained by the missing-roster grace, the 5 m hysteresis still works, and `NearbyRange=0` remains unlimited.
 - [ ] Test max count and both stable/distance sorting while teammates die, revive, reconnect, or cross the range boundary.
 - [ ] Drain local stamina from a wide bar to `<= 0.005`. Confirm the hunger countdown stays after the stamina number while there is room, hides when the green fill is too narrow, and only at true zero appears centered in the available `maxStaminaBar` region after status widths are excluded.
 - [ ] Change hunger/cold/injury widths while the zero-stamina countdown is visible; confirm it follows the native available region, does not overlap status values, and hides immediately after stamina recovery.
 - [ ] Verify countdown suppression for hidden stamina values, local death, remote spectator targets, no hunger growth, immunity, and airport scenes.
 - [ ] Confirm a normal log with `Advanced.DebugLogging=false` has no diagnostic snapshot/binding/layout spam; investigate only PlayersInfo warnings/errors, excluding unrelated `WhySoLaggy` and PEAK save errors.
-- [ ] Recheck PEAK 2.4.b multiplayer and spectator edge cases before treating the 0.2.3 release as fully verified.
+- [ ] Recheck PEAK 2.4.b multiplayer and spectator edge cases before treating the 0.2.4 profile build as fully verified.
 
 ## 2026-08-19 Confirmed fixes
 

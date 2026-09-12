@@ -1,5 +1,15 @@
 # PlayersInfo Recent
 
+## 2026-09-07 PlayersInfo 0.2.4 trial release and Book of Bones check
+
+- The death-bar fix was promoted to version `0.2.4`.
+- `RefreshNearby()` excludes dead characters before distance/max-count selection and clears their retention entry. `passedOut` and `fullyPassedOut` remain displayable.
+- `TeammateBarDriver` hides its whole root immediately when a bound target becomes dead, covering the interval before the coordinator refresh. Revival is handled by the coordinator reactivating the existing stable-ID driver.
+- Release build passed with `0 warnings / 0 errors`. Current profile DLL: version `0.2.4.0`, size `98304` bytes, SHA-256 `973E9279F70ED5CC25CBC481673D2942394A35100001D4B027C3BD4E1E850BBB`.
+- Prepared `发行/0.2.4` with README, CHANGELOG, manifest, icon, DLL, and `wuyachiyu-PlayersInfo-0.2.4.zip`. The changelog keeps all previous version sections and adds only the 0.2.4 dead-corpse teammate-bar exclusion.
+- Book of Bones appears to use PEAK's separate skeleton state path (`CharacterData.isSkeleton` / `SetSkeleton` / `RPC_SyncSkeleton`) rather than `CharacterData.dead`. Since the 0.2.4 filter checks only `dead`, skeleton teammates should remain displayable unless the game also sets `dead=true`; still verify in a clean session.
+- `发行/0.2.3` remains unchanged as the previous release; clean-session testing is still required for corpse, downed, Book of Bones skeleton, revive, reconnect, sorting, and hysteresis cases.
+
 ## 2026-09-06 PlayersInfo 0.2.3 release and log audit
 
 - PlayersInfo 0.2.3 targets PEAK 2.4.b. The Release build completed with `0 warnings / 0 errors`.

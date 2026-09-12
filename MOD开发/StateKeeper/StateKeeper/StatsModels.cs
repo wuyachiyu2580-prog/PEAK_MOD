@@ -28,11 +28,16 @@ namespace StateKeeper
     [Serializable]
     public sealed class RunRecord
     {
-        public int schemaVersion = 2;
+        public int schemaVersion = 3;
         public string storageFormat = "chunked-json-gzip";
         public RunHeader header = new RunHeader();
         public List<PlayerIdentity> players = new List<PlayerIdentity>();
         public string[] statusTypeOrder = new string[0];
+        public int collectionRevision;
+        public string[] collectionCapabilities;
+        public string[] afflictionTypeOrder;
+        public float? distanceUnitsToMeters;
+        public List<RunEffectContext> effectContexts = new List<RunEffectContext>();
         public List<RunChunkInfo> chunks = new List<RunChunkInfo>();
         public RunChunkInfo activeChunk;
 
@@ -44,12 +49,14 @@ namespace StateKeeper
 
         [JsonIgnore]
         public List<StatsEvent> events = new List<StatsEvent>();
+        public List<ItemDefinition> definitions = new List<ItemDefinition>();
+        public List<MountainSegmentDefinition> mountainSegments = new List<MountainSegmentDefinition>();
     }
 
     [Serializable]
     public sealed class RunChunk
     {
-        public int schemaVersion = 1;
+        public int schemaVersion = 3;
         public int sequence;
         public float startTime;
         public float endTime;
@@ -80,6 +87,11 @@ namespace StateKeeper
         public string endedUtc;
         public string lastSavedUtc;
         public string gameVersion = "PEAK 2.4.b";
+        public string customName;
+        public bool hasAscentLevel;
+        public int ascentLevel;
+        public bool hasCustomRun;
+        public bool isCustomRun;
     }
 
     [Serializable]
@@ -109,6 +121,7 @@ namespace StateKeeper
         public float regularStamina;
         public float extraStamina;
         public float maxStamina;
+        public int? petrifyAmount;
         public float passOutValue;
         public bool dead;
         public bool passedOut;
@@ -147,8 +160,17 @@ namespace StateKeeper
         public string itemName;
         public string prefabName;
         public string guid;
+        public bool hasUsesEntry;
+        public bool hasUsesValue;
         public int uses;
-        public bool hasUses;
+        public bool hasPetterItemUses;
+        public int petterItemUses;
+        public bool hasUsed;
+        public bool used;
+        public bool hasFlareActive;
+        public bool flareActive;
+        public bool hasPowerEnabled;
+        public bool powerEnabled;
         public float useRemaining;
         public bool hasUseRemaining;
         public float fuel;
@@ -166,24 +188,32 @@ namespace StateKeeper
         public EventSource source;
         public int subjectPlayerIndex = -1;
         public int targetPlayerIndex = -1;
+        public int? actorPlayerIndex;
         public ushort itemId;
         public string itemName;
+        public string itemGuid;
+        public string previousItemGuid;
+        public string resourceKey;
+        public string definitionKey;
         public string slot;
         public string detail;
         public float value;
         public float previousValue;
+        public int segmentIndex = -1;
+        public string segmentKey;
     }
 
     [Serializable]
     public sealed class RunIndexFile
     {
-        public int schemaVersion = 1;
+        public int schemaVersion = 3;
         public List<RunIndexEntry> entries = new List<RunIndexEntry>();
     }
 
     [Serializable]
     public sealed class RunIndexEntry
     {
+        public int schemaVersion = 3;
         public string runId;
         public string status;
         public string outcome;
@@ -191,5 +221,90 @@ namespace StateKeeper
         public string endedUtc;
         public bool favorite;
         public string fileName;
+        public string customName;
+        public float durationSeconds;
+        public int playerCount;
+        public int sampleCount;
+        public int inventorySnapshotCount;
+        public int eventCount;
+    }
+
+    [Serializable]
+    public sealed class ItemDefinition
+    {
+        public ushort itemId;
+        public string itemName;
+        public string prefabName;
+        public int totalUses;
+        public float usingTimePrimary;
+        public List<string> itemTags = new List<string>();
+        public List<ItemDefinitionAction> actions = new List<ItemDefinitionAction>();
+        public List<ItemDefinitionComponent> components = new List<ItemDefinitionComponent>();
+        public List<ItemDefinitionCooking> cookingRules = new List<ItemDefinitionCooking>();
+        public List<ItemEffectHint> effectHints = new List<ItemEffectHint>();
+    }
+
+    [Serializable]
+    public sealed class ItemDefinitionAction
+    {
+        public string typeName;
+        public string trigger;
+        public string parameterSummary;
+        public List<ItemDefinitionParameter> parameters = new List<ItemDefinitionParameter>();
+    }
+
+    [Serializable]
+    public sealed class ItemDefinitionComponent
+    {
+        public string typeName;
+        public string parameterSummary;
+        public List<ItemDefinitionParameter> parameters = new List<ItemDefinitionParameter>();
+    }
+
+    [Serializable]
+    public sealed class ItemDefinitionCooking
+    {
+        public string typeName;
+        public string parameterSummary;
+        public List<ItemDefinitionParameter> parameters = new List<ItemDefinitionParameter>();
+    }
+
+    [Serializable]
+    public sealed class ItemDefinitionParameter
+    {
+        public string name;
+        public string type;
+        public string value;
+        public List<ItemDefinitionParameter> children;
+        public bool truncated;
+    }
+
+    [Serializable]
+    public sealed class RunEffectContext
+    {
+        public float observedTime;
+        public int[] mushroomEffects;
+        public int[] mushroomStaminaAmounts;
+    }
+
+    [Serializable]
+    public sealed class ItemEffectHint
+    {
+        public string type;
+        public string target;
+        public bool hasAmount;
+        public float amount;
+        public string trigger;
+    }
+
+    [Serializable]
+    public sealed class MountainSegmentDefinition
+    {
+        public int index;
+        public string titleKey;
+        public string capturedTitle;
+        public string biomeKey;
+        public bool hasBoundaryZ;
+        public float boundaryZ;
     }
 }

@@ -1,6 +1,6 @@
 ﻿# PEAK MOD Memory
 
-更新时间：2026-09-06
+更新时间：2026-09-07
 
 这是项目记忆的唯一入口。目标是让新的 AI 智能体在 1 到 3 分钟内知道：当前有哪些 MOD、近期做了什么、还有什么没做、哪些规则不能违反。
 
@@ -35,13 +35,13 @@
 - 用户明确要求 `DreamyAscent永久暂停`。
 - `DreamyAscent` 现在是永久暂停/归档项目；除非用户明确恢复，不再继续 DA 的功能、日志、构建、诊断或 TODO。
 
-## 2026-09-06 PlayersInfo 状态
+## 2026-09-07 PlayersInfo 状态
 
-- `PlayersInfo` 当前版本为 `0.2.3`，目标 PEAK `2.4.b`。新增三档异常图标显示、死亡/晕倒队友距离过滤修复、零体力饥饿倒计时原生可用区域居中，以及统一 `0.25s` 低频刷新。
+- `PlayersInfo` 当前版本为 `0.2.4`，目标 PEAK `2.4.b`。新增三档异常图标显示、死亡/晕倒队友距离过滤修复、零体力饥饿倒计时原生可用区域居中，以及统一 `0.25s` 低频刷新；0.2.4 进一步排除死亡玩家的队友条。
 - 图标配置默认 `ShowAll`，可隐藏队友或全部异常图标；中英文 BepInEx/ModConfig 名称、说明和枚举值已同步，异常条颜色、宽度和数字保持不变。
 - 正常及晕倒队友使用当前躯干位置；死亡队友使用死亡前 `VirtualCenter`。名册内超距成员不再误用 1.5 秒丢失保留，5 米滞回仍保留。
-- 当前 Release 构建为 `0 warnings / 0 errors`；profile 与发行 DLL 均为 `0.2.3.0`、`98304` 字节、SHA-256 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`。`发行/0.2.3` 已有完整 DLL/文档/manifest/icon/ZIP。
-- 日志审计未发现 PlayersInfo warning/error；旧 `[PI-DIAG]` 来自调试门控前 DLL。三档图标、死亡/晕倒跨范围、零体力倒计时、观战中心及 2.4.b 多人边界仍需干净会话实机验证。下次接手先读 `mods/PlayersInfo/temp/2026-09-06.md`。
+- 当前 Release 构建为 `0 warnings / 0 errors`；profile/0.2.4 发行 DLL 为 `0.2.4.0`、`98304` 字节、SHA-256 `973E9279F70ED5CC25CBC481673D2942394A35100001D4B027C3BD4E1E850BBB`。`发行/0.2.4` 已生成试发行目录和 ZIP；`发行/0.2.3` 仍保留上一版完整 DLL/文档/manifest/icon/ZIP。
+- 日志审计未发现 PlayersInfo warning/error；旧 `[PI-DIAG]` 来自调试门控前 DLL。三档图标、死亡/晕倒跨范围、骸骨之书骸骨队友、零体力倒计时、观战中心及 2.4.b 多人边界仍需干净会话实机验证。下次接手先读 `mods/PlayersInfo/temp/2026-09-07.md`。
 
 ## 2026-06-04 PlayersInfo 历史发布状态
 
@@ -75,8 +75,10 @@
 
 - `ItemInfoCN`：物品信息中文化（1.0.0 已发布）。入口：`mods/ItemInfoCN/README.md`。
 - `Lantern_ShootZombies_Night`：灯笼、打僵尸、日夜和寒冷/回暖相关功能整合（0.2.1）。入口：`mods/Lantern_ShootZombies_Night/README.md`。
-- `PlayersInfo`：队友状态、物品栏和观战相关 HUD 信息（0.2.3 / PEAK 2.4.b，发行包已建立，功能验收未完全结束）。项目直接编译输出到 PEAK 2.0.a profile。入口：`mods/PlayersInfo/README.md`。
-- `StateKeeper`：PEAK 局数据采集 MOD，当前 0.1.0 开发中；已完成 StateKeeper 改名、本机旧数据一次迁移、5Hz 核心采样、GZip 分块和后台写盘。入口：`mods/StateKeeper/README.md`。
+- `PlayersInfo`：队友状态、物品栏和观战相关 HUD 信息（0.2.4 / PEAK 2.4.b，试发行包已生成，仍待干净会话验证）。项目直接编译输出到 PEAK 2.0.a profile。入口：`mods/PlayersInfo/README.md`。
+- `StateKeeper`：展示名 `STATE KEEPER` / `状态分析`，0.1.0首版测试发布包已生成，未上传Thunderstore；已有采集、六页复盘、命名/搜索/跨局比较。schema3、新局采集修订3、analysisVersion5；发布前清理废弃接口/参数、修复关闭采集仍写事件，64项测试和七局只读回归通过，profile已更新。当前入口：`mods/StateKeeper/RELEASE_AUDIT_2026-09-08.md`；Unity UI和真实性能仍待短时验收。
+- `PEAK-MAP`：网站项目，后续计划承接 StateKeeper 的自愿匿名数据提交；当前只完成调研和 memory，入口：`mods/PEAK-MAP/README.md`。
+- `ModConfigDiagnostics`：ModConfig/PEAKLib 只读诊断工具（0.1.0）；已确认 2.4.b 的 `LOC: 0` 潜在来源为原版 `SettingsCell` 模板上的 `LocalizedText row=0`，修改建议和复测顺序见 `mods/ModConfigDiagnostics/PLAN.md`。
 - `OldPC`：本地旧电脑视觉模式和望远镜清晰模式（0.0.1 开发中）。入口：`mods/OldPC/README.md`。
 - `DreamyAscent`：地形定制中文化与功能修复（永久暂停/归档）。入口：`mods/DreamyAscent/README.md`。
 - `WhySoLaggy`：性能、RPC、Harmony 和异常行为观测（1.0.4 已建立发行包，PEAK 2.3.a；待双客户端/卸载重载验收）。入口：`mods/WhySoLaggy/README.md`。

@@ -1,6 +1,6 @@
 # PlayersInfo
 
-Last updated: 2026-09-06
+Last updated: 2026-09-07
 
 ## Purpose
 
@@ -10,7 +10,7 @@ The mod should not change game business logic and should not actively send gamep
 
 ## Current State
 
-- Version is `0.2.3`, targeting PEAK `2.4.b`.
+- Version is `0.2.4`, targeting PEAK `2.4.b`.
 - `0.1.0` was the first public release and `0.1.1` is retained as the previous maintenance/fix line.
 - Teammate HUD is coordinated through `TeammateBarsCoordinator`.
 - Local stamina display is patched through `LocalStaminaBarPatch`.
@@ -32,17 +32,18 @@ The mod should not change game business logic and should not actively send gamep
 - The previously reported teammate green-bar centering/overlap issue has been fixed and confirmed; future changes must preserve per-target fill sizing and must not use the full 100% bar center as the fill position.
 - The retained `Display.EnableInventoryRow` key is migrated from the old boolean into an enum display mode. Existing `true` and `false` values map to `ContentsOnly` and `Disabled` respectively, without changing unrelated settings.
 - 0.2.3 adds `Display.AfflictionIconDisplayMode`, defaulting to `ShowAll`. `ShowAll` keeps all status icons, `HideTeammates` hides only teammate icons, and `HideAll` hides teammate and local icons. The icon-only toggle preserves status bars, colors, widths, and numbers, and its three enum values plus descriptions are localized in English/Chinese through the optional ModConfig integration.
-- 0.2.3 fixes distance filtering for dead and downed teammates. Normal and `passedOut`/`fullyPassedOut` entries use the current torso position; dead entries use the last living `VirtualCenter` position. Invalid coordinates skip only that player. Roster members beyond range are not retained by the 1.5-second missing-roster grace window, while the existing 5 m hysteresis remains.
+- 0.2.3 fixes distance filtering for dead and downed teammates. Normal and `passedOut`/`fullyPassedOut` entries use the current torso position; dead entries are now excluded entirely, so a corpse never produces a teammate bar. Invalid coordinates skip only that player. Roster members beyond range are not retained by the 1.5-second missing-roster grace window, while the existing 5 m hysteresis remains.
 - 0.2.3 keeps the hunger countdown in the green stamina text while there is room. When stamina is truly zero (`<= 0.005`), it uses a separate yellow text centered in the live `maxStaminaBar` region after status width is excluded, and hides it when that region is inactive or too narrow. It never moves early because the green bar is temporarily small.
 - Low-frequency local and teammate HUD refreshes use the unified `0.25s` cadence. High-frequency visual updates remain separately controlled where needed for responsive bar animation.
 - Direct build output DLL path: `C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`. Future PlayersInfo builds write here directly.
-- The 2026-05-24 temporary-stamina clipping fix is retained as historical `0.1.1` release context; the current DLL is the `0.2.3` profile deployment listed above.
+- The 2026-05-24 temporary-stamina clipping fix is retained as historical `0.1.1` release context; the current DLL is the `0.2.4` release/profile deployment listed above.
 - 2026-05-30 release docs are synced with that fix. `发行/0.1.1/wuyachiyu-PlayersInfo-0.1.1.zip` exists as of 2026-06-04 and contains the synced docs plus the fixed 64000-byte DLL.
-- `发行/0.2.3/` contains the current DLL, manifest, README, CHANGELOG, icon, and `wuyachiyu-PlayersInfo-0.2.3.zip`. The release DLL matches the profile DLL: version `0.2.3.0`, size `98304` bytes, SHA-256 `4DED67C58AC5F3AF6D56B172340E9F9006D298DC481F255141A8BD76EBC9C60F`.
+- `发行/0.2.4/` contains the trial release DLL, manifest, README, CHANGELOG, icon, and `wuyachiyu-PlayersInfo-0.2.4.zip`. The release DLL is version `0.2.4.0`, size `98304` bytes, SHA-256 `973E9279F70ED5CC25CBC481673D2942394A35100001D4B027C3BD4E1E850BBB`; the zip SHA-256 is `C64A4154F7903EF4E1FA2CDBAC030AE11B8689C2BAD480987AB0DE2C330F95FA`.
+- `发行/0.2.3/` remains the previous `0.2.3` release and was not overwritten.
 
 ## Related Mods
 
-- The 0.2.0 and 0.2.1 release notes remain historical. The 0.2.3 profile/release DLL is built cleanly, but a clean PEAK 2.4.b session is still required for the three icon modes, dead/downed range transitions, spectator targets, zero-stamina countdown placement, and multiplayer edge cases.
+- The 0.2.0, 0.2.1, and 0.2.3 release notes remain historical. The 0.2.4 trial release is built cleanly, but a clean PEAK 2.4.b session is still required for the three icon modes, dead/downed range transitions, Book of Bones skeleton teammates, spectator targets, zero-stamina countdown placement, and multiplayer edge cases.
 
 - `WhySoLaggy`: use profiling there if HUD performance becomes suspicious.
 

@@ -1,8 +1,8 @@
 {
-  "name": "PeakRunAnalytics",
+  "name": "StateKeeper",
   "version_number": "0.1.0",
   "website_url": "",
-  "description": "PEAK远征数据分析：采集每局体力、状态、距离、物品栏和物品事件。",
+  "description": "PEAK远征记录与复盘：体力状态、队伍距离、物品证据、历史收藏和同玩家跨局对比，支持中英文。",
   "dependencies": [
     "BepInEx-BepInExPack_PEAK-5.4.2403"
   ]

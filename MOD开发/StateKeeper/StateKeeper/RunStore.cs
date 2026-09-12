@@ -13,6 +13,7 @@ namespace StateKeeper
 {
     internal sealed class RunStore
     {
+        internal const int CurrentSchemaVersion = 3;
         private const int MaxRecentRuns = 10;
         private const int SamplesPerChunk = 150;
         private static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
@@ -53,6 +54,19 @@ namespace StateKeeper
 
         public string RootPath { get { return _root; } }
 
+        internal string FindManifestPath(string runId)
+        {
+            if (string.IsNullOrEmpty(runId)) return null;
+            lock (_sync)
+            {
+                RunIndexEntry entry = GetEntriesLocked().FirstOrDefault(e => string.Equals(e.runId, runId, StringComparison.OrdinalIgnoreCase));
+                if (entry == null || entry.schemaVersion != CurrentSchemaVersion) return null;
+                string directory = entry.favorite ? _favorites : _runs;
+                string path = SafeChildPath(directory, entry.fileName);
+                return File.Exists(path) ? path : null;
+            }
+        }
+
         public RunRecord LoadActive()
         {
             lock (_sync)
@@ -63,8 +77,9 @@ namespace StateKeeper
                     RunRecord result = JsonConvert.DeserializeObject<RunRecord>(File.ReadAllText(_activePath), JsonSettings);
                     if (result == null || result.header == null || string.IsNullOrEmpty(result.header.runId))
                         throw new InvalidDataException("Active run has no valid header or RunId.");
-                    if (result.schemaVersion != 2)
-                        throw new InvalidDataException("Unsupported active-run schema " + result.schemaVersion + ".");
+                    // Schema 2 is intentionally left in place for manual cleanup. It is not resumed or rewritten.
+                    if (result.schemaVersion != CurrentSchemaVersion)
+                        return null;
 
                     Normalize(result);
                     if (result.activeChunk != null)
@@ -73,6 +88,7 @@ namespace StateKeeper
                         RunChunk chunk = ReadCompressedChunk(chunkPath);
                         if (chunk.sequence != result.activeChunk.sequence)
                             throw new InvalidDataException("Active chunk sequence does not match its manifest.");
+                        if (chunk.schemaVersion != CurrentSchemaVersion) return null;
                         result.samples = chunk.samples ?? new List<PlayerSample>();
                         result.inventorySnapshots = chunk.inventorySnapshots ?? new List<InventorySnapshot>();
                         result.events = chunk.events ?? new List<StatsEvent>();
@@ -127,6 +143,11 @@ namespace StateKeeper
                 record.header.outcome = outcome.ToString();
                 record.header.endedUtc = DateTime.UtcNow.ToString("o");
                 record.header.lastSavedUtc = record.header.endedUtc;
+                record.header.customName = CleanCustomName(record.header.customName);
+                int sampleCount = CountSamples(record);
+                int inventorySnapshotCount = CountInventorySnapshots(record);
+                int eventCount = CountEvents(record);
+                float durationSeconds = FindTotalEndTime(record);
                 ChunkWrite chunkWrite = PrepareChunk(record, true);
                 string fileName = record.header.runId + ".json";
                 RunRecord manifest = CloneManifest(record);
@@ -139,7 +160,13 @@ namespace StateKeeper
                     startedUtc = record.header.startedUtc,
                     endedUtc = record.header.endedUtc,
                     favorite = false,
-                    fileName = fileName
+                    fileName = fileName,
+                    customName = CleanCustomName(record.header.customName),
+                    durationSeconds = durationSeconds,
+                    playerCount = record.players == null ? 0 : record.players.Count,
+                    sampleCount = sampleCount,
+                    inventorySnapshotCount = inventorySnapshotCount,
+                    eventCount = eventCount
                 });
                 CleanupRecent();
                 RunIndexFile indexSnapshot = CloneIndex(_index);
@@ -153,27 +180,75 @@ namespace StateKeeper
             }
         }
 
-        public void ToggleLatestFavorite()
+        internal IReadOnlyList<RunIndexEntry> GetRecentEntries()
         {
+            lock (_sync) return GetEntriesLocked().Where(e => !e.favorite).OrderByDescending(e => ParseDate(e.endedUtc, e.startedUtc)).Select(CloneIndexEntry).ToList();
+        }
+
+        internal IReadOnlyList<RunIndexEntry> GetFavoriteEntries()
+        {
+            lock (_sync) return GetEntriesLocked().Where(e => e.favorite).OrderByDescending(e => ParseDate(e.endedUtc, e.startedUtc)).Select(CloneIndexEntry).ToList();
+        }
+
+        internal bool ToggleFavorite(string runId)
+        {
+            if (string.IsNullOrEmpty(runId)) return false;
             lock (_sync)
             {
                 _writeTail.GetAwaiter().GetResult();
                 ThrowBackgroundWriteError();
-                RunIndexEntry entry = _index.entries
-                    .Where(e => e != null && e.status != RunStatus.Active.ToString())
-                    .OrderByDescending(e => ParseDate(e.endedUtc, e.startedUtc))
-                    .FirstOrDefault();
-                if (entry == null) return;
-
+                RunIndexEntry entry = GetEntriesLocked().FirstOrDefault(e => string.Equals(e.runId, runId, StringComparison.OrdinalIgnoreCase));
+                if (entry == null || entry.status == RunStatus.Active.ToString()) return false;
                 string sourceDir = entry.favorite ? _favorites : _runs;
                 string targetDir = entry.favorite ? _runs : _favorites;
                 string manifestPath = SafeChildPath(sourceDir, entry.fileName);
-                if (!File.Exists(manifestPath)) return;
-
+                if (!File.Exists(manifestPath)) return false;
                 MoveRunFiles(sourceDir, targetDir, entry.fileName);
                 entry.favorite = !entry.favorite;
                 CleanupRecent();
                 SaveIndex();
+                return true;
+            }
+        }
+
+        internal bool RenameRun(string runId, string customName)
+        {
+            if (string.IsNullOrEmpty(runId)) return false;
+            lock (_sync)
+            {
+                _writeTail.GetAwaiter().GetResult();
+                ThrowBackgroundWriteError();
+                RunIndexEntry entry = GetEntriesLocked().FirstOrDefault(e => string.Equals(e.runId, runId, StringComparison.OrdinalIgnoreCase));
+                if (entry == null || entry.status == RunStatus.Active.ToString()) return false;
+                string directory = entry.favorite ? _favorites : _runs;
+                string manifestPath = SafeChildPath(directory, entry.fileName);
+                if (!File.Exists(manifestPath)) return false;
+                RunRecord manifest = JsonConvert.DeserializeObject<RunRecord>(File.ReadAllText(manifestPath), JsonSettings);
+                if (manifest == null || manifest.schemaVersion != CurrentSchemaVersion || manifest.header == null) return false;
+                string cleaned = CleanCustomName(customName);
+                manifest.header.customName = cleaned;
+                WriteAtomic(manifestPath, manifest);
+                entry.customName = cleaned;
+                SaveIndex();
+                return true;
+            }
+        }
+
+        internal bool DeleteRun(string runId)
+        {
+            if (string.IsNullOrEmpty(runId)) return false;
+            lock (_sync)
+            {
+                _writeTail.GetAwaiter().GetResult();
+                ThrowBackgroundWriteError();
+                RunIndexEntry entry = GetEntriesLocked().FirstOrDefault(e => string.Equals(e.runId, runId, StringComparison.OrdinalIgnoreCase));
+                if (entry == null || entry.status == RunStatus.Active.ToString()) return false;
+                string directory = entry.favorite ? _favorites : _runs;
+                DeleteRunFiles(directory, entry.fileName);
+                TryDelete(Path.Combine(_root, "Analysis", entry.runId + ".analysis.json.gz"));
+                _index.entries.Remove(entry);
+                SaveIndex();
+                return true;
             }
         }
 
@@ -187,6 +262,7 @@ namespace StateKeeper
                 : record.activeChunk.fileName;
             var chunk = new RunChunk
             {
+                schemaVersion = CurrentSchemaVersion,
                 sequence = sequence,
                 startTime = FindStartTime(record),
                 endTime = FindEndTime(record),
@@ -276,6 +352,11 @@ namespace StateKeeper
             {
                 schemaVersion = source.schemaVersion,
                 storageFormat = source.storageFormat,
+                collectionRevision = source.collectionRevision,
+                collectionCapabilities = source.collectionCapabilities == null ? null : (string[])source.collectionCapabilities.Clone(),
+                afflictionTypeOrder = source.afflictionTypeOrder == null ? null : (string[])source.afflictionTypeOrder.Clone(),
+                distanceUnitsToMeters = source.distanceUnitsToMeters,
+                effectContexts = source.effectContexts == null ? new List<RunEffectContext>() : new List<RunEffectContext>(source.effectContexts),
                 header = new RunHeader
                 {
                     runId = source.header.runId,
@@ -284,7 +365,12 @@ namespace StateKeeper
                     startedUtc = source.header.startedUtc,
                     endedUtc = source.header.endedUtc,
                     lastSavedUtc = source.header.lastSavedUtc,
-                    gameVersion = source.header.gameVersion
+                    gameVersion = source.header.gameVersion,
+                    customName = source.header.customName,
+                    hasAscentLevel = source.header.hasAscentLevel,
+                    ascentLevel = source.header.ascentLevel,
+                    hasCustomRun = source.header.hasCustomRun,
+                    isCustomRun = source.header.isCustomRun
                 },
                 statusTypeOrder = source.statusTypeOrder == null ? new string[0] : (string[])source.statusTypeOrder.Clone(),
                 activeChunk = CloneChunkInfo(source.activeChunk)
@@ -304,6 +390,42 @@ namespace StateKeeper
             }
             result.chunks.Clear();
             foreach (RunChunkInfo chunk in source.chunks) result.chunks.Add(CloneChunkInfo(chunk));
+            if (source.definitions != null)
+            {
+                foreach (ItemDefinition definition in source.definitions)
+                {
+                    if (definition == null) continue;
+                    result.definitions.Add(new ItemDefinition
+                    {
+                        itemId = definition.itemId,
+                        itemName = definition.itemName,
+                        prefabName = definition.prefabName,
+                        totalUses = definition.totalUses,
+                        usingTimePrimary = definition.usingTimePrimary,
+                        itemTags = definition.itemTags == null ? new List<string>() : new List<string>(definition.itemTags),
+                        actions = definition.actions == null ? new List<ItemDefinitionAction>() : definition.actions,
+                        components = definition.components == null ? new List<ItemDefinitionComponent>() : definition.components,
+                        cookingRules = definition.cookingRules == null ? new List<ItemDefinitionCooking>() : definition.cookingRules,
+                        effectHints = definition.effectHints == null ? new List<ItemEffectHint>() : definition.effectHints
+                    });
+                }
+            }
+            if (source.mountainSegments != null)
+            {
+                foreach (MountainSegmentDefinition segment in source.mountainSegments)
+                {
+                    if (segment == null) continue;
+                    result.mountainSegments.Add(new MountainSegmentDefinition
+                    {
+                        index = segment.index,
+                        titleKey = segment.titleKey,
+                        capturedTitle = segment.capturedTitle,
+                        biomeKey = segment.biomeKey,
+                        hasBoundaryZ = segment.hasBoundaryZ,
+                        boundaryZ = segment.boundaryZ
+                    });
+                }
+            }
             return result;
         }
 
@@ -331,13 +453,20 @@ namespace StateKeeper
                 if (entry == null) continue;
                 result.entries.Add(new RunIndexEntry
                 {
+                    schemaVersion = entry.schemaVersion,
                     runId = entry.runId,
                     status = entry.status,
                     outcome = entry.outcome,
                     startedUtc = entry.startedUtc,
                     endedUtc = entry.endedUtc,
                     favorite = entry.favorite,
-                    fileName = entry.fileName
+                    fileName = entry.fileName,
+                    customName = entry.customName,
+                    durationSeconds = entry.durationSeconds,
+                    playerCount = entry.playerCount,
+                    sampleCount = entry.sampleCount,
+                    inventorySnapshotCount = entry.inventorySnapshotCount,
+                    eventCount = entry.eventCount
                 });
             }
             return result;
@@ -349,15 +478,78 @@ namespace StateKeeper
             {
                 if (!File.Exists(_indexPath)) return new RunIndexFile();
                 RunIndexFile result = JsonConvert.DeserializeObject<RunIndexFile>(File.ReadAllText(_indexPath), JsonSettings);
-                if (result == null) return new RunIndexFile();
+                if (result == null || result.schemaVersion != CurrentSchemaVersion) return new RunIndexFile();
                 if (result.entries == null) result.entries = new List<RunIndexEntry>();
+                result.entries.RemoveAll(e => e == null || e.schemaVersion != CurrentSchemaVersion);
                 return result;
             }
-            catch (Exception ex)
+            catch
             {
-                QuarantineCorrupt(_indexPath, ex);
                 return new RunIndexFile();
             }
+        }
+
+        private List<RunIndexEntry> GetEntriesLocked()
+        {
+            return _index.entries.Where(e => e != null && e.schemaVersion == CurrentSchemaVersion && !string.IsNullOrEmpty(e.runId)).ToList();
+        }
+
+        private static RunIndexEntry CloneIndexEntry(RunIndexEntry entry)
+        {
+            return new RunIndexEntry
+            {
+                schemaVersion = entry.schemaVersion,
+                runId = entry.runId,
+                status = entry.status,
+                outcome = entry.outcome,
+                startedUtc = entry.startedUtc,
+                endedUtc = entry.endedUtc,
+                favorite = entry.favorite,
+                fileName = entry.fileName,
+                customName = entry.customName,
+                durationSeconds = entry.durationSeconds,
+                playerCount = entry.playerCount,
+                sampleCount = entry.sampleCount,
+                inventorySnapshotCount = entry.inventorySnapshotCount,
+                eventCount = entry.eventCount
+            };
+        }
+
+        private static string CleanCustomName(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return string.Empty;
+            var builder = new StringBuilder(Math.Min(40, value.Length));
+            foreach (char character in value)
+            {
+                if (char.IsControl(character)) continue;
+                if (builder.Length >= 40) break;
+                builder.Append(character);
+            }
+            return builder.ToString().Trim();
+        }
+
+        private static int CountSamples(RunRecord record)
+        {
+            return (record.chunks == null ? 0 : record.chunks.Sum(c => c == null ? 0 : c.sampleCount)) + (record.samples == null ? 0 : record.samples.Count);
+        }
+
+        private static int CountInventorySnapshots(RunRecord record)
+        {
+            return (record.chunks == null ? 0 : record.chunks.Sum(c => c == null ? 0 : c.inventorySnapshotCount)) + (record.inventorySnapshots == null ? 0 : record.inventorySnapshots.Count);
+        }
+
+        private static int CountEvents(RunRecord record)
+        {
+            return (record.chunks == null ? 0 : record.chunks.Sum(c => c == null ? 0 : c.eventCount)) + (record.events == null ? 0 : record.events.Count);
+        }
+
+        private static float FindTotalEndTime(RunRecord record)
+        {
+            float result = 0f;
+            if (record.chunks != null)
+                foreach (RunChunkInfo chunk in record.chunks)
+                    if (chunk != null) result = Math.Max(result, chunk.endTime);
+            return Math.Max(result, FindEndTime(record));
         }
 
         private void CleanupRecent()

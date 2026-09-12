@@ -1,6 +1,41 @@
 ﻿# Memory Changelog
 
+## 2026-09-09
+
+- [新增] `mods/ModConfigDiagnostics/` 四件套、`PLAN.md` 和 `temp/2026-09-09.md`：记录 0.1.0 只读诊断能力、真实 profile 报告、`LOC: 0` 的原版 `SettingsCell`/`LocalizedText row=0` 证据、公共依赖根修复建议和活动 UI 复测边界。
+- [修改] `common/08_ModConfig本地化与安全集成规范.md`、`TODO.md`：加入 PEAK 2.4.b / ModConfig 1.8.0 / PEAKLib.UI 1.7.0 的 `LOC: 0` 修复顺序，锁定 PlayersInfo/Lantern 全局 `RefreshCache()` 清理、五个 MOD新版菜单类型迁移和 Harmony 方法去重。
+- [索引] `README.md`、`mods/README.md`、`MEMORY_INDEX.md`：加入 ModConfigDiagnostics 项目、报告入口、修改建议和当前未实施代码修复状态。
+- [规则] 当前会话没有专用 `update_memory` 工具；工作区 memory Markdown、索引、TODO、临时摘要和本变更日志是本次可用的权威记忆记录。
+- [StateKeeper] 将项目与发行包中的 `README.md`、`CHANGELOG.md` 全部改为英文，并通过构建脚本同步发行目录与 `StateKeeper-0.1.0.zip`；仅更新文档，DLL逻辑和版本未变。
+- [StateKeeper] 修复英文行操作截断和重命名不显示：通过UnityPy读取实际模板确认GUIManager.Resume持久监听及PauseMenu排序204，移除克隆监听和弹窗独立低排序；真实字形宽度校验通过。更新四件套、09-09temp、索引与TODO，64测试通过，0.1.0包/profile已更新；实机待重启确认。
+
+## 2026-09-08
+
+- [StateKeeper发布] 按用户后续要求完成0.1.0发布前自审和本地ZIP；新增RELEASE_AUDIT文档并同步四件套/索引/TODO。移除废弃收藏/图表分支和参数，修复Enabled=false补丁仍写事件与默认性能日志；64项测试通过、profile已部署。保留用户英文创作缘由；未上传Thunderstore、未冒充Unity实机验收。
+- [StateKeeper] 新增 `mods/StateKeeper/REPORT_REBUILD_2026-09-08.md` 与当日temp，更新四件套、归因历史提示、入口/索引/TODO。当前schema3/collectionRevision3/analysisVersion5，62项测试与七局只读回归通过，Release已部署。
+- [更正] 最新局有6进度点/127时间回退；14条死亡观察对应8确认和6重复，11130m来自死亡暂存点漂移。撤回“无山段目录/算法无需更新/已排除StateKeeper卡顿”结论，原文保留并标失效。
+- [边界] 六页复盘、搜索/命名/比较已接入；Unity分辨率、输入法/控制器、短时采集恢复和真实主线程开销未验收，不要求重录两小时，不修改原始录局。
+
+## 2026-09-07
+
+- [修改] `mods/PlayersInfo/README.md`、`FILES.md`、`RECENT.md`、`TODO.md`、`MEMORY_INDEX.md`、`README.md`：记录 PlayersInfo `0.2.4` 试发行目录/ZIP 已生成，`0.2.3` 发行目录保留为历史版本，并补充骸骨之书骸骨队友应不受 `dead` 过滤影响的待实机验证结论。
+- [新增] `mods/PlayersInfo/temp/2026-09-07.md`：记录 0.2.4 试发行产物、DLL/ZIP hash、changelog 保留历史条目，以及骸骨之书影响判断。
+- [规则] 当前会话没有专用 `update_memory` 工具；工作区 memory Markdown、索引、TODO、临时摘要和本变更日志是本次可用的权威记忆记录。
+
 ## 2026-09-06
+
+- [修改] `mods/StateKeeper/PLAN.md`、`DECISIONS.md`、`RECENT.md`、`README.md`、`TODO.md`：重新复核五局 StateKeeper 数据，将第一版分析范围确定为物品栏差分、位置/距离和体力变化区段；加入物品流转置信度、双时间轴、无效坐标过滤和稳健距离统计规则，复杂评分继续暂缓。
+
+- [补全] `mods/StateKeeper/PLAN.md`：归档此前的一局结束基准、采集字段、现有样本异常、对其他客机影响、未来分析形式，以及暂不实现综合评分/最佳队友/复杂战术评级的边界。
+- [修改] `StateKeeper` / `PEAK-MAP` 匿名提交方案：从严格全量清洗调整为适度脱敏；界面使用每次提交重新生成的“玩家 A/B/C”，技术层删除账号/连接标识和 GUID，并粗化时间、距离、位置，默认不上传原始详细数据。
+- [补档] `mods/StateKeeper/PLAN.md`、`RECENT.md`、`README.md`：归档此前完整功能边界、数据模型、性能优化、验收矩阵、5 局样本统计、时间轴异常和“基础分析先行、评分/战术评级暂缓”的结论。
+- [新增] `mods/PEAK-MAP/PLAN.md`：把此前网站改造分析整理为独立实施计划，覆盖 API、Supabase 表、私有 R2、适度脱敏 schema、限流/压缩炸弹防护、删除令牌、关闭机制和回归验收。
+- [新增] `mods/StateKeeper/PLAN.md`：记录 `STATE KEEPER` / “状态分析”后续计划，包括整体 JSON 合并、独立合并/分析进度、双语 ESC 面板、面板收藏和性能边界。
+- [新增] `mods/PEAK-MAP/` 四件套：记录网站承接 StateKeeper 自愿匿名提交的独立 API、Supabase 元数据、私有 Cloudflare R2、双重脱敏和可关闭开关方案。
+- [修改] `mods/StateKeeper/README.md`、`DECISIONS.md`、`FILES.md`、`RECENT.md`、`TODO.md`、`MEMORY_INDEX.md`、`README.md`：将展示名称、碎块合并、F8 移除、双语面板和匿名上传计划同步到 memory；明确本轮未修改源码和发行包。
+
+- [修改] PlayersInfo 版本从 `0.2.3` 升至 `0.2.4`：同步插件常量、项目版本和程序集版本；profile DLL 重新构建为 `0.2.4.0`。
+- [修改] `mods/PlayersInfo/`、`README.md`、`mods/README.md`、`MEMORY_INDEX.md`、`TODO.md`：记录 0.2.4 死亡玩家队友条排除修复、profile 测试状态和 0.2.3 发行目录未覆盖边界。
 
 - [修改] `mods/PlayersInfo/` 四件套：同步 PlayersInfo `0.2.3` / PEAK `2.4.b` 的三档异常图标显示、死亡/晕倒距离过滤、零体力饥饿倒计时居中、统一 `0.25s` 低频刷新和 debug 日志门控决策。
 - [新增] `mods/PlayersInfo/temp/2026-09-06.md`：记录 0.2.3 的实现范围、构建产物、日志审计结果和仍待实机验证的边界。

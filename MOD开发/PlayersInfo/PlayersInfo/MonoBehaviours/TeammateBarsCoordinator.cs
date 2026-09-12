@@ -286,6 +286,14 @@ namespace PlayersInfo.MonoBehaviours
                 int currentStableId = GetStableCharacterId(c);
                 if (currentStableId == int.MinValue) continue;
                 s_currentStableIds.Add(currentStableId);
+                // 死亡玩家仍可能留在 TeamRosterTracker 名册中，但 PlayersInfo 只显示
+                // 存活或晕倒玩家。必须在距离/人数候选阶段排除死亡目标，避免其死亡前
+                // VirtualCenter 仍在附近时创建或保留一条没有数值的空体力条。
+                if (c.data.dead)
+                {
+                    s_retainedById.Remove(currentStableId);
+                    continue;
+                }
                 // 默认本地体力条已经显示观战目标，队友列表不重复显示它。
                 // 开启本地中心后，观战目标属于本地附近玩家，可正常列入附近列表。
                 if (c == displayCharacter && !useLocalCenter) continue;

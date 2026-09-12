@@ -1,6 +1,6 @@
 ﻿# Memory Index
 
-更新时间：2026-09-06
+更新时间：2026-09-09
 
 ## 当前结构
 
@@ -31,7 +31,7 @@
 - 当天临时文件命名为 `mods/<ModName>/temp/YYYY-MM-DD.md`。
 - 每形成 3 次明确的阶段性判断、排查结论或方案取舍，就追加一次摘要。
 - 上下文压缩、会话中断或换 AI 后，先读该 MOD 最新临时 MD，再读正式四件套。
-- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`PlayersInfo/temp/2026-09-06.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`WhySoLaggy/temp/2026-08-31.md`、`WhereIsMyAmulet/temp/2026-08-31.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`、`StateKeeper/temp/2026-09-06.md`。
+- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`PlayersInfo/temp/2026-09-06.md`、`PlayersInfo/temp/2026-09-07.md`、`ModConfigDiagnostics/temp/2026-09-09.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`WhySoLaggy/temp/2026-08-31.md`、`WhereIsMyAmulet/temp/2026-08-31.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`、`StateKeeper/temp/2026-09-06.md`。
 
 ### ItemInfoCN（1.0.0 已发布）
 
@@ -47,21 +47,44 @@
 - `mods/Lantern_ShootZombies_Night/DECISIONS.md`：版本、灯笼同步、本地燃料权威、配置同步、兼容和禁止回退。
 - `mods/Lantern_ShootZombies_Night/FILES.md`：源码路径、构建命令、关键 Helper / Patch 清单。
 
-### PlayersInfo（0.2.3 / PEAK 2.4.b）
+### PlayersInfo（0.2.4 / PEAK 2.4.b）
 
 - `mods/PlayersInfo/README.md`：队友 HUD 聚合概览与功能轮廓。
-- `mods/PlayersInfo/RECENT.md`：含 0.2.3 三档异常图标、死亡/晕倒距离修复、零体力饥饿倒计时、统一刷新、日志审计和发行产物结论，以及此前 0.2.1 功能历史。
+- `mods/PlayersInfo/RECENT.md`：含 0.2.4 试发行、死亡条排除、骸骨之书影响结论、0.2.3 三档异常图标、死亡/晕倒距离修复、零体力饥饿倒计时、统一刷新、日志审计和发行产物结论，以及此前 0.2.1 功能历史。
 - `mods/PlayersInfo/DECISIONS.md`：只读展示不发 RPC、HUD 架构、图标所有权隔离、安全位置解析、原生 `maxStaminaBar` 倒计时、统一刷新和日志门控边界。
-- `mods/PlayersInfo/FILES.md`：源码路径、项目文件、0.2.3 版本、profile/发行 DLL 校验信息和当前 DLL 输出路径。
-- `mods/PlayersInfo/temp/2026-09-06.md`：本轮 0.2.3 实现、构建、日志审计和待实机验证入口。
+- `mods/PlayersInfo/FILES.md`：源码路径、项目文件、0.2.4 试发行目录/ZIP/DLL 校验信息、0.2.3 历史发行目录状态和当前 DLL 输出路径。
+- `mods/PlayersInfo/temp/2026-09-07.md`：本轮 0.2.4 试发行、骸骨之书影响判断和待实机验证入口。
+- `mods/PlayersInfo/temp/2026-09-06.md`：此前 0.2.4 死亡条修复、0.2.3 实现、构建、日志审计和待实机验证入口。
 
 ### StateKeeper（0.1.0 / 开发中）
 
-- `mods/StateKeeper/README.md`：项目定位、采集内容、RunId 结束判定、存储结构和当前路径。
+- `mods/StateKeeper/temp/2026-09-09.md`：最新英文按钮/重命名修复、实际资源证据、字体宽度和新版包哈希。
+- `mods/StateKeeper/RELEASE_AUDIT_2026-09-08.md`：最新发布入口；0.1.0自审清理、64项测试、本地ZIP和DLL哈希、未上传与未实机验收边界。
+- `mods/StateKeeper/REPORT_REBUILD_2026-09-08.md`：当前实现/验收入口；analysisVersion5复盘报告、62项测试与七局回放、部署结果及Unity待验收项，优先于旧报告。
+- `mods/StateKeeper/temp/2026-09-08.md`：最新接续摘要，纠正死亡重复、六个进度点、127处时间回退与卡顿误判。
+- `mods/StateKeeper/README.md`：项目定位、展示名称、采集内容、RunId 结束判定、存储结构和当前路径。
+- `mods/StateKeeper/PLAN.md`：整体 JSON 合并、合并/分析双进度、双语面板、面板收藏和 PEAK-MAP 匿名提交的后续计划。
 - `mods/StateKeeper/RECENT.md`：StateKeeper 改名、本机旧数据迁移、体力阈值和性能优化停点。
 - `mods/StateKeeper/DECISIONS.md`：版本、GUID、采样频率、事件降噪、后台写盘和禁止回退项。
 - `mods/StateKeeper/FILES.md`：源码、测试工程、构建命令、profile 输出和数据结构。
 - `mods/StateKeeper/temp/2026-09-06.md`：本轮恢复入口，含旧数据分析结果和下一步实机验证。
+
+### PEAK-MAP（网站集成调研）
+
+- `mods/PEAK-MAP/README.md`：网站现状、StateKeeper 集成边界和当前未改源码状态。
+- `mods/PEAK-MAP/PLAN.md`：网站独立 API、Supabase/R2 存储、适度脱敏、安全校验、关闭机制和实施顺序。
+- `mods/PEAK-MAP/DECISIONS.md`：独立 API/表/R2、匿名化、隐私和安全决策。
+- `mods/PEAK-MAP/FILES.md`：网站现有上传/R2/安全/UI 文件和计划新增文件。
+- `mods/PEAK-MAP/RECENT.md`：2026-09-06 网站调研停点。
+
+### ModConfigDiagnostics（0.1.0 / 诊断与修改建议）
+
+- `mods/ModConfigDiagnostics/README.md`：项目定位、真实报告结论和接手入口。
+- `mods/ModConfigDiagnostics/RECENT.md`：0.1.0 已完成能力、2.4.b 报告结果和未完成边界。
+- `mods/ModConfigDiagnostics/DECISIONS.md`：只读诊断、活动对象证据和禁止误归因规则。
+- `mods/ModConfigDiagnostics/FILES.md`：源码、发行包、profile 报告和反编译依据路径。
+- `mods/ModConfigDiagnostics/PLAN.md`：公共 `SettingsCell` 根修复、五个 MOD迁移、诊断增强和验证顺序。
+- `mods/ModConfigDiagnostics/temp/2026-09-09.md`：当前报告、根因候选和下一步摘要。
 
 ### DreamyAscent（永久暂停/归档）
 
@@ -133,12 +156,14 @@
 
 ## 当前重点
 
+- `ModConfigDiagnostics` 当前已确认公共 `SettingsCell` 模板上的 `LocalizedText row=0` 是 `LOC: 0` 潜在来源；先按 `PLAN.md` 修公共克隆链和危险 `RefreshCache()`，再迁移五个 MOD的新版菜单类型。当前尚未实施代码修复。
+
 - `WhereIsThing` 当前为 `0.1.2` / PEAK `2.4.b` 测试阶段；分类校正已编译到正式测试 profile，重点是实机验证分类窗口、四种绳索、岩钉、三种蘑菇及 owner，并确认机场/神庙/PeakSequence/可破坏绳索和海滩桥不会误报。验收前不更新发行目录、不创建 ZIP。
 
-- `StateKeeper` 当前为 `0.1.0` 开发阶段；重点是使用改名后的 DLL 进行长时间多人实机验证，比较 `StaminaEventThreshold=0.01` 的事件量、GZip 体积、GC 和结算尖峰。分析面板和发行包均暂缓。
+- `StateKeeper` 当前为 `0.1.0` 开发阶段；展示名为 `STATE KEEPER` / `状态分析`。当前重点是长时间多人实机验证，并按 `PLAN.md` 规划整体 JSON 合并、合并/分析双进度、双语 ESC 面板、面板收藏和 PEAK-MAP 自愿匿名提交；具体分析算法和发行包暂缓。
 
 - `Lantern_ShootZombies_Night` 当前重点是实机验证客机本地燃料权威：有备用池时只降备用池、不降灯燃料，且远端 fuel 下降不覆盖本地。
-- `PlayersInfo` 当前为 `0.2.3` / PEAK `2.4.b`，发行目录和 ZIP 已建立；重点是实机验证三档图标所有权、死亡/晕倒跨距离、零体力倒计时居中、观战中心、多人边界，并确认 debug 关闭时日志保持安静。
+- `PlayersInfo` 当前为 `0.2.4` / PEAK `2.4.b` profile 测试 DLL；`发行/0.2.3` 和 ZIP 保持旧版本。重点是实机验证死亡条排除、三档图标所有权、晕倒跨距离、零体力倒计时居中、观战中心、多人边界，并确认 debug 关闭时日志保持安静。
 - `DreamyAscent` 已于 2026-05-24 永久暂停/归档。此前预览、模板库、Snapshot V2、官方生成链和 zero-output 恢复等资料仅作为历史记录，不作为当前重点推进。
 - `TerrainCustomiserCN` 已发布 0.1.2，对应原版 0.3.2。当前重点是后续玩家反馈漏翻时补 `DisplayNameTranslator.cs`、重建 Release、更新发布包；若玩家反馈旧地图缺失，先核对新持久化目录和旧插件目录，不要自动迁移；任何功能改动前先读 `DECISIONS.md` 的联机/存档兼容禁止回退项。
 - 其他 MOD 新增功能前先读对应 `RECENT.md` 和 `DECISIONS.md` 的"禁止回退"条款。

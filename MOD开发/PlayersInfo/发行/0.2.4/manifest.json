@@ -1,0 +1,9 @@
+{
+    "name": "PlayersInfo",
+    "version_number": "0.2.4",
+    "website_url": "",
+    "description": "Show nearby teammates' stamina, status, inventory, item durability, backpack capacity, and optional jetpack fuel in a compact HUD.",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.2403"
+    ]
+}

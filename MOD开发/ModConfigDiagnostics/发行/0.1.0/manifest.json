@@ -1,0 +1,9 @@
+{
+  "name": "ModConfig Diagnostics",
+  "version_number": "0.1.0",
+  "website_url": "",
+  "description": "Read-only diagnostics for ModConfig, PEAKLib UI, duplicate settings, and malformed UI labels.",
+  "dependencies": [
+    "BepInEx-BepInExPack_PEAK-5.4.2403"
+  ]
+}

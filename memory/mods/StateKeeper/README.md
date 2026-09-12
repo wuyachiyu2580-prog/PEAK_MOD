@@ -1,10 +1,16 @@
 # StateKeeper
 
+> 2026-09-09 UI修复：见`temp/2026-09-09.md`。已确认并修复克隆按钮遗留GUIManager.Resume持久事件、重命名Canvas100低于原菜单204，以及英文文字区不足；64项回归及实际资源/字体核查通过，新DLL和0.1.0包已替换，运行中UI仍待重启确认。
+
+> 2026-09-08 发布状态：`RELEASE_AUDIT_2026-09-08.md`。0.1.0本地首版发布包已生成、profile已更新，64项测试通过。发布前清理废弃收藏/图表接口和参数，修复Enabled=false事件仍写入及默认诊断日志。没有向Thunderstore网站上传；实机待验收项已写入发布README。
+
+> 2026-09-08 当前状态：`REPORT_REBUILD_2026-09-08.md`。统计纠错、六页复盘、搜索/命名和跨局比较已实现；62项测试（含七局只读回放）通过，Release已部署。schema3 / 新局collectionRevision3 / analysisVersion5。最新局14条死亡观察为8次确认死亡、6条重复；有6个进度点和127处时间回退。Unity界面与游戏内性能仍待短时验收。下文保留早期历史，不作为当前完成度依据。
+
 更新时间：2026-09-06
 
 ## 项目定位
 
-`StateKeeper`（中文名：PEAK远征数据分析）是独立的 PEAK 局数据采集 MOD。当前版本 `0.1.0`，尚未正式发布；第一阶段只负责可靠采集和保存，不包含游戏内分析面板。
+`StateKeeper`（English：`STATE KEEPER`；中文名：`状态分析`）是独立的 PEAK 局数据采集 MOD。当前版本 `0.1.0`，尚未正式发布；当前源码仍以采集和保存为主，合并、双进度条、面板和匿名提交属于后续计划，尚未实现。
 
 它不修改 `PlayersInfo`，不依赖其私有代码，不发送新的游戏业务 RPC，也不把远端观察数据伪装成本地权威数据。
 
@@ -18,6 +24,8 @@
 - profile DLL：`C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/StateKeeper.dll`
 - 配置：`C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/config/com.local.statekeeper.cfg`
 - 数据：`C:/Users/Administrator/AppData/LocalLow/LandCrab/PEAK/StateKeeper/`
+- 后续完整计划：`memory/mods/StateKeeper/PLAN.md`
+- 关联网站计划：`memory/mods/PEAK-MAP/`
 
 ## 当前采集内容
 
@@ -36,9 +44,9 @@
 - 使用 `RunManager.RunId` 作为一局身份；空 RunId 不创建记录。
 - `GlobalEvents.TriggerRunEnded()` 是正式结束基准；`TriggerSomeoneWonRun` 判定胜利，否则正式结束记为失败。
 - 单人死亡、倒地、复活、传送和力竭都不会结束本局。
-- 活动局每 5 秒检查点，高频数据写入约 30 秒一个 `*.json.gz` 分块。
+- 活动局每 5 秒检查点，高频数据写入约 30 秒一个 `*.json.gz` 分块；后续计划在正式结束或 Aborted 后后台合并为单局完整 `*.data.json.gz`。
 - JSON/GZip 写入使用串行后台队列；过时未封存检查点可合并，封存分块不能跳过；正常退出会等待队列。
-- 默认保留最近 10 局；F8 收藏/取消收藏最近正式结束的一局，收藏局不计入 10 局。
+- 默认保留最近 10 局；后续改为在面板中收藏/取消收藏，移除 F8 快捷键，收藏局不计入 10 局。
 
 ## 2026-09-05 实机数据基线
 
@@ -46,10 +54,12 @@
 
 旧数据中 `StaminaChanged` 有 65,150 条，其中 63,967 条变化量小于 0.01。当前构建新增 `Advanced.StaminaEventThreshold=0.01`，只记录绝对变化量大于或等于阈值的即时事件；5Hz 体力曲线不受影响。
 
+此前 5 局整体调研约有 107,130 个样本、6,911 个库存快照、238,915 个事件，数据目录约 36.7 MB；约 4 局 Victory、1 局 Aborted。更完整的历史分析、异常时间轴和后续展示建议见 `PLAN.md` 的“前期调研结论归档”。
+
 ## 当前状态
 
 - 严格构建：0 warnings / 0 errors。
 - 自动测试：2/2 通过，覆盖 8 人分块、活动恢复、收藏、最近 10 局和分块联动清理。
 - 本机旧数据、旧配置已一次性迁移；运行时代码不再包含旧名兼容迁移。
 - `MOD开发/StateKeeper/发行/0.1.0/` 仍是改名前旧发行草稿，按用户要求暂不更新，禁止直接发布。
-- 下一步是用当前 `StateKeeper.dll` 做新的长时间多人实机采集，再比较事件量、磁盘体积、GC 和结算尖峰。
+- 下一步按 `PLAN.md` 先实现后台整体合并、独立合并/分析进度、双语面板和面板内收藏；基础分析范围已由五局数据确定为物品栏差分、位置/距离和体力区段，复杂评分仍暂缓。源码和发行目录本轮未修改，仍需用当前 `StateKeeper.dll` 做新的长时间多人实机采集，比较事件量、磁盘体积、GC 和结算尖峰。
