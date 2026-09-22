@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace StateKeeper
@@ -6,7 +6,7 @@ namespace StateKeeper
     [Serializable]
     internal sealed class AnalysisResult
     {
-        public const int CurrentVersion = 5;
+        public const int CurrentVersion = 7;
         public List<LifecycleObservation> lifecycle = new List<LifecycleObservation>();
         public List<LifecycleInterval> lifecycleIntervals = new List<LifecycleInterval>();
         public List<ReportEpisode> episodes = new List<ReportEpisode>();
@@ -41,6 +41,8 @@ namespace StateKeeper
         public List<AnalysisPlayer> players = new List<AnalysisPlayer>();
         public List<AnalysisDistancePair> distancePairs = new List<AnalysisDistancePair>();
         public List<AnalysisItemObservation> items = new List<AnalysisItemObservation>();
+        public List<AnalysisItemUseSummary> itemUseSummaries = new List<AnalysisItemUseSummary>();
+        public List<AnalysisPlayerItemSummary> playerItemSummaries = new List<AnalysisPlayerItemSummary>();
         public List<ItemDefinition> definitions = new List<ItemDefinition>();
         public List<MountainSegmentDefinition> mountainSegments = new List<MountainSegmentDefinition>();
         public List<AnalysisSegment> segments = new List<AnalysisSegment>();
@@ -214,6 +216,52 @@ namespace StateKeeper
         public string confidence;
         public string detail;
         public List<string> effectHints = new List<string>();
+        public string useClassification = "Ambiguous";
+        public int attributionScore;
+        public List<string> supportingReasons = new List<string>();
+        public List<string> conflictingReasons = new List<string>();
+        public List<string> excludedReasons = new List<string>();
+        public int useCount;
+    }
+
+    [Serializable]
+    internal sealed class AnalysisItemUseSummary
+    {
+        public string itemName;
+        public string prefabName;
+        public int itemId;
+        public int useCount;
+        public int certainCount;
+        public int likelyCount;
+        public int possibleCount;
+        public int transferredCount;
+        public int droppedOrLostCount;
+        public int uncountedObservationCount;
+        public Dictionary<string, float> resourceConsumption = new Dictionary<string, float>();
+        public List<int> attributionGroupIds = new List<int>();
+        public List<EvidenceReference> evidence = new List<EvidenceReference>();
+        public List<int> players = new List<int>();
+        public List<int> targets = new List<int>();
+        public List<int> observationIds = new List<int>();
+        public List<float> times = new List<float>();
+    }
+
+    [Serializable]
+    internal sealed class AnalysisPlayerItemSummary
+    {
+        public int playerIndex = -1;
+        public string itemName;
+        public string prefabName;
+        public int itemId;
+        public int useCount;
+        public int certainCount;
+        public int likelyCount;
+        public int possibleCount;
+        public Dictionary<string, float> resourceConsumption = new Dictionary<string, float>();
+        public int uncountedObservationCount;
+        public List<int> targets = new List<int>();
+        public List<int> observationIds = new List<int>();
+        public List<float> times = new List<float>();
     }
 
     [Serializable]

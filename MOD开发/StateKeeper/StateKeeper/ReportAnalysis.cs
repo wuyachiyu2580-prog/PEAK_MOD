@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -162,6 +162,26 @@ namespace StateKeeper
                 player.consumedCount = _result.items.Where(i => i.kind == "ItemConsumed" && i.targetPlayerIndex == player.playerIndex).Select(i => i.attributionGroupId > 0 ? i.attributionGroupId : -i.observationId).Distinct().Count();
                 player.possibleHelpCount = _result.items.Where(i => i.possibleHelp && i.actorPlayerIndex == player.playerIndex).Select(i => i.attributionGroupId).Distinct().Count();
             }
+            BuildItemUseSummaries();
+        }
+
+        private void BuildItemUseSummaries()
+        {
+            foreach (var row in _result.items.Where(r => r.attributionGroupId == 0 && (ItemUseRules.Direct(r) || ItemUseRules.Resource(r))))
+                ItemUseRules.Classify(new List<AnalysisItemObservation> { row }, new string[0]);
+            var rows = _result.items.Where(r => ItemUseRules.IsUse(r.useClassification) || r.useClassification == "Transferred" || r.useClassification == "DroppedOrLost").ToList();
+            _result.itemUseSummaries = ItemUseRules.ItemSummaries(rows);
+            _result.playerItemSummaries.Clear();
+            foreach (var player in rows.GroupBy(ItemUseRules.GroupKey).Select(g => g.ToList()).GroupBy(g => {
+                var row = ItemUseRules.Representative(g); return row.actorInferred && ItemUseRules.Direct(row) ? -1 : row.actorPlayerIndex;
+            }))
+            foreach (var summary in ItemUseRules.ItemSummaries(player.SelectMany(g => g)))
+                _result.playerItemSummaries.Add(new AnalysisPlayerItemSummary {
+                    playerIndex = player.Key, itemId = summary.itemId, itemName = summary.itemName, prefabName = summary.prefabName,
+                    useCount = summary.useCount, certainCount = summary.certainCount, likelyCount = summary.likelyCount, possibleCount = summary.possibleCount,
+                    resourceConsumption = summary.resourceConsumption, uncountedObservationCount = summary.uncountedObservationCount,
+                    targets = summary.targets, observationIds = summary.observationIds, times = summary.times
+                });
         }
     }
 }

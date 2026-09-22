@@ -21,6 +21,7 @@ using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 namespace WhereIsThing
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+    [BepInDependency("com.github.PEAKModding.PEAKLib.ModConfig", BepInDependency.DependencyFlags.SoftDependency)]
     public sealed partial class WhereIsThingPlugin : BaseUnityPlugin, IInRoomCallbacks
     {
         public const string PluginGuid = "com.wuyachiyu.WhereIsThing";
@@ -331,6 +332,7 @@ namespace WhereIsThing
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             LocalizedText.OnLangugageChanged -= OnGameLanguageChanged;
+            ModConfigLocalization.Shutdown();
             PhotonNetwork.RemoveCallbackTarget(this);
             UnsubscribeFromItemThrown();
             if (_harmony != null)
@@ -364,6 +366,7 @@ namespace WhereIsThing
             }
             yield return null;
             ModConfigLocalization.ApplyLocalizedDescriptions(GetConfigEntries());
+            ModConfigLocalization.RefreshVisibleUi();
             _modConfigRefreshScheduled = false;
         }
 
@@ -461,7 +464,8 @@ namespace WhereIsThing
             canvasObject.layer = 5;
             _canvas = canvasObject.AddComponent<Canvas>();
             _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            _canvas.sortingOrder = 32700;
+            // Keep below TMP dropdowns (30000); TFA raises its windows above active canvases.
+            _canvas.sortingOrder = 20000;
             CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);

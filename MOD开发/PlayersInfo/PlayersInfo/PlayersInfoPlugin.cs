@@ -13,11 +13,12 @@ using UnityEngine.SceneManagement;
 namespace PlayersInfo
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+    [BepInDependency("com.github.PEAKModding.PEAKLib.ModConfig", BepInDependency.DependencyFlags.SoftDependency)]
     public class PlayersInfoPlugin : BaseUnityPlugin
     {
         public const string PluginGuid = "com.players.info";
         public const string PluginName = "PlayersInfo";
-        public const string PluginVersion = "0.2.4";
+        public const string PluginVersion = "0.2.5";
 
         public enum HudAnchor { TopLeft, TopRight, BottomLeft, BottomRight }
         public enum TeammateSortMode { Stable, Distance }
@@ -70,6 +71,7 @@ namespace PlayersInfo
                 try { ModConfigLocalization.PatchDisplayNames(_harmony); }
                 catch (Exception ex) { PluginLogger.ThrottleWarn("modconfig_patch", "ModConfig localization patch skipped: " + ex.Message); }
 
+                LocalizedText.OnLangugageChanged += OnGameLanguageChanged;
                 SceneManager.sceneLoaded += OnSceneLoaded;
                 StartCoroutine(DeferredLanguageRefresh());
 
@@ -363,16 +365,17 @@ namespace PlayersInfo
 
         private IEnumerator DeferredLanguageRefresh()
         {
-            yield return new WaitForSeconds(8f);
+            yield return null;
+            float deadline = Time.realtimeSinceStartup + 10f;
+            while (GUIManager.instance == null && Time.realtimeSinceStartup < deadline) yield return null;
+            OnGameLanguageChanged();
+        }
 
-            bool newIsChinese = LanguageHelper.DetectChineseLanguage();
-            if (newIsChinese == LanguageHelper.IsChinese) yield break;
-
-            LanguageHelper.IsChinese = newIsChinese;
+        private void OnGameLanguageChanged()
+        {
+            LanguageHelper.IsChinese = LanguageHelper.DetectChineseLanguage();
             ModConfigLocalization.ApplyLocalizedDescriptions();
-            try { Config.Save(); } catch { }
-            ModConfigLocalization.RefreshCache();
-            PluginLogger.Info("Config descriptions updated to " + (LanguageHelper.IsChinese ? "Chinese" : "English") + ".");
+            ModConfigLocalization.RefreshVisibleUi();
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -430,6 +433,8 @@ namespace PlayersInfo
         {
             try
             {
+                LocalizedText.OnLangugageChanged -= OnGameLanguageChanged;
+                ModConfigLocalization.Shutdown();
                 SceneManager.sceneLoaded -= OnSceneLoaded;
                 if (CfgModEnabled != null) CfgModEnabled.SettingChanged -= OnStructuralConfigChanged;
                 if (CfgEnableStaminaBar != null) CfgEnableStaminaBar.SettingChanged -= OnStructuralConfigChanged;

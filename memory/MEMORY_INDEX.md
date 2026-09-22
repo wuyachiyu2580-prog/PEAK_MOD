@@ -1,15 +1,21 @@
-﻿# Memory Index
+# Memory Index
 
-更新时间：2026-09-09
+更新时间：2026-09-21
+
+- 发行文案最新规则（2026-09-21）：使用英文，保留上一版格式，README 和 CHANGELOG 均明确列出本版更新；见 common/00、05。四 MOD 已纠正，仍无 ZIP。
+
+- 四 MOD ModConfig 更新已构建部署：`mods/ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`（实现设计见同目录 INTEGRATION_PLAN_2026-09-21.md）。PlayersInfo 0.2.5、WhySoLaggy 1.0.5、WhereIsThing 0.1.2、WhereIsMyAmulet 1.0.4；23 项测试通过，最终 DLL 完整实机验收待完成；四个新版发行目录已备齐五件套，无 ZIP、未上传，历史目录未改。
+
+- StateKeeper当前使用归因：`mods/StateKeeper/research/USE_RULES_2026-09-12.md`，analysisVersion7；使用事实与效果归因分离，按字段资源汇总。当前12局Runs回放含一局缺6块，原扩展分析待办见该MOD的TODO。
 
 ## 当前结构
 
 - `README.md`：唯一入口和读取顺序。
 - `CHANGELOG.md`：memory 变更履历（按时间倒序追加）。
-- `TODO.md`：永久待办和风险。
+- `TODO.md`：跨 MOD 待办和风险；各 MOD 专属待办在对应目录 `TODO.md`。
 - `MEMORY_INDEX.md`：本文件，总览索引。
 - `common/`：跨 MOD 通用规则（00-08 共 9 个主题）。
-- `mods/`：每个 MOD 的独立四件套（README + RECENT + DECISIONS + FILES）和 `temp/` 临时思考记忆区。
+- `mods/`：每个 MOD 的独立入口（README + STATUS + TODO + RECENT + DECISIONS + FILES）和 `temp/current.md` 临时恢复摘要。
 
 ## 通用规则（common/）
 
@@ -27,11 +33,11 @@
 
 ### 临时思考记忆区
 
-- 每个 MOD 目录下必须有 `temp/`。
-- 当天临时文件命名为 `mods/<ModName>/temp/YYYY-MM-DD.md`。
+- 每个 MOD 目录下如有临时记录，当前摘要固定为 `temp/current.md`。
+- 旧日期临时文件统一放在 `mods/<ModName>/temp/archive/`。
 - 每形成 3 次明确的阶段性判断、排查结论或方案取舍，就追加一次摘要。
 - 上下文压缩、会话中断或换 AI 后，先读该 MOD 最新临时 MD，再读正式四件套。
-- 当前已初始化：`DreamyAscent/temp/2026-05-19.md`、`DreamyAscent/temp/2026-05-20.md`、`DreamyAscent/temp/2026-05-21.md`、`DreamyAscent/temp/2026-05-24.md`、`ItemInfoCN/temp/2026-05-19.md`、`Lantern_ShootZombies_Night/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-19.md`、`PlayersInfo/temp/2026-05-21.md`、`PlayersInfo/temp/2026-05-24.md`、`PlayersInfo/temp/2026-05-30.md`、`PlayersInfo/temp/2026-06-04.md`、`PlayersInfo/temp/2026-08-17.md`、`PlayersInfo/temp/2026-09-06.md`、`PlayersInfo/temp/2026-09-07.md`、`ModConfigDiagnostics/temp/2026-09-09.md`、`WhySoLaggy/temp/2026-05-19.md`、`WhySoLaggy/temp/2026-08-28.md`、`WhySoLaggy/temp/2026-08-31.md`、`WhereIsMyAmulet/temp/2026-08-31.md`、`TerrainCustomiserCN/temp/2026-05-23.md`、`TerrainCustomiserCN/temp/2026-05-30.md`、`PeakMapBrowser/temp/2026-07-23.md`、`PeakMapBrowser/temp/2026-07-30.md`、`StateKeeper/temp/2026-09-06.md`。
+- 各 MOD 当前临时摘要统一为 `mods/<ModName>/temp/current.md`；历史日期文件位于对应 `temp/archive/`。
 
 ### ItemInfoCN（1.0.0 已发布）
 
@@ -47,12 +53,12 @@
 - `mods/Lantern_ShootZombies_Night/DECISIONS.md`：版本、灯笼同步、本地燃料权威、配置同步、兼容和禁止回退。
 - `mods/Lantern_ShootZombies_Night/FILES.md`：源码路径、构建命令、关键 Helper / Patch 清单。
 
-### PlayersInfo（0.2.4 / PEAK 2.4.b）
+### PlayersInfo（0.2.5 发行文件已备齐 / PEAK 2.4.b）
 
 - `mods/PlayersInfo/README.md`：队友 HUD 聚合概览与功能轮廓。
 - `mods/PlayersInfo/RECENT.md`：含 0.2.4 试发行、死亡条排除、骸骨之书影响结论、0.2.3 三档异常图标、死亡/晕倒距离修复、零体力饥饿倒计时、统一刷新、日志审计和发行产物结论，以及此前 0.2.1 功能历史。
 - `mods/PlayersInfo/DECISIONS.md`：只读展示不发 RPC、HUD 架构、图标所有权隔离、安全位置解析、原生 `maxStaminaBar` 倒计时、统一刷新和日志门控边界。
-- `mods/PlayersInfo/FILES.md`：源码路径、项目文件、0.2.4 试发行目录/ZIP/DLL 校验信息、0.2.3 历史发行目录状态和当前 DLL 输出路径。
+- `mods/PlayersInfo/FILES.md`：当前 `0.2.5` 发行目录五件套（无 ZIP）、DLL/hash、源码和 profile 路径；旧版记录保留。
 - `mods/PlayersInfo/temp/2026-09-07.md`：本轮 0.2.4 试发行、骸骨之书影响判断和待实机验证入口。
 - `mods/PlayersInfo/temp/2026-09-06.md`：此前 0.2.4 死亡条修复、0.2.3 实现、构建、日志审计和待实机验证入口。
 
@@ -94,8 +100,8 @@
 - `mods/DreamyAscent/RECENT.md`：近期完成内容、当前验证结论和后期物品编辑需求初评。
 - `mods/DreamyAscent/DECISIONS.md`：已确认的技术决策、禁止回退项和后期区域物品编辑边界。
 - `mods/DreamyAscent/FILES.md`：关键路径、构建命令、诊断目录和关键源码文件。
-- `mods/DreamyAscent/MAP_GENERATION.md`：地图生成链路、需求拆分、分层实现路线、诊断事实、已知故障反推、资料缺口和推荐路线。
-- `mods/DreamyAscent/IMPLEMENTATION_MATRIX.md`：后期需求到实现矩阵，逐项记录官方模板、空白自定义、跨区段、父子依赖、外部物品、材质、UI、模板快照和多人同步的实现路径、依据、例子和资料缺口。
+- `mods/DreamyAscent/archive/MAP_GENERATION.md`：地图生成链路、需求拆分、分层实现路线和历史资料。
+- `mods/DreamyAscent/archive/IMPLEMENTATION_MATRIX.md`：后期需求到实现矩阵（归档）。
 - `mods/DreamyAscent/MAP_GENERATION_RESEARCH_NOTES.md`：按用户要求多轮通读资源的过程记录、原始依据和多角度实现分析。
 - `mods/DreamyAscent/CROSS_SEGMENT_PLACEMENT.md`：跨区段物品放置专门记忆，记录来源模板 + 目标子区模型、雨林棕榈放沙漠等例子、风险等级和资料缺口。
 - `MOD开发/DreamyAscent/data/map-data/SAMPLE_AUDIT_2026-05-13.md`：项目内地图样本集中审计，记录官方自然样本、TerrainRandomiser 验证样本、完整性、变体覆盖和纯净性判断。
@@ -104,12 +110,12 @@
 - `MOD开发/DreamyAscent/data/tools/build_map_data_artifacts.py`：从诊断样本生成模板快照、对象注册表输入和样本回归报告的离线工具。
 - `MOD开发/DreamyAscent/data/map-data/generated/`：离线生成产物目录，当前包含 `template-snapshots.json`、`object-registry-input.json`、`sample-regression-report.json`。
 
-### WhySoLaggy（1.0.4 已建立发行包，PEAK 2.3.a）
+### WhySoLaggy（1.0.5 发行文件已备齐 / PEAK 2.4.b）
 
 - `mods/WhySoLaggy/README.md`：性能和网络诊断项目入口与 mermaid 能力矩阵。
 - `mods/WhySoLaggy/RECENT.md`：1.0.4 全量修复、自动测试、构建结果和联机测试配置。
 - `mods/WhySoLaggy/DECISIONS.md`：远端入站阈值、Ownership 分类、有界队列、批量日志和卸载顺序等禁止回退项。
-- `mods/WhySoLaggy/FILES.md`：源码、测试项目、1.0.4 版本和关键 Helper。
+- `mods/WhySoLaggy/FILES.md`：当前 `1.0.5` 发行目录五件套（无 ZIP）、DLL/hash、源码和 profile 路径；旧版记录保留。
 - `mods/WhySoLaggy/temp/2026-08-28.md`：本轮修复状态和双客户端实机验收入口。
 
 ### OldPC（0.0.1 开发中）
@@ -134,36 +140,43 @@
 - `mods/PeakMapBrowser/FILES.md`：客户端/服务端路径、关键源码、API 文档和构建命令。
 - `mods/PeakMapBrowser/temp/2026-07-30.md`：0.1.1 发布、安全改动和线上退出接口验证摘要。
 
-### WhereIsThing（0.1.2 / PEAK 2.4.b / 测试中）
+### WhereIsThing（0.1.2 发行文件已备齐 / PEAK 2.4.b）
+
+- 发行 README Notes 已声明玩家名仅供娱乐，晚加入可能缺此前放置者记录；部分目标仅显示物品名称和距离。依据及边界见该 MOD DECISIONS/RECENT。
+
+- 2026-09-20最新：Canvas排序降为20000并部署普通0.1.2测试版，保留交互Raycaster；TFA共存待实机复测，见STATUS/RECENT/temp/current。
 
 - `mods/WhereIsThing/README.md`：0.1.2 当前能力、2.4.b 测试状态、owner 边界和分类审计入口。
 - `mods/WhereIsThing/RECENT.md`：2.4.b 放置来源索引、绳索/蘑菇 owner 修复、分类校正、正式测试 DLL 和未完成验收。
 - `mods/WhereIsThing/DECISIONS.md`：互斥用途分类、ItemSpawnerEnhanced 证据边界、纯客户端 owner、系统排除和禁止回退项。
-- `mods/WhereIsThing/FILES.md`：拆分后的 discovery/scene/placed-source 源码、2.4.b 依赖、测试 DLL/hash 和发行目录边界。
+- `mods/WhereIsThing/FILES.md`：当前 `0.1.2` 发行目录五件套（无 ZIP）、DLL/hash、源码和 profile 路径；旧版记录保留。
 - `mods/WhereIsThing/PLAN.md`：0.1.2 房主/客户端正反例、分类回归、生命周期和性能验收计划。
 - `mods/WhereIsThing/temp/2026-09-04.md`：2.4.b 当前停点、测试 DLL hash 和下一步恢复摘要。
 - `mods/WhereIsThing/temp/2026-09-06.md`：ItemSpawnerEnhanced 分类审计、51 项精确覆盖、正式 profile 构建和最新 DLL hash。
 - `mods/WhereIsThing/temp/2026-08-14.md`、`temp/2026-08-16.md`：2.1.a 早期开发历史。
 
-### WhereIsMyAmulet（1.0.3 已发布）
+### WhereIsMyAmulet（1.0.4 发行文件已备齐 / 实机待验收）
+
+- 最新1.0.4字号补丁：投影Z清零、TMP自动字号关闭；已编译部署，远近字形尺寸实测待确认，见STATUS/RECENT/temp/current。
+
+- `mods/WhereIsMyAmulet/STATUS.md`、`TODO.md`、`temp/current.md`：2026-09-20最终对照30000失败、20000成功；固定20000，移除探针，普通1.0.4已部署。Manual mode禁用行为与排序故障分别判断。
 
 - `mods/WhereIsMyAmulet/README.md`：护符定位 MOD 概览和接手入口。
 - `mods/WhereIsMyAmulet/RECENT.md`：1.0.3 Scout Statue 映射修复、标签间距、构建和发布状态。
 - `mods/WhereIsMyAmulet/DECISIONS.md`：标签生命周期、雕像映射、FakeItem 识别边界和 ModConfig 本地化规则。
-- `mods/WhereIsMyAmulet/FILES.md`：源码、构建命令、实际 profile 输出和 1.0.3 发行包路径。
-- `mods/WhereIsMyAmulet/temp/2026-08-20.md`：1.0.2 实现和验证入口。
-- `mods/WhereIsMyAmulet/temp/2026-08-31.md`：1.0.3 映射修复、发行产物和剩余验收入口。
+- `mods/WhereIsMyAmulet/FILES.md`：当前 `1.0.4` 发行目录五件套（无 ZIP）、DLL/hash、源码和 profile 路径；旧版记录保留。
+- `mods/WhereIsMyAmulet/temp/archive/`：历史1.0.2/1.0.3实现和发布记录。
 
 ## 当前重点
 
 - `ModConfigDiagnostics` 当前已确认公共 `SettingsCell` 模板上的 `LocalizedText row=0` 是 `LOC: 0` 潜在来源；先按 `PLAN.md` 修公共克隆链和危险 `RefreshCache()`，再迁移五个 MOD的新版菜单类型。当前尚未实施代码修复。
 
-- `WhereIsThing` 当前为 `0.1.2` / PEAK `2.4.b` 测试阶段；分类校正已编译到正式测试 profile，重点是实机验证分类窗口、四种绳索、岩钉、三种蘑菇及 owner，并确认机场/神庙/PeakSequence/可破坏绳索和海滩桥不会误报。验收前不更新发行目录、不创建 ZIP。
+- `WhereIsThing` 当前为 `0.1.2` / PEAK `2.4.b`；发行文件已按用户要求备齐，无 ZIP、未上传。仍需验收分类窗口、绳索、岩钉、蘑菇、owner 和系统目标排除。
 
 - `StateKeeper` 当前为 `0.1.0` 开发阶段；展示名为 `STATE KEEPER` / `状态分析`。当前重点是长时间多人实机验证，并按 `PLAN.md` 规划整体 JSON 合并、合并/分析双进度、双语 ESC 面板、面板收藏和 PEAK-MAP 自愿匿名提交；具体分析算法和发行包暂缓。
 
 - `Lantern_ShootZombies_Night` 当前重点是实机验证客机本地燃料权威：有备用池时只降备用池、不降灯燃料，且远端 fuel 下降不覆盖本地。
-- `PlayersInfo` 当前为 `0.2.4` / PEAK `2.4.b` profile 测试 DLL；`发行/0.2.3` 和 ZIP 保持旧版本。重点是实机验证死亡条排除、三档图标所有权、晕倒跨距离、零体力倒计时居中、观战中心、多人边界，并确认 debug 关闭时日志保持安静。
+- `PlayersInfo` 当前为 `0.2.5` / PEAK `2.4.b`；发行文件已备齐，无 ZIP、未上传。仍需验收语言/下拉、死亡条、图标、晕倒距离、倒计时、观战及多人边界。
 - `DreamyAscent` 已于 2026-05-24 永久暂停/归档。此前预览、模板库、Snapshot V2、官方生成链和 zero-output 恢复等资料仅作为历史记录，不作为当前重点推进。
 - `TerrainCustomiserCN` 已发布 0.1.2，对应原版 0.3.2。当前重点是后续玩家反馈漏翻时补 `DisplayNameTranslator.cs`、重建 Release、更新发布包；若玩家反馈旧地图缺失，先核对新持久化目录和旧插件目录，不要自动迁移；任何功能改动前先读 `DECISIONS.md` 的联机/存档兼容禁止回退项。
 - 其他 MOD 新增功能前先读对应 `RECENT.md` 和 `DECISIONS.md` 的"禁止回退"条款。

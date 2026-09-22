@@ -1,8 +1,15 @@
 # StateKeeper Files
 
+## 2026-09-12 使用归因
+
+- `StateKeeper/ItemUseRules.cs`：组级使用分类、动作计数与按原单位聚合。
+- `StateKeeper/StateKeeperItemUseUi.cs`：使用/流转视图、筛选和证据入口。
+- `research/USE_RULES_2026-09-12.md`：规则边界、真实录局统计、未完成的原计划范围。
+- `.build/test-results/use-final.trx`：本轮完整测试结果；测试SDK已补齐。
+
 ## 当前发行包
 
-- 2026-09-09包已追加英文按钮/重命名修复，最新哈希见`temp/2026-09-09.md`，优先于下方2026-09-08历史。
+- 2026-09-09包已追加英文按钮/重命名修复，最新哈希见 `temp/current.md`。
 - `MOD开发/StateKeeper/tools/Audit-HistoryUi.py`：只读检查原菜单持久事件、Canvas层级与Daruma Drop One字形宽度，不是Unity运行时截图测试。
 - `RELEASE_AUDIT_2026-09-08.md`：发布前发现/清理/保留理由、64项测试和哈希。
 - `MOD开发/StateKeeper/发行/0.1.0/`：0.1.0首版发布包文件；旧草稿已按用户明确要求更新。
@@ -23,7 +30,7 @@
 
 ## 归因实现历史
 
-- `ATTRIBUTION_ENGINE.md`：当前算法合同、已支持机制、置信度与38项测试结果。
+- `research/ATTRIBUTION_ENGINE.md`：算法合同、已支持机制、置信度与测试结果。
 - `StateKeeper/ItemAttributionEngine.cs`：短窗口观察、候选竞争、受益者和数量/时空证据。
 - `StateKeeper/RecordedItemRules.cs`：只读定义规则、嵌套Affliction、时延/到期/持续与烹饪。
 - `StateKeeper.Tests/AttributionTests.cs`：23项归因专项测试。
@@ -64,7 +71,7 @@
 - `StatsModels.cs`：RunRecord、分块、玩家、体力/状态、库存、事件和索引模型。
 - `GamePatches.cs`：正式结束、胜利、死亡/倒地、物品生命周期和体力事件补丁。
 - `memory/mods/StateKeeper/PLAN.md`：整体 JSON 合并、双进度、双语面板和匿名提交的后续计划；当前未实现。
-- `memory/mods/StateKeeper/ITEM_ANALYSIS.md`：BetterItemInfoDisplay/2.4.b 对照、五局物品字段覆盖、实际效果判定算法和面板数据边界。
+- `research/ITEM_ANALYSIS.md`：BetterItemInfoDisplay/2.4.b 对照、五局物品字段覆盖、实际效果判定算法和面板数据边界。
 - `Properties/AssemblyInfo.cs`：StateKeeper 程序集信息和 0.1.0.0 版本。
 - `StateKeeper.Tests/RunStoreTests.cs`：8 人分块恢复、收藏和最近记录联动清理测试。
 

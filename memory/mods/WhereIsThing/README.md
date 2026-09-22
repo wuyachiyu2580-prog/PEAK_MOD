@@ -1,5 +1,19 @@
 # WhereIsThing
 
+## 2026-09-21 发行文件准备完成
+
+当前版本 `0.1.2` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/WhereIsThing/发行/0.1.2`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。
+
+本版覆盖：放置物及 owner 识别、玩家放置预设、分类校正、分帧发现和标签优化、20000 排序、ModConfig 适配。
+
+此前发行目录和 ZIP 保留原样；下方旧日期/旧版本状态为历史，不覆盖本节。
+
+## 2026-09-21 当前更新
+
+开发/测试版本 `0.1.2`，PEAK 2.4.b / ModConfig 1.8.2 / PEAKLib.UI 1.7.2 接入已更新。补齐可见菜单刷新并限制配置 UI 翻译范围。Release 0 警告 0 错误，DLL 已部署原 2.0.a profile；`发行/0.1.2` 文件已备齐（无 ZIP、未上传），完整实机验收仍待完成。
+
+构建/测试/产物详见 `../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。下方旧日期发布和 hash 为历史记录。
+
 更新时间：2026-09-06
 
 WhereIsThing 是参考 `WhereIsMyAmulet` 开发的 PEAK 多物品位置显示 MOD。当前开发/测试版本为 `0.1.2`（程序集 `0.1.2.0`），游戏基线为 PEAK `2.4.b`；本轮放置体识别和 owner 修复已通过 `0 warnings / 0 errors` 编译，但尚未完成房主/客户端实机验收，因此不得记为已发布。现有 `发行/1.0.3` 未在本轮更新，也没有创建新 ZIP。
@@ -22,6 +36,7 @@ PEAK `2.1.a`、WhereIsThing `0.1.0`/`0.1.1`/`1.0.3` 的内容是早期开发和�
 - 物品名称使用游戏 `LocalizedText` 的名称表，窗口可切换跟随游戏、English、简体中文。
 - 扫描显示支持常驻或按秒数自动隐藏。
 - 支持预设选择和共享；owner 显示由一个全局开关控制，关闭后不改变目标标签和距离。
+- 玩家名仅供娱乐，不作为放置者的可靠证据；中途加入可能缺少此前放置记录，部分目标仅显示物品名称和距离。英文声明已写入发行 0.1.2 README Notes。
 - 玩家放置目标使用物品目录行为组件指向的生成 prefab 做正向识别；绳索 owner 取锚点 PhotonView，并排除机场、神庙、`PeakSequence`、可破坏系统绳索和海滩桥。
 - 踏板菇、弹力菇、云雾菇通过本地 `OnItemThrown` 证据尝试匹配放置者；无法唯一确认时仍显示名称和距离，但不显示玩家名。魔豆始终不猜测 owner。
 - 物品继续使用互斥的用途分类；ItemSpawnerEnhanced 审计只用于精确 prefab 覆盖，不新增 Deployable/Consumable 多标签 UI。Jetpack/Rocketpack、Heat Pack、Healing Dart、放置工具、神秘变体、棋子等已修正分类，仍待实机检查窗口显示。

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -287,14 +287,14 @@ namespace StateKeeper
         private static void RenderItemMode()
         {
             RectTransform row = DashboardRow("ItemModes", 44);
-            foreach (int mode in new[] { 0, 1 })
+            foreach (int mode in new[] { 0, 1, 2, 3 })
             {
                 int selected = mode;
-                var button = CreateButton(row, "ItemMode" + mode, ""); button.SetCompactText(mode == 0 ? Text("CONTRIBUTIONS", "贡献汇总") : Text("OBSERVATIONS", "观察流水"));
-                Anchor(button.RectTransform, 0, .5f, 0, .5f, mode * 240, 0, 220, 40); button.SetInteractable(_itemMode != mode);
-                button.AddListener(() => { _itemMode = selected; RenderDetails(); });
+                var button = CreateButton(row, "ItemMode" + mode, ""); button.SetCompactText(mode == 0 ? Text("ITEM USE", "使用汇总") : mode == 1 ? Text("ITEM FLOW", "物品流转") : mode == 2 ? Text("CONTRIBUTIONS", "贡献汇总") : Text("OBSERVATIONS", "观察流水"));
+                Anchor(button.RectTransform, 0, .5f, 0, .5f, mode * 215, 0, 205, 40); button.SetInteractable(_itemMode != mode);
+                button.AddListener(() => { _itemMode = selected; _contributionPage = 0; _useClass = 0; RenderDetails(); });
             }
-            if (_itemMode == 0) RenderContributions(); else RenderItemList();
+            if (_itemMode < 2) RenderUseReport(_itemMode == 1); else if (_itemMode == 2) RenderContributions(); else RenderItemList();
         }
         private static string ResourceName(string key)
         {

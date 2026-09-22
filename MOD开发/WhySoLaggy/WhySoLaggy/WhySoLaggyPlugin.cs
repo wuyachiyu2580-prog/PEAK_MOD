@@ -14,11 +14,12 @@ using UnityEngine;
 namespace WhySoLaggy
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+    [BepInDependency("com.github.PEAKModding.PEAKLib.ModConfig", BepInDependency.DependencyFlags.SoftDependency)]
     public class WhySoLaggyPlugin : BaseUnityPlugin, IOnEventCallback
     {
         public const string PluginGuid = "com.wuyachiyu.WhySoLaggy";
         public const string PluginName = "WhySoLaggy";
-        public const string PluginVersion = "1.0.4";
+        public const string PluginVersion = "1.0.5";
 
         // ── 性能监测配置 ──
         public static ConfigEntry<int> SpikeThresholdMs;

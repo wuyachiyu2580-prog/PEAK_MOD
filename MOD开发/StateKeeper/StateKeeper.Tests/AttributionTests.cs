@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -318,6 +318,168 @@ namespace StateKeeper.Tests
             var use = result.items.Single(r => r.kind == "ItemConsumed");
             Assert.IsTrue(use.rules.Any(r => r.source == "DirectStatusObservation"));
             Assert.AreEqual(result.items.Single(r => r.kind == "PlayerFriendHealed").attributionGroupId, use.attributionGroupId);
+        }
+
+        [TestMethod]
+        public void UseSummary_CombinesDirectResourceAndRemovalEvidence()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            chunk.inventorySnapshots.Add(Inventory(0, 0, "a", 3));
+            chunk.inventorySnapshots.Add(Inventory(1.2f, 0, "a", 2));
+            chunk.inventorySnapshots.Add(Inventory(1.4f, 0, null, 0));
+            chunk.events.Add(Use(1, "a", 0, 1));
+            var result = Analyze(Run(Heal()), chunk);
+            var group = result.items.Where(r => r.attributionGroupId > 0).ToList();
+            Assert.AreEqual(1, group.Select(r => r.attributionGroupId).Distinct().Count());
+            Assert.IsTrue(group.All(r => r.useClassification == "CertainUse"));
+            Assert.AreEqual(1, result.itemUseSummaries.Single().useCount);
+            Assert.AreEqual(1f, result.itemUseSummaries.Single().resourceConsumption["uses"]);
+            Assert.AreEqual(3, result.itemUseSummaries.Single().observationIds.Count);
+        }
+
+        [TestMethod]
+        public void CompletedActionAtRecordingEnd_RemainsCertainWithoutAnEffect()
+        {
+            var chunk = Timeline(1, (t, p) => { }); chunk.events.Add(Use(1, "a", 0, 1));
+            var row = Analyze(Run(Heal()), chunk).items.Single();
+            Assert.AreEqual("CertainUse", row.useClassification);
+            Assert.AreEqual("Ambiguous", row.attribution);
+        }
+
+        [TestMethod]
+        public void FuelDepletion_HasNativeTotalButNoFabricatedActionCount()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            for (int i = 0; i < 4; i++)
+            {
+                var inventory = Inventory(i, 0, "a", 3);
+                inventory.slots[0].hasFuel = true; inventory.slots[0].fuel = 1 - i * .1f;
+                chunk.inventorySnapshots.Add(inventory);
+            }
+            var summary = Analyze(Run(Heal()), chunk).itemUseSummaries.Single();
+            Assert.AreEqual(0, summary.useCount); Assert.AreEqual(3, summary.uncountedObservationCount);
+            Assert.AreEqual(.3f, summary.resourceConsumption["fuel"], .0001f);
+        }
+
+        [TestMethod]
+        public void ResourceLossWithoutDirectEvent_IsLikelyAndPreservesChargeDelta()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            chunk.inventorySnapshots.Add(Inventory(0, 0, "a", 4)); chunk.inventorySnapshots.Add(Inventory(1, 0, "a", 2));
+            var result = Analyze(Run(Heal()), chunk);
+            Assert.AreEqual("LikelyUse", result.items.Single(r => r.kind == "ResourceChanged").useClassification);
+            Assert.AreEqual(2, result.itemUseSummaries.Single().likelyCount);
+        }
+
+        [TestMethod]
+        public void TransferAndSlotMove_AreFlowWithoutUseCounts()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            chunk.inventorySnapshots.Add(Inventory(0, 0, "a", 3)); chunk.inventorySnapshots.Add(Inventory(1, 0, null, 0));
+            chunk.inventorySnapshots.Add(Inventory(1.5f, 1, "a", 3));
+            var moved = Inventory(2, 1, "a", 3); moved.slots[0].slot = "main:1"; chunk.inventorySnapshots.Add(moved);
+            var result = Analyze(Run(Heal()), chunk);
+            Assert.IsTrue(result.items.Where(r => r.kind != "ItemAppeared").All(r => r.useClassification == "Transferred"));
+            Assert.AreEqual(0, result.itemUseSummaries.Single().useCount);
+        }
+
+        [TestMethod]
+        public void DeathRemovalIsLost_ButLaterUseDoesNotJoinEarlierGroup()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            chunk.inventorySnapshots.Add(Inventory(0, 0, "a", 3));
+            chunk.events.Add(new StatsEvent { time = 1, type = "PlayerDied", subjectPlayerIndex = 0 });
+            chunk.inventorySnapshots.Add(Inventory(1.1f, 0, null, 0));
+            chunk.events.Add(Use(1.3f, "a", 0, 1));
+            var result = Analyze(Run(Heal()), chunk);
+            var removed = result.items.Single(r => r.kind == "ItemRemovedObserved"); var use = result.items.Single(r => r.kind == "ItemConsumed");
+            Assert.AreEqual("DroppedOrLost", removed.useClassification);
+            Assert.AreNotEqual(removed.attributionGroupId, use.attributionGroupId);
+            Assert.AreEqual("CertainUse", use.useClassification);
+        }
+
+        [TestMethod]
+        public void UnknownGuidDoesNotMergeDifferentItemsOrDifferentTargets()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            chunk.events.Add(Use(1, null, 0, 1)); chunk.events.Add(Use(1, null, 0, 2));
+            var other = Use(1, null, 0, 1); other.itemId = 2; other.itemName = "Other"; chunk.events.Add(other);
+            var result = Analyze(Run(Heal()), chunk);
+            Assert.AreEqual(3, result.items.Count); Assert.AreEqual(3, result.itemUseSummaries.Sum(r => r.useCount));
+        }
+
+        [TestMethod]
+        public void RapidRepeatedUsesAndExactDuplicate_KeepCorrectCount()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            chunk.events.Add(Use(1, "a", 0, 1)); chunk.events.Add(Use(1, "a", 0, 1)); chunk.events.Add(Use(1.2f, "a", 0, 1));
+            Assert.AreEqual(2, Analyze(Run(Heal()), chunk).itemUseSummaries.Single().useCount);
+        }
+
+        [TestMethod]
+        public void ClockAmbiguityCannotProduceCertainUse()
+        {
+            var row = new AnalysisItemObservation { kind = "ItemConsumed", epoch = -1 };
+            ItemUseRules.Classify(new List<AnalysisItemObservation> { row }, new string[0]);
+            Assert.AreEqual("Ambiguous", row.useClassification); Assert.AreEqual(0, row.useCount);
+        }
+
+        [TestMethod]
+        public void FuelGainAndCookingAreNotUseEvidence()
+        {
+            foreach (var key in new[] { "fuel", "cookedAmount", "powerEnabled" })
+            {
+                var row = new AnalysisItemObservation { kind = "ResourceChanged", resourceKey = key, previousValue = 0, value = 1 };
+                Assert.IsFalse(ItemUseRules.Resource(row));
+            }
+        }
+
+        [TestMethod]
+        public void InferredHolderIsNotReportedAsTheConfirmedUser()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            chunk.inventorySnapshots.Add(Inventory(0, 0, "a", 3));
+            var use = Use(1, "a", 0, 1); use.actorPlayerIndex = null; chunk.events.Add(use);
+            var result = Analyze(Run(Heal()), chunk);
+            Assert.IsTrue(result.items.Single(r => r.kind == "ItemConsumed").actorInferred);
+            Assert.AreEqual(-1, result.playerItemSummaries.Single().playerIndex);
+            Assert.AreEqual(1, result.playerItemSummaries.Single().useCount);
+            CollectionAssert.Contains(result.playerItemSummaries.Single().targets, 1);
+        }
+
+        [TestMethod]
+        public void DifferentEpochsNeverMergeEvenWithSameGuidAndTimestamp()
+        {
+            var engine = new RunAnalysisEngine(Run(Heal()));
+            var first = Timeline(2, (t, p) => { }); first.events.Add(Use(1, "a", 0, 1));
+            engine.AddChunk(first, CancellationToken.None); engine.Break("MissingChunk");
+            var second = Timeline(2, (t, p) => { }); second.events.Add(Use(1, "a", 0, 1));
+            engine.AddChunk(second, CancellationToken.None);
+            var result = engine.Finish();
+            Assert.AreEqual(2, result.items.Select(r => r.epoch).Distinct().Count());
+            Assert.AreEqual(2, result.itemUseSummaries.Single().useCount);
+        }
+
+        [TestMethod]
+        public void SubsequentTransferDoesNotEraseCompletedUse()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            chunk.inventorySnapshots.Add(Inventory(0, 0, "a", 3)); chunk.events.Add(Use(1, "a", 0, 1));
+            chunk.inventorySnapshots.Add(Inventory(3, 0, null, 0)); chunk.inventorySnapshots.Add(Inventory(3.5f, 1, "a", 3));
+            var result = Analyze(Run(Heal()), chunk);
+            Assert.AreEqual("CertainUse", result.items.Single(r => r.kind == "ItemConsumed").useClassification);
+            Assert.AreEqual("Transferred", result.items.Single(r => r.kind == "ItemRemovedObserved").useClassification);
+            Assert.AreEqual(1, result.itemUseSummaries.Single().useCount);
+        }
+
+        [TestMethod]
+        public void PrimaryAndSecondaryActionsRemainSeparate()
+        {
+            var chunk = Timeline(10, (t, p) => { });
+            var primary = Use(1, "a", 0, 0); primary.type = "ItemPrimaryCastFinished";
+            var secondary = Use(1.2f, "a", 0, 0); secondary.type = "ItemSecondaryCastFinished";
+            chunk.events.Add(primary); chunk.events.Add(secondary);
+            Assert.AreEqual(2, Analyze(Run(Heal()), chunk).itemUseSummaries.Single().useCount);
         }
 
         private static RunRecord Run(ItemDefinition definition)

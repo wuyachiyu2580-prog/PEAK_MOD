@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -13,6 +13,54 @@ namespace StateKeeper.Tests
     public sealed class RecordingRegressionTests
     {
         public TestContext TestContext { get; set; }
+
+        [TestMethod]
+        public void AvailableRecordings_UseRulesReadOnlyReplay()
+        {
+            string root = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "LocalLow", "LandCrab", "PEAK", "StateKeeper", "Runs");
+            if (!Directory.Exists(root)) Assert.Inconclusive("Optional local recordings unavailable");
+            string[] paths = Directory.GetFiles(root, "*.json");
+            if (paths.Length == 0) Assert.Inconclusive("No local manifests");
+            int files = 0, samples = 0, inventory = 0, events = 0;
+            foreach (string path in paths)
+            {
+                byte[] original = File.ReadAllBytes(path);
+                var manifest = JsonConvert.DeserializeObject<RunRecord>(System.Text.Encoding.UTF8.GetString(original).TrimStart('\uFEFF'));
+                var engine = new RunAnalysisEngine(manifest); var watch = Stopwatch.StartNew(); int availableInventory = 0;
+                foreach (var info in manifest.chunks)
+                {
+                    string chunkPath = Path.Combine(root, info.fileName);
+                    if (!File.Exists(chunkPath)) { engine.Result.quality.missingChunkCount++; engine.Break("MissingChunk"); continue; }
+                    byte[] bytes = File.ReadAllBytes(chunkPath);
+                    using (var memory = new MemoryStream(bytes))
+                    using (var gzip = new GZipStream(memory, CompressionMode.Decompress))
+                    using (var reader = new StreamReader(gzip))
+                    using (var json = new JsonTextReader(reader))
+                    {
+                        var chunk = new JsonSerializer().Deserialize<RunChunk>(json);
+                        Assert.AreEqual(info.sampleCount, chunk.samples.Count);
+                        Assert.AreEqual(info.inventorySnapshotCount, chunk.inventorySnapshots.Count);
+                        Assert.AreEqual(info.eventCount, chunk.events.Count);
+                        samples += chunk.samples.Count; inventory += chunk.inventorySnapshots.Count; events += chunk.events.Count;
+                        availableInventory += chunk.inventorySnapshots.Count;
+                        engine.AddChunk(chunk, CancellationToken.None);
+                    }
+                    CollectionAssert.AreEqual(bytes, File.ReadAllBytes(chunkPath), "Replay changed a source chunk");
+                    files++;
+                }
+                var result = engine.Finish();
+                Assert.AreEqual(availableInventory, result.processedInventoryCount);
+                foreach (var group in result.items.Where(r => r.attributionGroupId > 0).GroupBy(ItemUseRules.GroupKey))
+                    Assert.AreEqual(1, group.Select(r => r.useClassification).Distinct().Count(), "Mixed verdicts inside a use group");
+                Assert.AreEqual(result.itemUseSummaries.Sum(s => s.useCount), result.playerItemSummaries.Sum(s => s.useCount));
+                Assert.IsTrue(result.items.Where(r => !ItemUseRules.IsUse(r.useClassification)).All(r => r.useCount == 0));
+                Assert.IsTrue(result.itemUseSummaries.All(s => s.resourceConsumption.Values.All(v => v >= 0 && RunAnalysisEngine.Finite(v))));
+                CollectionAssert.AreEqual(original, File.ReadAllBytes(path), "Replay changed manifest");
+                TestContext.WriteLine(Path.GetFileNameWithoutExtension(path) + " samples=" + result.sourceSampleCount + " groups=" + result.items.GroupBy(ItemUseRules.GroupKey).Count() +
+                    " useCount=" + result.itemUseSummaries.Sum(s => s.useCount) + " resourceOnly=" + result.itemUseSummaries.Sum(s => s.uncountedObservationCount) + " missing=" + result.quality.missingChunkCount + " ms=" + watch.ElapsedMilliseconds);
+            }
+            TestContext.WriteLine("Runs=" + paths.Length + " chunks=" + files + " samples=" + samples + " inventory=" + inventory + " events=" + events);
+        }
 
         [TestMethod]
         public void SixReferenceRecordings_ReadOnlyReplay()

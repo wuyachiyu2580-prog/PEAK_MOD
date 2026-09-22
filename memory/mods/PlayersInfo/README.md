@@ -1,6 +1,20 @@
 # PlayersInfo
 
-Last updated: 2026-09-07
+## 2026-09-21 发行文件准备完成
+
+当前版本 `0.2.5` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/PlayersInfo/发行/0.2.5`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。
+
+本版覆盖：ModConfig 新菜单与语言刷新、简中/繁中识别；沿用完整队友 HUD 使用说明。
+
+此前发行目录和 ZIP 保留原样；下方旧日期/旧版本状态为历史，不覆盖本节。
+
+## 2026-09-21 当前更新
+
+开发/测试版本 `0.2.5`，PEAK 2.4.b / ModConfig 1.8.2 / PEAKLib.UI 1.7.2 接入已更新。移除全局配置重注册并修正简中/繁中检测和语言通知。Release 0 警告 0 错误，DLL 已部署原 2.0.a profile；`发行/0.2.5` 文件已备齐（无 ZIP、未上传），完整实机验收仍待完成。
+
+构建/测试/产物详见 `../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。下方旧日期发布和 hash 为历史记录。
+
+Last updated: 2026-09-21
 
 ## Purpose
 
@@ -10,7 +24,7 @@ The mod should not change game business logic and should not actively send gamep
 
 ## Current State
 
-- Version is `0.2.4`, targeting PEAK `2.4.b`.
+- Development version is `0.2.5`, targeting PEAK `2.4.b`.
 - `0.1.0` was the first public release and `0.1.1` is retained as the previous maintenance/fix line.
 - Teammate HUD is coordinated through `TeammateBarsCoordinator`.
 - Local stamina display is patched through `LocalStaminaBarPatch`.

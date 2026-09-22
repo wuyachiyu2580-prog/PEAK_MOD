@@ -1,5 +1,10 @@
 # StateKeeper Recent
 
+## 2026-09-12 使用归因修订
+
+- analysisVersion7、ItemUseRules组级分类、资源按原单位汇总、使用/流转筛选与证据展示；补测试SDK并恢复真实测试执行。
+- 12局Runs只读回放，缺6个分块的一局显式降级；详细规则和回归入口见 `research/USE_RULES_2026-09-12.md`。不把以前构建成功当作全部功能完成。
+
 ## 2026-09-09 文档英文版
 
 - 项目根目录和 `发行/0.1.0/` 的 `README.md`、`CHANGELOG.md` 已改为英文。
@@ -10,7 +15,7 @@
 - 源资源确认原版按钮有持久GUIManager.Resume监听，RemoveAllListeners不会删除；改为全新ButtonClickedEvent，避免重命名等操作带出恢复游戏动作。
 - 源资源PauseMenu Canvas排序204，旧弹窗100导致遮挡；去掉独立子Canvas，共用菜单Canvas并置顶。输入框明确聚焦、离页恢复交互。
 - 英文按钮加宽为176/128/112，历史操作区488；紧凑文字18-20适配及16左右边距。真实字体advance核查完整容纳UNFAVORITE/RENAME/DELETE。
-- 64项测试通过，Release和0.1.0ZIP已更新并部署；哈希与详细边界见temp/2026-09-09.md。实机画面尚待用户重启确认。
+- 64项测试通过，Release和0.1.0ZIP已更新并部署；哈希与详细边界见 `temp/current.md`。实机画面尚待用户重启确认。
 
 ## 2026-09-08 首版发布包与废弃代码自审
 

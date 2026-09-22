@@ -1,6 +1,36 @@
 # WhereIsThing Recent
 
+## 2026-09-21 玩家名声明
+
+发行 0.1.2 README Notes 已用英文声明玩家名仅供娱乐，不作为放置者的可靠证据；中途加入可能缺少此前放置物的玩家名。准确语义为“部分目标仅显示物品名称和距离，无玩家名”，不是“仅显示玩家名”。踏板菇/弹力菇/云雾菇依赖本机观察到的唯一近期投掷记录，缺失或歧义时留空；魔豆不显示种植者。CHANGELOG 同步，仅改文档，不改 DLL、不打 ZIP。
+
+## 2026-09-21 发行文案纠正
+
+发行文件已按用户纠正恢复英文，沿用上一版章节、表格、图片位置和 manifest 排版；本版更新说明明确写入 README 的 What's new 和 CHANGELOG 对应版本章节。DLL/图标/旧版目录及 ZIP 未改，未生成新 ZIP。 当前发行版本 0.1.2。
+
+## 2026-09-21 发行文件准备完成
+
+当前版本 `0.1.2` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/WhereIsThing/发行/0.1.2`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。
+
+本版覆盖：放置物及 owner 识别、玩家放置预设、分类校正、分帧发现和标签优化、20000 排序、ModConfig 适配。
+
+此前发行目录和 ZIP 保留原样；下方旧日期/旧版本状态为历史，不覆盖本节。
+
+## 2026-09-21 ModConfig 集成更新
+
+开发/测试版本 `0.1.2`，PEAK 2.4.b / ModConfig 1.8.2 / PEAKLib.UI 1.7.2 接入已更新。补齐可见菜单刷新并限制配置 UI 翻译范围。Release 0 警告 0 错误，DLL 已部署原 2.0.a profile；`发行/0.1.2` 文件已备齐（无 ZIP、未上传），完整实机验收仍待完成。
+
+新菜单适配、声明方法去重、按配置文件/section/key 隔离标题和选项、仅修改枚举显示、合并可见 UI 刷新、保护自身配置行 LocalizedText。
+
+WhySoLaggy.Tests 实际 23 项通过/0 跳过；四项目构建通过。完整 UI 验收未完成，详见 `../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。
+
 更新时间：2026-09-06
+
+## 2026-09-20 Canvas降至20000
+
+- 按用户要求排序32700→20000，保留GraphicRaycaster及交互逻辑；开发CHANGELOG已记录，版本仍0.1.2。
+- 普通Release构建0警告0错误，IL验证排序20000；输出2.0.a/BepInEx/plugins/WhereIsThing.dll，程序集0.1.2.0，SHA256 `2ACB0BEC44002415B9EF4A29D149F22E27064C6B3582633E39A52286BFB7F0DE`。
+- WIT/TFA共存实机效果待复测；未更新发行目录、未创建ZIP。
 
 ## 2026-09-06 ItemSpawnerEnhanced 分类审计与正式测试目录构建
 

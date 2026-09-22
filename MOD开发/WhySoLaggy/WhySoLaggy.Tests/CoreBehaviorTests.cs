@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -331,14 +331,11 @@ namespace WhySoLaggy.Tests
         }
 
         [TestMethod]
-        public void ModConfigLocalization_RecognizesPluginAndAllOwnSections()
+        public void ModConfigLocalization_RejectsOtherPluginsWithSharedSectionNames()
         {
             foreach (string category in new[]
             {
-                "WhySoLaggy", "com.wuyachiyu.WhySoLaggy", "General", "常规",
-                "AbuseDetection", "Abuse Detection", "滥用检测", "RpcMonitor", "RPC Monitor", "RPC 监控",
-                "Logging", "日志", "MethodTracer", "Method Tracer", "方法追踪",
-                "FieldProbe", "字段探针", "UI", "界面",
+                "WhySoLaggy", "Why So Laggy", "com.wuyachiyu.WhySoLaggy",
             })
             {
                 Assert.IsTrue(ModConfigLocalization.IsOwnCategory(category), category);
@@ -346,6 +343,8 @@ namespace WhySoLaggy.Tests
 
             Assert.IsFalse(ModConfigLocalization.IsOwnCategory("SomeOtherMod"));
             Assert.IsFalse(ModConfigLocalization.IsOwnCategory("OtherSection"));
+            foreach (string section in new[] { "General", "常规", "UI", "Logging", "RpcMonitor", "RPC Monitor" })
+                Assert.IsFalse(ModConfigLocalization.IsOwnCategory(section), section);
 
             Assert.AreEqual("RPC 监控", ModConfigLocalization.GetLocalizedCategoryText("RpcMonitor", true));
             Assert.AreEqual("RPC 监控", ModConfigLocalization.GetLocalizedCategoryText("RPCMonitor", true));
@@ -361,9 +360,9 @@ namespace WhySoLaggy.Tests
         }
 
         [TestMethod]
-        public void WatchedRpcNames_AllExistInPeak23aPunRpcSet()
+        public void WatchedRpcNames_AllExistInPeak24bPunRpcSet()
         {
-            string assemblyCSharp = FindPeak23aAssemblyCSharp();
+            string assemblyCSharp = FindPeak24bAssemblyCSharp();
             var rpcNames = new HashSet<string>(StringComparer.Ordinal);
             var declaration = new Regex(@"^\s*(?:public|private|protected|internal)\s+(?:static\s+)?[\w\.<>\[\],]+\s+(?<name>[A-Za-z_]\w*)\s*\(");
 
@@ -384,7 +383,7 @@ namespace WhySoLaggy.Tests
             }
 
             string[] missing = RpcMonitor.WatchedMethods.Where(name => !rpcNames.Contains(name)).OrderBy(name => name).ToArray();
-            Assert.AreEqual(0, missing.Length, "Missing [PunRPC] in PEAK 2.3.a: " + string.Join(", ", missing));
+            Assert.AreEqual(0, missing.Length, "Missing [PunRPC] in PEAK 2.4.b: " + string.Join(", ", missing));
             foreach (string added in new[] { "OnPickupAccepted", "SetItemInstanceDataRPC", "SetKinematicRPC", "RPCA_StartGrabbing", "RPCA_GrabCharacter", "RPC_SpawnItemInHandMaster" })
                 Assert.IsTrue(RpcMonitor.WatchedMethods.Contains(added), "Expected watched RPC: " + added);
             foreach (string stale in new[] { "IncrementFriendHealingRpc", "IncrementPoisonHealedStat", "LightLanternRPC", "RPCA_AddStatusBingBing", "RPCA_ConsumeItem", "RPCA_FallWithScreenShake", "RPCA_Revive", "SetHeldItemID" })
@@ -394,10 +393,10 @@ namespace WhySoLaggy.Tests
         }
 
         [TestMethod]
-        public void AssemblyAndPluginVersions_Are104()
+        public void AssemblyAndPluginVersions_Are105()
         {
-            Assert.AreEqual("1.0.4", WhySoLaggyPlugin.PluginVersion);
-            Assert.AreEqual(new Version(1, 0, 4, 0), typeof(WhySoLaggyPlugin).Assembly.GetName().Version);
+            Assert.AreEqual("1.0.5", WhySoLaggyPlugin.PluginVersion);
+            Assert.AreEqual(new Version(1, 0, 5, 0), typeof(WhySoLaggyPlugin).Assembly.GetName().Version);
         }
 
         [TestMethod]
@@ -407,19 +406,19 @@ namespace WhySoLaggy.Tests
             Assert.AreEqual(11, (int)EventType.OwnershipChange);
         }
 
-        private static string FindPeak23aAssemblyCSharp()
+        private static string FindPeak24bAssemblyCSharp()
         {
             foreach (string start in new[] { Environment.CurrentDirectory, AppDomain.CurrentDomain.BaseDirectory })
             {
                 var directory = new DirectoryInfo(start);
                 while (directory != null)
                 {
-                    string candidate = Path.Combine(directory.FullName, "引用参考代码", "反编译", "2.3.a", "Assembly-CSharp");
+                    string candidate = Path.Combine(directory.FullName, "引用参考代码", "反编译", "2.4.b", "Assembly-CSharp");
                     if (Directory.Exists(candidate)) return candidate;
                     directory = directory.Parent;
                 }
             }
-            Assert.Fail("Could not locate 引用参考代码\\反编译\\2.3.a\\Assembly-CSharp.");
+            Assert.Fail("Could not locate 引用参考代码\\反编译\\2.4.b\\Assembly-CSharp.");
             return null;
         }
 

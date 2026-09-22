@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
@@ -23,19 +22,24 @@ namespace WhereIsMyAmulet
     }
 
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+    [BepInDependency("com.github.PEAKModding.PEAKLib.ModConfig", BepInDependency.DependencyFlags.SoftDependency)]
     public sealed class WhereIsMyAmuletPlugin : BaseUnityPlugin
     {
         public const string PluginGuid = "com.wuyachiyu.WhereIsMyAmulet";
         public const string PluginName = "WhereIsMyAmulet";
-        public const string PluginVersion = "1.0.3";
+        public const string PluginVersion = "1.0.4";
 
         private readonly Dictionary<string, AmuletLabel> _labels = new Dictionary<string, AmuletLabel>();
         private readonly Dictionary<int, Item> _amuletDefinitions = new Dictionary<int, Item>();
+        private readonly List<string> _labelsToRemove = new List<string>();
         private static readonly FieldInfo ScoutStatueAmuletsField = typeof(ScoutStatue).GetField(
             "hasAmulets", BindingFlags.Instance | BindingFlags.NonPublic);
         private ManualLogSource _log;
         private Canvas _canvas;
         private TMP_FontAsset _font;
+        private Material _labelTitleMaterial;
+        private Material _labelDetailMaterial;
+        private Camera _mainCamera;
         private Harmony _harmony;
         private bool _modConfigRefreshScheduled;
         private AmuletLabelFont _lastFontChoice;
@@ -111,28 +115,37 @@ namespace WhereIsMyAmulet
                 return;
             }
 
-            foreach (AmuletLabel label in _labels.Values.ToList())
+            if (_mainCamera == null || !_mainCamera.isActiveAndEnabled)
+            {
+                _mainCamera = Camera.main;
+            }
+
+            _labelsToRemove.Clear();
+            foreach (AmuletLabel label in _labels.Values)
             {
                 if (label.IsValid)
                 {
-                    label.Update(Camera.main, _maxDistance.Value, _showOffscreen.Value);
+                    label.Update(_mainCamera, _maxDistance.Value, _showOffscreen.Value);
                 }
                 else
                 {
-                    RemoveLabel(label.InstanceId);
+                    _labelsToRemove.Add(label.InstanceId);
                 }
             }
+            RemovePendingLabels();
         }
 
         private void OnDestroy()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             LocalizedText.OnLangugageChanged -= OnGameLanguageChanged;
+            ModConfigLocalization.Shutdown();
             if (_harmony != null)
             {
                 _harmony.UnpatchSelf();
             }
             ClearLabels();
+            ReleaseLabelMaterials();
             if (_canvas != null)
             {
                 Destroy(_canvas.gameObject);
@@ -146,11 +159,11 @@ namespace WhereIsMyAmulet
             canvasObject.layer = 5;
             _canvas = canvasObject.AddComponent<Canvas>();
             _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            _canvas.sortingOrder = 32700;
+            // Keep below TMP dropdowns (30000); TFA raises its windows above active canvases.
+            _canvas.sortingOrder = 20000;
             CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
-            canvasObject.AddComponent<GraphicRaycaster>();
             _font = null;
         }
 
@@ -159,6 +172,8 @@ namespace WhereIsMyAmulet
             ClearLabels();
             _amuletDefinitions.Clear();
             _font = null;
+            ReleaseLabelMaterials();
+            _mainCamera = null;
         }
 
         private void ScanItems()
@@ -236,13 +251,15 @@ namespace WhereIsMyAmulet
                 ScanScoutStatues(seen);
             }
 
-            foreach (string id in _labels.Keys.ToList())
+            _labelsToRemove.Clear();
+            foreach (string id in _labels.Keys)
             {
                 if (!seen.Contains(id))
                 {
-                    RemoveLabel(id);
+                    _labelsToRemove.Add(id);
                 }
             }
+            RemovePendingLabels();
 
             _hideAt = _scanMode.Value == AmuletDisplayMode.Timed
                 ? Time.unscaledTime + Mathf.Max(0.5f, _displayDuration.Value)
@@ -452,12 +469,15 @@ namespace WhereIsMyAmulet
 
         private void AddLabel(string id, Transform target, Func<string> titleProvider, Func<bool> isValid)
         {
-            if (_labels.ContainsKey(id))
+            AmuletLabel existingLabel;
+            if (_labels.TryGetValue(id, out existingLabel))
             {
+                existingLabel.RefreshContent();
                 return;
             }
 
-            _labels.Add(id, new AmuletLabel(id, _canvas.transform, target, titleProvider, isValid, _font, _fontSize.Value));
+            _labels.Add(id, new AmuletLabel(id, _canvas.transform, target, titleProvider, isValid, _font,
+                _labelTitleMaterial, _labelDetailMaterial, _fontSize.Value));
         }
 
         private static bool HasAmulet(ItemInstanceData instanceData)
@@ -642,6 +662,15 @@ namespace WhereIsMyAmulet
             _labels.Clear();
         }
 
+        private void RemovePendingLabels()
+        {
+            for (int i = 0; i < _labelsToRemove.Count; i++)
+            {
+                RemoveLabel(_labelsToRemove[i]);
+            }
+            _labelsToRemove.Clear();
+        }
+
         private IEnumerable<ConfigEntryBase> GetConfigEntries()
         {
             return new ConfigEntryBase[] { _enabled, _scanKey, _scanMode, _displayDuration, _maxDistance, _fontSize, _fontChoice,
@@ -658,6 +687,7 @@ namespace WhereIsMyAmulet
             _lastFontChoice = _fontChoice.Value;
             _lastFontSize = _fontSize.Value;
             _font = null;
+            ReleaseLabelMaterials();
             ApplyLabelStyleToExisting(true);
         }
 
@@ -665,6 +695,7 @@ namespace WhereIsMyAmulet
         {
             if (_font != null)
             {
+                EnsureLabelMaterials();
                 return true;
             }
 
@@ -678,7 +709,65 @@ namespace WhereIsMyAmulet
                 return false;
             }
 
+            EnsureLabelMaterials();
             return true;
+        }
+
+        private void EnsureLabelMaterials()
+        {
+            if ((_labelTitleMaterial != null && _labelDetailMaterial != null) ||
+                _font == null || _font.material == null)
+            {
+                return;
+            }
+
+            ReleaseLabelMaterials();
+            _labelTitleMaterial = CreateLabelMaterial(
+                "WhereIsMyAmulet Label Title", 0.055f, 0.80f, 0.35f, 0.05f, 0.05f);
+            _labelDetailMaterial = CreateLabelMaterial(
+                "WhereIsMyAmulet Label Detail", 0.035f, 0.72f, 0.30f, 0f, 0.08f);
+        }
+
+        private Material CreateLabelMaterial(string name, float outlineWidth, float underlayAlpha,
+            float underlayOffset, float underlayDilate, float underlaySoftness)
+        {
+            Material material = new Material(_font.material)
+            {
+                name = name,
+                hideFlags = HideFlags.HideAndDontSave
+            };
+            if (material.HasProperty("_OutlineColor") && material.HasProperty("_OutlineWidth"))
+            {
+                material.EnableKeyword("OUTLINE_ON");
+                material.SetColor("_OutlineColor", new Color(0f, 0f, 0f, 0.88f));
+                material.SetFloat("_OutlineWidth", outlineWidth);
+            }
+            if (material.HasProperty("_UnderlayColor") && material.HasProperty("_UnderlayOffsetX") &&
+                material.HasProperty("_UnderlayOffsetY") && material.HasProperty("_UnderlayDilate") &&
+                material.HasProperty("_UnderlaySoftness"))
+            {
+                material.EnableKeyword("UNDERLAY_ON");
+                material.SetColor("_UnderlayColor", new Color(0f, 0f, 0f, underlayAlpha));
+                material.SetFloat("_UnderlayOffsetX", underlayOffset);
+                material.SetFloat("_UnderlayOffsetY", -underlayOffset);
+                material.SetFloat("_UnderlayDilate", underlayDilate);
+                material.SetFloat("_UnderlaySoftness", underlaySoftness);
+            }
+            return material;
+        }
+
+        private void ReleaseLabelMaterials()
+        {
+            if (_labelTitleMaterial != null)
+            {
+                Destroy(_labelTitleMaterial);
+                _labelTitleMaterial = null;
+            }
+            if (_labelDetailMaterial != null)
+            {
+                Destroy(_labelDetailMaterial);
+                _labelDetailMaterial = null;
+            }
         }
 
         private void ApplyLabelStyleToExisting(bool logResolution)
@@ -690,7 +779,7 @@ namespace WhereIsMyAmulet
 
             foreach (AmuletLabel label in _labels.Values)
             {
-                label.ApplyStyle(_font, _fontSize.Value);
+                label.ApplyStyle(_font, _labelTitleMaterial, _labelDetailMaterial, _fontSize.Value);
             }
         }
 
@@ -698,7 +787,12 @@ namespace WhereIsMyAmulet
         {
             _amuletDefinitions.Clear();
             _font = null;
+            ReleaseLabelMaterials();
             ApplyLabelStyleToExisting(true);
+            foreach (AmuletLabel label in _labels.Values)
+            {
+                label.RefreshContent();
+            }
             ModConfigLocalization.ApplyLocalizedDescriptions(GetConfigEntries());
             ModConfigLocalization.RefreshVisibleUi();
             ScheduleModConfigRefresh();
@@ -769,18 +863,24 @@ namespace WhereIsMyAmulet
         private readonly Func<string> _titleProvider;
         private readonly GameObject _root;
         private readonly CanvasGroup _group;
-        private readonly List<TextMeshProUGUI> _titleShadowTexts = new List<TextMeshProUGUI>();
-        private readonly List<TextMeshProUGUI> _distanceShadowTexts = new List<TextMeshProUGUI>();
         private readonly TextMeshProUGUI _titleText;
         private readonly TextMeshProUGUI _distanceText;
         private readonly TextMeshProUGUI _arrow;
         private float _fontSize;
+        private string _cachedTitle = string.Empty;
+        private string _cachedDistance = string.Empty;
+        private string _lastTitle = string.Empty;
+        private string _lastDistance = string.Empty;
+        private int _lastDistanceMeters = int.MinValue;
+        private bool _hasTextState;
+        private bool _visible;
+        private bool _arrowVisible;
 
         public string InstanceId { get { return _instanceId; } }
         public bool IsValid { get { return _target != null && _isValid != null && _isValid(); } }
 
         public AmuletLabel(string id, Transform canvas, Transform target, Func<string> titleProvider, Func<bool> isValid,
-            TMP_FontAsset font, float fontSize)
+            TMP_FontAsset font, Material titleMaterial, Material detailMaterial, float fontSize)
         {
             _instanceId = id ?? string.Empty;
             _target = target;
@@ -793,31 +893,31 @@ namespace WhereIsMyAmulet
             _group = _root.AddComponent<CanvasGroup>();
             _group.blocksRaycasts = false;
             _group.interactable = false;
+            _group.alpha = 0f;
 
-            CreateShadowTexts("TitleShadow_", font, _fontSize, new Vector2(0f, 10f), _titleShadowTexts);
-            _titleText = CreateText("TitleText", font, _fontSize, new Vector2(0f, 10f));
+            _titleText = CreateText("TitleText", font, titleMaterial, _fontSize, new Vector2(0f, 10f));
+            _titleText.fontStyle = FontStyles.Bold;
             _titleText.color = new Color(0.875f, 0.855f, 0.761f, 1f);
 
-            CreateShadowTexts("DistanceShadow_", font, 18f, new Vector2(0f, -40f), _distanceShadowTexts);
-            _distanceText = CreateText("DistanceText", font, 18f, new Vector2(0f, -40f));
+            _distanceText = CreateText("DistanceText", font, detailMaterial, 18f, new Vector2(0f, -40f));
             _distanceText.color = new Color(0.875f, 0.855f, 0.761f, 1f);
 
             GameObject arrowObject = new GameObject("OffscreenDirection");
             arrowObject.transform.SetParent(_root.transform, false);
             _arrow = arrowObject.AddComponent<TextMeshProUGUI>();
             arrowObject.layer = 5;
-            _arrow.font = font;
+            ApplyFont(_arrow, font, font.material, 22f);
             _arrow.text = "^";
             _arrow.alignment = TextAlignmentOptions.Center;
-            _arrow.fontSize = 22f;
             _arrow.color = new Color(1f, 0.85f, 0.2f, 1f);
             _arrow.raycastTarget = false;
             _arrow.rectTransform.sizeDelta = new Vector2(18f, 18f);
             _arrow.rectTransform.anchoredPosition = new Vector2(0f, -28f);
             _arrow.enabled = false;
+            RefreshContent();
         }
 
-        public void ApplyStyle(TMP_FontAsset font, float fontSize)
+        public void ApplyStyle(TMP_FontAsset font, Material titleMaterial, Material detailMaterial, float fontSize)
         {
             if (font == null)
             {
@@ -825,37 +925,27 @@ namespace WhereIsMyAmulet
             }
 
             _fontSize = Mathf.Clamp(fontSize, 10f, 64f);
-            ApplyFont(_titleText, font, _fontSize);
-            foreach (TextMeshProUGUI shadow in _titleShadowTexts)
-            {
-                ApplyFont(shadow, font, _fontSize);
-            }
-            ApplyFont(_distanceText, font, 18f);
-            foreach (TextMeshProUGUI shadow in _distanceShadowTexts)
-            {
-                ApplyFont(shadow, font, 18f);
-            }
-            _arrow.font = font;
+            ApplyFont(_titleText, font, titleMaterial, _fontSize);
+            ApplyFont(_distanceText, font, detailMaterial, 18f);
+            ApplyFont(_arrow, font, font.material, 22f);
         }
 
-        private void CreateShadowTexts(string namePrefix, TMP_FontAsset font, float size, Vector2 position,
-            List<TextMeshProUGUI> shadows)
+        public void RefreshContent()
         {
-            for (int i = 0; i < ShadowOffsets.Length; i++)
-            {
-                TextMeshProUGUI shadow = CreateText(namePrefix + i, font, size, position + ShadowOffsets[i] * 1.5f);
-                shadow.color = new Color(0f, 0f, 0f, 0.9f);
-                shadows.Add(shadow);
-            }
+            _cachedTitle = _titleProvider == null ? "Amulet" : (_titleProvider() ?? string.Empty);
+            _hasTextState = false;
         }
 
-        private static void ApplyFont(TextMeshProUGUI text, TMP_FontAsset font, float size)
+        private static void ApplyFont(TextMeshProUGUI text, TMP_FontAsset font, Material material, float size)
         {
+            text.enableAutoSizing = false;
             text.font = font;
+            text.fontSharedMaterial = material;
+            text.UpdateMeshPadding();
             text.fontSize = Mathf.Clamp(size, 10f, 64f);
         }
 
-        private TextMeshProUGUI CreateText(string name, TMP_FontAsset font, float size, Vector2 position)
+        private TextMeshProUGUI CreateText(string name, TMP_FontAsset font, Material material, float size, Vector2 position)
         {
             GameObject textObject = new GameObject(name);
             textObject.transform.SetParent(_root.transform, false);
@@ -864,9 +954,8 @@ namespace WhereIsMyAmulet
             text.alignment = TextAlignmentOptions.Center;
             text.raycastTarget = false;
             text.overflowMode = TextOverflowModes.Overflow;
-            text.richText = true;
-            text.font = font;
-            text.fontSize = Mathf.Clamp(size, 10f, 64f);
+            text.richText = false;
+            ApplyFont(text, font, material, size);
             text.rectTransform.sizeDelta = new Vector2(420f, 180f);
             text.rectTransform.anchoredPosition = position;
             return text;
@@ -889,10 +978,12 @@ namespace WhereIsMyAmulet
 
             if (onScreen && withinDistance)
             {
-                _root.transform.position = camera.WorldToScreenPoint(worldPosition);
-                string title = _titleProvider == null ? "Amulet" : _titleProvider();
-                SetText(string.Format("<b>{0}</b>", title), string.Format("{0:F0}m", distance));
-                _arrow.enabled = false;
+                Vector3 screenPosition = camera.WorldToScreenPoint(worldPosition);
+                // Projection Z is camera-space depth, not a position on the overlay canvas.
+                screenPosition.z = 0f;
+                _root.transform.position = screenPosition;
+                SetText(_cachedTitle, GetDistanceText(distance));
+                SetArrowVisible(false);
                 SetVisible(true);
                 return;
             }
@@ -916,8 +1007,8 @@ namespace WhereIsMyAmulet
             Vector2 screenCenter = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
             float edge = Mathf.Min(Screen.width, Screen.height) * 0.42f;
             _root.transform.position = screenCenter + direction * edge;
-            SetText(string.Empty, string.Format("{0:F0}m", distance));
-            _arrow.enabled = true;
+            SetText(string.Empty, GetDistanceText(distance));
+            SetArrowVisible(true);
             _arrow.rectTransform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f);
             SetVisible(true);
         }
@@ -932,33 +1023,50 @@ namespace WhereIsMyAmulet
 
         private void SetVisible(bool visible)
         {
+            if (_visible == visible)
+            {
+                return;
+            }
+
+            _visible = visible;
             _group.alpha = visible ? 1f : 0f;
         }
 
         private void SetText(string title, string distance)
         {
+            if (_hasTextState && string.Equals(_lastTitle, title, StringComparison.Ordinal) &&
+                string.Equals(_lastDistance, distance, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _hasTextState = true;
+            _lastTitle = title;
+            _lastDistance = distance;
             _titleText.text = title;
-            foreach (TextMeshProUGUI shadow in _titleShadowTexts)
-            {
-                shadow.text = title;
-            }
             _distanceText.text = distance;
-            foreach (TextMeshProUGUI shadow in _distanceShadowTexts)
-            {
-                shadow.text = distance;
-            }
         }
 
-        private static readonly Vector2[] ShadowOffsets =
+        private string GetDistanceText(float distance)
         {
-            new Vector2(0f, 1f),
-            new Vector2(0f, -1f),
-            new Vector2(-1f, 0f),
-            new Vector2(1f, 0f),
-            new Vector2(-1f, 1f),
-            new Vector2(1f, 1f),
-            new Vector2(-1f, -1f),
-            new Vector2(1f, -1f)
-        };
+            int distanceMeters = Mathf.RoundToInt(distance);
+            if (distanceMeters != _lastDistanceMeters)
+            {
+                _lastDistanceMeters = distanceMeters;
+                _cachedDistance = distanceMeters.ToString(CultureInfo.InvariantCulture) + "m";
+            }
+            return _cachedDistance;
+        }
+
+        private void SetArrowVisible(bool visible)
+        {
+            if (_arrowVisible == visible)
+            {
+                return;
+            }
+
+            _arrowVisible = visible;
+            _arrow.enabled = visible;
+        }
     }
 }

@@ -1,73 +1,25 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BepInEx;
-using BepInEx.Bootstrap;
 using BepInEx.Configuration;
 using HarmonyLib;
-using UnityEngine;
 
 namespace WhereIsThing
 {
     internal static class ModConfigLocalization
     {
-        private const string ModConfigGuid = "com.github.PEAKModding.PEAKLib.ModConfig";
         private const string ConfigFileName = "com.wuyachiyu.WhereIsThing.cfg";
-
-        private static readonly FieldInfo DescriptionBackingField =
-            typeof(ConfigDescription).GetField("<Description>k__BackingField",
-                BindingFlags.Instance | BindingFlags.NonPublic);
-
-        private static Type _tmpTextType;
-        private static PropertyInfo _tmpTextProperty;
+        private static readonly FieldInfo DescriptionBackingField = typeof(ConfigDescription).GetField(
+            "<Description>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
 
         public static void PatchDisplayNames(Harmony harmony)
         {
-            if (harmony == null || !Chainloader.PluginInfos.TryGetValue(ModConfigGuid, out PluginInfo pluginInfo) ||
-                pluginInfo == null || pluginInfo.Instance == null)
-            {
-                return;
-            }
-
-            Assembly modConfigAssembly = pluginInfo.Instance.GetType().Assembly;
-            HarmonyMethod displayNamePostfix = new HarmonyMethod(typeof(ModConfigLocalization).GetMethod(
-                nameof(ModConfigDisplayNamePostfix), BindingFlags.Static | BindingFlags.NonPublic));
-
-            foreach (Type type in modConfigAssembly.GetTypes())
-            {
-                if (type == null || type.IsAbstract || type.IsInterface || type.FullName == null ||
-                    !type.FullName.StartsWith("PEAKLib.ModConfig.SettingOptions.BepInEx", StringComparison.Ordinal))
-                {
-                    continue;
-                }
-
-                MethodInfo getDisplayName = AccessTools.Method(type, "GetDisplayName", Type.EmptyTypes);
-                if (getDisplayName != null)
-                {
-                    harmony.Patch(getDisplayName, null, displayNamePostfix);
-                }
-            }
-
-            Type menuType = modConfigAssembly.GetType("PEAKLib.ModConfig.Components.ModdedSettingsMenu");
-            if (menuType == null)
-            {
-                return;
-            }
-
-            HarmonyMethod uiPostfix = new HarmonyMethod(typeof(ModConfigLocalization).GetMethod(
-                nameof(ModConfigUiChangedPostfix), BindingFlags.Static | BindingFlags.NonPublic));
-            foreach (string methodName in new[] { "OnEnable", "ShowSettings", "SetSection", "UpdateSectionTabs" })
-            {
-                MethodInfo method = menuType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    .FirstOrDefault(candidate => candidate.Name == methodName);
-                if (method != null)
-                {
-                    harmony.Patch(method, null, uiPostfix);
-                }
-            }
+            ModConfigUiAdapter.Install(harmony, ConfigFileName, "WhereIsThing",
+                entry => GetLocalizedConfigText(entry.Definition.Section, entry.Definition.Key), GetLocalizedToken, message => UnityEngine.Debug.LogWarning("[WhereIsThing] " + message));
         }
+        public static void RefreshVisibleUi() => ModConfigUiAdapter.RefreshVisibleUi();
+        public static void Shutdown() => ModConfigUiAdapter.Shutdown();
 
         public static void ApplyLocalizedDescriptions(IEnumerable<ConfigEntryBase> entries)
         {
@@ -78,117 +30,9 @@ namespace WhereIsThing
 
             foreach (ConfigEntryBase entry in entries.Where(entry => entry != null))
             {
-                SetDescription(entry, GetLocalizedDescription(entry.Definition.Key));
+                if (IsKnownConfigKey(entry.Definition.Section, entry.Definition.Key))
+                    SetDescription(entry, GetLocalizedDescription(entry.Definition.Key));
             }
-        }
-
-        private static void ModConfigDisplayNamePostfix(object __instance, ref string __result)
-        {
-            ConfigEntryBase entry = TryGetConfigEntry(__instance);
-            if (!IsWhereIsThingEntry(entry))
-            {
-                return;
-            }
-
-            string localized = GetLocalizedConfigText(entry.Definition.Section, entry.Definition.Key);
-            if (!string.IsNullOrEmpty(localized))
-            {
-                __result = localized;
-            }
-        }
-
-        private static void ModConfigUiChangedPostfix(MonoBehaviour __instance)
-        {
-            if (__instance != null)
-            {
-                __instance.StartCoroutine(LocalizeModConfigUiDeferred(__instance.transform));
-            }
-        }
-
-        private static IEnumerator LocalizeModConfigUiDeferred(Transform root)
-        {
-            yield return null;
-            LocalizeTextInHierarchy(root);
-        }
-
-        private static void LocalizeTextInHierarchy(Transform root)
-        {
-            if (root == null)
-            {
-                return;
-            }
-
-            try
-            {
-                EnsureTmpReflection();
-                if (_tmpTextType == null || _tmpTextProperty == null)
-                {
-                    return;
-                }
-
-                foreach (Component component in root.GetComponentsInChildren(_tmpTextType, true))
-                {
-                    string current = _tmpTextProperty.GetValue(component, null) as string;
-                    string localized = GetLocalizedUiText(current);
-                    if (!string.IsNullOrEmpty(localized) && localized != current)
-                    {
-                        _tmpTextProperty.SetValue(component, localized, null);
-                    }
-                }
-            }
-            catch
-            {
-                // Keep ModConfig usable even if its UI implementation changes.
-            }
-        }
-
-        private static void EnsureTmpReflection()
-        {
-            if (_tmpTextType != null)
-            {
-                return;
-            }
-
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                _tmpTextType = assembly.GetType("TMPro.TextMeshProUGUI");
-                if (_tmpTextType != null)
-                {
-                    _tmpTextProperty = _tmpTextType.GetProperty("text");
-                    return;
-                }
-            }
-        }
-
-        private static string GetLocalizedUiText(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return null;
-            }
-
-            string normalized = text.Replace(" ", string.Empty);
-            string canonical = GetCanonicalToken(normalized);
-            string direct = GetLocalizedToken(canonical);
-            if (!string.IsNullOrEmpty(direct))
-            {
-                return direct;
-            }
-
-            if (normalized.IndexOf(',') >= 0)
-            {
-                string[] tokens = normalized.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                string[] localizedTokens = tokens
-                    .Select(GetCanonicalToken)
-                    .Select(GetLocalizedToken)
-                    .ToArray();
-                if (localizedTokens.All(value => !string.IsNullOrEmpty(value)))
-                {
-                    return string.Join(IsChinese ? "、" : ", ", localizedTokens);
-                }
-            }
-
-            return null;
         }
 
         private static string GetLocalizedConfigText(string section, string key)
@@ -388,61 +232,12 @@ namespace WhereIsThing
             }
         }
 
-        private static ConfigEntryBase TryGetConfigEntry(object instance)
-        {
-            if (instance == null)
-            {
-                return null;
-            }
-
-            Type type = instance.GetType();
-            foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                if (typeof(ConfigEntryBase).IsAssignableFrom(field.FieldType))
-                {
-                    return field.GetValue(instance) as ConfigEntryBase;
-                }
-            }
-
-            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                if (!typeof(ConfigEntryBase).IsAssignableFrom(property.PropertyType) || property.GetIndexParameters().Length != 0)
-                {
-                    continue;
-                }
-                try
-                {
-                    return property.GetValue(instance, null) as ConfigEntryBase;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-
-            return null;
-        }
-
-        private static bool IsWhereIsThingEntry(ConfigEntryBase entry)
-        {
-            try
-            {
-                string path = entry == null || entry.ConfigFile == null ? null : entry.ConfigFile.ConfigFilePath;
-                return !string.IsNullOrEmpty(path) && path.EndsWith(ConfigFileName, StringComparison.OrdinalIgnoreCase);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         private static void SetDescription(ConfigEntryBase entry, string text)
         {
-            if (entry == null || entry.Description == null || DescriptionBackingField == null || string.IsNullOrEmpty(text))
-            {
-                return;
-            }
-            DescriptionBackingField.SetValue(entry.Description, text);
+            if (!ModConfigUiAdapter.Owns(entry, ConfigFileName) || entry.Description == null ||
+                DescriptionBackingField == null || string.IsNullOrEmpty(text)) return;
+            try { DescriptionBackingField.SetValue(entry.Description, text); }
+            catch (Exception ex) { UnityEngine.Debug.LogWarning("[WhereIsThing] Description localization skipped: " + ex.Message); }
         }
 
         private static bool IsChinese
@@ -453,5 +248,6 @@ namespace WhereIsThing
                     LocalizedText.CURRENT_LANGUAGE == LocalizedText.Language.TraditionalChinese;
             }
         }
+
     }
 }

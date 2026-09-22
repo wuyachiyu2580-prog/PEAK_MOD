@@ -11,8 +11,8 @@
 - 中文本地化主表：`C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\DreamyAscent\DreamyAscent Data\localization.zh-CN.json`
 - `DreamyAscent Data` 下的外置 JSON 读取都基于插件目录拼接，不再依赖绝对路径硬编码。
 - 旧 `TerrainCustomiserCN` 运行时文件夹只作为迁移来源，不能再作为新入口；源码里保留的旧目录字符串是迁移兼容，不是脏代码。
-- 地图生成正式记忆：`C:\Users\Administrator\Desktop\MOD\PEAK\memory\mods\DreamyAscent\MAP_GENERATION.md`
-- 地图生成需求实现矩阵：`C:\Users\Administrator\Desktop\MOD\PEAK\memory\mods\DreamyAscent\IMPLEMENTATION_MATRIX.md`
+- 地图生成正式记忆（归档）：`memory/mods/DreamyAscent/archive/MAP_GENERATION.md`
+- 地图生成需求实现矩阵（归档）：`memory/mods/DreamyAscent/archive/IMPLEMENTATION_MATRIX.md`
 - 地图生成多轮阅读草稿：`C:\Users\Administrator\Desktop\MOD\PEAK\memory\mods\DreamyAscent\MAP_GENERATION_RESEARCH_NOTES.md`
 - 跨区段放置专门记忆：`C:\Users\Administrator\Desktop\MOD\PEAK\memory\mods\DreamyAscent\CROSS_SEGMENT_PLACEMENT.md`
 - 项目内样本数据目录：`C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\DreamyAscent\data\map-data`

@@ -1,4 +1,18 @@
-﻿# WhySoLaggy Files
+# WhySoLaggy Files
+
+## 2026-09-21 发行文件准备完成
+
+当前版本 `1.0.5` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/WhySoLaggy/发行/1.0.5`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。
+
+本版覆盖：ModConfig 语言监听、配置归属和补丁警告；重新核对诊断配置及日志说明。
+
+此前发行目录和 ZIP 保留原样；下方旧日期/旧版本状态为历史，不覆盖本节。
+
+## 2026-09-21 当前产物
+
+- 开发版本 `1.0.5` / 程序集 `1.0.5.0`；新增 `Helpers/ModConfigUiAdapter.cs`（独立反射适配器）。
+- profile 输出：`C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\WhySoLaggy.dll`，160256 字节，SHA-256 `946168D48B36DF3D8733C38FE2BDA6C807D7007337167AA5529F816FD2DBD550`。
+- 旧发行 DLL/hash 属于历史，不再与当前 profile 相同；验证入口：`../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。
 
 更新时间：2026-08-31
 

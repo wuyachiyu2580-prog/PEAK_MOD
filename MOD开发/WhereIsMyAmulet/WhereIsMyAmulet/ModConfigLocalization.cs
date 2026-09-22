@@ -1,70 +1,25 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BepInEx.Bootstrap;
 using BepInEx.Configuration;
 using HarmonyLib;
-using TMPro;
-using UnityEngine;
 
 namespace WhereIsMyAmulet
 {
     internal static class ModConfigLocalization
     {
-        private const string ModConfigGuid = "com.github.PEAKModding.PEAKLib.ModConfig";
         private const string ConfigFileName = "com.wuyachiyu.WhereIsMyAmulet.cfg";
         private static readonly FieldInfo DescriptionBackingField = typeof(ConfigDescription).GetField(
             "<Description>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static Type _tmpTextType;
-        private static PropertyInfo _tmpTextProperty;
-        private static MonoBehaviour _activeMenu;
 
         public static void PatchDisplayNames(Harmony harmony)
         {
-            if (harmony == null || !Chainloader.PluginInfos.TryGetValue(ModConfigGuid, out BepInEx.PluginInfo info) ||
-                info == null || info.Instance == null)
-            {
-                return;
-            }
-
-            Assembly assembly = info.Instance.GetType().Assembly;
-            HarmonyMethod displayPostfix = new HarmonyMethod(typeof(ModConfigLocalization).GetMethod(
-                nameof(DisplayNamePostfix), BindingFlags.Static | BindingFlags.NonPublic));
-            foreach (Type type in assembly.GetTypes())
-            {
-                if (type == null || type.FullName == null || type.IsAbstract || type.IsInterface ||
-                    !type.FullName.StartsWith("PEAKLib.ModConfig.SettingOptions.BepInEx", StringComparison.Ordinal))
-                {
-                    continue;
-                }
-
-                MethodInfo method = AccessTools.Method(type, "GetDisplayName", Type.EmptyTypes);
-                if (method != null)
-                {
-                    harmony.Patch(method, null, displayPostfix);
-                }
-            }
-
-            Type menuType = assembly.GetType("PEAKLib.ModConfig.Components.ModdedSettingsMenu");
-            if (menuType == null)
-            {
-                return;
-            }
-
-            HarmonyMethod menuPostfix = new HarmonyMethod(typeof(ModConfigLocalization).GetMethod(
-                nameof(MenuChangedPostfix), BindingFlags.Static | BindingFlags.NonPublic));
-            foreach (string methodName in new[] { "OnEnable", "ShowSettings", "SetSection", "UpdateSectionTabs" })
-            {
-                MethodInfo method = menuType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                    .FirstOrDefault(candidate => candidate.Name == methodName);
-                if (method != null)
-                {
-                    harmony.Patch(method, null, menuPostfix);
-                }
-            }
+            ModConfigUiAdapter.Install(harmony, ConfigFileName, "WhereIsMyAmulet",
+                entry => GetLocalizedConfigText(entry.Definition.Section, entry.Definition.Key), GetLocalizedToken, message => UnityEngine.Debug.LogWarning("[WhereIsMyAmulet] " + message));
         }
+        public static void RefreshVisibleUi() => ModConfigUiAdapter.RefreshVisibleUi();
+        public static void Shutdown() => ModConfigUiAdapter.Shutdown();
 
         public static void ApplyLocalizedDescriptions(IEnumerable<ConfigEntryBase> entries)
         {
@@ -77,128 +32,6 @@ namespace WhereIsMyAmulet
             {
                 SetDescription(entry, GetLocalizedDescription(entry.Definition.Section, entry.Definition.Key));
             }
-        }
-
-        public static void RefreshVisibleUi()
-        {
-            if (_activeMenu != null && _activeMenu.gameObject != null && _activeMenu.gameObject.activeInHierarchy)
-            {
-                _activeMenu.StartCoroutine(RefreshVisibleUiDeferred(_activeMenu.transform));
-            }
-        }
-
-        private static IEnumerator RefreshVisibleUiDeferred(Transform root)
-        {
-            yield return null;
-            LocalizeTextInHierarchy(root);
-        }
-
-        private static void DisplayNamePostfix(object __instance, ref string __result)
-        {
-            ConfigEntryBase entry = TryGetConfigEntry(__instance);
-            if (!IsOwnEntry(entry))
-            {
-                return;
-            }
-
-            string localized = GetLocalizedConfigText(entry.Definition.Section, entry.Definition.Key);
-            if (!string.IsNullOrEmpty(localized))
-            {
-                __result = localized;
-            }
-        }
-
-        private static void MenuChangedPostfix(MonoBehaviour __instance)
-        {
-            _activeMenu = __instance;
-            if (__instance != null)
-            {
-                __instance.StartCoroutine(RefreshVisibleUiDeferred(__instance.transform));
-            }
-        }
-
-        private static void LocalizeTextInHierarchy(Transform root)
-        {
-            if (root == null)
-            {
-                return;
-            }
-
-            EnsureTmpReflection();
-            if (_tmpTextType == null || _tmpTextProperty == null)
-            {
-                return;
-            }
-
-            foreach (Component component in root.GetComponentsInChildren(_tmpTextType, false))
-            {
-                string current = _tmpTextProperty.GetValue(component, null) as string;
-                string localized = GetLocalizedUiText(current);
-                if (!string.IsNullOrEmpty(localized) && localized != current)
-                {
-                    _tmpTextProperty.SetValue(component, localized, null);
-                }
-            }
-        }
-
-        private static void EnsureTmpReflection()
-        {
-            if (_tmpTextType != null)
-            {
-                return;
-            }
-
-            _tmpTextType = typeof(TextMeshProUGUI);
-            _tmpTextProperty = _tmpTextType.GetProperty("text");
-        }
-
-        private static string GetLocalizedUiText(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return null;
-            }
-
-            string canonical = GetCanonicalToken(text.Replace(" ", string.Empty));
-            string localized = GetLocalizedToken(canonical);
-            if (!string.IsNullOrEmpty(localized))
-            {
-                return localized;
-            }
-
-            string description = GetLocalizedDescriptionFromRenderedText(text);
-            if (!string.IsNullOrEmpty(description))
-            {
-                return description;
-            }
-
-            if (text.IndexOf(',') >= 0)
-            {
-                string[] values = text.Replace(" ", string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(GetCanonicalToken).Select(GetLocalizedToken).ToArray();
-                if (values.All(value => !string.IsNullOrEmpty(value)))
-                {
-                    return string.Join(IsChinese ? "、" : ", ", values);
-                }
-            }
-
-            return null;
-        }
-
-        private static string GetLocalizedDescriptionFromRenderedText(string text)
-        {
-            string[] keys = { "Enabled", "ScanKey", "ScanMode", "DisplayDurationSeconds", "MaxDistance", "FontSize", "LabelFont", "ShowStatueFragments", "ShowOffscreenDirection" };
-            foreach (string key in keys)
-            {
-                string section = key == "Enabled" || key == "ScanKey" || key == "ScanMode" || key == "DisplayDurationSeconds" ? "General" : "Display";
-                string english = GetDescription(section, key, false);
-                string chinese = GetDescription(section, key, true);
-                if (string.Equals(text, english, StringComparison.Ordinal) || string.Equals(text, chinese, StringComparison.Ordinal))
-                {
-                    return IsChinese ? chinese : english;
-                }
-            }
-            return null;
         }
 
         private static string GetLocalizedDescription(string section, string key)
@@ -276,62 +109,12 @@ namespace WhereIsMyAmulet
             }
         }
 
-        private static string GetCanonicalToken(string value)
-        {
-            switch (value)
-            {
-                case "护符在哪里": return "WhereIsMyAmulet";
-                case "常规": return "General";
-                case "显示": return "Display";
-                case "启用MOD": return "Enabled";
-                case "扫描快捷键": return "ScanKey";
-                case "最大距离": return "MaxDistance";
-                case "标签字号": return "FontSize";
-                case "标签字体": return "LabelFont";
-                case "显示雕像碎片": return "ShowStatueFragments";
-                case "屏外方向提示": return "ShowOffscreenDirection";
-                case "显示模式": return "ScanMode";
-                case "定时显示秒数": return "DisplayDurationSeconds";
-                case "自动": return "Auto";
-                case "游戏默认": return "GameDefault";
-                case "TMP默认字体": return "TmpDefault";
-                default: return value;
-            }
-        }
-
-        private static ConfigEntryBase TryGetConfigEntry(object instance)
-        {
-            if (instance == null) return null;
-            Type type = instance.GetType();
-            foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                if (typeof(ConfigEntryBase).IsAssignableFrom(field.FieldType)) return field.GetValue(instance) as ConfigEntryBase;
-            }
-            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                if (!typeof(ConfigEntryBase).IsAssignableFrom(property.PropertyType) || property.GetIndexParameters().Length != 0) continue;
-                try { return property.GetValue(instance, null) as ConfigEntryBase; } catch { return null; }
-            }
-            return null;
-        }
-
-        private static bool IsOwnEntry(ConfigEntryBase entry)
-        {
-            try
-            {
-                string path = entry == null || entry.ConfigFile == null ? null : entry.ConfigFile.ConfigFilePath;
-                return !string.IsNullOrEmpty(path) && path.EndsWith(ConfigFileName, StringComparison.OrdinalIgnoreCase);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         private static void SetDescription(ConfigEntryBase entry, string text)
         {
-            if (entry == null || entry.Description == null || DescriptionBackingField == null || string.IsNullOrEmpty(text)) return;
-            DescriptionBackingField.SetValue(entry.Description, text);
+            if (!ModConfigUiAdapter.Owns(entry, ConfigFileName) || entry.Description == null ||
+                DescriptionBackingField == null || string.IsNullOrEmpty(text)) return;
+            try { DescriptionBackingField.SetValue(entry.Description, text); }
+            catch (Exception ex) { UnityEngine.Debug.LogWarning("[WhereIsMyAmulet] Description localization skipped: " + ex.Message); }
         }
 
         private static bool IsChinese
@@ -342,5 +125,6 @@ namespace WhereIsMyAmulet
                     LocalizedText.CURRENT_LANGUAGE == LocalizedText.Language.TraditionalChinese;
             }
         }
+
     }
 }

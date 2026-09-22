@@ -8,21 +8,6 @@ PlayersInfo adds a compact, read-only teammate HUD to PEAK. It shows nearby play
 
 - Dead teammates are no longer shown by the teammate stamina bar display.(maybe?)
 
-## What's new in 0.2.3
-
-### Status icons
-
-- Added `AfflictionIconDisplayMode` with three choices: show all icons, hide teammate icons, or hide all icons.
-- Icon visibility changes apply at runtime while preserving status bars, colors, widths, and numbers.
-
-### Fixes
-
-- Fixed dead and downed teammates remaining visible after moving out of range.
-- Dead teammates use their last living position for distance checks; normal and downed teammates use their current body position.
-- Fixed hunger countdown placement when stamina reaches zero. The countdown is centered in the available stamina area after status bars are excluded, instead of moving to a separate fixed position.
-- Unified low-frequency HUD data refreshes to reduce unnecessary updates.
-- Normal diagnostic output now follows `DebugLogging`; it is quiet by default.
-
 ## Installation
 
 1. Install BepInEx for PEAK.

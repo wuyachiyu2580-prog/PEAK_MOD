@@ -1,5 +1,19 @@
 # PlayersInfo Files
 
+## 2026-09-21 发行文件准备完成
+
+当前版本 `0.2.5` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/PlayersInfo/发行/0.2.5`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。
+
+本版覆盖：ModConfig 新菜单与语言刷新、简中/繁中识别；沿用完整队友 HUD 使用说明。
+
+此前发行目录和 ZIP 保留原样；下方旧日期/旧版本状态为历史，不覆盖本节。
+
+## 2026-09-21 当前产物
+
+- 开发版本 `0.2.5` / 程序集 `0.2.5.0`；新增 `Helpers/ModConfigUiAdapter.cs`（独立反射适配器）。
+- profile 输出：`C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\PlayersInfo.dll`，103936 字节，SHA-256 `68D7B4BB25CD0C16F2DAE544BD683E174DE5E800D7F67528945C0A364B905FE0`。
+- 旧发行 DLL/hash 属于历史，不再与当前 profile 相同；验证入口：`../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。
+
 Last updated: 2026-09-07
 
 ## Paths

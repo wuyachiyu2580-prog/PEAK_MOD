@@ -1,6 +1,38 @@
 # WhereIsMyAmulet Recent
 
+## 2026-09-21 发行文案纠正
+
+发行文件已按用户纠正恢复英文，沿用上一版章节、表格、图片位置和 manifest 排版；本版更新说明明确写入 README 的 What's new 和 CHANGELOG 对应版本章节。DLL/图标/旧版目录及 ZIP 未改，未生成新 ZIP。 当前发行版本 1.0.4。
+
+## 2026-09-21 发行文件准备完成
+
+当前版本 `1.0.4` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/WhereIsMyAmulet/发行/1.0.4`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。
+
+本版覆盖：19→3 TMP、共享材质和刷新缓存、20000 排序、投影 Z/固定字号修正、ModConfig 适配。
+
+此前发行目录和 ZIP 保留原样；下方旧日期/旧版本状态为历史，不覆盖本节。
+
+## 2026-09-21 ModConfig 集成更新
+
+开发/测试版本 `1.0.4`，PEAK 2.4.b / ModConfig 1.8.2 / PEAKLib.UI 1.7.2 接入已更新。恢复新版菜单跟踪并修正 UI 归属、枚举显示和刷新清理。Release 0 警告 0 错误，DLL 已部署原 2.0.a profile；`发行/1.0.4` 文件已备齐（无 ZIP、未上传），完整实机验收仍待完成。
+
+新菜单适配、声明方法去重、按配置文件/section/key 隔离标题和选项、仅修改枚举显示、合并可见 UI 刷新、保护自身配置行 LocalizedText。
+
+WhySoLaggy.Tests 实际 23 项通过/0 跳过；四项目构建通过。完整 UI 验收未完成，详见 `../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。
+
 更新时间：2026-08-31
+
+## 2026-09-20 1.0.4 测试中
+
+最新字号补丁（优先于以下产物hash）：用户报告越远文字越大，已清除屏幕坐标中相机深度Z，创建/样式刷新统一关闭TMP自动字号。Release构建0警告0错误，IL验证Z=0、AutoSizing=false；profile DLL SHA256 `DA005FAF81403620415FDA735F623C3F78F506BFEB46DF2026D4E57F4CAAE74E`，版本1.0.4.0，排序仍20000，无诊断探针。实机效果待用户确认。
+
+最终覆盖以下早先排查状态：用户对照确认30000不行、20000可以，已固定Canvas排序20000并在代码旁注释TMP/TFA排序关系。普通Release构建0警告0错误、IL验证20000且无探针，部署原profile，程序集1.0.4.0，SHA256 `281F477A31413E54A259294D510501A869A33922220B2F962CD67F7751137ED7`。未打包。
+
+以下为先前诊断过程（已结束）：
+
+- 标签19→3 TMP、共享描边阴影材质、相机/文本缓存、移除每帧ToList已实现。TFA兼容实测仍失败，不能宣布修复。
+- 限量只读诊断构建：`dotnet build MOD开发/WhereIsMyAmulet/WhereIsMyAmulet.slnx --configuration Release -p:DefineConstants=TFA_UI_DIAGNOSTICS`；0警告0错误，程序集1.0.4.0。SHA256 `B39F7C0DEE5B580FFBE9D78D4A4B8E873F37422A92476C3A2625ED7A98F95080`。
+- 已输出原profile根plugins，未打包、未修改发行1.0.3；下一步读取实机诊断报告。
 
 ## 1.0.3 发布
 

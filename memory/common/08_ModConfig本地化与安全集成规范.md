@@ -2,6 +2,8 @@
 
 更新时间：2026-09-09
 
+2026-09-21 补充：当前基线为 ModConfig 1.8.2 / PEAKLib.UI 1.7.2；最新设计见 `../mods/ModConfigDiagnostics/INTEGRATION_PLAN_2026-09-21.md`。下方 1.8.0 诊断为历史记录。PlayersInfo 危险刷新由启动延迟语言复查触发；WhySoLaggy 需按 Action 字段订阅；枚举原始 choices 参与保存，翻译只能改显示。四 MOD 已完成源码/构建/profile 部署，23 项测试通过；完整实机待验收，结果见 `../mods/ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。Lantern 旧实现未动。
+
 适用范围：所有需要在 PEAK 游戏中让 BepInEx MOD 配置跟随游戏语言显示的项目。
 
 ## 一、核心边界
@@ -269,7 +271,7 @@ rg -n "RefreshCache|EntriesProcessed|ModdedKeys|GetValidKeyPaths|ProcessModEntri
 ## 十二、当前项目状态
 
 - WhereIsThing 已按这套安全原则移除全局 ModConfig 缓存重建，并改为稳定键本地化。
-- PlayersInfo、LanternShootZombiesNight 以及其他没有迁移的 MOD 仍需按本规范审查。
+- 2026-09-21：PlayersInfo、WhySoLaggy、WhereIsThing、WhereIsMyAmulet 已迁移并部署，完整 UI 实机待验收；LanternShootZombiesNight 尚未迁移。
 - 本规范是后续新增中英文 ModConfig 功能的默认实现标准；除非确认 ModConfig 提供正式公开 API，不得恢复全局缓存反射刷新。
 
 ## 十三、PEAK 2.4.b / ModConfig 1.8.0 的 `LOC: 0`
@@ -311,7 +313,7 @@ SetSection(string)
 UpdateSectionTabs(string)
 ```
 
-当前需要迁移的开发区项目：PlayersInfo、Lantern&ShootZombies&Night、WhereIsThing、WhereIsMyAmulet、WhySoLaggy。
+2026-09-09 待迁移名单为五个项目；2026-09-21 已完成 PlayersInfo、WhySoLaggy、WhereIsThing、WhereIsMyAmulet 源码迁移。Lantern&ShootZombies&Night 留待后续。
 
 扫描各 `BepInEx*` 类型的 `GetDisplayName()` 时，只补丁真正声明该方法的实现，或者按 `MethodBase` 去重。不要重复补丁继承自同一泛型基类的方法；PlayersInfo、WhereIsThing 和 WhySoLaggy 已在 2.4.b 日志中产生 HarmonyX 警告。
 

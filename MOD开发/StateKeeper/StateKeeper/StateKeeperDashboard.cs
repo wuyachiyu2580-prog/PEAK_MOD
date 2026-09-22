@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -220,6 +220,11 @@ namespace StateKeeper
             StateKeeperButton back = CreateButton(row, "EvidenceBack", Text("ITEM LIST", "返回物品列表")); back.SetCompactText(Text("ITEM LIST", "返回物品列表"));
             Anchor(back.RectTransform, 0, .5f, 0, .5f, 0, 0, 210, 40); back.AddListener(RenderDetails);
             AddDashboardText(ItemDisplayName(item.itemName) + " | " + FormatDuration(item.time) + " | " + ItemKindName(item.kind), 24);
+            AddDashboardText(UseClassName(item.useClassification) + " | " + Text("Rule score: ", "规则分：") + item.attributionScore, 20);
+            foreach (string reason in item.supportingReasons.Concat(item.conflictingReasons).Concat(item.excludedReasons).Distinct())
+                AddDashboardText(AttributionReason(reason), 18);
+            foreach (var source in _displayedAnalysis.items.Where(r => ItemUseRules.GroupKey(r) == ItemUseRules.GroupKey(item)))
+                AddDashboardText(ItemKindName(source.kind) + " | " + SourceText(source.evidence), 16);
             AddDashboardText(Text("Observed effects", "观察结果") + " [" + ConfidenceText(item.attribution) + "]", 20);
             if (item.possibleRescue) AddDashboardText(Text("Possible rescue; excluded from direct rescue counts", "可能帮助脱离昏迷；不计入直接救援次数"), 18);
             else if (item.possibleHelp) AddDashboardText(Text("Evidence of help to another player", "有帮助其他玩家的关联证据"), 18);
@@ -258,6 +263,11 @@ namespace StateKeeper
 
         private static string AttributionReason(string reason)
         {
+            if (reason == "DirectAction") return Text("Completed item action observed", "观察到物品动作完成");
+            if (reason == "ResourceDelta") return Text("Measured resource decrease", "同一物品的资源字段减少");
+            if (reason == "ObservedEffect") return Text("Compatible state change observed", "观察到与物品作用相容的状态变化");
+            if (reason == "NoUseEvidence") return Text("No sufficient use evidence", "没有足够的使用证据");
+            if (reason == "ClockAmbiguous") return Text("Cannot associate across ambiguous time intervals", "时间归属不明确，不能跨区间关联");
             if (reason == "UnknownItemCompetition") return Text("Another item has unknown effects", "同期其他物品的作用未知，不能排除竞争解释");
             if (reason == "SpatialBoundaryUncertain") return Text("Near the uncertain range boundary", "接近作用范围边界，位置/同步误差可能影响判断");
             string[] en = { "CompetingItems", "CompetingRecipients", "NaturalRecoveryPossible", "SharedEnvironmentRecoveryPossible", "CheckpointRecoveryPossible",

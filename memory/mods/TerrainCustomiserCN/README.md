@@ -40,7 +40,7 @@ graph TB
 1. 先读 `RECENT.md`，确认当前发布状态和最近改动。
 2. 再读 `DECISIONS.md`，尤其是兼容性禁止回退项。
 3. 修改源码前读 `FILES.md`，确认构建输出和关键文件。
-4. 若上下文压缩或换 AI，先读最新 `temp/YYYY-MM-DD.md`；当前最新是 `temp/2026-05-30.md`。
+4. 若上下文压缩或换 AI，先读 `temp/current.md`。
 
 ## 玩家侧说明
 

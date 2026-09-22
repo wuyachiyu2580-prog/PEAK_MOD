@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace StateKeeper
@@ -80,6 +80,9 @@ namespace StateKeeper
 
     internal static class ReportThresholds
     {
+        internal const int CertainUseScore = 80;
+        internal const int LikelyUseScore = 55;
+        internal const int PossibleUseScore = 30;
         internal const float DeathWindow = 2f;
         internal const float SentinelRadius = 2f;
         internal const float LowRegularRatio = .1f;

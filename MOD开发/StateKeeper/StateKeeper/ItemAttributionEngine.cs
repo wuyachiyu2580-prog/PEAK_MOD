@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,13 +37,27 @@ namespace StateKeeper
             bool resource = row.kind == "ResourceChanged" && ((new[] { "uses", "fuel", "useRemaining", "petterItemUses" }.Contains(row.resourceKey) && row.value < row.previousValue) || row.resourceKey == "used" && row.previousValue == 0 && row.value == 1);
             if (row.kind == "ItemMoved" || row.kind == "ItemTransferObserved" || row.kind == "ItemAppeared")
             {
-                foreach (Candidate prior in _candidates.Where(c => c.weak && c.row.itemGuid == row.itemGuid && row.time >= c.time && row.time - c.time <= 2)) prior.reasons.Add("MovedOrTransferred");
+                if (row.kind != "ItemAppeared")
+                {
+                    row.useClassification = "Transferred";
+                    row.conflictingReasons.Add("MovedOrTransferred");
+                }
+                foreach (Candidate prior in _candidates.Where(c => c.weak && !string.IsNullOrEmpty(row.itemGuid) && c.row.itemGuid == row.itemGuid && c.row.epoch == row.epoch &&
+                    !c.reasons.Contains("ObservationInterrupted") && row.time >= c.time && row.time - c.time <= 2))
+                {
+                    prior.reasons.Add("MovedOrTransferred");
+                    row.attributionGroupId = prior.row.attributionGroupId;
+                    prior.rows.Add(row);
+                }
             }
             if (!use && !resource && !removal) return;
             if ((resource || removal) && row.actorPlayerIndex < 0) { row.actorPlayerIndex = row.playerIndex; row.actorInferred = true; }
             Candidate same = string.IsNullOrEmpty(row.itemGuid) ? null : _candidates.LastOrDefault(c => !c.passive && c.row.itemGuid == row.itemGuid &&
+                !c.reasons.Contains("ObservationInterrupted") &&
                 c.row.epoch == row.epoch && Math.Abs(c.time - row.time) <= Lead &&
                 !c.rows.Any(r => r.kind == row.kind && r.resourceKey == row.resourceKey) &&
+                !c.rows.Any(r => row.kind == "ItemPrimaryCastFinished" && r.kind == "ItemSecondaryCastFinished" ||
+                    row.kind == "ItemSecondaryCastFinished" && r.kind == "ItemPrimaryCastFinished") &&
                 (c.target < 0 || row.targetPlayerIndex < 0 || c.target == row.targetPlayerIndex) &&
                 (c.actor < 0 || row.actorPlayerIndex < 0 || c.actor == row.actorPlayerIndex));
             if (same != null)
@@ -66,6 +80,8 @@ namespace StateKeeper
             var candidate = new Candidate { row = row, actor = row.actorPlayerIndex, target = row.targetPlayerIndex, time = row.time, lastEvidence = row.time,
                 weak = removal, explicitTarget = row.kind == "ItemConsumed" || row.kind == "ItemFedToPlayer" };
             candidate.rows.Add(row); row.attributionGroupId = row.observationId;
+            if ((resource || removal) && _barriers.TryGetValue(row.playerIndex, out float barrier) && row.time >= barrier && row.time - barrier <= 2)
+                candidate.reasons.Add("ObservationInterrupted");
             candidate.rules = _rules.Compile(row, candidate.reasons);
             if (string.IsNullOrEmpty(row.itemGuid)) candidate.reasons.Add("InstanceUnknown");
             if (row.detail == "ConflictingGuid") candidate.reasons.Add("ConflictingGuid");
@@ -128,7 +144,7 @@ namespace StateKeeper
             var row = new AnalysisItemObservation { evidence = evidence, observationId = _result.items.Count + 1, time = e.time, epoch = _epoch, itemId = e.itemId,
                 itemName = e.itemName, itemGuid = e.itemGuid, prefabName = e.definitionKey, kind = "PlayerFriendHealed", confidence = "Certain",
                 playerIndex = e.actorPlayerIndex.Value, actorPlayerIndex = e.actorPlayerIndex.Value, targetPlayerIndex = e.targetPlayerIndex };
-            Candidate c = _candidates.LastOrDefault(p => !string.IsNullOrEmpty(e.itemGuid) && p.row.itemGuid == e.itemGuid && Math.Abs(p.time - e.time) <= Lead &&
+            Candidate c = _candidates.LastOrDefault(p => p.row.epoch == _epoch && !p.reasons.Contains("ObservationInterrupted") && !string.IsNullOrEmpty(e.itemGuid) && p.row.itemGuid == e.itemGuid && Math.Abs(p.time - e.time) <= Lead &&
                 (p.actor < 0 || p.actor == e.actorPlayerIndex) && (p.target < 0 || p.target == e.targetPlayerIndex));
             if (c == null)
             {
@@ -418,6 +434,7 @@ namespace StateKeeper
                     !recovery.reasons.Contains("DeathRevivalOrDiscontinuity") && c.effects.Any(healing => healing.playerIndex == recovery.playerIndex && healing.attribution != "Ambiguous" &&
                         healing.cumulativeDelta < 0 && Helpful(healing) && healing.afterTime <= recovery.afterTime && recovery.afterTime - healing.afterTime <= 2));
             }
+            if (!c.passive) ItemUseRules.Classify(c.rows, c.reasons);
             _candidates.Remove(c);
             foreach (var key in _passive.Where(p => ReferenceEquals(p.Value, c)).Select(p => p.Key).ToArray()) _passive.Remove(key);
         }
@@ -426,7 +443,7 @@ namespace StateKeeper
         {
             SettleChanges(float.MaxValue, true);
             foreach (Candidate candidate in _candidates.ToArray()) FinishCandidate(candidate, "ObservationInterrupted");
-            _changes.Clear(); _previous.Clear(); _passive.Clear(); _lastEffects.Clear(); _barriers.Clear(); _trackingLimited = false; _environmentTime = float.NegativeInfinity; _lastTime = float.NaN;
+            _changes.Clear(); _previous.Clear(); _passive.Clear(); _lastEffects.Clear(); _barriers.Clear(); _transformed.Clear(); _trackingLimited = false; _environmentTime = float.NegativeInfinity; _lastTime = float.NaN;
         }
         internal void Finish()
         {

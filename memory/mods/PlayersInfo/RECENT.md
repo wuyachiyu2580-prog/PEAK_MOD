@@ -1,5 +1,25 @@
 # PlayersInfo Recent
 
+## 2026-09-21 发行文案纠正
+
+发行文件已按用户纠正恢复英文，沿用上一版章节、表格、图片位置和 manifest 排版；本版更新说明明确写入 README 的 What's new 和 CHANGELOG 对应版本章节。DLL/图标/旧版目录及 ZIP 未改，未生成新 ZIP。 当前发行版本 0.2.5。
+
+## 2026-09-21 发行文件准备完成
+
+当前版本 `0.2.5` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/PlayersInfo/发行/0.2.5`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。
+
+本版覆盖：ModConfig 新菜单与语言刷新、简中/繁中识别；沿用完整队友 HUD 使用说明。
+
+此前发行目录和 ZIP 保留原样；下方旧日期/旧版本状态为历史，不覆盖本节。
+
+## 2026-09-21 ModConfig 集成更新
+
+开发/测试版本 `0.2.5`，PEAK 2.4.b / ModConfig 1.8.2 / PEAKLib.UI 1.7.2 接入已更新。移除全局配置重注册并修正简中/繁中检测和语言通知。Release 0 警告 0 错误，DLL 已部署原 2.0.a profile；`发行/0.2.5` 文件已备齐（无 ZIP、未上传），完整实机验收仍待完成。
+
+新菜单适配、声明方法去重、按配置文件/section/key 隔离标题和选项、仅修改枚举显示、合并可见 UI 刷新、保护自身配置行 LocalizedText。
+
+WhySoLaggy.Tests 实际 23 项通过/0 跳过；四项目构建通过。完整 UI 验收未完成，详见 `../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。
+
 ## 2026-09-07 PlayersInfo 0.2.4 trial release and Book of Bones check
 
 - The death-bar fix was promoted to version `0.2.4`.

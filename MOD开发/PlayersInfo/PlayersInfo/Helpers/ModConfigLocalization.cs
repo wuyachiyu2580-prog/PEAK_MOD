@@ -1,67 +1,49 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using BepInEx.Bootstrap;
 using BepInEx.Configuration;
 using HarmonyLib;
-using UnityEngine;
 
 namespace PlayersInfo.Helpers
 {
     internal static class ModConfigLocalization
     {
-        private const string ModConfigGuid = "com.github.PEAKModding.PEAKLib.ModConfig";
         private const string ConfigFileName = "com.players.info.cfg";
-
-        private static readonly FieldInfo DescriptionBackingField =
-            typeof(ConfigDescription).GetField("<Description>k__BackingField",
-                BindingFlags.Instance | BindingFlags.NonPublic);
-
-        private static Type _tmpTextType;
-        private static PropertyInfo _tmpTextProp;
+        private static readonly FieldInfo DescriptionBackingField = typeof(ConfigDescription).GetField(
+            "<Description>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
 
         public static void PatchDisplayNames(Harmony harmony)
         {
-            if (harmony == null) return;
-            if (!Chainloader.PluginInfos.TryGetValue(ModConfigGuid, out var pluginInfo)) return;
-            if (pluginInfo == null || pluginInfo.Instance == null) return;
+            ModConfigUiAdapter.Install(harmony, ConfigFileName, "PlayersInfo",
+                entry => GetEntryName(entry), GetLocalizedUiText, message => PluginLogger.ThrottleWarn("modconfig_adapter", message));
+        }
+        public static void RefreshVisibleUi() => ModConfigUiAdapter.RefreshVisibleUi();
+        public static void Shutdown() => ModConfigUiAdapter.Shutdown();
 
-            Assembly modConfigAssembly = pluginInfo.Instance.GetType().Assembly;
-            var postfix = new HarmonyMethod(typeof(ModConfigLocalization).GetMethod(
-                nameof(ModConfigDisplayNamePostfix),
-                BindingFlags.Static | BindingFlags.NonPublic));
-
-            foreach (Type type in modConfigAssembly.GetTypes())
+        private static string GetEntryName(ConfigEntryBase entry)
+        {
+            string section = entry.Definition.Section, key = entry.Definition.Key;
+            if (section == "Advanced" && key == "DebugLogging") return GetLocalizedEntryName(key);
+            if (section != "Display") return null;
+            switch (key)
             {
-                if (type == null || type.IsAbstract || type.IsInterface) continue;
-                if (type.FullName == null ||
-                    !type.FullName.StartsWith("PEAKLib.ModConfig.SettingOptions.BepInEx", StringComparison.Ordinal))
-                    continue;
-
-                MethodInfo getDisplayName = AccessTools.Method(type, "GetDisplayName", Type.EmptyTypes);
-                if (getDisplayName != null) harmony.Patch(getDisplayName, null, postfix);
-            }
-
-            var uiPostfix = new HarmonyMethod(typeof(ModConfigLocalization).GetMethod(
-                nameof(ModConfigUiChangedPostfix),
-                BindingFlags.Static | BindingFlags.NonPublic));
-
-            Type menuType = modConfigAssembly.GetType("PEAKLib.ModConfig.Components.ModdedSettingsMenu");
-            if (menuType == null) return;
-
-            foreach (string methodName in new[] { "OnEnable", "ShowSettings", "SetSection", "UpdateSectionTabs" })
-            {
-                MethodInfo method = null;
-                var methods = menuType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                for (int i = 0; i < methods.Length; i++)
-                {
-                    if (methods[i].Name == methodName)
-                    {
-                        method = methods[i];
-                        break;
-                    }
-                }
-                if (method != null) harmony.Patch(method, null, uiPostfix);
+                case "Enabled":
+                case "EnableStaminaBar":
+                case "ShowStaminaValue":
+                case "ShowExtraStaminaCap":
+                case "AfflictionIconDisplayMode":
+                case "EnableInventoryRow":
+                case "Anchor":
+                case "OffsetX":
+                case "OffsetY":
+                case "NearbyRange":
+                case "MaxNearbyCount":
+                case "TeammateSortMode":
+                case "SpectatorNearbyCenter":
+                case "RoundStaminaValue":
+                    return GetLocalizedEntryName(key);
+                default: return null;
             }
         }
 
@@ -121,93 +103,6 @@ namespace PlayersInfo.Helpers
             }
         }
 
-        public static void RefreshCache()
-        {
-            try
-            {
-                if (!Chainloader.PluginInfos.TryGetValue(ModConfigGuid, out var pluginInfo)) return;
-                if (pluginInfo == null || pluginInfo.Instance == null) return;
-
-                Type modConfigType = pluginInfo.Instance.GetType();
-                foreach (string propName in new[] { "EntriesProcessed", "ModdedKeys", "GetValidKeyPaths" })
-                {
-                    PropertyInfo prop = modConfigType.GetProperty(propName,
-                        BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                    if (prop != null && prop.GetValue(null) is IList list) list.Clear();
-                }
-
-                foreach (string methodName in new[] { "GenerateValidKeyPaths", "ProcessModEntries", "LoadModSettings" })
-                {
-                    MethodInfo method = modConfigType.GetMethod(methodName,
-                        BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                    method?.Invoke(null, null);
-                }
-            }
-            catch (Exception ex)
-            {
-                PluginLogger.ThrottleWarn("modconfig_refresh", "Refresh ModConfig cache failed: " + ex.Message);
-            }
-        }
-
-        private static void ModConfigDisplayNamePostfix(object __instance, ref string __result)
-        {
-            ConfigEntryBase entry = TryGetConfigEntry(__instance);
-            if (!IsPlayersInfoEntry(entry)) return;
-
-            string localized = GetLocalizedEntryName(entry.Definition.Key);
-            if (!string.IsNullOrEmpty(localized)) __result = localized;
-        }
-
-        private static void ModConfigUiChangedPostfix(MonoBehaviour __instance)
-        {
-            if (__instance == null) return;
-            __instance.StartCoroutine(LocalizeModConfigUiDeferred(__instance.transform));
-        }
-
-        private static IEnumerator LocalizeModConfigUiDeferred(Transform root)
-        {
-            yield return null;
-            LocalizeTextInHierarchy(root);
-        }
-
-        private static void LocalizeTextInHierarchy(Transform root)
-        {
-            if (root == null) return;
-            try
-            {
-                EnsureTmpReflection();
-                if (_tmpTextType == null || _tmpTextProp == null) return;
-
-                Component[] texts = root.GetComponentsInChildren(_tmpTextType, true);
-                for (int i = 0; i < texts.Length; i++)
-                {
-                    string current = _tmpTextProp.GetValue(texts[i]) as string;
-                    if (string.IsNullOrEmpty(current)) continue;
-
-                    string localized = GetLocalizedUiText(current);
-                    if (!string.IsNullOrEmpty(localized) && localized != current)
-                        _tmpTextProp.SetValue(texts[i], localized);
-                }
-            }
-            catch (Exception ex)
-            {
-                PluginLogger.ThrottleWarn("modconfig_ui_loc", "ModConfig UI localization failed: " + ex.Message);
-            }
-        }
-
-        private static void EnsureTmpReflection()
-        {
-            if (_tmpTextType != null) return;
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            for (int i = 0; i < assemblies.Length; i++)
-            {
-                _tmpTextType = assemblies[i].GetType("TMPro.TextMeshProUGUI");
-                if (_tmpTextType == null) continue;
-                _tmpTextProp = _tmpTextType.GetProperty("text");
-                return;
-            }
-        }
-
         private static string GetLocalizedUiText(string text)
         {
             string normalized = text.Replace(" ", string.Empty);
@@ -256,46 +151,11 @@ namespace PlayersInfo.Helpers
             }
         }
 
-        private static ConfigEntryBase TryGetConfigEntry(object instance)
-        {
-            if (instance == null) return null;
-            Type type = instance.GetType();
-
-            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            for (int i = 0; i < fields.Length; i++)
-            {
-                if (typeof(ConfigEntryBase).IsAssignableFrom(fields[i].FieldType))
-                    return fields[i].GetValue(instance) as ConfigEntryBase;
-            }
-
-            var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            for (int i = 0; i < props.Length; i++)
-            {
-                if (!typeof(ConfigEntryBase).IsAssignableFrom(props[i].PropertyType)) continue;
-                if (props[i].GetIndexParameters().Length != 0) continue;
-                try { return props[i].GetValue(instance, null) as ConfigEntryBase; }
-                catch { }
-            }
-
-            return null;
-        }
-
-        private static bool IsPlayersInfoEntry(ConfigEntryBase entry)
-        {
-            try
-            {
-                string path = entry?.ConfigFile?.ConfigFilePath;
-                return !string.IsNullOrEmpty(path) &&
-                    path.EndsWith(ConfigFileName, StringComparison.OrdinalIgnoreCase);
-            }
-            catch { return false; }
-        }
-
         private static void SetDescription(ConfigEntryBase entry, string text)
         {
-            if (entry?.Description == null || DescriptionBackingField == null) return;
+            if (!ModConfigUiAdapter.Owns(entry, ConfigFileName) || entry.Description == null || DescriptionBackingField == null) return;
             DescriptionBackingField.SetValue(entry.Description, text);
         }
+
     }
 }
-

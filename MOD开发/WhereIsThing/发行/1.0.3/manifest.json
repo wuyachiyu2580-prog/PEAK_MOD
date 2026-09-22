@@ -1,9 +1,0 @@
-{
-  "name": "WhereIsThing",
-  "version_number": "1.0.3",
-  "website_url": "",
-  "description": "Locate selected items, hazards, landmarks, and player-placed objects with local or shared presets.",
-  "dependencies": [
-    "BepInEx-BepInExPack_PEAK-5.4.2403"
-  ]
-}

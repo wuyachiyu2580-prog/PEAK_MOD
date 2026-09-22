@@ -48,7 +48,7 @@
 - `GeneratedChildrenSnapshot.json` 是后续官方生成结果重建的关键输入；2026-05-17 后要求 `schemaVersion=3`，并带 `relationshipCandidates` 与 `interestingComponentFields`，用于一次样本里检查椰子/椰子树、子生成器、SingleItemSpawner、桥、营火附属物、RisingLava、独立机关等父子/业务关系候选。旧 `RuntimeExport/ObjectCatalog/ObjectReferenceMap` 只能继续支撑模板/对象注册，不能单独用于完整地形重建。
 - `generated/template-snapshots.json` 和 `generated/object-registry-input.json` 已基于 Snapshot V2 重跑并随 Release 构建复制到插件目录；当前统计为 135 segment snapshots、193 模板候选、25 材质候选，`sample-regression-report.json status=pass`。
 - 诊断内存策略：原始 `GeneratedChildrenSnapshot.json` 不瘦身，但运行时写出已改为流式 JSON；UI 左下样本资产和 Catalog 注册表改为手动加载，避免启动/打开 UI 即加载开发期离线资产。
-- 2026-05-21 今日收尾状态：官方 `Generate Segment` 的最新 DLL 已部署，Release 构建 0 warnings / 0 errors。当前保守修复是 PropSpawner 零输出保底恢复：若生成前有子物体、生成后为 0，会恢复旧子物体并写 `zero-output PropSpawner diagnostics`。下一次压缩恢复后先读 `temp/2026-05-21.md`，再实机复测 Jungle/Roots/Snow 的 `backedUpSteps`、`restoredZeroedSteps` 和视觉上是否不再空段。
+- 2026-05-21 收尾资料已归档；项目当前永久暂停，不执行其中复测事项。
 - 2026-05-20 官方生成链最新状态：Beach 椰子/物品正常；Beach 地形材质仍未解决且失败的材质 replay / 子缩放同步已退回；Late/root pipeline 已收敛到 selected-step + 原版式 `Execute()`/deferred 执行。不要恢复外部 postfix guard、`Go()` 补跑、材质 replay 或子缩放同步旧方案。
 
 ## 必读文件

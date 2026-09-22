@@ -1,4 +1,40 @@
-﻿# Memory Changelog
+# Memory Changelog
+
+## 2026-09-21
+
+- [修改] WhereIsThing 0.1.2 发行 README/CHANGELOG 与开发 CHANGELOG：补英文玩家名娱乐用途、晚加入缺历史记录、仅显示物品名/距离的声明；核对投掷匹配与昵称解析代码，同步该 MOD README/RECENT/DECISIONS/temp 及索引。
+
+- [规则/修订] 按用户纠正，四 MOD 发行文案恢复英文和上一版排版；README 明确加入各自版本 What's new，CHANGELOG 同步英文条目、保留历史。修正 common/00、05 的旧中文偏好，同步各 MOD RECENT/DECISIONS/temp、索引和结果记录。DLL/图标/旧目录及 ZIP 未改。
+
+- [修改/索引] 按用户新指示准备四 MOD 新版发行目录（0.2.5/1.0.5/0.1.2/1.0.4），同步中文 README、完整历史 CHANGELOG、manifest、图标和最终 DLL；覆盖定位 MOD 的非 ModConfig 改动，不生成 ZIP、不上传。同步六件套、临时摘要、入口/索引/待办与结果记录，旧版目录原样保留，完整实机仍待验收。
+
+- [实现/验证] 四 MOD ModConfig 更新完成：PlayersInfo 0.2.5、WhySoLaggy 1.0.5、两个定位 MOD 保持 0.1.2/1.0.4。Release 均 0/0，23 项测试通过且无跳过，最终 DLL 已部署原 profile；新增 INTEGRATION_RESULT 并同步各 MOD 六件套/临时摘要/索引。完整 UI 实机待验收，历史发行和 ZIP 未修改。
+
+- [新增] `mods/ModConfigDiagnostics/INTEGRATION_PLAN_2026-09-21.md`：四 MOD 的 ModConfig 1.8.2 / UI 1.7.2 调研与计划，明确重注册、菜单迁移、语言委托字段、UI 归属、枚举显示与验证边界。
+- [计划/索引] 同步四 MOD 的 TODO/temp、全局待办、通用规范最新入口和索引；PlayersInfo 计划升 0.2.5、WhySoLaggy 计划升 1.0.5，两个定位 MOD 保持 0.1.2/1.0.4。源码、实际版本、DLL 和发行包未修改。
+- [规则] 当前没有专用 update_memory 工具；上述工作区 Markdown 为本轮已落盘记录，不宣称写入外部记忆服务。
+
+## 2026-09-20
+
+- [修改] WhereIsThing按用户要求Canvas排序32700→20000，保留窗口交互Raycaster；开发changelog/状态/决策/近期/临时摘要/索引已同步，0.1.2 Release构建0警告0错误并部署测试profile，未打包。
+
+- [修订] WhereIsMyAmulet远处文字变大反馈：清除屏幕投影Z、关闭TMP自动字号，1.0.4普通Release构建0警告0错误并部署；同步状态/待办/决策/摘要/索引，实际效果待用户复测。
+
+- [验证/修订] WhereIsMyAmulet用户最终对照确认30000失败、20000成功；固定20000并重新编译部署1.0.4（0警告0错误），同步状态/决策/临时摘要/索引，覆盖下方先前“仅Manual mode”的结论。
+
+- [更新] WhereIsMyAmulet用户确认Manual mode为下拉禁用原因；按要求恢复Canvas排序30000，移除临时探针，普通1.0.4 Release构建0警告0错误并部署。同步六件套/临时摘要/索引，30000效果待复测。
+
+- [修改] WhereIsMyAmulet六件套、temp/current和索引：记录1.0.4 TMP优化与TFA UI故障仍未解决，撤回排序已修复/Manual mode误判；限量只读诊断版已部署，等待复现报告。发行1.0.3及ZIP未变。
+
+## 2026-09-12
+
+- [验证] StateKeeper归因优化最终79项通过、无跳过；12局Runs的1306块只读回放（其中一局缺6块）。备份后同步profile双路径DLL，未重打包历史ZIP；`STATUS`/`temp/current`/研究文档已记录hash和部署边界。
+
+- [StateKeeper] analysisVersion7使用归因修订：组级分类、原单位资源汇总、使用/流转视图，补测试SDK；新增`research/USE_RULES_2026-09-12.md`，同步四件套/状态/TODO/临时摘要/索引。更正此前整份计划已完成、15局均完整以及入口耗时可排除卡顿的说法。
+
+- [结构] 为各 MOD 增加 `STATUS.md` / `TODO.md`，统一临时摘要为 `temp/current.md`，旧记录移入 `temp/archive/`。
+- [归档] DreamyAscent 研究资料移入 `archive/`，StateKeeper 长篇调研移入 `research/`，旧根待办保存至 `archive/TODO-2026-09-09.md`。
+- [修复] 更新 StateKeeper 当前状态、根 README、MEMORY_INDEX 和通用协作规则，消除已实现功能仍被标记为未实现的冲突。
 
 ## 2026-09-09
 

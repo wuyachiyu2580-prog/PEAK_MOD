@@ -75,20 +75,47 @@ namespace WhySoLaggy
         };
 
         private static readonly TokenText[] Tokens = BuildTokens();
-        private static string _patchedHarmonyId;
-        private static Type _tmpTextType;
-        private static PropertyInfo _tmpTextProperty;
-        private static MonoBehaviour _activeMenu;
-        private static Type _localizedTextType;
         private static FieldInfo _currentLanguageField;
-        private static EventInfo _languageChangedEvent;
-        private static Delegate _languageChangedHandler;
-        private static Coroutine _uiRefreshCoroutine;
-        private static MonoBehaviour _uiRefreshOwner;
-        private static Transform _uiRefreshRoot;
-        private static string _activeCategory;
-
+        private static readonly ModConfigUiAdapter.ActionFieldSubscription LanguageSubscription = new ModConfigUiAdapter.ActionFieldSubscription();
         internal static IEnumerable<LocalizedConfigEntry> Entries => ConfigEntries;
+
+        public static void PatchDisplayNames(Harmony harmony)
+        {
+            ModConfigUiAdapter.Install(harmony, ConfigFileName, WhySoLaggyPlugin.PluginName,
+                entry => GetLocalizedConfigText(entry.Definition.Section, entry.Definition.Key, IsChinese),
+                text => GetLocalizedToken(FindCanonicalToken(text), IsChinese),
+                message => WhySoLaggyPlugin.Log?.LogWarning(message));
+        }
+        public static void RefreshVisibleUi() => ModConfigUiAdapter.RefreshVisibleUi();
+        public static void SubscribeLanguageChanged(Action handler)
+        {
+            try
+            {
+                Type type = AccessTools.TypeByName("LocalizedText");
+                _currentLanguageField = type?.GetField("CURRENT_LANGUAGE", BindingFlags.Static | BindingFlags.Public);
+                LanguageSubscription.Subscribe(type?.GetField("OnLangugageChanged", BindingFlags.Static | BindingFlags.Public), handler);
+            }
+            catch (Exception ex) { WhySoLaggyPlugin.Log?.LogWarning("Language subscription skipped: " + ex.Message); }
+        }
+        public static void Shutdown()
+        {
+            LanguageSubscription.Dispose();
+            ModConfigUiAdapter.Shutdown();
+            _currentLanguageField = null;
+        }
+        private static bool IsOwnEntry(ConfigEntryBase entry) => ModConfigUiAdapter.Owns(entry, ConfigFileName);
+        internal static bool IsOwnCategory(string category) =>
+            ModConfigUiAdapter.SameMod(category, WhySoLaggyPlugin.PluginName) || category == WhySoLaggyPlugin.PluginGuid;
+        private static bool IsChinese
+        {
+            get
+            {
+                if (_currentLanguageField == null)
+                    _currentLanguageField = AccessTools.TypeByName("LocalizedText")?.GetField("CURRENT_LANGUAGE", BindingFlags.Static | BindingFlags.Public);
+                string language = _currentLanguageField?.GetValue(null)?.ToString();
+                return language == "SimplifiedChinese" || language == "TraditionalChinese";
+            }
+        }
 
         public static void ApplyLocalizedDescriptions(IEnumerable<ConfigEntryBase> entries)
         {
@@ -110,127 +137,6 @@ namespace WhySoLaggy
             }
         }
 
-        public static void PatchDisplayNames(Harmony harmony)
-        {
-            if (harmony == null || string.Equals(_patchedHarmonyId, harmony.Id, StringComparison.Ordinal))
-            {
-                return;
-            }
-
-            if (!Chainloader.PluginInfos.TryGetValue(ModConfigGuid, out PluginInfo info) ||
-                info == null || info.Instance == null)
-            {
-                return;
-            }
-
-            Assembly assembly = info.Instance.GetType().Assembly;
-            MethodInfo displayPostfixMethod = typeof(ModConfigLocalization).GetMethod(
-                nameof(DisplayNamePostfix), BindingFlags.Static | BindingFlags.NonPublic);
-            HarmonyMethod displayPostfix = new HarmonyMethod(displayPostfixMethod);
-            bool patched = false;
-
-            try
-            {
-                foreach (Type type in assembly.GetTypes())
-                {
-                    if (type == null || type.IsAbstract || type.IsInterface || type.FullName == null ||
-                        !type.FullName.StartsWith("PEAKLib.ModConfig.SettingOptions.BepInEx", StringComparison.Ordinal))
-                    {
-                        continue;
-                    }
-
-                    MethodInfo method = AccessTools.Method(type, "GetDisplayName", Type.EmptyTypes);
-                    if (method == null)
-                    {
-                        continue;
-                    }
-
-                    harmony.Patch(method, null, displayPostfix);
-                    patched = true;
-                }
-
-                Type menuType = assembly.GetType("PEAKLib.ModConfig.Components.ModdedSettingsMenu");
-                if (menuType != null)
-                {
-                    HarmonyMethod menuPostfix = new HarmonyMethod(typeof(ModConfigLocalization).GetMethod(
-                        nameof(MenuChangedPostfix), BindingFlags.Static | BindingFlags.NonPublic));
-                    foreach (string methodName in new[] { "OnEnable", "ShowSettings", "SetSection", "UpdateSectionTabs" })
-                    {
-                        MethodInfo method = menuType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                            .FirstOrDefault(candidate => candidate.Name == methodName);
-                        if (method == null)
-                        {
-                            continue;
-                        }
-
-                        harmony.Patch(method, null, menuPostfix);
-                        patched = true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                WhySoLaggyPlugin.Log?.LogWarning("[WHY_LAG] ModConfig localization patch skipped: " + ex.Message);
-            }
-
-            if (patched)
-            {
-                _patchedHarmonyId = harmony.Id;
-            }
-        }
-
-        public static void RefreshVisibleUi()
-        {
-            try
-            {
-                if (IsOwnCategory(_activeCategory) && _activeMenu != null &&
-                    _activeMenu.gameObject != null && _activeMenu.gameObject.activeInHierarchy)
-                {
-                    ScheduleUiRefresh(_activeMenu, _activeMenu.transform);
-                }
-            }
-            catch
-            {
-                _activeMenu = null;
-            }
-        }
-
-        public static void Shutdown()
-        {
-            StopUiRefresh();
-            UnsubscribeLanguageChanged();
-            _activeMenu = null;
-            _activeCategory = null;
-            _patchedHarmonyId = null;
-            _tmpTextType = null;
-            _tmpTextProperty = null;
-        }
-
-        public static void SubscribeLanguageChanged(Action handler)
-        {
-            if (handler == null || _languageChangedHandler != null)
-            {
-                return;
-            }
-
-            EnsureLocalizedTextReflection();
-            if (_languageChangedEvent == null)
-            {
-                return;
-            }
-
-            try
-            {
-                Delegate callback = Delegate.CreateDelegate(_languageChangedEvent.EventHandlerType, handler.Target, handler.Method);
-                _languageChangedEvent.AddEventHandler(null, callback);
-                _languageChangedHandler = callback;
-            }
-            catch (Exception ex)
-            {
-                WhySoLaggyPlugin.Log?.LogWarning("[WHY_LAG] Game language change subscription skipped: " + ex.Message);
-            }
-        }
-
         internal static string GetLocalizedConfigText(string section, string key, bool chinese)
         {
             LocalizedConfigEntry entry = FindEntry(section, key);
@@ -247,249 +153,6 @@ namespace WhySoLaggy
         {
             string canonical = FindCanonicalToken(category);
             return string.IsNullOrEmpty(canonical) ? null : GetLocalizedToken(canonical, chinese);
-        }
-
-        private static void DisplayNamePostfix(object __instance, ref string __result)
-        {
-            ConfigEntryBase entry = TryGetConfigEntry(__instance);
-            if (!IsOwnEntry(entry))
-            {
-                return;
-            }
-
-            string localized = GetLocalizedConfigText(entry.Definition.Section, entry.Definition.Key, IsChinese);
-            if (!string.IsNullOrEmpty(localized))
-            {
-                __result = localized;
-            }
-        }
-
-        private static void MenuChangedPostfix(MonoBehaviour __instance, object[] __args, MethodBase __originalMethod)
-        {
-            _activeMenu = __instance;
-            if (__originalMethod != null &&
-                (__originalMethod.Name == "ShowSettings" || __originalMethod.Name == "SetSection" ||
-                    __originalMethod.Name == "UpdateSectionTabs"))
-            {
-                string category = __args == null ? null : __args.OfType<string>().FirstOrDefault();
-                if (!string.IsNullOrEmpty(category))
-                {
-                    _activeCategory = category;
-                }
-            }
-
-            if (__instance != null && IsOwnCategory(_activeCategory))
-            {
-                ScheduleUiRefresh(__instance, __instance.transform);
-            }
-        }
-
-        private static void ScheduleUiRefresh(MonoBehaviour owner, Transform root)
-        {
-            if (owner == null || root == null)
-            {
-                return;
-            }
-
-            if (_uiRefreshCoroutine != null && _uiRefreshOwner == owner && _uiRefreshRoot == root)
-            {
-                return;
-            }
-
-            StopUiRefresh();
-            _uiRefreshOwner = owner;
-            _uiRefreshRoot = root;
-            _uiRefreshCoroutine = owner.StartCoroutine(RefreshVisibleUiDeferred(owner, root));
-        }
-
-        private static void StopUiRefresh()
-        {
-            if (!ReferenceEquals(_uiRefreshOwner, null) && !ReferenceEquals(_uiRefreshCoroutine, null))
-            {
-                try
-                {
-                    _uiRefreshOwner.StopCoroutine(_uiRefreshCoroutine);
-                }
-                catch
-                {
-                    // The menu may already be destroyed during a page transition.
-                }
-            }
-
-            _uiRefreshCoroutine = null;
-            _uiRefreshOwner = null;
-            _uiRefreshRoot = null;
-        }
-
-        private static IEnumerator RefreshVisibleUiDeferred(MonoBehaviour owner, Transform root)
-        {
-            yield return null;
-            try
-            {
-                if (owner == _activeMenu && root == _uiRefreshRoot && IsOwnCategory(_activeCategory))
-                {
-                    LocalizeTextInHierarchy(root);
-                }
-            }
-            finally
-            {
-                if (_uiRefreshOwner == owner && _uiRefreshRoot == root)
-                {
-                    _uiRefreshCoroutine = null;
-                    _uiRefreshOwner = null;
-                    _uiRefreshRoot = null;
-                }
-            }
-        }
-
-        private static void LocalizeTextInHierarchy(Transform root)
-        {
-            if (root == null)
-            {
-                return;
-            }
-
-            try
-            {
-                EnsureTmpReflection();
-                if (_tmpTextType == null || _tmpTextProperty == null)
-                {
-                    return;
-                }
-
-                foreach (Component component in root.GetComponentsInChildren(_tmpTextType, true))
-                {
-                    string current = _tmpTextProperty.GetValue(component, null) as string;
-                    string localized = GetLocalizedUiText(current, IsChinese);
-                    if (!string.IsNullOrEmpty(localized) && localized != current)
-                    {
-                        _tmpTextProperty.SetValue(component, localized, null);
-                    }
-                }
-            }
-            catch
-            {
-                // Keep ModConfig usable if its UI implementation changes.
-            }
-        }
-
-        private static void EnsureTmpReflection()
-        {
-            if (_tmpTextType != null)
-            {
-                return;
-            }
-
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Type type = assembly.GetType("TMPro.TextMeshProUGUI");
-                if (type == null)
-                {
-                    continue;
-                }
-
-                _tmpTextType = type;
-                _tmpTextProperty = type.GetProperty("text");
-                return;
-            }
-        }
-
-        private static void EnsureLocalizedTextReflection()
-        {
-            if (_localizedTextType != null)
-            {
-                return;
-            }
-
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Type type = assembly.GetType("Peak.LocalizedText") ?? assembly.GetType("LocalizedText");
-                if (type == null)
-                {
-                    try
-                    {
-                        type = assembly.GetTypes().FirstOrDefault(candidate => candidate != null && candidate.Name == "LocalizedText");
-                    }
-                    catch
-                    {
-                        type = null;
-                    }
-                }
-                if (type == null)
-                {
-                    continue;
-                }
-
-                _localizedTextType = type;
-                _currentLanguageField = type.GetField("CURRENT_LANGUAGE", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                _languageChangedEvent = type.GetEvent("OnLangugageChanged", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                return;
-            }
-        }
-
-        private static void UnsubscribeLanguageChanged()
-        {
-            if (_languageChangedEvent != null && _languageChangedHandler != null)
-            {
-                try
-                {
-                    _languageChangedEvent.RemoveEventHandler(null, _languageChangedHandler);
-                }
-                catch
-                {
-                    // The game assembly may already be unloading.
-                }
-            }
-
-            _languageChangedHandler = null;
-            _languageChangedEvent = null;
-            _currentLanguageField = null;
-            _localizedTextType = null;
-        }
-
-        private static string GetLocalizedUiText(string text, bool chinese)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return null;
-            }
-
-            foreach (LocalizedConfigEntry entry in ConfigEntries)
-            {
-                if (string.Equals(text, entry.EnglishName, StringComparison.Ordinal) ||
-                    string.Equals(text, entry.ChineseName, StringComparison.Ordinal))
-                {
-                    return chinese ? entry.ChineseName : entry.EnglishName;
-                }
-            }
-
-            string canonical = FindCanonicalToken(text);
-            if (!string.IsNullOrEmpty(canonical))
-            {
-                return GetLocalizedToken(canonical, chinese);
-            }
-
-            string[] values = text.Replace(" ", string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            if (values.Length > 1)
-            {
-                string[] localized = values.Select(FindCanonicalToken).Select(value =>
-                    string.IsNullOrEmpty(value) ? null : GetLocalizedToken(value, chinese)).ToArray();
-                if (localized.All(value => !string.IsNullOrEmpty(value)))
-                {
-                    return string.Join(chinese ? "、" : ", ", localized);
-                }
-            }
-
-            foreach (LocalizedConfigEntry entry in ConfigEntries)
-            {
-                if (string.Equals(text, entry.EnglishDescription, StringComparison.Ordinal) ||
-                    string.Equals(text, entry.ChineseDescription, StringComparison.Ordinal))
-                {
-                    return chinese ? entry.ChineseDescription : entry.EnglishDescription;
-                }
-            }
-
-            return null;
         }
 
         private static string FindCanonicalToken(string text)
@@ -576,55 +239,6 @@ namespace WhySoLaggy
             return new TokenText(key, english, chinese);
         }
 
-        private static ConfigEntryBase TryGetConfigEntry(object instance)
-        {
-            if (instance == null)
-            {
-                return null;
-            }
-
-            Type type = instance.GetType();
-            foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                if (typeof(ConfigEntryBase).IsAssignableFrom(field.FieldType))
-                {
-                    return field.GetValue(instance) as ConfigEntryBase;
-                }
-            }
-
-            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                if (!typeof(ConfigEntryBase).IsAssignableFrom(property.PropertyType) || property.GetIndexParameters().Length != 0)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    return property.GetValue(instance, null) as ConfigEntryBase;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-
-            return null;
-        }
-
-        private static bool IsOwnEntry(ConfigEntryBase entry)
-        {
-            try
-            {
-                string path = entry == null || entry.ConfigFile == null ? null : entry.ConfigFile.ConfigFilePath;
-                return !string.IsNullOrEmpty(path) && path.EndsWith(ConfigFileName, StringComparison.OrdinalIgnoreCase);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         private static void SetDescription(ConfigEntryBase entry, string text)
         {
             if (entry == null || entry.Description == null || DescriptionBackingField == null || string.IsNullOrEmpty(text))
@@ -639,41 +253,6 @@ namespace WhySoLaggy
             catch (Exception ex)
             {
                 WhySoLaggyPlugin.Log?.LogWarning("[WHY_LAG] ModConfig description localization skipped: " + ex.Message);
-            }
-        }
-
-        internal static bool IsOwnCategory(string category)
-        {
-            if (string.Equals(category, WhySoLaggyPlugin.PluginName, StringComparison.Ordinal) ||
-                string.Equals(category, WhySoLaggyPlugin.PluginGuid, StringComparison.Ordinal))
-            {
-                return true;
-            }
-
-            string canonical = FindCanonicalToken(category);
-            if (string.Equals(canonical, "WhySoLaggy", StringComparison.Ordinal) ||
-                ConfigEntries.Any(entry => string.Equals(entry.Section, canonical, StringComparison.Ordinal)))
-            {
-                return true;
-            }
-
-            // ModConfig uses the selected section as the category after the
-            // plugin panel has been opened. Keep this check scoped to our
-            // stable section names so another MOD's section is never treated
-            // as ours.
-            return ConfigEntries.Any(entry =>
-                string.Equals(entry.Section, category, StringComparison.Ordinal));
-        }
-
-        private static bool IsChinese
-        {
-            get
-            {
-                EnsureLocalizedTextReflection();
-                object language = _currentLanguageField == null ? null : _currentLanguageField.GetValue(null);
-                string name = language == null ? string.Empty : language.ToString();
-                return string.Equals(name, "SimplifiedChinese", StringComparison.Ordinal) ||
-                    string.Equals(name, "TraditionalChinese", StringComparison.Ordinal);
             }
         }
 
@@ -711,5 +290,6 @@ namespace WhySoLaggy
             internal string English { get; }
             internal string Chinese { get; }
         }
+
     }
 }

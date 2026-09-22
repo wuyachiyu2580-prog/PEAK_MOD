@@ -1,5 +1,19 @@
 # WhereIsThing Files
 
+## 2026-09-21 发行文件准备完成
+
+当前版本 `0.1.2` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/WhereIsThing/发行/0.1.2`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。
+
+本版覆盖：放置物及 owner 识别、玩家放置预设、分类校正、分帧发现和标签优化、20000 排序、ModConfig 适配。
+
+此前发行目录和 ZIP 保留原样；下方旧日期/旧版本状态为历史，不覆盖本节。
+
+## 2026-09-21 当前产物
+
+- 开发版本 `0.1.2` / 程序集 `0.1.2.0`；新增 `Helpers/ModConfigUiAdapter.cs`（独立反射适配器）。
+- profile 输出：`C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\WhereIsThing.dll`，164352 字节，SHA-256 `CF1C9043F74E843032CB65F972137EA135297D690EA9E397929977AAB889BF63`。
+- 旧发行 DLL/hash 属于历史，不再与当前 profile 相同；验证入口：`../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。
+
 更新时间：2026-09-06
 
 ## 源码

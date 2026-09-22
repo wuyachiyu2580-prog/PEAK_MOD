@@ -1,5 +1,12 @@
 # StateKeeper 0.1.0
 
+## Local Development Update
+
+- Separate observed item use from its effects. Combine evidence before counting, keep primary and secondary actions separate, and exclude inventory transfers from use counts.
+- Show continuous fuel and fraction consumption in their own units without inventing an action count. Preserve unknown users and incomplete recording boundaries.
+- Add item-use and item-flow views with filters, sorting and evidence references. Existing contribution and observation views remain available.
+- Rebuild derived analysis caches with version 7; original recordings are unchanged. This update is not yet included in the historical release ZIP; in-game UI validation remains pending.
+
 ## First Public Test Release
 
 - Fixed truncated Unfavorite and Rename labels in the English history list by widening the action area and preserving text padding.

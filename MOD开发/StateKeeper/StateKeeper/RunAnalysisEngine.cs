@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -488,7 +488,7 @@ namespace StateKeeper
         private void AddItem(AnalysisItemObservation row, bool associate = true)
         {
             row.epoch = _evidence?.epoch ?? _epoch; row.evidence = _evidence;
-            string key = row.playerIndex + ":" + row.itemGuid + ":" + row.kind + ":" + row.resourceKey;
+            string key = row.playerIndex + ":" + row.actorPlayerIndex + ":" + row.targetPlayerIndex + ":" + row.itemId + ":" + row.prefabName + ":" + row.itemName + ":" + row.itemGuid + ":" + row.kind + ":" + row.resourceKey;
             AnalysisItemObservation old;
             if (_recentEvidence.TryGetValue(key, out old) && old.epoch == row.epoch && Math.Abs(row.time - old.time) < .05f && old.previousValue == row.previousValue && old.value == row.value) { old.evidenceCount++; return; }
             _recentEvidence[key] = row;
