@@ -1,0 +1,1524 @@
+{
+  "date": "2026-10-05",
+  "originalVersion": "0.2.0.0",
+  "originalSha256": "CC1ECDE51B0A4F6F36DB54DE2232FB49CAB59CEDE43CBFFEECBC83EC7A868ADC",
+  "sourceFiles": 474,
+  "sourceParseErrors": 0,
+  "sourceTrCalls": 4968,
+  "sourceKinds": [
+    {
+      "Name": "expression",
+      "Count": 330
+    },
+    {
+      "Name": "interpolated",
+      "Count": 353
+    },
+    {
+      "Name": "literal",
+      "Count": 4204
+    },
+    {
+      "Name": "variable-or-expression",
+      "Count": 81
+    }
+  ],
+  "sourceStatuses": [
+    {
+      "Name": "dictionary-hit-not-runtime-proof",
+      "Count": 1081
+    },
+    {
+      "Name": "missing-dictionary",
+      "Count": 3122
+    },
+    {
+      "Name": "preserve-language-code",
+      "Count": 1
+    },
+    {
+      "Name": "unhandled-nonliteral-call",
+      "Count": 749
+    },
+    {
+      "Name": "whitelisted-method-template-match-not-proven",
+      "Count": 15
+    }
+  ],
+  "ilTrCalls": 4968,
+  "ilStatuses": [
+    {
+      "Name": "dynamic-source-match-only",
+      "Count": 15
+    },
+    {
+      "Name": "eligible-fixed-site",
+      "Count": 1081
+    },
+    {
+      "Name": "missing-dictionary",
+      "Count": 3122
+    },
+    {
+      "Name": "preserve-language-code",
+      "Count": 1
+    },
+    {
+      "Name": "unhandled-nonliteral-call",
+      "Count": 749
+    }
+  ],
+  "ilLiteralUnique": 3239,
+  "unmappedLiteralUnique": 2720,
+  "bilingualAssignments": 550,
+  "directLanguageReads": 30,
+  "configurationBindings": 69,
+  "modules": [
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel",
+      "total": 1953,
+      "literal": 1692,
+      "fixedEligible": 487,
+      "missingLiteral": 1205,
+      "nonliteral": 261,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi",
+      "total": 1952,
+      "literal": 1725,
+      "fixedEligible": 375,
+      "missingLiteral": 1350,
+      "nonliteral": 227,
+      "dynamicSourceOnly": 5,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorTools",
+      "total": 152,
+      "literal": 91,
+      "fixedEligible": 4,
+      "missingLiteral": 87,
+      "nonliteral": 61,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Launch.LaunchPanel",
+      "total": 62,
+      "literal": 51,
+      "fixedEligible": 35,
+      "missingLiteral": 16,
+      "nonliteral": 11,
+      "dynamicSourceOnly": 7,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorSession",
+      "total": 60,
+      "literal": 39,
+      "fixedEligible": 4,
+      "missingLiteral": 35,
+      "nonliteral": 21,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c",
+      "total": 58,
+      "literal": 52,
+      "fixedEligible": 8,
+      "missingLiteral": 44,
+      "nonliteral": 6,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Teams.TeamUi",
+      "total": 45,
+      "literal": 43,
+      "fixedEligible": 9,
+      "missingLiteral": 34,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.LobbyOverlay",
+      "total": 33,
+      "literal": 31,
+      "fixedEligible": 21,
+      "missingLiteral": 10,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Items.ItemDef",
+      "total": 31,
+      "literal": 24,
+      "fixedEligible": 6,
+      "missingLiteral": 18,
+      "nonliteral": 7,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Teams.TeamPanel",
+      "total": 28,
+      "literal": 20,
+      "fixedEligible": 6,
+      "missingLiteral": 14,
+      "nonliteral": 8,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Generation.LoadOverlay",
+      "total": 25,
+      "literal": 14,
+      "fixedEligible": 2,
+      "missingLiteral": 12,
+      "nonliteral": 11,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopNpcs",
+      "total": 22,
+      "literal": 18,
+      "fixedEligible": 2,
+      "missingLiteral": 16,
+      "nonliteral": 4,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c",
+      "total": 18,
+      "literal": 18,
+      "fixedEligible": 9,
+      "missingLiteral": 9,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Items.RangedDef",
+      "total": 18,
+      "literal": 18,
+      "fixedEligible": 4,
+      "missingLiteral": 14,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.LoadSync",
+      "total": 16,
+      "literal": 11,
+      "fixedEligible": 2,
+      "missingLiteral": 9,
+      "nonliteral": 5,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Teams.TeamHud",
+      "total": 16,
+      "literal": 12,
+      "fixedEligible": 4,
+      "missingLiteral": 8,
+      "nonliteral": 4,
+      "dynamicSourceOnly": 3,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Items.ItemSounds",
+      "total": 16,
+      "literal": 16,
+      "fixedEligible": 0,
+      "missingLiteral": 16,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<SubTabs>d__157",
+      "total": 15,
+      "literal": 15,
+      "fixedEligible": 7,
+      "missingLiteral": 8,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Items.LootDef",
+      "total": 14,
+      "literal": 14,
+      "fixedEligible": 0,
+      "missingLiteral": 14,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.AssetOrigin",
+      "total": 14,
+      "literal": 13,
+      "fixedEligible": 3,
+      "missingLiteral": 10,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.HotkeyHint",
+      "total": 14,
+      "literal": 14,
+      "fixedEligible": 13,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorMode",
+      "total": 13,
+      "literal": 8,
+      "fixedEligible": 0,
+      "missingLiteral": 8,
+      "nonliteral": 5,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.ResolverNotice",
+      "total": 13,
+      "literal": 9,
+      "fixedEligible": 0,
+      "missingLiteral": 9,
+      "nonliteral": 4,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopAssets",
+      "total": 12,
+      "literal": 10,
+      "fixedEligible": 1,
+      "missingLiteral": 9,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Items.EffectDef",
+      "total": 12,
+      "literal": 10,
+      "fixedEligible": 3,
+      "missingLiteral": 7,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopItems",
+      "total": 12,
+      "literal": 7,
+      "fixedEligible": 1,
+      "missingLiteral": 6,
+      "nonliteral": 5,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Online.LobbyBrowser",
+      "total": 11,
+      "literal": 8,
+      "fixedEligible": 0,
+      "missingLiteral": 8,
+      "nonliteral": 3,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.ImportSet",
+      "total": 10,
+      "literal": 9,
+      "fixedEligible": 9,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.ForgeKiosk",
+      "total": 10,
+      "literal": 10,
+      "fixedEligible": 10,
+      "missingLiteral": 0,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Npc.NpcHud",
+      "total": 9,
+      "literal": 4,
+      "fixedEligible": 1,
+      "missingLiteral": 3,
+      "nonliteral": 5,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Online.TransferProgress",
+      "total": 8,
+      "literal": 4,
+      "fixedEligible": 0,
+      "missingLiteral": 4,
+      "nonliteral": 4,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Items.ItemCategories",
+      "total": 8,
+      "literal": 8,
+      "fixedEligible": 8,
+      "missingLiteral": 0,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass212_0",
+      "total": 8,
+      "literal": 8,
+      "fixedEligible": 4,
+      "missingLiteral": 4,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass213_0",
+      "total": 8,
+      "literal": 8,
+      "fixedEligible": 1,
+      "missingLiteral": 7,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass511_0",
+      "total": 8,
+      "literal": 4,
+      "fixedEligible": 0,
+      "missingLiteral": 4,
+      "nonliteral": 4,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.ForgeSession",
+      "total": 8,
+      "literal": 8,
+      "fixedEligible": 0,
+      "missingLiteral": 8,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.ForgeHud",
+      "total": 7,
+      "literal": 5,
+      "fixedEligible": 5,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.LobbyHost",
+      "total": 7,
+      "literal": 6,
+      "fixedEligible": 2,
+      "missingLiteral": 4,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass258_0",
+      "total": 7,
+      "literal": 7,
+      "fixedEligible": 1,
+      "missingLiteral": 6,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorCamera",
+      "total": 6,
+      "literal": 6,
+      "fixedEligible": 6,
+      "missingLiteral": 0,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.NewsPopup",
+      "total": 6,
+      "literal": 5,
+      "fixedEligible": 2,
+      "missingLiteral": 3,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.ForgeChat",
+      "total": 6,
+      "literal": 5,
+      "fixedEligible": 0,
+      "missingLiteral": 5,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass344_0",
+      "total": 6,
+      "literal": 6,
+      "fixedEligible": 1,
+      "missingLiteral": 5,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Items.CustomItems",
+      "total": 6,
+      "literal": 2,
+      "fixedEligible": 0,
+      "missingLiteral": 2,
+      "nonliteral": 4,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.AssetViewer",
+      "total": 6,
+      "literal": 6,
+      "fixedEligible": 0,
+      "missingLiteral": 6,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass198_0",
+      "total": 6,
+      "literal": 6,
+      "fixedEligible": 1,
+      "missingLiteral": 5,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass295_0",
+      "total": 5,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 4,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Teams.TeamState",
+      "total": 5,
+      "literal": 3,
+      "fixedEligible": 3,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Npc.ForgeInteractUi",
+      "total": 5,
+      "literal": 2,
+      "fixedEligible": 1,
+      "missingLiteral": 1,
+      "nonliteral": 3,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Online.ByteText",
+      "total": 5,
+      "literal": 5,
+      "fixedEligible": 2,
+      "missingLiteral": 2,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Online.LobbyRegistry",
+      "total": 5,
+      "literal": 5,
+      "fixedEligible": 0,
+      "missingLiteral": 5,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass238_1",
+      "total": 5,
+      "literal": 5,
+      "fixedEligible": 0,
+      "missingLiteral": 5,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.PlacementSetup",
+      "total": 5,
+      "literal": 5,
+      "fixedEligible": 0,
+      "missingLiteral": 5,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass211_0",
+      "total": 5,
+      "literal": 5,
+      "fixedEligible": 0,
+      "missingLiteral": 5,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.MenuSignRig",
+      "total": 4,
+      "literal": 3,
+      "fixedEligible": 3,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Launch.BiomePlan",
+      "total": 4,
+      "literal": 4,
+      "fixedEligible": 2,
+      "missingLiteral": 2,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Npc.NpcDialogUi",
+      "total": 4,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 3,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.LightVolumeExtender",
+      "total": 4,
+      "literal": 4,
+      "fixedEligible": 0,
+      "missingLiteral": 4,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass69_0",
+      "total": 4,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 3,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass269_0",
+      "total": 4,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 3,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopLibrary/Entry",
+      "total": 3,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass845_0",
+      "total": 3,
+      "literal": 1,
+      "fixedEligible": 1,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.ScatterPreset",
+      "total": 3,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 3,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass902_0",
+      "total": 3,
+      "literal": 3,
+      "fixedEligible": 0,
+      "missingLiteral": 3,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Launch.LaunchPlan",
+      "total": 3,
+      "literal": 3,
+      "fixedEligible": 2,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Online.MapPublisher",
+      "total": 3,
+      "literal": 2,
+      "fixedEligible": 0,
+      "missingLiteral": 2,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.ScatterShare/<GuestFetch>d__11",
+      "total": 3,
+      "literal": 2,
+      "fixedEligible": 0,
+      "missingLiteral": 2,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass61_0",
+      "total": 3,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 3,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Online.MapPublisher/<Routine>d__28",
+      "total": 3,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 3,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass748_0",
+      "total": 3,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 3,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Items.MeleeDef",
+      "total": 3,
+      "literal": 3,
+      "fixedEligible": 0,
+      "missingLiteral": 3,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.StartCountdownRunner",
+      "total": 3,
+      "literal": 2,
+      "fixedEligible": 1,
+      "missingLiteral": 1,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Online.NetContent",
+      "total": 2,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.LobbyBans/KickModalPatch",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass417_0",
+      "total": 2,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.JoinFlow",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass279_0",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass452_0",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass259_0",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 0,
+      "missingLiteral": 2,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass295_2",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.PlaytestGuard",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 2,
+      "missingLiteral": 0,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.PlaytestFly",
+      "total": 2,
+      "literal": 1,
+      "fixedEligible": 1,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass203_0",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 0,
+      "missingLiteral": 2,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass344_3",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 0,
+      "missingLiteral": 2,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass296_0",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 0,
+      "missingLiteral": 2,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Online.NewsItem",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass641_0",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass571_0",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 0,
+      "missingLiteral": 2,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorSession/<>c__DisplayClass61_5",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass747_0",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass8_0",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass146_0",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 1,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.HazardCatalog",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 2,
+      "missingLiteral": 0,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass14_0",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 0,
+      "missingLiteral": 2,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.LookApplier",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass63_0",
+      "total": 2,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 2,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorSession/<>c",
+      "total": 2,
+      "literal": 2,
+      "fixedEligible": 1,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass212_0",
+      "total": 2,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Npc.ForgeInteractible",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.WorldPrint",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.RockLook",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Models.FbxLoader",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass285_2",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.Models.ModelLibrary",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopLibrary/<>c__DisplayClass37_0",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass288_3",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.ForgeSky",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Online.PmfApi",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass200_0",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Patches.MainMenuPatch/Label",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Patches.PickupPatch/Request",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.BlenderTool",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 1,
+      "missingLiteral": 0,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass20_0",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass643_0",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.NetViews",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass607_0",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass621_1",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass567_0",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass565_7",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass147_0",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass404_5",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass451_2",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass451_3",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass11_5",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass720_0",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass859_0",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Net.MissingMap",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass874_0",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.MenuSignPrefs",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.SegmentFocus",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass565_6",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorSession/<>c__DisplayClass61_4",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorSession/<>c__DisplayClass61_3",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass451_0",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.WorkshopPanel/<>c__DisplayClass439_0",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorSession/<>c__DisplayClass61_2",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Editor.EditorUi/<>c__DisplayClass239_1",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 0,
+      "missingLiteral": 1,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Airport.MapContents",
+      "total": 1,
+      "literal": 1,
+      "fixedEligible": 1,
+      "missingLiteral": 0,
+      "nonliteral": 0,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    },
+    {
+      "type": "PeakMapForge.Build.AssetLibrary",
+      "total": 1,
+      "literal": 0,
+      "fixedEligible": 0,
+      "missingLiteral": 0,
+      "nonliteral": 1,
+      "dynamicSourceOnly": 0,
+      "structuralSkip": 0
+    }
+  ],
+  "directDisplayCandidates": 92,
+  "languageParameterMethods": 12,
+  "bilingualDeclarations": 45,
+  "dynamicRegistrationReview": [
+    {
+      "source": "PeakMapForge.Launch.LaunchPanel.OnGUI",
+      "allTrCalls": 12,
+      "nonliteralTrCalls": 1,
+      "finding": "method-has-Tr-calls-template-match-needs-validation"
+    },
+    {
+      "source": "PeakMapForge.Launch.LaunchPanel.DrawTeamsLine",
+      "allTrCalls": 6,
+      "nonliteralTrCalls": 2,
+      "finding": "method-has-Tr-calls-template-match-needs-validation"
+    },
+    {
+      "source": "PeakMapForge.Launch.LaunchPanel.DrawPlayers",
+      "allTrCalls": 15,
+      "nonliteralTrCalls": 4,
+      "finding": "method-has-Tr-calls-template-match-needs-validation"
+    },
+    {
+      "source": "PeakMapForge.Teams.TeamHud.DrawBanner",
+      "allTrCalls": 10,
+      "nonliteralTrCalls": 3,
+      "finding": "method-has-Tr-calls-template-match-needs-validation"
+    },
+    {
+      "source": "PeakMapForge.Npc.NpcHud.OnGUI",
+      "allTrCalls": 0,
+      "nonliteralTrCalls": 0,
+      "finding": "no-Tr-call-in-this-source-method"
+    },
+    {
+      "source": "PeakMapForge.Editor.EditorUi.OvSize",
+      "allTrCalls": 1,
+      "nonliteralTrCalls": 1,
+      "finding": "method-has-Tr-calls-template-match-needs-validation"
+    },
+    {
+      "source": "PeakMapForge.Editor.EditorUi.ScRules",
+      "allTrCalls": 33,
+      "nonliteralTrCalls": 3,
+      "finding": "method-has-Tr-calls-template-match-needs-validation"
+    },
+    {
+      "source": "PeakMapForge.Editor.EditorUi.OvTerrainDraft",
+      "allTrCalls": 1,
+      "nonliteralTrCalls": 1,
+      "finding": "method-has-Tr-calls-template-match-needs-validation"
+    }
+  ],
+  "knownIncorrectDynamicSource": "PeakMapForge.Npc.NpcHud.OnGUI; actual defeated text is in DrawBosses",
+  "previousAuditLimitation": "Counts dictionary hits; does not prove actual template routing, runtime execution, author-content boundaries or complete UI coverage.",
+  "mappedEnglishWithMultipleGermanVariants": 62
+}

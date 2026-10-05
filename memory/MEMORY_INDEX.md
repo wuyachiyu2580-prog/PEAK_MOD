@@ -1,6 +1,11 @@
 # Memory Index
 
-更新时间：2026-09-21
+更新时间：2026-10-05
+
+- PeakWorkshopCN 第一轮补齐后待实机复测：`MOD开发/PeakWorkshopCN/IMPLEMENTATION.md`、`AUDIT.md`、`audit/2026-10-05/`；Boss 已接 DrawBosses。4,968 Tr 调用；当前固定命中 2,006/4,204；3,122 固定缺映射、749 非固定无规则属于补齐前基线，41 项测试通过。
+- 容错修复版已于 2026-10-05 16:58:48 +08:00 在确认游戏退出后覆盖 profile；304,128 字节，源/目标哈希一致，原 DLL 未变。旧日志有入口跳过警告且缺初始化完成信息，具体中断位置未确认；等待重启检查日志及多人页，泛型入口可能仍被跳过。
+
+- PeakWorkshopCN `0.1.0` 已构建部署：固定命中 2,006/4,204，1,000 条生成规则（包含固定文字和动态模板）、配置67条非空说明；41项测试不覆盖 Unity 实际初始化，完整覆盖/实机待验收。入口 `mods/PeakWorkshopCN/README.md`，记录 `MOD开发/PeakWorkshopCN/IMPLEMENTATION.md`。
 
 - 发行文案最新规则（2026-09-21）：使用英文，保留上一版格式，README 和 CHANGELOG 均明确列出本版更新；见 common/00、05。四 MOD 已纠正，仍无 ZIP。
 
@@ -30,6 +35,14 @@
 - `common/08_ModConfig本地化与安全集成规范.md`：ModConfig 中英文显示的 section/key 方案、禁止全局缓存重建、生命周期、迁移步骤和验证清单。
 
 ## MOD 四件套（mods/）
+
+### PeakWorkshopCN（0.1.0 / 试用实现已部署）
+
+- `mods/PeakWorkshopCN/README.md`、`STATUS.md`：项目入口与试用覆盖/验证状态。
+- `mods/PeakWorkshopCN/TODO.md`、`RECENT.md`、`DECISIONS.md`、`FILES.md`：剩余覆盖/实机任务、实现履历、用户边界、工程与产物 hash。
+- `mods/PeakWorkshopCN/temp/current.md`：接续摘要。
+- `MOD开发/PeakWorkshopCN/README.md`、`RESEARCH.md`、`PLAN.md`、`IMPLEMENTATION.md`：开发入口、研究/计划、当前实现/动态证据/验证与遗漏；源码 `PeakWorkshopCN/`，测试 `tests/`，静态审计 `tools/Audit/`。
+- `MOD开发/PeakWorkshopCN/AUDIT.md`、`audit/2026-10-05/`：重新审核及16个CSV/JSON清单，另有 `audit/2026-10-05-revision/` 模板库存；含源码行号、IL调用、固定缺词、非固定待审、语言/显示/词表上下文候选与Boss来源。后续整改以前述审核为准。
 
 ### 临时思考记忆区
 

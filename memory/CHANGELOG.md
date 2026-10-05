@@ -1,5 +1,21 @@
 # Memory Changelog
 
+## 2026-10-05
+
+- [修改] PeakWorkshopCN IMPLEMENTATION、README/STATUS/TODO/RECENT/FILES/temp、根入口与索引：用户确认退出后，于 16:58:48 +08:00 部署既有容错修复版，版本 0.1.0.0、304,128 字节，源/目标 SHA256 26D877A2...836CC 一致、原 DLL 未变。等待重启核对初始化完成日志及多人页；同时区分历史审核基线与当前命中数，生成规则不等同于动态模板。无外部 update_memory 工具，本地 Markdown 已同步。
+
+- [复核/修复] PeakWorkshopCN：新截图和旧运行日志显示 124 条入口跳过警告且无初始化完成记录；没有完整致命栈，具体中断位置未确认。已将方法体读取和补丁安装改为逐入口容错并完成独立构建，随后部署见上条。
+
+- [实现/验证/同步] PeakWorkshopCN 0.1.0 第一轮补齐（已被后续容错修复版替换）：修正 Boss→DrawBosses，扩展 742 条词表和 1,000 条生成规则，接入变量字段、部分裸写显示及 MarkerRef 缓存；主项目 0/0、41 项测试通过，旧 DLL 为 303,616 字节。
+
+- [审核/纠正/索引] PeakWorkshopCN：按用户截图及“先重新审核”要求，遍历474文件，以Roslyn/Cecil核对源码与原DLL均4,968Tr调用；固定位置3,122缺映射、非固定749无现有来源规则，确认Boss规则误挂OnGUI/实际DrawBosses，以及变量表/直接显示/泛型/缓存遗漏和词表上下文风险。新增AUDIT.md与16个CSV/JSON明细，同步六件套/temp、开发入口/首版说明和根入口/索引；本轮源码、词表、DLL、配置未改，未构建部署。
+
+- [实现/验证/索引] PeakWorkshopCN 0.1.0：用户后续授权试用实施，已建立独立 net472 补丁并部署指定 profile，主/测试 Release 0/0、39 项测试通过，原 DLL hash 未变。补长动态模板、67条非空配置说明及字体恢复/加载字形同步；固定覆盖仍为1,081/4,204位置，实机和完整覆盖待完成。新增开发区IMPLEMENTATION，同步本MOD六件套/temp、根入口/索引；未发行打包上传，无外部update_memory工具。
+
+## 2026-10-04
+
+- [新增/调研/计划] PeakWorkshopCN 0.1.0：按用户要求以独立补丁中文化，确认完整界面文字及配置说明范围；核验PeakWorkshop 0.2.0英文/德文、PeakMapForge类型和2.6.a本地化链，记录Tr规模、动态/直接文本、两套字体及缓存/数字/Bridge边界。建立开发区README/RESEARCH/PLAN、独立memory六件套与temp/current，同步入口/索引。本轮仅文档，无源码、工程、构建、部署、实机验收或发行包；无专用update_memory工具，不宣称写入外部记忆服务。
+
 ## 2026-09-21
 
 - [修改] WhereIsThing 0.1.2 发行 README/CHANGELOG 与开发 CHANGELOG：补英文玩家名娱乐用途、晚加入缺历史记录、仅显示物品名/距离的声明；核对投掷匹配与昵称解析代码，同步该 MOD README/RECENT/DECISIONS/temp 及索引。

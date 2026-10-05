@@ -1,0 +1,6186 @@
+[
+  {
+    "Source": "PeakMapForge.Airport.AssetOrigin.Missing",
+    "De": "Art der Herkunft",
+    "En": "type of origin",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetOrigin.Missing",
+    "De": "KI-Werkzeug",
+    "En": "AI tool",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetOrigin.Missing",
+    "De": "Designer",
+    "En": "designer",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetOrigin.Missing",
+    "De": "erstellt von",
+    "En": "created by",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetOrigin.KindText",
+    "De": "Selbst gebaut",
+    "En": "Self-made",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetOrigin.KindText",
+    "De": "KI-generiert",
+    "En": "AI-generated",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetOrigin.KindText",
+    "De": "Heruntergeladen",
+    "En": "Downloaded",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetOrigin.KindText",
+    "De": "Ohne Angabe",
+    "En": "Not specified",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetViewer.Borrow",
+    "De": "Modell nicht geladen.",
+    "En": "Model not loaded.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetViewer.Borrow",
+    "De": "Animationsquelle ließ sich nicht laden.",
+    "En": "Couldn’t load the animation source.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetViewer.Borrow",
+    "De": "Die Quelle hat keine Animationen.",
+    "En": "The source has no animations.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetViewer.Borrow",
+    "De": "Die Knochen heißen anders – diese Quelle passt nicht zur Figur.",
+    "En": "The bones are named differently – this source doesn’t fit the figure.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetViewer.Load",
+    "De": "Spiel-Item nicht gefunden: ",
+    "En": "Game item not found: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.AssetViewer.CollectParts",
+    "De": "Die Datei enthält kein sichtbares Mesh.",
+    "En": "The file contains no visible mesh.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.HotkeyHint.OnGUI",
+    "De": "Team-Übersicht",
+    "En": "Team overview",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.ImportSet.FromFiles",
+    "De": "{0} Modelle",
+    "En": "{0} models",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "@fields",
+    "De": "Automatischer Start fehlgeschlagen: {0}",
+    "En": "Automatic start failed: {0}",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.LobbyOverlay.StageText",
+    "De": "Karte laden …",
+    "En": "Loading map …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.LobbyOverlay.StepOf",
+    "De": "Warteschlange …",
+    "En": "Queued …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.LobbyOverlay.StepOf",
+    "De": "Dateiliste holen …",
+    "En": "Fetching file list …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.LobbyOverlay.StepOf",
+    "De": "Vorhandene Dateien prüfen …",
+    "En": "Checking local files …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.LobbyOverlay.StepOf",
+    "De": "Prüfen …",
+    "En": "Verifying …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.LobbyOverlay.Detail",
+    "De": " s",
+    "En": " s left",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.LobbyOverlay.Detail",
+    "De": " schon vorhanden",
+    "En": " already present",
+    "Same": []
+  },
+  {
+    "Source": "@fields",
+    "De": "Startbereitschaft nicht ermittelt: {0}",
+    "En": "Could not check start readiness: {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "@fields",
+    "De": "Prüfe, ob die Karte im Online-Workshop veröffentlicht ist …",
+    "En": "Checking whether the map is published in the online workshop …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.NewsPopup.Body",
+    "De": "PEAK WORKSHOP · NEUIGKEITEN",
+    "En": "PEAK WORKSHOP · NEWS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.NewsPopup.Body",
+    "De": "Gerade gibt es keine Neuigkeiten.",
+    "En": "No news right now.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.NewsPopup.Body",
+    "De": "Deine Version: 0.2.0 → neu: {0}",
+    "En": "Your version: 0.2.0 → new: {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.NewsPopup.Body",
+    "De": "Download-Seite öffnen",
+    "En": "Open download page",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "De": "Eine .blend erst im Workshop umwandeln lassen (braucht Blender).",
+    "En": "Convert a .blend in the workshop first (needs Blender).",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "De": "Modell '{0}' ist nicht in der Quelle.",
+    "En": "Model '{0}' is not in the source.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "De": "Kein Modell in der Quelle.",
+    "En": "No model in the source.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.CheckOrigin",
+    "De": "Herkunft unvollständig – es fehlt: ",
+    "En": "Origin incomplete – missing: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "De": "Datei nicht gefunden.",
+    "En": "File not found.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "De": "Nur GLB, glTF, OBJ oder FBX.",
+    "En": "Only GLB, glTF, OBJ or FBX.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "De": "Diese Datei ist schon im Workshop: „{0}“ ({1}).",
+    "En": "This file is already in the workshop: “{0}” ({1}).",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "De": "Das Modell enthält kein sichtbares Mesh.",
+    "En": "The model contains no visible mesh.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "De": "Optimieren fehlgeschlagen: ",
+    "En": "Optimizing failed: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.Optimize",
+    "De": "Heruntergeladene Assets werden nicht verändert.",
+    "En": "Downloaded assets are not changed.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopAssets.UseInMap",
+    "De": "Karte nicht gefunden.",
+    "En": "Map not found.",
+    "Same": []
+  },
+  {
+    "Source": "@fields",
+    "De": "Verschieben in den Papierkorb fehlgeschlagen: {0}",
+    "En": "Moving to the trash failed: {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "@fields",
+    "De": "Online entfernen fehlgeschlagen – lokal wurde nichts gelöscht: {0}",
+    "En": "Removing it online failed – nothing was deleted locally: {0}",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.Create",
+    "De": "Spiel-Item unbekannt: ",
+    "En": "Unknown game item: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.Create",
+    "De": "Erst ein 3D-Modell wählen.",
+    "En": "Pick a 3D model first.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.UseInMap",
+    "De": "Karte nicht gefunden.",
+    "En": "Map not found.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.VanillaSummary",
+    "De": "+{0} Ausdauer",
+    "En": "+{0} stamina",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.VanillaSummary",
+    "De": "Pfeil schießen",
+    "En": "shoots a dart",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.VanillaSummary",
+    "De": "explodiert",
+    "En": "explodes",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.AfflictionName",
+    "De": "unverwundbar",
+    "En": "invincible",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.AfflictionName",
+    "De": "leichte Schwerkraft {0} s",
+    "En": "low gravity {0} s",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.AfflictionName",
+    "De": "Gift über {0} s",
+    "En": "poison over {0} s",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.AfflictionName",
+    "De": "unendlich Ausdauer {0} s",
+    "En": "infinite stamina {0} s",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopItems.AfflictionName",
+    "De": "schneller {0} s",
+    "En": "faster {0} s",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopLibrary+Entry.get_LocalLine",
+    "De": "Heruntergeladen · Rev. {0} · {1}",
+    "En": "Downloaded · rev. {0} · {1}",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopLibrary+Entry.get_OnlineBadge",
+    "De": "Lokal geändert – erneut veröffentlichen",
+    "En": "Changed locally – publish again",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Display",
+    "De": "Bosse",
+    "En": "Bosses",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Display",
+    "De": "Fernkampf",
+    "En": "Ranged",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Display",
+    "De": "Zombies",
+    "En": "Zombies",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Display",
+    "De": "Tiere",
+    "En": "Animals",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Display",
+    "De": "Figuren & NPCs",
+    "En": "Characters & NPCs",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Display",
+    "De": "Haustiere",
+    "En": "Pets",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Assemble",
+    "De": "Modell „{0}“ fehlt.",
+    "En": "Model “{0}” is missing.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Assemble",
+    "De": "Item „{0}“ fehlt – nicht mitgenommen.",
+    "En": "Item “{0}” is missing – not included.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Share",
+    "De": "Kein NPC-Typ.",
+    "En": "No NPC type.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.SaveStandalone",
+    "De": "Kein NPC.",
+    "En": "No NPC.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.SaveStandalone",
+    "De": "Nur eigene NPCs lassen sich bearbeiten.",
+    "En": "Only your own NPCs can be edited.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.DescribeTypes",
+    "De": "{0} Lebenspunkte, {1} Schaden.",
+    "En": "{0} health, {1} damage.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.DescribeTypes",
+    "De": " Schießt aus der Ferne.",
+    "En": " Shoots from range.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.DescribeTypes",
+    "De": " Kann reden.",
+    "En": " Can talk.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.DescribeTypes",
+    "De": " Haustier, folgt dem Spieler.",
+    "En": " Pet that follows the player.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.SaveMeta",
+    "De": "Nur eigene NPCs lassen sich bearbeiten.",
+    "En": "Only your own NPCs can be edited.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.UseInMap",
+    "De": "Das Paket enthält keinen NPC.",
+    "En": "The package contains no NPC.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.UseInMap",
+    "De": "Keine Karte offen.",
+    "En": "No map open.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopNpcs.Remove",
+    "De": "Ordner fehlt.",
+    "En": "Folder is missing.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_MineLobbyLabel",
+    "De": "Lobby erstellen",
+    "En": "Create lobby",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_MineLobbyLabel",
+    "De": "Meine Lobby",
+    "En": "My lobby",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_LobbyNotApplied",
+    "De": "Nicht übernommen – nur der Gastgeber stellt Teams ein, und nur am Flughafen.",
+    "En": "Not applied – only the host sets up teams, and only at the airport.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_DownloadedLabel",
+    "De": "HERUNTERGELADEN",
+    "En": "DOWNLOADED",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_SortLabels",
+    "De": "Am beliebtesten",
+    "En": "Most popular",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_SortLabels",
+    "De": "Meiste Stimmen",
+    "En": "Most votes",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_SortLabels",
+    "De": "Neueste",
+    "En": "Newest",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_SortLabels",
+    "De": "Zuletzt aktualisiert",
+    "En": "Recently updated",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_SortLabels",
+    "De": "Name A–Z",
+    "En": "Name A–Z",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.get_WizardSteps",
+    "De": "Route",
+    "En": "Route",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetHero",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SubscribeButton",
+    "De": "„{0}“ abonniert – im Editor unter Bausteine › Modelle.",
+    "En": "Subscribed to “{0}” – in the editor under Blocks › Models.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SubscribeButton",
+    "De": "Abo von „{0}“ beendet.",
+    "En": "Unsubscribed from “{0}”.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetBrowse",
+    "De": "{0} ABONNIERT",
+    "En": "{0} SUBSCRIBED",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetBrowse",
+    "De": "{0} ASSETS",
+    "En": "{0} ASSETS",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetBrowse",
+    "De": "FIGUR FÜR DEN NPC WÄHLEN · {0}",
+    "En": "PICK A FIGURE FOR THE NPC · {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetBrowse",
+    "De": "ohne ",
+    "En": "not ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetDetail",
+    "De": "von <b>{0}</b>",
+    "En": "by <b>{0}</b>",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetDetail",
+    "De": "-Datei",
+    "En": " file",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetDetail",
+    "De": "Öffnet „NPC erstellen“ mit dieser Figur ({0} Animationen).",
+    "En": "Opens “Create NPC” with this figure ({0} animations).",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetDetail",
+    "De": "„{0}“ liegt jetzt in „{1}“ (Ordner models) und ist abonniert.",
+    "En": "“{0}” is now in “{1}” (models folder) and subscribed.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetDetail",
+    "De": "alle {0} Karten",
+    "En": "all {0} maps",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ViewerBlock",
+    "De": "Ziehen: drehen · Rechts: verschieben · Rad: zoomen · Doppelklick: zurück",
+    "En": "Drag: rotate · right: pan · wheel: zoom · double-click: reset",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ViewerBlock",
+    "De": "Pfadfinder: 1,7 m",
+    "En": "Scout: 1.7 m",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ClipBar",
+    "De": "Ruhepose  <color=#{0}>{1} Animationen</color>",
+    "En": "Rest pose  <color=#{0}>{1} animations</color>",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RenderThumb",
+    "De": "Vorschaubild ließ sich nicht rendern.",
+    "En": "Couldn’t render the thumbnail.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RenderThumb",
+    "De": "Vorschaubild gespeichert.",
+    "En": "Thumbnail saved.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.UseAsNpc",
+    "De": "Konnte die Figur nicht laden – Log prüfen.",
+    "En": "Couldn’t load the character – check the log.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.PlaceInEditor",
+    "De": "Konnte den Baustein nicht laden – Log prüfen.",
+    "En": "Couldn’t load the block – check the log.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetMetaEdit",
+    "De": "ANGABEN BEARBEITEN",
+    "En": "EDIT DETAILS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetMetaEdit",
+    "De": "Angaben gespeichert.",
+    "En": "Details saved.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetMetaEdit",
+    "De": "Ein Titel fehlt noch.",
+    "En": "Still missing a title.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetMetaEdit",
+    "De": "Herkunft fehlt noch: ",
+    "En": "Origin still missing: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetMetaEdit",
+    "De": "So erscheint es im Workshop",
+    "En": "How it shows in the workshop",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "Lobbys finden",
+    "En": "Find lobbies",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "Lobby-Liste nicht erreichbar",
+    "En": "Lobby list unreachable",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "Erneut versuchen",
+    "En": "Try again",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "Lade Lobbys …",
+    "En": "Loading lobbies …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "Frage den Peak-Workshop-Server nach offenen Lobbys.",
+    "En": "Asking the Peak Workshop server for open lobbies.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "Gerade keine offene Lobby",
+    "En": "No open lobby right now",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "Private Lobbys stehen nie in der Liste – dafür gibt es den Beitrittscode. Oder mach selbst eine auf.",
+    "En": "Private lobbies are never listed – use their join code. Or open one yourself.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "Keine Lobby passt zum Filter",
+    "En": "No lobby matches the filter",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "{0} Lobbys sind offen – lockere den Filter.",
+    "En": "{0} lobbies are open – loosen the filter.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "De": "Filter zurücksetzen",
+    "En": "Reset filter",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyFilters",
+    "De": "Karte, Name oder Host …",
+    "En": "Map, name or host …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyFilters",
+    "De": "Freie Plätze",
+    "En": "Free slots",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyFilters",
+    "De": "Alle Modi",
+    "En": "All modes",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyFilters",
+    "De": "Alle Regionen",
+    "En": "All regions",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "Lobby von {0}",
+    "En": "{0}’s lobby",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "Gastgeber: {0}",
+    "En": "Host: {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "Noch keine Karte gewählt",
+    "En": "No map selected yet",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "„{0}“ · Rev. {1}",
+    "En": "“{0}” · rev {1}",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "vorhanden ✓",
+    "En": "on disk ✓",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "Download {0}",
+    "En": "download {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "nicht ladbar",
+    "En": "not downloadable",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "FF an",
+    "En": "FF on",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "FF aus",
+    "En": "FF off",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "De": "Details und beitreten ›",
+    "En": "Details and join ›",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyStateLabel",
+    "De": "LÄDT",
+    "En": "LOADING",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyStateLabel",
+    "De": "LÄDT · ZU",
+    "En": "LOADING · CLOSED",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyStateLabel",
+    "De": "WARTET",
+    "En": "WAITING",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyStateLabel",
+    "De": "LÄUFT",
+    "En": "RUNNING",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyStateLabel",
+    "De": "LÄUFT · ZU",
+    "En": "RUNNING · CLOSED",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Lobby von {0}",
+    "En": "{0}’s lobby",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Gastgeber: {0}",
+    "En": "Host: {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Die Runde läuft schon. Je nach Einstellung des Hosts spielst du sofort mit oder schaust bis zum Ende als Geist zu – ab der nächsten Runde bist du normal dabei.",
+    "En": "The round is already running. Depending on the host’s setting you play right away or watch as a ghost until it ends – from the next round you’re in as usual.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Private Lobby – zum Beitreten brauchst du den Beitrittscode des Gastgebers.",
+    "En": "Private lobby – you need the host’s join code to get in.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Code eingeben",
+    "En": "Enter code",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Herunterladen & beitreten ({0})",
+    "En": "Download & join ({0})",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Du verlässt deinen Flughafen – deine Mitspieler bleiben ohne dich zurück.",
+    "En": "You’ll leave your airport – your players stay behind without you.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Verlassen & beitreten",
+    "En": "Leave & join",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Die Karte liegt schon auf diesem Rechner.",
+    "En": "The map is already on this computer.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Geladen werden nur Dateien, die dir noch fehlen – jede wird per SHA-256 geprüft.",
+    "En": "Only files you don’t have yet are downloaded – each one is checked with SHA-256.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": " · {0} Dateien",
+    "En": " · {0} files",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Auf diesem Rechner",
+    "En": "On this computer",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "vorhanden ✓",
+    "En": "yes ✓",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "fehlt – wird geladen",
+    "En": "missing – will download",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "fehlt, nicht ladbar",
+    "En": "missing, not downloadable",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "noch keine gewählt",
+    "En": "none selected yet",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Modus",
+    "En": "Mode",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Zustand",
+    "En": "State",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Region",
+    "En": "Region",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "Sichtbarkeit",
+    "En": "Visibility",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "De": "privat (Code)",
+    "En": "private (code)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.StartBrowserJoin",
+    "De": "Demo-Lobby",
+    "En": "Demo lobby",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawJoinProgress",
+    "De": "Beitritt: ",
+    "En": "Joining: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.JoinStageLabel",
+    "De": "frage die Lobby beim Server an …",
+    "En": "asking the server about the lobby …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.JoinStageLabel",
+    "De": "lade die Karte …",
+    "En": "downloading the map …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.JoinStageLabel",
+    "De": "verlasse den eigenen Raum …",
+    "En": "leaving your own room …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.JoinStageLabel",
+    "De": "verbinde mit dem Raum …",
+    "En": "connecting to the room …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.JoinStageLabel",
+    "De": "im Raum ✓",
+    "En": "in the room ✓",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.JoinStageLabel",
+    "De": "fehlgeschlagen",
+    "En": "failed",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.JoinStageLabel",
+    "De": "abgebrochen",
+    "En": "canceled",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "De": "Beitrittscode vom Gastgeber (Meine Lobby oder Pausenmenü)",
+    "En": "Join code from the host (My lobby or pause menu)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "De": "z. B. ABC123",
+    "En": "e.g. ABC123",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "De": "Sucht …",
+    "En": "Looking …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "De": "Nachsehen",
+    "En": "Look up",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "De": "Herunterladen & beitreten ({0})",
+    "En": "Download & join ({0})",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "De": "Zu diesem Code gibt es keine Peak-Workshop-Lobby. Du kannst trotzdem beitreten – fehlt dann die Karte, verlässt du den Raum beim Abflug.",
+    "En": "There’s no Peak Workshop lobby for this code. You can still join – if the map is missing, you’ll leave the room on departure.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "De": "Server nicht erreichbar: ",
+    "En": "Server unreachable: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "De": "Der Code steht beim Gastgeber unter „Meine Lobby“ (groß, mit Kopieren) und im Pausenmenü. Private Lobbys findest du nur so. Fehlt dir die Karte, lädt sie sich vor dem Beitritt – du siehst Datei, Bytes, Tempo und Restzeit.",
+    "En": "The host finds the code under “My lobby” (large, with copy) and in the pause menu. Private lobbies can only be joined this way. If you don’t have the map, it downloads before you join – you’ll see file, bytes, speed and time left.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawConfirm",
+    "De": "Zum Bestätigen „{0}“ eintippen:",
+    "En": "Type “{0}” to confirm:",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.OnlineManageButtons",
+    "De": "Wird geändert …",
+    "En": "Updating …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.OnlineManageButtons",
+    "De": "Öffentlich stellen",
+    "En": "Make public",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.OnlineManageButtons",
+    "De": "Privat stellen",
+    "En": "Make private",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.OnlineManageButtons",
+    "De": "Aus dem Online-Workshop entfernen",
+    "En": "Remove from online workshop",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RunVisibility",
+    "De": "Sichtbarkeit nicht geändert: {0}",
+    "En": "Visibility not changed: {0}",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RunVisibility",
+    "De": "„{0}“ ist jetzt privat.",
+    "En": "“{0}” is private now.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RunVisibility",
+    "De": "„{0}“ ist jetzt öffentlich.",
+    "En": "“{0}” is public now.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RunUnpublish",
+    "De": "Nicht entfernt: {0}",
+    "En": "Not removed: {0}",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RunUnpublish",
+    "De": "„{0}“ ist aus dem Online-Workshop entfernt – lokal bleibt alles.",
+    "En": "“{0}” was removed from the online workshop – everything stays locally.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AskDeleteMap",
+    "De": "Nicht gelöscht: {0}",
+    "En": "Not deleted: {0}",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RunDelete",
+    "De": " Online entfernt.",
+    "En": " Removed online.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RunDelete",
+    "De": "Download „{0}“ entfernt (Papierkorb).",
+    "En": "Download “{0}” removed (trash).",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RunDelete",
+    "De": "„{0}“ gelöscht (Papierkorb).",
+    "En": "“{0}” deleted (trash).",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RunLater",
+    "De": "Fehler: ",
+    "En": "Error: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawHeader",
+    "De": "3D-ASSETS",
+    "En": "3D ASSETS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawHeader",
+    "De": "MEINE SACHEN",
+    "En": "MY STUFF",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawHeader",
+    "De": "MODERATION",
+    "En": "MODERATION",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawHeader",
+    "De": "Items durchsuchen …",
+    "En": "Search items …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawHeader",
+    "De": "3D-Assets durchsuchen …",
+    "En": "Search 3D assets …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawHeader",
+    "De": "Karten durchsuchen …",
+    "En": "Search maps …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawSubHeader",
+    "De": "Karte erstellen",
+    "En": "Create map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawSubHeader",
+    "De": "NPC erstellen",
+    "En": "Create NPC",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawSubHeader",
+    "De": "Item erstellen",
+    "En": "Create item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawSubHeader",
+    "De": "Aktualisiere … · ",
+    "En": "Refreshing … · ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawSubHeader",
+    "De": "Lädt … · ",
+    "En": "Loading … · ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.Breadcrumb",
+    "De": "3D-Assets",
+    "En": "3D assets",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.Breadcrumb",
+    "De": "Meine Sachen",
+    "En": "My stuff",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.Breadcrumb",
+    "De": "Item erstellen",
+    "En": "Create item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.Breadcrumb",
+    "De": "NPC erstellen",
+    "En": "Create NPC",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.Breadcrumb",
+    "De": "Karte erstellen",
+    "En": "Create map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.Breadcrumb",
+    "De": "Route bearbeiten",
+    "En": "Edit route",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.Breadcrumb",
+    "De": "Angaben bearbeiten",
+    "En": "Edit details",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.IsSubTabOn",
+    "De": "Meine Assets",
+    "En": "My assets",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.IsSubTabOn",
+    "De": "Meine Items",
+    "En": "My items",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.IsSubTabOn",
+    "De": "Papierkorb",
+    "En": "Trash",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.IsSubTabOn",
+    "De": "Lobbys finden",
+    "En": "Find lobbies",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SubTabs",
+    "De": "Lobbys finden",
+    "En": "Find lobbies",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SubTabs",
+    "De": "Meine Assets",
+    "En": "My assets",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SubTabs",
+    "De": "Meine Items",
+    "En": "My items",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SubTabs",
+    "De": "Papierkorb",
+    "En": "Trash",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SubTabs",
+    "De": "Startseite",
+    "En": "Home",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SubTabs",
+    "De": "Meine & geladene",
+    "En": "Mine & downloaded",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SubTabs",
+    "De": "Spiel-Items",
+    "En": "Game items",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.StartFlight",
+    "De": "In der Mehrspieler-Lobby startet nur die Lobbykarte. Karte unter MEHRSPIELER › Meine Lobby › KARTE wählen („Für die Lobby wählen“) und dort RUNDE STARTEN.",
+    "En": "In a multiplayer lobby only the lobby map starts. Pick the map under MULTIPLAYER › My lobby › MAP (“Choose for lobby”) and use START ROUND there.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.StartFlight",
+    "De": "Dieses Spiel läuft ohne Peak Workshop (Vanilla-Start). Karten fliegen nur in einer Workshop-Sitzung – zurück ins Hauptmenü und über das Workshop-Schild starten.",
+    "En": "This game runs without Peak Workshop (vanilla start). Maps only fly in a Workshop session – go back to the main menu and start from the Workshop sign.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.StartFlight",
+    "De": "Kein Check-in-Kiosk des Spiels in der Scene – Abflug nur am Flughafen.",
+    "En": "The game’s check-in kiosk isn’t in the scene – you can only depart at the airport.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ApplyTemplate",
+    "De": "Nach dem Vorbild von „{0}“.",
+    "En": "Modelled after “{0}”.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemEditorCore",
+    "De": "ITEM ANSEHEN",
+    "En": "VIEW ITEM",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemEditorCore",
+    "De": "ITEM BEARBEITEN",
+    "En": "EDIT ITEM",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemEditorCore",
+    "De": "ITEM ERSTELLEN",
+    "En": "CREATE ITEM",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemEditorCore",
+    "De": "Nur ansehen – so ist „{0}“ eingestellt. Ändern kann nur, wer es veröffentlicht hat.",
+    "En": "View only – this is how “{0}” is set up. Only whoever published it can change it.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemEditorCore",
+    "De": "Modell wählen, Wirkung einstellen, Haltung prüfen, beschreiben – fertig. Im Editor kannst du es danach hinlegen oder in Truhen packen.",
+    "En": "Pick a model, set the effect, check the grip, describe it – done. Then place it in the editor or put it into chests.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepModel",
+    "De": "Modell dieses Items (fest).",
+    "En": "This item’s model (fixed).",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepModel",
+    "De": "Eigenes 3D-Asset",
+    "En": "Own 3D asset",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepModel",
+    "De": "Aussehen aus dem Spiel",
+    "En": "Look from the game",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepModel",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepModel",
+    "De": "Anderes Modell",
+    "En": "Other model",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepModel",
+    "De": "dem 3D-Asset",
+    "En": "the 3D asset",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepModel",
+    "De": "Neues 3D-Asset hochladen",
+    "En": "Upload a new 3D asset",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetPicker",
+    "De": "3D-Assets durchsuchen …",
+    "En": "Search 3D assets …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetPicker",
+    "De": "Noch keine 3D-Assets – erst eins hochladen.",
+    "En": "No 3D assets yet – upload one first.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetPicker",
+    "De": "Nichts gefunden.",
+    "En": "Nothing found.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetPicker",
+    "De": "deins",
+    "En": "yours",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetPicker",
+    "De": "online · {0}",
+    "En": "online · {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetPicker",
+    "De": "… und {0} weitere – Suche eingrenzen.",
+    "En": "… and {0} more – narrow the search.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepUse",
+    "De": "Wirkung & Kategorie",
+    "En": "Effect & category",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepUse",
+    "De": "essen, trinken, heilen",
+    "En": "eat, drink, heal",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepUse",
+    "De": "stechen, hauen",
+    "En": "stab, strike",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepUse",
+    "De": "Pfeile, Kugeln",
+    "En": "arrows, bullets",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepUse",
+    "De": "treffen, sprengen",
+    "En": "hit, blast",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepUse",
+    "De": "Deko, Sammeln",
+    "En": "decor, collect",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepSettings",
+    "De": "Werte",
+    "En": "Values",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepSettings",
+    "De": "Ohne Wirkung – man kann es halten, werfen, verstecken und sammeln. Für Deko, Quest-Gegenstände oder Trophäen.",
+    "En": "No effect – it can be held, thrown, hidden and collected. For decor, quest items or trophies.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ConsumeSettings",
+    "De": "Wie verbraucht man es?",
+    "En": "How is it used?",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ConsumeSettings",
+    "De": "Essen",
+    "En": "Eat",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ConsumeSettings",
+    "De": "Trinken",
+    "En": "Drink",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ConsumeSettings",
+    "De": "Anwenden (Verband)",
+    "En": "Apply (bandage)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ConsumeSettings",
+    "De": "Portionen",
+    "En": "Portions",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ConsumeSettings",
+    "De": "auf einmal",
+    "En": "all at once",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ConsumeSettings",
+    "De": "Zustände – links heilt/stillt, rechts verursacht",
+    "En": "Conditions – left heals/fills, right causes",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ConsumeSettings",
+    "De": "Extra-Ausdauer",
+    "En": "Extra stamina",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SignedText",
+    "De": "stillt ",
+    "En": "fills ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SignedText",
+    "De": "heilt ",
+    "En": "heals ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Wie greift man an?",
+    "En": "How does it attack?",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Stechen",
+    "En": "Stab",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Schneiden",
+    "En": "Slash",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Schwingen",
+    "En": "Swing",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Lanze, Speer, Dolch – gerade nach vorn, schmal",
+    "En": "Lance, spear, dagger – straight ahead, narrow",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Messer, Schwert – waagerecht, breit",
+    "En": "Knife, sword – sideways, wide",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Axt, Hammer, Keule – von oben, kräftig",
+    "En": "Axe, hammer, club – overhead, heavy",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Schaden (Verletzung)",
+    "En": "Damage (injury)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Rückstoß",
+    "En": "Knockback",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Umwerfen",
+    "En": "Knock down",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Reichweite",
+    "En": "Reach",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MeleeSettings",
+    "De": "Abklingzeit",
+    "En": "Cooldown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Was wird verschossen?",
+    "En": "What does it fire?",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Geschoss-Modell aus deinen 3D-Assets wählen:",
+    "En": "Pick the projectile model from your 3D assets:",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "noch keins",
+    "En": "none yet",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Geschoss: ",
+    "En": "Projectile: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Modell wählen",
+    "En": "Pick model",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Geschoss-Größe",
+    "En": "Projectile size",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Schaden (Verletzung)",
+    "En": "Damage (injury)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "fliegt gerade",
+    "En": "flies straight",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Schuss (Munition)",
+    "En": "Shots (ammo)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "unbegrenzt",
+    "En": "unlimited",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Spannen (halten)",
+    "En": "Draw (hold)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "sofort",
+    "En": "instant",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Abklingzeit",
+    "En": "Cooldown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "höchstens {0} Schuss pro Sekunde",
+    "En": "at most {0} shots per second",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Streuung",
+    "En": "Spread",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "genau",
+    "En": "exact",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Rückstoß beim Ziel",
+    "En": "Knockback on target",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Umwerfen",
+    "En": "Knock down",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Rückstoß beim Schützen",
+    "En": "Recoil on shooter",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "Leer geschossen = Item weg",
+    "En": "Empty = item disappears",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "De": "gilt nach dem letzten von {0} Schuss (Munition oben)",
+    "En": "applies after the last of {0} shots (ammo above)",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ThrowSettings",
+    "De": "Werfen geht mit jedem Gegenstand (Taste halten, loslassen). Hier stellst du ein, was beim Treffer passiert.",
+    "En": "Any item can be thrown (hold the key, release). Here you set what happens on a hit.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ThrowSettings",
+    "De": "Wurfkraft",
+    "En": "Throw force",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ThrowSettings",
+    "De": "Schaden (Verletzung)",
+    "En": "Damage (injury)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ThrowSettings",
+    "De": "Rückstoß",
+    "En": "Knockback",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ThrowSettings",
+    "De": "Umwerfen",
+    "En": "Knock down",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ThrowSettings",
+    "De": "Zerbricht beim Aufprall",
+    "En": "Shatters on impact",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ThrowSettings",
+    "De": "Explodiert beim Aufprall (wie Dynamit)",
+    "En": "Explodes on impact (like dynamite)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.HitStatus",
+    "De": "Beim Getroffenen zusätzlich",
+    "En": "Also on the target",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EffectsEditor",
+    "De": "Effekte beim Getroffenen",
+    "En": "Effects on the target",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EffectsEditor",
+    "De": "Stärke",
+    "En": "Strength",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EffectsEditor",
+    "De": "Stufe {0}",
+    "En": "level {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EffectsEditor",
+    "De": "{0} %/s",
+    "En": "{0} %/s",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepGeneral",
+    "De": "Allgemein",
+    "En": "General",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepGeneral",
+    "De": "Gewicht im Rucksack (Ausdauer-Balken)",
+    "En": "Weight in the pack (stamina bar)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepGeneral",
+    "De": "Taucht auch zufällig in Koffern auf",
+    "En": "Also appears randomly in luggage",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepGeneral",
+    "De": "Seltenheit",
+    "En": "Rarity",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepGeneral",
+    "De": "In welchen Koffern",
+    "En": "In which luggage",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepGeneral",
+    "De": "Gilt für alle Karten, in denen das Item geladen ist (abonniert oder im Kartenordner).",
+    "En": "Applies to every map that has the item loaded (subscribed or in the map folder).",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepMeta",
+    "De": "Angaben & Herkunft",
+    "En": "Details & origin",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepMeta",
+    "De": "z. B. „Steinaxt“",
+    "En": "e.g. “Stone axe”",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepMeta",
+    "De": "mit Komma getrennt, z. B. Waffe, Holz, PvP",
+    "En": "comma-separated, e.g. weapon, wood, PvP",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepMeta",
+    "De": "Was ist es, wie benutzt man es, was macht es besonders?",
+    "En": "What is it, how is it used, what makes it special?",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepMeta",
+    "De": "Aussehen aus PEAK (Aggro Crab & Landfall) – das Modell stammt aus dem Spiel und wird nicht mitkopiert. Funktioniert nur in PEAK, die Credits nennen es automatisch.",
+    "En": "Look from PEAK (Aggro Crab & Landfall) – the model comes from the game and isn’t copied. Works in PEAK only; credits name it automatically.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepPublish",
+    "De": "IM WORKSHOP VERÖFFENTLICHEN",
+    "En": "PUBLISH TO THE WORKSHOP",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepPublish",
+    "De": "Speichern & in die Hand nehmen",
+    "En": "Save & take in hand",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepPublish",
+    "De": "Erst ein Modell wählen.",
+    "En": "Pick a model first.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepPublish",
+    "De": "Ein Titel fehlt noch.",
+    "En": "Still missing a title.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepPublish",
+    "De": "Geschoss-Modell wählen (oder ein eingebautes Geschoss).",
+    "En": "Pick a projectile model (or a built-in projectile).",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepPublish",
+    "De": "Herkunft fehlt noch: ",
+    "En": "Origin still missing: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepPublish",
+    "De": "Danach: im Editor unter Bausteine › Gegenstände hinlegen oder im Koffer-Inspektor „Feste Gegenstände“ wählen.",
+    "En": "Then: place it in the editor under Blocks › Items or pick “Fixed items” in the luggage inspector.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SaveItemEditor",
+    "De": "Anlegen fehlgeschlagen: ",
+    "En": "Creating failed: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "Welcher Zauber?",
+    "En": "Which spell?",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "Element – Aura, Spur und Einschlag (optional)",
+    "En": "Element – aura, trail and impact (optional)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "Kein Element",
+    "En": "No element",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "normales Geschoss",
+    "En": "plain projectile",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "Farbe des Elements",
+    "En": "Element colour",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "Mündungsfeuer",
+    "En": "Muzzle effect",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "jetzt: ",
+    "En": "now: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "von dir gesetzt",
+    "En": "set by you",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "automatisch – vorderste Stelle des Modells",
+    "En": "automatic – front-most point of the model",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "Mündung: ",
+    "En": "Muzzle: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "Mündung hier",
+    "En": "Muzzle here",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "Einschlag",
+    "En": "Impact",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "Probeschuss in der Vorschau",
+    "En": "Test shot in the preview",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RangedFxSettings",
+    "De": "zeigt Mündung, Flug und Einschlag",
+    "En": "shows muzzle, flight and impact",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GameModelStep",
+    "De": "Aussehen aus dem Spiel – gehalten wie im Spiel",
+    "En": "Look from the game – held like in the game",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GameModelStep",
+    "De": "Anderes Spiel-Item",
+    "En": "Other game item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GameModelStep",
+    "De": "Z. B. der Stock als Zauberstab oder der Hot Dog als Wurfgeschoss:",
+    "En": "E.g. the stick as a magic wand or the hot dog as a throwable:",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GameModelStep",
+    "De": "Spiel-Item suchen (Stock, Hot Dog, Pilz …)",
+    "En": "Search game items (stick, hot dog, mushroom …)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GameModelStep",
+    "De": "Nichts gefunden.",
+    "En": "Nothing found.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.PreviewShotNow",
+    "De": "Erst ein Modell wählen.",
+    "En": "Pick a model first.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.PreviewShotNow",
+    "De": "Probeschuss läuft in der 3D-Vorschau oben links – hochscrollen zum Ansehen.",
+    "En": "Test shot plays in the 3D preview top left – scroll up to watch.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Rechts ein Modell wählen",
+    "En": "Pick a model on the right",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Klicke auf die Spitze – Klinge, Lauf oder Kopf zeigt dann nach vorn.",
+    "En": "Click the tip – blade, barrel or head then points forward.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Schritt 2 von 2: Klicke auf die Spitze (Klinge, Lauf, Kopf) – sie zeigt dann nach vorn.",
+    "En": "Step 2 of 2: click the tip (blade, barrel, head) – it then points forward.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Klicke auf die Stelle, an der die rechte Hand greifen soll.",
+    "En": "Click where the right hand should grip.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Klicke, wo die linke Hand greifen soll.",
+    "En": "Click where the left hand should grip.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Klicke auf die Mündung – Laufende, Stabspitze: dort kommt das Geschoss heraus.",
+    "En": "Click the muzzle – barrel end, staff tip: the projectile comes out there.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Ziehen verschiebt das Modell · rechts ziehen dreht die Ansicht",
+    "En": "Drag moves the model · right-drag orbits",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Ziehen dreht das Modell um den Griff · rechts ziehen dreht die Ansicht",
+    "En": "Drag turns the model around the grip · right-drag orbits",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Ziehen dreht die Ansicht · Rad zoomt",
+    "En": "Drag orbits · wheel zooms",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Überspringen",
+    "En": "Skip",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Spitze übersprungen – die Ausrichtung bleibt, wie sie ist.",
+    "En": "Tip skipped – the orientation stays as it is.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Frei",
+    "En": "Free",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Ich-Sicht",
+    "En": "First person",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Seite",
+    "En": "Side",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Ansehen",
+    "En": "Look",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Drehen",
+    "En": "Turn",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "✓ passt",
+    "En": "✓ fits",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "✗ steckt im Körper",
+    "En": "✗ inside the body",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "✗ Hand greift ins Leere",
+    "En": "✗ hand grips nothing",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorViewerBlock",
+    "De": "Kein Treffer – genau auf das Modell klicken.",
+    "En": "Missed – click right on the model.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ApplyGripTool",
+    "De": "Griff gesetzt. Schritt 2: auf die Spitze klicken – oder „Überspringen“.",
+    "En": "Grip set. Step 2: click the tip – or “Skip”.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ApplyGripTool",
+    "De": "Zu nah am Griff – weiter vorn klicken.",
+    "En": "Too close to the grip – click further out.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ApplyGripTool",
+    "De": "Spitze zeigt jetzt nach vorn. Mit „Rollen“ die Schneide ausrichten.",
+    "En": "The tip now points forward. Use “Roll” to align the edge.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ApplyGripTool",
+    "De": "Linke Hand gesetzt.",
+    "En": "Left hand set.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ApplyGripTool",
+    "De": "Mündung gesetzt – „Probeschuss“ zeigt, wie es aussieht.",
+    "En": "Muzzle set – “Test shot” shows how it looks.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Haltung in der Hand",
+    "En": "Grip in the hand",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Beim Verbrauchen hält man es wie das Vorbild (Riegel, Dose, Verband).",
+    "En": "When consuming it’s held like its model (bar, can, bandage).",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Rechte Hand greift",
+    "En": "Right hand grips",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "An die Hand",
+    "En": "Snap to hand",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Linke Hand greift",
+    "En": "Left hand grips",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Hand ans Modell",
+    "En": "Hand to model",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Frei von Kopf und Körper",
+    "En": "Clear of head and body",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Vom Körper weg",
+    "En": "Away from body",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Schnell einstellen – dann in die Vorschau klicken",
+    "En": "Quick setup – then click into the preview",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "1  Griff hier",
+    "En": "1  Grip here",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "2  Spitze hier",
+    "En": "2  Tip here",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Linke Hand hier",
+    "En": "Left hand here",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Längste Seite nach vorn",
+    "En": "Longest side forward",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Umdrehen",
+    "En": "Flip around",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Um 180° gedreht – der blaue Punkt zeigt, wo jetzt vorn ist.",
+    "En": "Turned 180° – the blue dot shows what’s at the front now.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Feinstellen (dreht und skaliert um den Griff)",
+    "En": "Fine-tune (turns and scales around the grip)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Spitze hoch / runter",
+    "En": "Tip up / down",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Spitze links / rechts",
+    "En": "Tip left / right",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Rollen (um die Spitze)",
+    "En": "Roll (around the tip)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Links / rechts",
+    "En": "Left / right",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Runter / hoch",
+    "En": "Down / up",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Zurück / vor",
+    "En": "Back / forward",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "Mitte des Modells in den Griff legen (Ausgangslage)",
+    "En": "Put the model’s centre into the grip (starting point)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GripPanel",
+    "De": "  – sehr groß für ein Item",
+    "En": "  – very large for an item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.PushAway",
+    "De": "Modell nach vorn geschoben – die Hände greifen jetzt weiter hinten.",
+    "En": "Model pushed forward – the hands now grip further back.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LongestForward",
+    "De": "Längste Seite zeigt nach vorn – falls verkehrt herum: „Umdrehen“.",
+    "En": "The longest side points forward – if it’s backwards: “Flip around”.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepSounds",
+    "De": "„Nur halten“ braucht keine Sounds.",
+    "En": "“Hold only” needs no sounds.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepSounds",
+    "De": "Die Vorgaben passen zur Wirkung – ▶ spielt sie ab. Eigene Dateien: WAV, OGG oder MP3 (werden mit dem Item gespeichert).",
+    "En": "The defaults match the effect – ▶ plays them. Own files: WAV, OGG or MP3 (saved with the item).",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepSounds",
+    "De": "Klang des Vorbilds (Essen/Trinken)",
+    "En": "Sound of its model (eat/drink)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepSounds",
+    "De": "  (Vorgabe)",
+    "En": "  (default)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepSounds",
+    "De": "Fertig",
+    "En": "Done",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepSounds",
+    "De": "Ändern",
+    "En": "Change",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.EditorStepSounds",
+    "De": "stumm",
+    "En": "mute",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SoundPicker",
+    "De": "Kein Sound",
+    "En": "No sound",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SoundPicker",
+    "De": "Auswahl offen …",
+    "En": "Picker open …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SoundPicker",
+    "De": "Eigene Datei …",
+    "En": "Own file …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SoundPicker",
+    "De": "Sound für das Item",
+    "En": "Sound for the item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SoundPicker",
+    "De": "Audio|*.wav;*.ogg;*.mp3",
+    "En": "Audio|*.wav;*.ogg;*.mp3",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.PollSoundPick",
+    "De": "Nur WAV, OGG oder MP3.",
+    "En": "Only WAV, OGG or MP3.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemHome",
+    "De": "gern eingepackt",
+    "En": "often packed",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemHome",
+    "De": "frisch geschmiedet",
+    "En": "freshly forged",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemHome",
+    "De": "eigene und die des Spiels",
+    "En": "yours and the game’s",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "EIGENE ITEMS BAUEN",
+    "En": "BUILD YOUR OWN ITEMS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "Aus jedem 3D-Asset wird ein echter Gegenstand – zum Essen, Heilen, Zuschlagen, Schießen oder Werfen.",
+    "En": "Any 3D asset becomes a real item – to eat, heal, strike, shoot or throw.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "1  Modell wählen",
+    "En": "1  Pick a model",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "Eines deiner 3D-Assets – Herkunft kommt mit.",
+    "En": "One of your 3D assets – origin comes along.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "2  Wirkung einstellen",
+    "En": "2  Set the effect",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "Essen, heilen, stechen, schießen, werfen … mit Schaden und Effekten.",
+    "En": "Eat, heal, stab, shoot, throw … with damage and effects.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "3  In der Karte nutzen",
+    "En": "3  Use it in a map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "Im Editor hinlegen oder in Truhen packen.",
+    "En": "Place it in the editor or put it into chests.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "Item erstellen",
+    "En": "Create item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemIntro",
+    "De": "Spiel-Items ansehen",
+    "En": "Browse game items",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemHero",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemCategoryTiles",
+    "De": "{0} Workshop · {1} im Spiel",
+    "En": "{0} workshop · {1} in game",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.VanillaStrip",
+    "De": "Aus dem Spiel",
+    "En": "From the game",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.VanillaStrip",
+    "De": "alle stehen auch im Editor und in Truhen bereit",
+    "En": "all are ready in the editor and in chests too",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.VanillaStrip",
+    "De": "Alle {0} ansehen",
+    "En": "View all {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemCard",
+    "De": "DEINS",
+    "En": "YOURS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemCard",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemSubscribeButton",
+    "De": "„{0}“ abonniert – im Editor unter Bausteine › Gegenstände und für Truhen.",
+    "En": "Subscribed to “{0}” – in the editor under Blocks › Items and for chests.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemSubscribeButton",
+    "De": "Abo von „{0}“ beendet.",
+    "En": "Unsubscribed from “{0}”.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemBrowse",
+    "De": "{0} ABONNIERT",
+    "En": "{0} SUBSCRIBED",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemBrowse",
+    "De": "Kein Item passt zu Suche und Filtern.",
+    "En": "No item matches the search and filters.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemBrowse",
+    "De": "Noch keine eigenen Items",
+    "En": "No custom items yet",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemBrowse",
+    "De": "Aus deinen 3D-Assets werden Items – mit Wirkung, Haltung und Kategorie.",
+    "En": "Your 3D assets become items – with effect, grip and category.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemBrowse",
+    "De": "Item erstellen",
+    "En": "Create item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemBrowse",
+    "De": "Spiel-Items",
+    "En": "Game items",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawGameItems",
+    "De": "SPIEL-ITEMS",
+    "En": "GAME ITEMS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawGameItems",
+    "De": "So ordnet der Mod die Gegenstände von PEAK ein. Alle liegen im Editor unter Bausteine › Gegenstände und passen in Truhen.",
+    "En": "This is how the mod sorts PEAK’s items. All are in the editor under Blocks › Items and fit into chests.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawGameItems",
+    "De": "Kein Spiel-Item passt zur Suche.",
+    "En": "No game item matches the search.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.VanillaTile",
+    "De": "Besonderes Verhalten",
+    "En": "Special behaviour",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GameItemPanel",
+    "De": "Besonderes Verhalten des Spiels (kein reines Verbrauchs-Item).",
+    "En": "Special game behaviour (not a plain consumable).",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GameItemPanel",
+    "De": "Als Vorlage nehmen",
+    "En": "Use as template",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GameItemPanel",
+    "De": "In die Hand nehmen",
+    "En": "Take in hand",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GameItemPanel",
+    "De": "{0} ist in deiner Hand.",
+    "En": "{0} is in your hand.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "von <b>{0}</b>",
+    "En": "by <b>{0}</b>",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Im Spiel nicht gebaut: ",
+    "En": "Not built in the game: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Sieht aus wie ein Spiel-Item – kein eigenes 3D-Asset.",
+    "En": "Looks like a game item – no custom 3D asset.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Kein 3D-Asset gefunden.",
+    "En": "No 3D asset found.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Dieses Item steckt im NPC-Paket (Beute/Gespräch), nicht einzeln im Workshop. Abonnieren, Bewerten und Bearbeiten gibt es hier nicht.",
+    "En": "This item is part of the NPC package (loot/talk), not on its own in the workshop. Subscribing, rating and editing aren’t available here.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Dieses Item liegt nur im Ordner items/ der Karte, nicht im Workshop. Beim Spielen der Karte ist es dabei; Abonnieren, Bewerten und Bearbeiten gibt es hier nicht.",
+    "En": "This item only lives in the map’s items/ folder, not in the workshop. It’s there when you play the map; subscribing, rating and editing aren’t available here.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Haltung",
+    "En": "Grip",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Gewicht",
+    "En": "Weight",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "In die Hand nehmen",
+    "En": "Take in hand",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Abonniert steht es im Editor unter Bausteine › Gegenstände und in der Truhen-Auswahl.",
+    "En": "Once subscribed it’s in the editor under Blocks › Items and in the chest picker.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "„{0}“ liegt jetzt in „{1}“ (Ordner items) und ist abonniert.",
+    "En": "“{0}” is now in “{1}” (items folder) and subscribed.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "alle {0} Karten",
+    "En": "all {0} maps",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Zufallsbeute",
+    "En": "Random loot",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Modell aus",
+    "En": "Model from",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Dein Item",
+    "En": "Your item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Bearbeiten (Wirkung, Haltung, Angaben)",
+    "En": "Edit (effect, grip, details)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Bild & Symbol neu rendern",
+    "En": "Re-render image & icon",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "De": "Item-Ordner öffnen",
+    "En": "Open item folder",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.WeightText",
+    "De": "federleicht",
+    "En": "feather-light",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.WeightText",
+    "De": "normal",
+    "En": "normal",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.WeightText",
+    "De": "schwer",
+    "En": "heavy",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.WeightText",
+    "De": "sehr schwer",
+    "En": "very heavy",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.WeightText",
+    "De": "Brocken",
+    "En": "boulder",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Extra-Ausdauer",
+    "En": "Extra stamina",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Portionen",
+    "En": "Portions",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Bewegung",
+    "En": "Motion",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Rückstoß",
+    "En": "Knockback",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Umwerfen",
+    "En": "Knock down",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Reichweite",
+    "En": "Reach",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Abklingzeit",
+    "En": "Cooldown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Geschoss",
+    "En": "Projectile",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Schuss",
+    "En": "Shots",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Spannen",
+    "En": "Draw",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Wurfkraft",
+    "En": "Throw force",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Explodiert",
+    "En": "Explodes",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "Zerbricht",
+    "En": "Breaks",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemStats",
+    "De": "halten",
+    "En": "hold",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemViewerBlock",
+    "De": "Noch kein Modell gewählt",
+    "En": "No model chosen yet",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemViewerBlock",
+    "De": "● Hände (grün = greift, rot = schwebt)   ➜ vorne   rot = steckt im Körper",
+    "En": "● Hands (green = grips, red = floats)   ➜ forward   red = inside the body",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemViewerBlock",
+    "De": "Ziehen: drehen · Rechts: verschieben · Rad: zoomen",
+    "En": "Drag: rotate · right: pan · wheel: zoom",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RenderItemImages",
+    "De": "Modell ließ sich nicht laden.",
+    "En": "Couldn’t load the model.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RenderItemImages",
+    "De": "Bild und Inventar-Symbol gespeichert.",
+    "En": "Image and inventory icon saved.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RenderItemImages",
+    "De": "Symbol ließ sich nicht rendern.",
+    "En": "Couldn’t render the icon.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.GiveItem",
+    "De": "Item ließ sich nicht bauen: ",
+    "En": "Couldn’t build the item: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.PlaceItemInEditor",
+    "De": "Konnte das Item nicht laden – Log prüfen.",
+    "En": "Couldn’t load the item – check the log.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyStats",
+    "De": "kein Raum",
+    "En": "no room",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyStats",
+    "De": "Solo",
+    "En": "Solo",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyStats",
+    "De": "du bist Gastgeber",
+    "En": "you are the host",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyStats",
+    "De": "Gastgeber: {0}",
+    "En": "host: {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMine",
+    "De": "allein – zum Ausprobieren",
+    "En": "on your own – to try things out",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMine",
+    "De": "du bist Gastgeber",
+    "En": "you are the host",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMine",
+    "De": "Gastgeber: {0}",
+    "En": "host: {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMine",
+    "De": "Peak Workshop – bis 16 Spieler",
+    "En": "Peak Workshop – up to 16 players",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMine",
+    "De": "1. Lobby öffnen · 2. Karte wählen · 3. Freunde einladen / Code teilen · 4. RUNDE STARTEN (hier auf dieser Seite)",
+    "En": "1. Open a lobby · 2. Choose a map · 3. Invite friends / share the code · 4. START ROUND (right here on this page)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMine",
+    "De": "Kein Mehrspieler-Raum",
+    "En": "No multiplayer room",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMine",
+    "De": "Starte im Hauptmenü ein Spiel – „Host Game“ mit Freunden oder Solo zum Ausprobieren. Hier stellst du dann Teams und Friendly Fire ein.",
+    "En": "Start a game from the main menu – “Host Game” with friends or Solo to try things out. This is where you then set up teams and friendly fire.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyPlayers",
+    "De": "Spieler · {0}",
+    "En": "Players · {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyPlayers",
+    "De": "Noch niemand da.",
+    "En": "Nobody here yet.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyPlayers",
+    "De": "Klick auf das Team eines Spielers = nächstes Team, Rechtsklick = ohne Team.",
+    "En": "Click a player’s team = next team, right-click = no team.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "De": "Noch keine Karte gewählt – oben unter KARTE „Karte wählen“.",
+    "En": "No map selected yet – use “Choose map” under MAP above.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "De": "Der Gastgeber hat noch keine Karte gewählt.",
+    "En": "The host hasn’t chosen a map yet.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "De": "Gewählt: „{0}“",
+    "En": "Selected: “{0}”",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "De": "Karte „{0}“ (Rev. {1})",
+    "En": "Map “{0}” (rev {1})",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "De": "{0}/{1} haben sie",
+    "En": "{0}/{1} have it",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "De": "fehlt hier – beim Abflug verlässt du den Raum",
+    "En": "missing here – you’ll leave the room on departure",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "De": "liegt hier",
+    "En": "is on this computer",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "De": "wird geprüft …",
+    "En": "being checked …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "De": "Karte ändern",
+    "En": "Change map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapUse",
+    "De": "Keine Karte gewählt.",
+    "En": "No map selected.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapUse",
+    "De": "Karte fehlerhaft – lässt sich nicht laden.",
+    "En": "Broken map – it can’t be loaded.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapUse",
+    "De": "Aus dem Online-Workshop heruntergeladen · Rev. {0}",
+    "En": "Downloaded from the online workshop · rev {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapUse",
+    "De": "Nicht veröffentlicht – erst veröffentlichen (Lobbys spielen nur Karten aus dem Online-Workshop).",
+    "En": "Not published – publish it first (lobbies only play maps from the online workshop).",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapUse",
+    "De": "Privat veröffentlicht – nur in einer privaten Lobby. Lobby auf „Privat“ stellen oder die Karte öffentlich machen.",
+    "En": "Published privately – private lobbies only. Make the lobby private or the map public.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapUse",
+    "De": "Online veröffentlicht · Rev {0} · öffentlich",
+    "En": "Published online · rev {0} · public",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapUse",
+    "De": "Online veröffentlicht · Rev {0} · privat – nur private Lobby",
+    "En": "Published online · rev {0} · private – private lobby only",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyStartBar",
+    "De": "Start gesperrt – siehe den Hinweis zur Karte oben.",
+    "En": "Start blocked – see the map note above.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyStartBar",
+    "De": "TROTZDEM STARTEN",
+    "En": "START ANYWAY",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyStartBar",
+    "De": "RUNDE STARTEN",
+    "En": "START ROUND",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyStartBar",
+    "De": "Warten",
+    "En": "Wait",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyArmedBar",
+    "De": "Start angehalten: Bei einem Mitspieler ist der Download fehlgeschlagen. „Jetzt starten“ (er fliegt raus) oder „Abbrechen“.",
+    "En": "Start on hold: a player’s download failed. “Start now” (they get removed) or “Cancel”.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyArmedBar",
+    "De": "Alle haben die Karte – Abflug …",
+    "En": "Everyone has the map – departing …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyArmedBar",
+    "De": "„Jetzt starten“: wer die Karte dann nicht hat, fliegt beim Abflug aus dem Raum.",
+    "En": "“Start now”: anyone without the map at that moment is removed from the room at departure.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyArmedBar",
+    "De": "Runde – Start vorgemerkt",
+    "En": "Round – start pending",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyArmedBar",
+    "De": "Jetzt starten",
+    "En": "Start now",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyGuestWait",
+    "De": "du hast sie ✓",
+    "En": "you have it ✓",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyGuestWait",
+    "De": "Download fehlgeschlagen – der Gastgeber wartet nicht mehr auf dich",
+    "En": "download failed – the host is no longer waiting for you",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyGuestWait",
+    "De": "Download fehlgeschlagen",
+    "En": "download failed",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyGuestWait",
+    "De": "fehlt noch",
+    "En": "still missing",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyGuestWait",
+    "De": "wird geprüft …",
+    "En": "being checked …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "De": "Keine Karte gewählt",
+    "En": "No map selected",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "De": "Auswahl schließen",
+    "En": "Close list",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "De": "Karte wählen",
+    "En": "Choose map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "De": "Karte ändern",
+    "En": "Change map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "De": "Karte ändern geht nur am Flughafen.",
+    "En": "The map can only be changed at the airport.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "De": "Wird beim Erstellen der Lobby sofort an alle gemeldet; Mitspieler laden sie beim Beitritt selbst.",
+    "En": "Announced to everyone as soon as the lobby is created; players download it themselves when joining.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "De": "Mitspieler im Raum sehen die Karte sofort; geprüft wird sie beim Server, sobald du die Lobby öffnest.",
+    "En": "Players in the room see the map right away; it’s checked with the server once you open the lobby.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "De": "Prüfe, ob die Karte im Online-Workshop veröffentlicht ist …",
+    "En": "Checking whether the map is published in the online workshop …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapPicker",
+    "De": "Karte suchen …",
+    "En": "Search maps …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapPicker",
+    "De": "Eine Lobby spielt nur Karten aus dem Online-Workshop: eigene veröffentlichte (öffentlich oder privat) und heruntergeladene. Privat veröffentlichte nur in privaten Lobbys.",
+    "En": "A lobby only plays maps from the online workshop: your own published ones (public or private) and downloaded ones. Privately published maps only in private lobbies.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapPicker",
+    "De": "  · heruntergeladen",
+    "En": "  · downloaded",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapPicker",
+    "De": "  · Update",
+    "En": "  · update",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapPicker",
+    "De": "  · gewählt",
+    "En": "  · selected",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapPicker",
+    "De": "Keine Karte passt zur Suche.",
+    "En": "No map matches the search.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapPicker",
+    "De": "Noch keine Karten – erstelle eine im Workshop oder lade eine aus dem Online-Workshop.",
+    "En": "No maps yet – create one in the workshop or download one from the online workshop.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapPicker",
+    "De": "Veröffentlichen geht am Flughafen: Workshop › Karte › ONLINE VERÖFFENTLICHEN.",
+    "En": "Publishing works at the airport: Workshop › map › PUBLISH ONLINE.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyPlayerRow",
+    "De": "DU",
+    "En": "YOU",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyPlayerRow",
+    "De": "GETRENNT",
+    "En": "DISCONNECTED",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyPlayerRow",
+    "De": "für sich",
+    "En": "on their own",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyModForm",
+    "De": "10 min",
+    "En": "10 min",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyModForm",
+    "De": "1 Stunde",
+    "En": "1 hour",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyModForm",
+    "De": "1 Tag",
+    "En": "1 day",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyModForm",
+    "De": "7 Tage",
+    "En": "7 days",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyModForm",
+    "De": "Dauerhaft",
+    "En": "Permanent",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyModForm",
+    "De": "Grund (optional, sieht der Spieler)",
+    "En": "Reason (optional, shown to the player)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyBanList",
+    "De": "dauerhaft",
+    "En": "permanent",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyModState",
+    "De": "ohne Peak Workshop",
+    "En": "no Peak Workshop",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyPeerState",
+    "De": "gebaut",
+    "En": "built",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyPeerState",
+    "De": "in der Runde",
+    "En": "in the round",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyPeerState",
+    "De": "Runde vorbei",
+    "En": "round over",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyPeerState",
+    "De": "Karte da",
+    "En": "has the map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyPeerState",
+    "De": "Download fehlgeschlagen",
+    "En": "download failed",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyPeerState",
+    "De": "Karte fehlt",
+    "En": "map missing",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LateLabel",
+    "De": "schauen als Geist zu",
+    "En": "spectate as ghost",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LateLabel",
+    "De": "spielen sofort mit",
+    "En": "play right away",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Sichtbarkeit",
+    "En": "Visibility",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Privat (nur mit Code)",
+    "En": "Private (code only)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Steht in der Lobby-Liste; jeder mit Peak Workshop kann beitreten.",
+    "En": "Listed in the lobby browser; anyone with Peak Workshop can join.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Nicht in der Liste – nur wer den Beitrittscode hat oder eingeladen wird, kommt hinein.",
+    "En": "Not listed – only people with the join code or an invite get in.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Name der Lobby",
+    "En": "Lobby name",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Lobby von {0}",
+    "En": "{0}’s lobby",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Max. Spieler",
+    "En": "Max. players",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Nachzügler während der Runde",
+    "En": "Late joiners during a round",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Direkt mitspielen",
+    "En": "Play right away",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Wer während der Runde kommt, spielt sofort mit (im Koop bei den anderen, bei „Jeder gegen jeden“ am Spawn). Bei Team-Karten schaut er als Geist zu – ein Team bekommt er erst am Flughafen.",
+    "En": "Players who join mid-round play right away (co-op: next to the others, free for all: at a spawn). On team maps they spectate as a ghost – they get a team back at the airport.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Wer während der Runde kommt, schwebt als Geist mit und schaut zu. Ab der nächsten Runde am Flughafen spielt er normal mit (und bekommt dort ein Team).",
+    "En": "Players who join mid-round float along as a ghost and watch. From the next round at the airport they play normally (and get a team there).",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "De": "Ab dem Abflug kommt niemand mehr herein; die Lobby steht als „LÄUFT · ZU“ in der Liste.",
+    "En": "Nobody can join after departure; the lobby shows as “RUNNING · CLOSED” in the list.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Beitrittscode",
+    "En": "Join code",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Kopiert ✓",
+    "En": "Copied ✓",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Freunde einladen",
+    "En": "Invite friends",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Lobby geschlossen – der Code gilt nicht mehr.",
+    "En": "Lobby closed – the code no longer works.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Mitspieler geben den Code unter MEHRSPIELER › Mit Code beitreten ein.",
+    "En": "Players enter the code under MULTIPLAYER › Join with code.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Lobby-Liste",
+    "En": "Lobby list",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Verwerfen",
+    "En": "Discard",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Lobby schließen",
+    "En": "Close lobby",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Sichtbarkeit",
+    "En": "Visibility",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "privat (Code)",
+    "En": "private (code)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Max. Spieler",
+    "En": "Max. players",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyHostBox",
+    "De": "Nachzügler",
+    "En": "Late joiners",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RegistryState",
+    "De": "Der Gastgeber hat keine Peak-Workshop-Lobby geöffnet.",
+    "En": "The host hasn’t opened a Peak Workshop lobby.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RegistryState",
+    "De": "Die Sichtbarkeit bestimmt der Gastgeber.",
+    "En": "The host decides the visibility.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RegistryState",
+    "De": "Server nicht erreichbar",
+    "En": "server unreachable",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RegistryState",
+    "De": "Nicht in der Lobby-Liste: ",
+    "En": "Not in the lobby list: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RegistryState",
+    "De": "Beim Server angemeldet – privat, nur mit Code auffindbar.",
+    "En": "Registered with the server – private, only findable by code.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RegistryState",
+    "De": "Steht in der öffentlichen Lobby-Liste.",
+    "En": "Listed in the public lobby browser.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RegistryState",
+    "De": "Geschlossen – abgemeldet, niemand Neues kann beitreten.",
+    "En": "Closed – unregistered, nobody new can join.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RegistryState",
+    "De": "Noch nicht angemeldet – „Lobby öffnen“ trägt sie beim Server ein.",
+    "En": "Not registered yet – “Open lobby” registers it with the server.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RegistryState",
+    "De": "Wird beim Server angemeldet …",
+    "En": "Registering with the server …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawOwnDownload",
+    "De": "Deine Karte: ",
+    "En": "Your map: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCreate",
+    "De": "LOBBY ERSTELLEN",
+    "En": "CREATE LOBBY",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCreate",
+    "De": "bis 16 Spieler – alle spielen dieselbe Karte",
+    "En": "up to 16 players – everyone plays the same map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCreate",
+    "De": "Raum wird betreten …",
+    "En": "Entering room …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.CreateSteps",
+    "De": "Einstellen",
+    "En": "Set up",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.CreateSteps",
+    "De": "Freunde einladen",
+    "En": "Invite friends",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.CreateSteps",
+    "De": "Runde starten",
+    "En": "Start the round",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Teams & Regeln",
+    "En": "Teams & rules",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Modus",
+    "En": "Mode",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Anzahl Teams",
+    "En": "Number of teams",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Zuteilung",
+    "En": "Assignment",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Teamnamen",
+    "En": "Team names",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Teamfarben",
+    "En": "Team colours",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "eigene Farben der Karte",
+    "En": "the map’s own colours",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Sieg",
+    "En": "Victory",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Gipfel: Regel",
+    "En": "Summit: rule",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Gipfel: Haltezeit",
+    "En": "Summit: time to hold",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "aus der Haltezone",
+    "En": "from the hold zone",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "wie die Karte",
+    "En": "as the map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Gipfel: Abbau",
+    "En": "Summit: decay",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Weniger Regeln",
+    "En": "Fewer rules",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Weitere Regeln",
+    "En": "More rules",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Gegnern helfen",
+    "En": "Help opponents",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Gegner-Rucksäcke",
+    "En": "Opponents’ backpacks",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Gegner tragen",
+    "En": "Carry opponents",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Hautfarbe = Teamfarbe",
+    "En": "Skin = team colour",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyRules",
+    "De": "Auf Kartenvorgaben zurücksetzen",
+    "En": "Reset to map defaults",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyBound",
+    "De": "Legt die Karte fest",
+    "En": "Set by the map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.TimeWinLabel",
+    "De": "Meiste Lebende",
+    "En": "Most alive",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.TimeWinLabel",
+    "De": "Unentschieden",
+    "En": "Draw",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.TimeWinLabel",
+    "De": "Meiste Haltezeit",
+    "En": "Most hold time",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Restzeit",
+    "En": "Time left",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Modus",
+    "En": "Mode",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Zuteilung",
+    "En": "Assignment",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Sieg",
+    "En": "Victory",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Helfen",
+    "En": "Helping",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "auch Gegnern",
+    "En": "opponents too",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "nur im Team",
+    "En": "own team only",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Rucksäcke",
+    "En": "Backpacks",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "auch fremde",
+    "En": "others’ too",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Tragen",
+    "En": "Carrying",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "auch Gegner",
+    "En": "opponents too",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Zeit der Karte",
+    "En": "map’s time",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Hautfarbe",
+    "En": "Skin",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Teamfarbe",
+    "En": "team colour",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRuleRows",
+    "De": "Zeitablauf",
+    "En": "Time-out",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyLineup",
+    "De": "Aufstellung",
+    "En": "Line-up",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyLineup",
+    "De": "Zufällig verteilen",
+    "En": "Shuffle teams",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyLineup",
+    "De": "Ausgleichen",
+    "En": "Balance",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyLineup",
+    "De": "Die Teams sind schon ausgeglichen.",
+    "En": "The teams are already balanced.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyRandomize",
+    "De": "Teams neu gewürfelt.",
+    "En": "Teams shuffled.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyBalance",
+    "De": "Teams ausgeglichen.",
+    "En": "Teams balanced.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapDefaults",
+    "De": "Karte nicht lesbar.",
+    "En": "Can’t read the map.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapHome",
+    "De": "Noch keine Karten",
+    "En": "No maps yet",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapHome",
+    "De": "Karte erstellen",
+    "En": "Create map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapHome",
+    "De": "von der Gemeinschaft hoch bewertet",
+    "En": "rated highly by the community",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapHome",
+    "De": "frisch angelegt",
+    "En": "freshly created",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapHome",
+    "De": "Zuletzt aktualisiert",
+    "En": "Recently updated",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapHome",
+    "De": "gerade noch im Editor",
+    "En": "just out of the editor",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapHero",
+    "De": "unbekannt",
+    "En": "unknown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapHero",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapHero",
+    "De": "Route",
+    "En": "Route",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapHero",
+    "De": "ONLINE ANSEHEN & LADEN",
+    "En": "VIEW ONLINE & DOWNLOAD",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapHero",
+    "De": "FÜR DIE LOBBY WÄHLEN",
+    "En": "CHOOSE FOR LOBBY",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapHero",
+    "De": "ABFLUG – KARTE SPIELEN",
+    "En": "DEPART – PLAY MAP",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapHero",
+    "De": "SOLO SPIELEN",
+    "En": "PLAY SOLO",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapHero",
+    "De": "Ansehen",
+    "En": "View",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapBrowse",
+    "De": "ohne Kategorie",
+    "En": "uncategorized",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapBrowse",
+    "De": "Nur online",
+    "En": "Online only",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapBrowse",
+    "De": "Heruntergeladen",
+    "En": "Downloaded",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapBrowse",
+    "De": "1 KARTE",
+    "En": "1 MAP",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapBrowse",
+    "De": "Kategorie: ",
+    "En": "Category: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapBrowse",
+    "De": "ohne ",
+    "En": "not ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapBrowse",
+    "De": "Keine Karte passt zu Suche und Filtern.",
+    "En": "No map matches the search and filters.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "unbekannt",
+    "En": "unknown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "von <b>{0}</b>",
+    "En": "by <b>{0}</b>",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "DEINE · ONLINE",
+    "En": "YOURS · ONLINE",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "ROUTE",
+    "En": "ROUTE",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Route bearbeiten",
+    "En": "Edit route",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Kind der Karte: ",
+    "En": "Kind of map: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "INHALT",
+    "En": "CONTENTS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "VERWENDETE ASSETS, ITEMS & NPCS",
+    "En": "ASSETS, ITEMS & NPCS USED",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Aufräumen",
+    "En": "Clean up",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "LOBBYKARTE ✓",
+    "En": "LOBBY MAP ✓",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "FÜR DIE LOBBY WÄHLEN",
+    "En": "CHOOSE FOR LOBBY",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "ABFLUG – SPIELEN",
+    "En": "DEPART – PLAY",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "SOLO SPIELEN",
+    "En": "PLAY SOLO",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Im Editor bearbeiten",
+    "En": "Edit in the editor",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Probeflug – so spielen",
+    "En": "Test flight – play it",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Der Gastgeber entscheidet – Mitspieler fliegen mit.",
+    "En": "The host decides – everyone else flies along.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Erstellt",
+    "En": "Created",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Online-ID",
+    "En": "Online ID",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Deine Karte",
+    "En": "Your map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Angaben bearbeiten",
+    "En": "Edit details",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Kartenordner öffnen",
+    "En": "Open map folder",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "De": "Karte löschen (Papierkorb)",
+    "En": "Delete map (to trash)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "De": "Online-Workshop",
+    "En": "Online workshop",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "De": "Nur lokal – noch nicht veröffentlicht.",
+    "En": "Local only – not published yet.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "De": "Wird abgebrochen …",
+    "En": "Canceling …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "De": "Schon online – nichts Neues hochgeladen.",
+    "En": "Already online – nothing new uploaded.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "De": "ONLINE VERÖFFENTLICHEN",
+    "En": "PUBLISH ONLINE",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "De": "ERNEUT VERÖFFENTLICHEN",
+    "En": "PUBLISH AGAIN",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "De": "NEUE REVISION VERÖFFENTLICHEN",
+    "En": "PUBLISH NEW REVISION",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "De": "Eine andere Karte wird gerade veröffentlicht.",
+    "En": "Another map is being published.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapMetaEdit",
+    "De": "ANGABEN BEARBEITEN",
+    "En": "EDIT DETAILS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMapMetaEdit",
+    "De": "So erscheint sie im Workshop",
+    "En": "How it shows in the workshop",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SaveMapMeta",
+    "De": "Karte nicht lesbar.",
+    "En": "Can’t read the map.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SaveMapMeta",
+    "De": "Angaben gespeichert.",
+    "En": "Details saved.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMine",
+    "De": "Meine Items",
+    "En": "My items",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMine",
+    "De": "Item erstellen",
+    "En": "Create item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawMine",
+    "De": "Meine Assets",
+    "En": "My assets",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ModGroupCard",
+    "De": "Erledigt",
+    "En": "Done",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeName",
+    "De": "Schütze",
+    "En": "Shooter",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeName",
+    "De": "Wächter",
+    "En": "Guard",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeName",
+    "De": "Gesprächspartner",
+    "En": "Talker",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeName",
+    "De": "Wanderer",
+    "En": "Wanderer",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeName",
+    "De": "Kämpfer",
+    "En": "Fighter",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeSub",
+    "De": "hält Abstand, schießt",
+    "En": "keeps distance, shoots",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeSub",
+    "De": "großer Balken, Wut, Helfer",
+    "En": "big bar, rage, helpers",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeSub",
+    "De": "friedlich, wehrt sich",
+    "En": "peaceful, fights back",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeSub",
+    "De": "redet, tauscht, schenkt",
+    "En": "talks, trades, gives",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeSub",
+    "De": "streift friedlich umher",
+    "En": "roams peacefully",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeSub",
+    "De": "folgt dir, hilft im Kampf",
+    "En": "follows you, helps in fights",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ArchetypeSub",
+    "De": "jagt Spieler, schlägt zu",
+    "En": "hunts players, strikes",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ApplyArchetype",
+    "De": "ein Wanderer",
+    "En": "a wanderer",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcEditorCore",
+    "De": "NPC ANSEHEN",
+    "En": "VIEW NPC",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcEditorCore",
+    "De": "NPC BEARBEITEN",
+    "En": "EDIT NPC",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcEditorCore",
+    "De": "NPC ERSTELLEN",
+    "En": "CREATE NPC",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcEditorCore",
+    "De": "Figur wählen, Art festlegen, Werte und Animationen prüfen, Beute und Gespräch dazu – fertig. Danach in Karten setzen oder veröffentlichen.",
+    "En": "Pick a figure, choose its kind, check values and animations, add loot and talk – done. Then place it in maps or publish it.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcEditorCore",
+    "De": "Figur",
+    "En": "Figure",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcEditorCore",
+    "De": "Werte",
+    "En": "Values",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcEditorCore",
+    "De": "Gespräch",
+    "En": "Talk",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcEditorCore",
+    "De": "Rechts eine Figur wählen",
+    "En": "Pick a figure on the right",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RoleName",
+    "De": "Gehen",
+    "En": "Walk",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RoleName",
+    "De": "Rennen",
+    "En": "Run",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RoleName",
+    "De": "Angriff",
+    "En": "Attack",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RoleName",
+    "De": "Treffer",
+    "En": "Hit",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RoleName",
+    "De": "Tod",
+    "En": "Death",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RoleName",
+    "De": "Reden",
+    "En": "Talk",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RoleName",
+    "De": "Ruhe",
+    "En": "Idle",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RolePreviewBar",
+    "De": "So bewegt er sich – anklicken zum Abspielen",
+    "En": "How it moves – click to play",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcProfileCard",
+    "De": "STECKBRIEF",
+    "En": "PROFILE",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepFigure",
+    "De": "Animierte Figur",
+    "En": "Animated figure",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepFigure",
+    "De": "Darf klettern",
+    "En": "May climb",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepFigure",
+    "De": "aus dem Paket",
+    "En": "from the package",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepFigure",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepFigure",
+    "De": "Andere Figur",
+    "En": "Other figure",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepFigure",
+    "De": "Neue Figur hochladen (3D-Asset)",
+    "En": "Upload a new figure (3D asset)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.FigurePicker",
+    "De": "Modelle durchsuchen …",
+    "En": "Search models …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.FigurePicker",
+    "De": "Nichts gefunden.",
+    "En": "Nothing found.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.FigurePicker",
+    "De": "Noch keine 3D-Assets – erst eins hochladen.",
+    "En": "No 3D assets yet – upload one first.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.FigurePicker",
+    "De": "deins",
+    "En": "yours",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.FigurePicker",
+    "De": "… und {0} weitere – Suche eingrenzen.",
+    "En": "… and {0} more – narrow the search.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.FitnessBadge",
+    "De": "SKELETT – ANIM. LEIHEN",
+    "En": "RIGGED – BORROW ANIMS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.FitnessBadge",
+    "De": "STARR",
+    "En": "STATIC",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeKindName",
+    "De": "Müdigkeit",
+    "En": "Drowsy",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeKindName",
+    "De": "Sporen",
+    "En": "Spores",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeKindName",
+    "De": "Fluch",
+    "En": "Curse",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeProjectileName",
+    "De": "Pfeil",
+    "En": "Arrow",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeProjectileName",
+    "De": "Bolzen",
+    "En": "Bolt",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeProjectileName",
+    "De": "Kugel",
+    "En": "Bullet",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeProjectileName",
+    "De": "Zauber",
+    "En": "Spell",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeProjectileName",
+    "De": "Stein",
+    "En": "Stone",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Rüstung",
+    "En": "Armour",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Angriff",
+    "En": "Attack",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Pause zwischen Angriffen",
+    "En": "Pause between attacks",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Reichweite (Nahkampf)",
+    "En": "Reach (melee)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Rückstoß",
+    "En": "Knockback",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Taumeln",
+    "En": "Stun",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Bewegung & Sinne",
+    "En": "Movement & senses",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Tempo (rennen)",
+    "En": "Speed (run)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Tempo (gehen)",
+    "En": "Speed (walk)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Sieht Spieler ab",
+    "En": "Spots players from",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Gibt auf nach",
+    "En": "Gives up after",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "nie",
+    "En": "never",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Folgt im Abstand",
+    "En": "Follows at",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepValues",
+    "De": "Lebensbalken über dem Kopf",
+    "En": "Health bar above the head",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeRanged",
+    "De": "Geschoss",
+    "En": "Projectile",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeRanged",
+    "De": "Element (Zauber oder Leuchtspur)",
+    "En": "Element (spell or glowing trail)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeRanged",
+    "De": "Schussweite",
+    "En": "Range",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeRanged",
+    "De": "Hält Abstand",
+    "En": "Keeps away",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeRanged",
+    "De": "Geschosstempo",
+    "En": "Projectile speed",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeRanged",
+    "De": "Fallkurve",
+    "En": "Drop",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeRanged",
+    "De": "Streuung",
+    "En": "Spread",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeRanged",
+    "De": "Geschossgröße",
+    "En": "Projectile size",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBoss",
+    "De": "Wütend ab",
+    "En": "Enraged below",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBoss",
+    "De": "nie",
+    "En": "never",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBoss",
+    "De": "Wut-Stärke",
+    "En": "Rage strength",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBoss",
+    "De": "Ruft Helfer (andere NPCs aus deinem Workshop)",
+    "En": "Calls helpers (other NPCs from your workshop)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBoss",
+    "De": "Helfer fehlt – erst einen einfachen Kämpfer als NPC speichern.",
+    "En": "Helper missing – save a simple fighter NPC first.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBoss",
+    "De": "Anzahl je Ruf",
+    "En": "Count per call",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBoss",
+    "De": "Wie oft",
+    "En": "How often",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepAnims",
+    "De": "Erst eine Figur wählen.",
+    "En": "Pick a figure first.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepAnims",
+    "De": "Die Figur lädt noch – oder sie hat keine Animationen.",
+    "En": "The figure is still loading – or it has no animations.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepLoot",
+    "De": "Gegenstand dazu",
+    "En": "Add an item",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemSearch",
+    "De": "Gegenstand suchen, z. B. Seil, Riegel …",
+    "En": "Search an item, e.g. rope, bar …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ItemSearch",
+    "De": "Nichts gefunden.",
+    "En": "Nothing found.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepTalk",
+    "De": "Kann reden (Spieler drücken E vor ihm)",
+    "En": "Can talk (players press E in front of it)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepTalk",
+    "De": "Vorlage",
+    "En": "Template",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepTalk",
+    "De": "Spieler bringt",
+    "En": "Player brings",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepTalk",
+    "De": "… und bekommt",
+    "En": "… and gets",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepTalk",
+    "De": "Schenkt",
+    "En": "Gives",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepTalk",
+    "De": "Figur",
+    "En": "Figure",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepTalk",
+    "De": "Was sagt die Figur?",
+    "En": "What does the figure say?",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepTalk",
+    "De": "Antwort des Spielers",
+    "En": "Player's answer",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepTalk",
+    "De": "Gespräch endet",
+    "En": "conversation ends",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeWho",
+    "De": "ein Wanderer",
+    "En": "a wanderer",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeItemParam",
+    "De": "Ändern",
+    "En": "Change",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepSave",
+    "De": "SPEICHERN & IN KARTE SETZEN",
+    "En": "SAVE & PLACE IN MAP",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepSave",
+    "De": "Nur speichern",
+    "En": "Save only",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepSave",
+    "De": "NPC SPEICHERN",
+    "En": "SAVE NPC",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeStepSave",
+    "De": "Ein Name fehlt noch.",
+    "En": "Still missing a name.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBorrowUi",
+    "De": "Animationen leihen",
+    "En": "Borrow animations",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBorrowUi",
+    "De": "keine (eigene)",
+    "En": "none (own)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NeBorrowUi",
+    "De": "Wird übertragen …",
+    "En": "Transferring …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SaveNpcEditorTo",
+    "De": "Speichern fehlgeschlagen: ",
+    "En": "Saving failed: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcIntro",
+    "De": "EIGENE NPCS BAUEN",
+    "En": "BUILD YOUR OWN NPCS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcIntro",
+    "De": "Gegner, Bosse, Haustiere oder Händler mit Gespräch – aus jeder animierten Figur.",
+    "En": "Enemies, bosses, pets or traders with dialogue – from any animated figure.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcIntro",
+    "De": "1  Figur wählen",
+    "En": "1  Pick a figure",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcIntro",
+    "De": "2  Art & Werte",
+    "En": "2  Kind & values",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcIntro",
+    "De": "3  In der Karte setzen",
+    "En": "3  Place it in a map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcIntro",
+    "De": "NPC erstellen",
+    "En": "Create NPC",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcIntro",
+    "De": "Alle durchsuchen",
+    "En": "Browse all",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcHero",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcHero",
+    "De": "IN KARTE VERWENDEN",
+    "En": "USE IN MAP",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcHero",
+    "De": "KONFIGURATION ANSEHEN",
+    "En": "VIEW CONFIGURATION",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcBrowse",
+    "De": "Noch keine NPCs",
+    "En": "No NPCs yet",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcBrowse",
+    "De": "NPC erstellen",
+    "En": "Create NPC",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcCard",
+    "De": "DEINS",
+    "En": "YOURS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcCard",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "De": "von <b>{0}</b>",
+    "En": "by <b>{0}</b>",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "De": "DEINS",
+    "En": "YOURS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "De": "WERTE",
+    "En": "STATS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "De": "IN KARTE VERWENDEN",
+    "En": "USE IN MAP",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "De": "Typen",
+    "En": "Types",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "De": "Körper",
+    "En": "Body",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "De": "Pilz-Zombie",
+    "En": "Mushroom zombie",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "De": "ID",
+    "En": "ID",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "De": "Aus Karte",
+    "En": "From map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcMetaBox",
+    "De": "Angaben speichern",
+    "En": "Save details",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcMetaBox",
+    "De": "Angaben gespeichert.",
+    "En": "Details saved.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcStats",
+    "De": "Sieht",
+    "En": "Sight",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcStats",
+    "De": "Reichweite",
+    "En": "Range",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcStats",
+    "De": "Rüstung",
+    "En": "Armour",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcTraits",
+    "De": "neutral – greift erst an, wenn man ihn trifft",
+    "En": "neutral – only attacks once hit",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcTraits",
+    "De": "schießt aus der Ferne",
+    "En": "shoots from range",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcTraits",
+    "De": "streift umher",
+    "En": "wanders",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.NpcTraits",
+    "De": "steht",
+    "En": "stands",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RenderNpcThumb",
+    "De": "Vorschaubild gespeichert.",
+    "En": "Thumbnail saved.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RenderNpcThumb",
+    "De": "Vorschaubild ließ sich nicht rendern.",
+    "En": "Couldn’t render the thumbnail.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.RemoteOriginBox",
+    "De": "unbekannt",
+    "En": "unknown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawRemoteDetail",
+    "De": "unbekannt",
+    "En": "unknown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawRemoteDetail",
+    "De": "von <b>{0}</b>",
+    "En": "by <b>{0}</b>",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawRemoteDetail",
+    "De": "DEINS",
+    "En": "YOURS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawRemoteDetail",
+    "De": " · {0} Dateien",
+    "En": " · {0} files",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawRemoteDetail",
+    "De": "Erstellt",
+    "En": "Created",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawRemoteDetail",
+    "De": "Sichtbarkeit",
+    "En": "Visibility",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawRemoteDetail",
+    "De": "Online-ID",
+    "En": "Online ID",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.OptimizeAsset",
+    "De": "Optimieren fehlgeschlagen: ",
+    "En": "Optimizing failed: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.OriginForm",
+    "De": "KI-Werkzeug",
+    "En": "AI tool",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.OriginBox",
+    "De": "KI-Werkzeug",
+    "En": "AI tool",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapCard",
+    "De": "DEINE · ONLINE",
+    "En": "YOURS · ONLINE",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapCard",
+    "De": "DEINE",
+    "En": "YOURS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapCard",
+    "De": "unbekannt",
+    "En": "unknown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.MapCard",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetCard",
+    "De": "DEINS",
+    "En": "YOURS",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetCard",
+    "De": "unbekannt",
+    "En": "unknown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AssetCard",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.UsedCard",
+    "De": "unbekannt",
+    "En": "unknown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.UsedCard",
+    "De": "von {0}",
+    "En": "by {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DownloadedBox",
+    "De": "Heruntergeladen",
+    "En": "Downloaded",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ContentPublishBox",
+    "De": "Online-Workshop",
+    "En": "Online workshop",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ContentPublishBox",
+    "De": "Wird abgebrochen …",
+    "En": "Canceling …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ContentPublishBox",
+    "De": "Schon online – nichts Neues hochgeladen.",
+    "En": "Already online – nothing new uploaded.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ContentPublishBox",
+    "De": "Bild & Symbol neu rendern",
+    "En": "Re-render image & icon",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ContentPublishBox",
+    "De": "ONLINE VERÖFFENTLICHEN",
+    "En": "PUBLISH ONLINE",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ContentPublishBox",
+    "De": "ERNEUT VERÖFFENTLICHEN",
+    "En": "PUBLISH AGAIN",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.ContentPublishBox",
+    "De": "NEUE REVISION VERÖFFENTLICHEN",
+    "En": "PUBLISH NEW REVISION",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.PumpPublishChain",
+    "De": "abgebrochen",
+    "En": "canceled",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.TrashFilterLabel",
+    "De": "3D-Assets",
+    "En": "3D assets",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawTrash",
+    "De": "Papierkorb",
+    "En": "Trash",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.AskPurgeTrash",
+    "De": "Nicht gelöscht: {0}",
+    "En": "Not deleted: {0}",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.SourceInfo",
+    "De": "{0} Modelle",
+    "En": "{0} models",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawTexturePanel",
+    "De": "Fertig",
+    "En": "Done",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawTexturePanel",
+    "De": "Ändern",
+    "En": "Change",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublishBox",
+    "De": "IM WORKSHOP VERÖFFENTLICHEN",
+    "En": "PUBLISH TO THE WORKSHOP",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublishBox",
+    "De": "Ein Titel fehlt noch.",
+    "En": "Still missing a title.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawPublishBox",
+    "De": "Herkunft fehlt noch: ",
+    "En": "Origin still missing: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawWizard",
+    "De": "Ein Titel fehlt noch.",
+    "En": "Still missing a title.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.PreviewEntry",
+    "De": "Deine Karte",
+    "En": "Your map",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.OpenRouteEditor",
+    "De": "Karte nicht lesbar.",
+    "En": "Can’t read the map.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Airport.WorkshopPanel.DrawRouteEditor",
+    "De": "Verwerfen",
+    "En": "Discard",
+    "Same": []
+  },
+  {
+    "Source": "@fields",
+    "De": "Öffentlich stellen",
+    "En": "Make public",
+    "Same": []
+  },
+  {
+    "Source": "@fields",
+    "De": "Privat stellen",
+    "En": "Make public",
+    "Same": []
+  },
+  {
+    "Source": "@fields",
+    "De": "Öffentlich stellen",
+    "En": "Make private",
+    "Same": []
+  },
+  {
+    "Source": "@fields",
+    "De": "Privat stellen",
+    "En": "Make private",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemDef.Summary",
+    "De": "+{0} Ausdauer",
+    "En": "+{0} stamina",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemDef.Summary",
+    "De": "Trinken",
+    "En": "Drink",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemDef.Summary",
+    "De": "Essen",
+    "En": "Eat",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemDef.Summary",
+    "De": "unbegrenzt",
+    "En": "unlimited",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemDef.UseText",
+    "De": "Fernkampf",
+    "En": "Ranged",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemSounds.EventName",
+    "De": "Ausholen / Schwung",
+    "En": "Swing",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemSounds.EventName",
+    "De": "Spannen",
+    "En": "Draw",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemSounds.GroupName",
+    "De": "Schwung",
+    "En": "Swing",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemSounds.GroupName",
+    "De": "Treffer",
+    "En": "Hit",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemSounds.GroupName",
+    "De": "Aufprall",
+    "En": "Impact",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.ItemSounds.Label",
+    "De": "Kein Sound",
+    "En": "No sound",
+    "Same": []
+  },
+  {
+    "Source": "@fields",
+    "De": "Schnitt",
+    "En": "Slash",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.MeleeDef.MotionText",
+    "De": "Schwingen",
+    "En": "Swing",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.MeleeDef.MotionText",
+    "De": "Schneiden",
+    "En": "Slash",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.MeleeDef.MotionText",
+    "De": "Stechen",
+    "En": "Stab",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Build.Items.RangedDef.ProjectileText",
+    "De": "Zauber",
+    "En": "Spell",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorSession.Save",
+    "De": "Speichern fehlgeschlagen: ",
+    "En": "Saving failed: ",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorTools.ShapeName",
+    "De": "Frei",
+    "En": "Free",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DlgOption",
+    "De": "Gespräch endet",
+    "En": "conversation ends",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DlgItemField",
+    "De": "Gegenstand suchen …",
+    "En": "Search items …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DlgPick",
+    "De": "Gespräch endet",
+    "En": "conversation ends",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.HpContent",
+    "De": "Pos1",
+    "En": "Home",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.HpContent",
+    "De": "Sicht",
+    "En": "View",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawTerrain",
+    "De": "Frei",
+    "En": "Free",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawBrushPanel",
+    "De": "Stärke",
+    "En": "Strength",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.ItemPicker",
+    "De": "Gegenstand suchen …",
+    "En": "Search items …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.InEffects",
+    "De": "Sichtweite",
+    "En": "Visibility",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.InEffects",
+    "De": "Stärke",
+    "En": "Strength",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawBurn",
+    "De": "Rückstoß",
+    "En": "Knockback",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawShaky",
+    "De": "Stärke",
+    "En": "Strength",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawWorkshopFields",
+    "De": "Keine Angabe",
+    "En": "Not specified",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawLook",
+    "De": "Aussehen",
+    "En": "Look",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawMotion",
+    "De": "Bewegung",
+    "En": "Motion",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawMotion",
+    "De": "Schwingen",
+    "En": "Swing",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawMotion",
+    "De": "Allgemein",
+    "En": "General",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawPath",
+    "De": "Ablauf",
+    "En": "Mode",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawPath",
+    "De": "Warten",
+    "En": "Wait",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawEmit",
+    "De": "Streuung",
+    "En": "Spread",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.MusicPicker",
+    "De": "Auswahl offen …",
+    "En": "Picker open …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcCreateType",
+    "De": "Pilz-Zombie",
+    "En": "Mushroom zombie",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcBrainLabel",
+    "De": "steht",
+    "En": "stands",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcBrainLabel",
+    "De": "streift umher",
+    "En": "wanders",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcKindLabel",
+    "De": "Müdigkeit",
+    "En": "Drowsy",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcKindLabel",
+    "De": "Sporen",
+    "En": "Spores",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcKindLabel",
+    "De": "Fluch",
+    "En": "Curse",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRoleLabel",
+    "De": "Gehen",
+    "En": "Walk",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRoleLabel",
+    "De": "Rennen",
+    "En": "Run",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRoleLabel",
+    "De": "Angriff",
+    "En": "Attack",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRoleLabel",
+    "De": "Treffer",
+    "En": "Hit",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRoleLabel",
+    "De": "Tod",
+    "En": "Death",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRoleLabel",
+    "De": "Reden",
+    "En": "Talk",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRoleLabel",
+    "De": "Ruhe",
+    "En": "Idle",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawNpcProp",
+    "De": "Streuung",
+    "En": "Spread",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawNpcProp",
+    "De": "Folgt im Abstand",
+    "En": "Follows at",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawNpcProp",
+    "De": "Rüstung",
+    "En": "Armour",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawNpcProp",
+    "De": "Reichweite",
+    "En": "Reach",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawNpcProp",
+    "De": "Rückstoß",
+    "En": "Knockback",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawNpcProp",
+    "De": "Taumeln",
+    "En": "Stun",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawNpcProp",
+    "De": "Darf klettern",
+    "En": "May climb",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawNpcProp",
+    "De": "Tempo (gehen)",
+    "En": "Speed (walk)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcProjectileLabel",
+    "De": "Zauber",
+    "En": "Spell",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcProjectileLabel",
+    "De": "Kugel",
+    "En": "Bullet",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcProjectileLabel",
+    "De": "Bolzen",
+    "En": "Bolt",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcProjectileLabel",
+    "De": "Pfeil",
+    "En": "Arrow",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcProjectileLabel",
+    "De": "Stein",
+    "En": "Stone",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRangedUi",
+    "De": "Geschoss",
+    "En": "Projectile",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRangedUi",
+    "De": "Element (Zauber oder Leuchtspur)",
+    "En": "Element (spell or glowing trail)",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRangedUi",
+    "De": "Reichweite",
+    "En": "Range",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRangedUi",
+    "De": "Geschosstempo",
+    "En": "Projectile speed",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRangedUi",
+    "De": "Fallkurve",
+    "En": "Drop",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRangedUi",
+    "De": "Streuung",
+    "En": "Spread",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcRangedUi",
+    "De": "Geschossgröße",
+    "En": "Projectile size",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcBossUi",
+    "De": "Wütend ab",
+    "En": "Enraged below",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcBossUi",
+    "De": "Wut-Stärke",
+    "En": "Rage strength",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcBossUi",
+    "De": "Anzahl je Ruf",
+    "En": "Count per call",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcBossUi",
+    "De": "Wie oft",
+    "En": "How often",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.NpcDrops",
+    "De": "Gegenstand suchen …",
+    "En": "Search items …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.OlTree",
+    "De": "Nichts gefunden.",
+    "En": "Nothing found.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawNativeOutline",
+    "De": "Sicht",
+    "En": "View",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawPalette",
+    "De": "Nichts gefunden.",
+    "En": "Nothing found.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.ShortBiome",
+    "De": "Allgemein",
+    "En": "General",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.DrawUnit",
+    "De": "Drehen",
+    "En": "Turn",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTeams",
+    "De": "Modus",
+    "En": "Mode",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTimeWinName",
+    "De": "Meiste Lebende",
+    "En": "Most alive",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTimeWinName",
+    "De": "Unentschieden",
+    "En": "Draw",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTimeWinName",
+    "De": "Meiste Haltezeit",
+    "En": "Most hold time",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTeamWin",
+    "De": "Sieg",
+    "En": "Victory",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTeamRules",
+    "De": "FF an",
+    "En": "FF on",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTeamRules",
+    "De": "FF aus",
+    "En": "FF on",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTeamRules",
+    "De": "FF an",
+    "En": "FF off",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTeamRules",
+    "De": "FF aus",
+    "En": "FF off",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTeamRules",
+    "De": "Gegner tragen",
+    "En": "Carry opponents",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.WoTeamRules",
+    "De": "Zuteilung",
+    "En": "Assignment",
+    "Same": []
+  },
+  {
+    "Source": "@fields",
+    "De": "Fertig",
+    "En": "Done",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Launch.LaunchPanel.DrawPlan",
+    "De": "Verwerfen",
+    "En": "Discard",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Net.LobbyHost.WhyNotReady",
+    "De": "Download fehlgeschlagen",
+    "En": "download failed",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Net.LobbyHost.WhyNotReady",
+    "De": "Karte fehlt",
+    "En": "map missing",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Net.MissingMap.get_Name",
+    "De": "unbekannt",
+    "En": "unknown",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Npc.NpcHud.DrawBosses",
+    "De": "{0} BESIEGT!",
+    "En": "{0} DEFEATED!",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Online.LobbyBrowser.StatusText",
+    "De": "Lade Lobbys …",
+    "En": "Loading lobbies …",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Online.TransferProgress.StepText",
+    "De": "Fertig",
+    "En": "Done",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Teams.TeamPanel.StateText",
+    "De": "fertig gebaut",
+    "En": "built",
+    "Same": []
+  }
+]

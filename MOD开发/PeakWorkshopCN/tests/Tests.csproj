@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net472</TargetFramework><LangVersion>latest</LangVersion></PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\PeakWorkshopCN\Data\*.json"><LogicalName>PeakWorkshopCN.Data.%(Filename)%(Extension)</LogicalName></EmbeddedResource>
+    <Reference Include="BepInEx"><HintPath>..\..\..\测试环境\BepInEx\core\BepInEx.dll</HintPath></Reference>
+    <Reference Include="0Harmony"><HintPath>..\..\..\测试环境\BepInEx\core\0Harmony.dll</HintPath></Reference>
+    <Reference Include="MonoMod.RuntimeDetour"><HintPath>..\..\..\测试环境\BepInEx\core\MonoMod.RuntimeDetour.dll</HintPath></Reference>
+    <Reference Include="MonoMod.Utils"><HintPath>..\..\..\测试环境\BepInEx\core\MonoMod.Utils.dll</HintPath></Reference>
+    <Reference Include="Mono.Cecil"><HintPath>..\..\..\测试环境\BepInEx\core\Mono.Cecil.dll</HintPath></Reference>
+    <Compile Include="..\PeakWorkshopCN\TranslationCatalog.cs" Link="TranslationCatalog.cs" />
+    <Compile Include="..\PeakWorkshopCN\DynamicCatalog.cs" Link="DynamicCatalog.cs" />
+    <Compile Include="..\PeakWorkshopCN\LiteralRewriter.cs" Link="LiteralRewriter.cs" />
+    <Compile Include="..\PeakWorkshopCN\ConfigurationLocalization.cs" Link="ConfigurationLocalization.cs" />
+    <Compile Include="..\PeakWorkshopCN\CatalogData.cs" Link="CatalogData.cs" />
+  </ItemGroup>
+</Project>

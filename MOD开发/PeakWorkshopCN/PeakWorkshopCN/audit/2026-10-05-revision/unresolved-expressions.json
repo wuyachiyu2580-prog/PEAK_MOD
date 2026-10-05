@@ -1,0 +1,758 @@
+[
+  {
+    "file": "PeakMapForge.Airport\\AssetOrigin.cs",
+    "line": 395,
+    "source": "PeakMapForge.Airport.AssetOrigin.CreditLine",
+    "german": "\"„\" + (title ?? \"\").Trim() + \"“\"",
+    "english": "\"“\" + (title ?? \"\").Trim() + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\LobbyOverlay.cs",
+    "line": 196,
+    "source": "PeakMapForge.Airport.LobbyOverlay.Body",
+    "german": "progress.StepDe",
+    "english": "progress.StepEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\LobbyOverlay.cs",
+    "line": 338,
+    "source": "PeakMapForge.Airport.LobbyOverlay.StepOf",
+    "german": "p.StepDe",
+    "english": "p.StepEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\MenuSignRig.cs",
+    "line": 951,
+    "source": "PeakMapForge.Airport.MenuSignRig.OnGUI",
+    "german": "moveKeyName + \" + Ziehen: Schild verschieben · \" + moveKeyName + \" + Rechtsklick: zurücksetzen\"",
+    "english": "moveKeyName + \" + drag: move the sign · \" + moveKeyName + \" + right click: reset\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopLibrary.cs",
+    "line": 109,
+    "source": "PeakMapForge.Airport.WorkshopLibrary+Entry.get_OnlineBadge",
+    "german": "string.Format(\"Online · Rev {0} · {1}\", Online.Rev, Online.Private ? \"privat\" : \"öffentlich\")",
+    "english": "string.Format(\"Online · Rev {0} · {1}\", Online.Rev, Online.Private ? \"private\" : \"public\")"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopLibrary.cs",
+    "line": 834,
+    "source": "PeakMapForge.Airport.WorkshopLibrary.PlanOf",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 2342,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetBrowse",
+    "german": "\"„\" + _search.Trim() + \"“\"",
+    "english": "\"“\" + _search.Trim() + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 3544,
+    "source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "german": "whyDe",
+    "english": "whyEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 3684,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "german": "whyDe",
+    "english": "whyEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 3968,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "german": "whyDe",
+    "english": "whyEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 4116,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawConfirm",
+    "german": "confirm.TitleDe",
+    "english": "confirm.TitleEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 4117,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawConfirm",
+    "german": "confirm.BodyDe",
+    "english": "confirm.BodyEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 4133,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawConfirm",
+    "german": "confirm.OptDe",
+    "english": "confirm.OptEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 4156,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawConfirm",
+    "german": "confirm.OkDe",
+    "english": "confirm.OkEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 4490,
+    "source": "PeakMapForge.Airport.WorkshopPanel.RunDelete",
+    "german": "o.De",
+    "english": "o.En"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 6094,
+    "source": "PeakMapForge.Airport.WorkshopPanel.TmCount",
+    "german": "deOne",
+    "english": "enOne"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 6094,
+    "source": "PeakMapForge.Airport.WorkshopPanel.TmCount",
+    "german": "deMany",
+    "english": "enMany"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 6099,
+    "source": "PeakMapForge.Airport.WorkshopPanel.Date",
+    "german": "d.ToString(\"dd.MM.yyyy\")",
+    "english": "d.ToString(\"yyyy-MM-dd\")"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 6104,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DateTimeText",
+    "german": "d.ToString(\"dd.MM.yyyy HH:mm\")",
+    "english": "d.ToString(\"yyyy-MM-dd HH:mm\")"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 6165,
+    "source": "PeakMapForge.Airport.WorkshopPanel.StartFlight",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 7335,
+    "source": "PeakMapForge.Airport.WorkshopPanel.EffectsEditor",
+    "german": "$\"−{(0f - effectDef.Amount) * 100f:0} %\"",
+    "english": "$\"−{(0f - effectDef.Amount) * 100f:0} %\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 10013,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawItemBrowse",
+    "german": "\"„\" + _search.Trim() + \"“\"",
+    "english": "\"“\" + _search.Trim() + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 11534,
+    "source": "PeakMapForge.Airport.WorkshopPanel.ChooseForLobby",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 11630,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyStartBar",
+    "german": "current.De",
+    "english": "current.En"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 11643,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyStartBar",
+    "german": "current.WarnDe",
+    "english": "current.WarnEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 11647,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyStartBar",
+    "german": "_lbStartDe",
+    "english": "_lbStartEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 11651,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyStartBar",
+    "german": "LobbyArm.NoteDe",
+    "english": "LobbyArm.NoteEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 11726,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DoLobbyStart",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 11768,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyArmedBar",
+    "german": "\"Startet automatisch, sobald alle die Karte haben – \" + TerminalText.Esc(item) + \". (Wartet höchstens noch \" + text + \".)\"",
+    "english": "\"Starts automatically once everyone has the map – \" + TerminalText.Esc(item2) + \". (Waits at most \" + text + \" more.)\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 11801,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyArmedBar",
+    "german": "item3",
+    "english": "item4"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 11806,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyArmedBar",
+    "german": "_lbStartDe",
+    "english": "_lbStartEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 12066,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "german": "LobbyHost.MapProblemDe",
+    "english": "LobbyHost.MapProblemEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 12070,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMapBody",
+    "german": "_lbPickDe",
+    "english": "_lbPickEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 13389,
+    "source": "PeakMapForge.Airport.WorkshopPanel.MapPlayersText",
+    "german": "$\"ab {lo}\"",
+    "english": "$\"{lo}+\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 14372,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawMapBrowse",
+    "german": "\"„\" + _search.Trim() + \"“\"",
+    "english": "\"“\" + _search.Trim() + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 14873,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "german": "string.Format(\"Online als „{0}“ · Rev {1} · {2}\", TerminalText.Esc(online.Id), online.Rev, online.Private ? \"privat\" : \"öffentlich\")",
+    "english": "string.Format(\"Online as “{0}” · rev {1} · {2}\", TerminalText.Esc(online.Id), online.Rev, online.Private ? \"private\" : \"public\")"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 14922,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawPublish",
+    "german": "string.Format(\"Veröffentlicht: Rev {0} ({1}).\", done.Result?.Rev, (done.Visibility == \"unlisted\") ? \"privat\" : \"öffentlich\")",
+    "english": "string.Format(\"Published: rev {0} ({1}).\", done.Result?.Rev, (done.Visibility == \"unlisted\") ? \"private\" : \"public\")"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 15018,
+    "source": "PeakMapForge.Airport.WorkshopPanel.PublishError",
+    "german": "job.Progress.ErrorDe",
+    "english": "job.Progress.ErrorEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 15476,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawModUnlock",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 15481,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawModUnlock",
+    "german": "Moderation.UnlockDe",
+    "english": "Moderation.UnlockEn"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 15710,
+    "source": "PeakMapForge.Airport.WorkshopPanel.ModGroupCard",
+    "german": "Moderation.StatusDe(g.Status)",
+    "english": "Moderation.StatusEn(g.Status)"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 15724,
+    "source": "PeakMapForge.Airport.WorkshopPanel.ModGroupCard",
+    "german": "Moderation.ReasonDe(item.Reason)",
+    "english": "Moderation.ReasonEn(item.Reason)"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 15740,
+    "source": "PeakMapForge.Airport.WorkshopPanel.ModGroupCard",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 15884,
+    "source": "PeakMapForge.Airport.WorkshopPanel.RunModAction",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 16007,
+    "source": "PeakMapForge.Airport.WorkshopPanel.OwnerReportsHint",
+    "german": "Moderation.ReasonDe(item.Reason)",
+    "english": "Moderation.ReasonEn(item.Reason)"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 16215,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawNewsForm",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 16276,
+    "source": "PeakMapForge.Airport.WorkshopPanel.NewsCard",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 16287,
+    "source": "PeakMapForge.Airport.WorkshopPanel.NewsCard",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 17098,
+    "source": "PeakMapForge.Airport.WorkshopPanel.FbxRigWarning",
+    "german": "string.Format(\"FBX mit Skelett ({0} Knochen{1}) – geht beim Import verloren\", bones, (anims > 0) ? $\", {anims} Animation(en)\" : \"\")",
+    "english": "string.Format(\"FBX with a skeleton ({0} bones{1}) – lost on import\", bones, (anims > 0) ? $\", {anims} animation(s)\" : \"\")"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 18734,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcBrowse",
+    "german": "\"„\" + _search.Trim() + \"“\"",
+    "english": "\"“\" + _search.Trim() + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 19656,
+    "source": "PeakMapForge.Airport.WorkshopPanel.SendVote",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 20049,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawRemoteDetail",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 20271,
+    "source": "PeakMapForge.Airport.WorkshopPanel.StartMapUpdate",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 20372,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawNetUpdate",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 20377,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawNetUpdate",
+    "german": "tuple.Value.Item1",
+    "english": "tuple.Value.Item2"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 20757,
+    "source": "PeakMapForge.Airport.WorkshopPanel.OptimizeRow",
+    "german": "text ?? \"\"",
+    "english": "text2 ?? \"\""
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 22883,
+    "source": "PeakMapForge.Airport.WorkshopPanel.ContentPublishBox",
+    "german": "string.Format(\"Online als „{0}“ · Rev {1} · {2}\", TerminalText.Esc(onlineLink.Id), onlineLink.Rev, onlineLink.Private ? \"privat\" : \"öffentlich\")",
+    "english": "string.Format(\"Online as “{0}” · rev {1} · {2}\", TerminalText.Esc(onlineLink.Id), onlineLink.Rev, onlineLink.Private ? \"private\" : \"public\")"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 22949,
+    "source": "PeakMapForge.Airport.WorkshopPanel.ContentPublishBox",
+    "german": "string.Format(\"Veröffentlicht als „{0}“: Rev {1} ({2}).\", publishJob.Result?.Id, publishJob.Result?.Rev, (publishJob.Visibility == \"unlisted\") ? \"privat\" : \"öffentlich\")",
+    "english": "string.Format(\"Published as “{0}”: rev {1} ({2}).\", publishJob.Result?.Id, publishJob.Result?.Rev, (publishJob.Visibility == \"unlisted\") ? \"private\" : \"public\")"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 23672,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawTrash",
+    "german": "string.Format(\"{0} Eintr{1} · {2} · neueste zuerst\", list.Count, (list.Count == 1) ? \"ag\" : \"äge\", WorkshopAssets.SizeText(bytes))",
+    "english": "string.Format(\"{0} entr{1} · {2} · newest first\", list.Count, (list.Count == 1) ? \"y\" : \"ies\", WorkshopAssets.SizeText(bytes))"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 23688,
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawTrash",
+    "german": "tuple.Value.Item1",
+    "english": "tuple.Value.Item2"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 23954,
+    "source": "PeakMapForge.Airport.WorkshopPanel.AskEmptyTrash",
+    "german": "outcome.De",
+    "english": "outcome.En"
+  },
+  {
+    "file": "PeakMapForge.Airport\\WorkshopPanel.cs",
+    "line": 23958,
+    "source": "PeakMapForge.Airport.WorkshopPanel.AskEmptyTrash",
+    "german": "string.Format(\"{0} Eintr{1} endgültig gelöscht ({2} frei).\", num, (num == 1) ? \"ag\" : \"äge\", WorkshopAssets.SizeText(num3))",
+    "english": "string.Format(\"{0} entr{1} deleted permanently ({2} freed).\", num, (num == 1) ? \"y\" : \"ies\", WorkshopAssets.SizeText(num3))"
+  },
+  {
+    "file": "PeakMapForge.Build\\ForgeHud.cs",
+    "line": 158,
+    "source": "PeakMapForge.Build.ForgeHud.OnGUI",
+    "german": "_de",
+    "english": "_en"
+  },
+  {
+    "file": "PeakMapForge.Build\\ForgeSky.cs",
+    "line": 107,
+    "source": "PeakMapForge.Build.ForgeSky.get_Presets",
+    "german": "CtPresets[i].de",
+    "english": "CtPresets[i].en"
+  },
+  {
+    "file": "PeakMapForge.Build\\LookApplier.cs",
+    "line": 53,
+    "source": "PeakMapForge.Build.LookApplier.get_Palette",
+    "german": "CtColors[i].de",
+    "english": "CtColors[i].en"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorMode.cs",
+    "line": 376,
+    "source": "PeakMapForge.Editor.EditorMode.WarnFlyModKeys",
+    "german": "\"Achtung: Der Mod „So Fly“ schaltet mit \" + text + \" seinen Flug um – auch hier im Editor. Danach fliegt die Figur beim Spielen davon. Abhilfe: in seiner Einstellung RequireModifierKey = true (Alt+\" + text + \").\"",
+    "english": "\"Heads-up: the mod “So Fly” toggles its flight with \" + text + \" – here in the editor too. The character then flies off when you play. Fix: set RequireModifierKey = true in its config (Alt+\" + text + \").\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorSession.cs",
+    "line": 1851,
+    "source": "PeakMapForge.Editor.EditorSession.SpawnLabel",
+    "german": "$\"Spawn {number} · Spieler {number}\"",
+    "english": "$\"Spawn {number} · player {number}\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorTools.cs",
+    "line": 3793,
+    "source": "PeakMapForge.Editor.EditorTools.AddTerrain",
+    "german": "$\"{arg} {num:0} × {num:0} m angelegt. Jetzt mit gedrückter Maus darauf malen – das Relief wächst aus der Fläche heraus.\"",
+    "english": "$\"{arg} {num:0} × {num:0} m created. Now paint on it with the mouse held down – the relief grows out of the surface.\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorTools.cs",
+    "line": 4950,
+    "source": "PeakMapForge.Editor.EditorTools.CreateShaped",
+    "german": "string.Format(\"{0} Decke in {1:0} m Höhe\", flag ? \"Runde\" : \"Freie\", height)",
+    "english": "string.Format(\"{0} ceiling at {1:0} m\", flag ? \"Round\" : \"Free\", height)"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorTools.cs",
+    "line": 4954,
+    "source": "PeakMapForge.Editor.EditorTools.CreateShaped",
+    "german": "string.Format(\"{0} Wand aus {1} Stücken, {2:0} m hoch\", flag ? \"Runde\" : \"Freie\", list2.Count, height)",
+    "english": "string.Format(\"{0} wall of {1} pieces, {2:0} m high\", flag ? \"Round\" : \"Free\", list2.Count, height)"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorTools.cs",
+    "line": 4962,
+    "source": "PeakMapForge.Editor.EditorTools.CreateShaped",
+    "german": "string.Format(\"{0} Raum: Boden, {1} Wandstücke, Decke – {2:0} m hoch\", flag ? \"Runder\" : \"Freier\", list3.Count, height)",
+    "english": "string.Format(\"{0} room: floor, {1} wall pieces, ceiling – {2:0} m high\", flag ? \"Round\" : \"Free\", list3.Count, height)"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorTools.cs",
+    "line": 5503,
+    "source": "PeakMapForge.Editor.EditorTools.CreateHazardOutline",
+    "german": "string.Format(\"„{0}“ als {1} Zone, {2:0} m hoch.\", HazardCatalog.Display(entry.Name), (Shape == DrawShape.Round) ? \"runde\" : \"freie\", height)",
+    "english": "string.Format(\"“{0}” as a {1} zone, {2:0} m high.\", HazardCatalog.Display(entry.Name), (Shape == DrawShape.Round) ? \"round\" : \"free\", height)"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 3736,
+    "source": "PeakMapForge.Editor.EditorUi.DlgFlag",
+    "german": "\"„\" + name + \"“\"",
+    "english": "\"“\" + name + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 4028,
+    "source": "PeakMapForge.Editor.EditorUi.NpcDialog",
+    "german": "\"Spieler gehen zu \" + who + \" und drücken E. Dann steht da, was \" + who + \" sagt, und darunter die Antworten zum Anklicken. Eine Antwort kann etwas auslösen: einen Gegenstand geben oder nehmen, heilen, die Wellen starten … Wähle eine Vorlage – alles lässt sich danach ändern.\"",
+    "english": "\"Players walk up to \" + who + \" and press E. They see what \" + who + \" says and the answers to click. An answer can trigger something: give or take an item, heal, start the waves … Pick a template – everything can be changed afterwards.\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 5478,
+    "source": "PeakMapForge.Editor.EditorUi.HpContent",
+    "german": "\"„\" + text10 + \"“\"",
+    "english": "\"“\" + text10 + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 6220,
+    "source": "PeakMapForge.Editor.EditorUi.DrawLootSource",
+    "german": "\"„\" + x + \"“\"",
+    "english": "\"“\" + x + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 7004,
+    "source": "PeakMapForge.Editor.EditorUi.EffectLabel",
+    "german": "tuple.Item2",
+    "english": "tuple.Item3"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 7291,
+    "source": "PeakMapForge.Editor.EditorUi.InEffects",
+    "german": "x.de",
+    "english": "x.en"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 9064,
+    "source": "PeakMapForge.Editor.EditorUi.DrawBiomePlan",
+    "german": "\"→ 5 \" + BiomePlan.PartnerOf(map.Base.Biomes[3])",
+    "english": "\"→ 5 \" + BiomePlan.PartnerOf(map.Base.Biomes[3])"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 10583,
+    "source": "PeakMapForge.Editor.EditorUi.DrawWhen",
+    "german": "\"„\" + f + \"“\"",
+    "english": "\"“\" + f + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 11838,
+    "source": "PeakMapForge.Editor.EditorUi.NpcBossUi",
+    "german": "string.Format(\"Ruft {0} Helfer bei {1} Lebenspunkten.\", b.AddsCount, string.Join(\", \", (b.AddsAt ?? new List<float>()).Select((float x) => x.ToString(\"P0\"))))",
+    "english": "string.Format(\"Calls {0} helpers at {1} health.\", b.AddsCount, string.Join(\", \", (b.AddsAt ?? new List<float>()).Select((float x) => x.ToString(\"P0\"))))"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 12656,
+    "source": "PeakMapForge.Editor.EditorUi.OlAnzahl",
+    "german": "$\"{n} {deMany}\"",
+    "english": "$\"{n} {enMany}\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 12658,
+    "source": "PeakMapForge.Editor.EditorUi.OlAnzahl",
+    "german": "\"1 \" + deOne",
+    "english": "\"1 \" + enOne"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 23945,
+    "source": "PeakMapForge.Editor.EditorUi.WoTeamEditor",
+    "german": "WoTeamNamesDe[num5]",
+    "english": "WoTeamNamesEn[num5]"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 25396,
+    "source": "PeakMapForge.Editor.EditorUi.DrawSegment",
+    "german": "de",
+    "english": "$\"{arg3:0} to {value.max.y:0} m\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 25400,
+    "source": "PeakMapForge.Editor.EditorUi.DrawSegment",
+    "german": "string.Format(\"{0} {1} · {2} {3}\", count, (count == 1) ? \"Baustein\" : \"Bausteine\", num, (num == 1) ? \"Insel-Änderung\" : \"Insel-Änderungen\")",
+    "english": "string.Format(\"{0} {1} · {2} {3}\", count, (count == 1) ? \"block\" : \"blocks\", num, (num == 1) ? \"island edit\" : \"island edits\")"
+  },
+  {
+    "file": "PeakMapForge.Editor\\ScatterPreset.cs",
+    "line": 41,
+    "source": "PeakMapForge.Editor.ScatterPreset.get_Label",
+    "german": "LabelDe ?? Id",
+    "english": "LabelEn ?? LabelDe ?? Id"
+  },
+  {
+    "file": "PeakMapForge.Editor\\ScatterPreset.cs",
+    "line": 43,
+    "source": "PeakMapForge.Editor.ScatterPreset.get_Hint",
+    "german": "HintDe ?? \"\"",
+    "english": "HintEn ?? HintDe ?? \"\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\ScatterPreset.cs",
+    "line": 51,
+    "source": "PeakMapForge.Editor.ScatterPreset.get_Short",
+    "german": "ShortDe",
+    "english": "ShortEn ?? ShortDe"
+  },
+  {
+    "file": "PeakMapForge.Generation\\LoadOverlay.cs",
+    "line": 1062,
+    "source": "PeakMapForge.Generation.LoadOverlay.PreviewInfo",
+    "german": "$\"{Mathf.FloorToInt(num4 * 100f)} %\"",
+    "english": "$\"{Mathf.FloorToInt(num4 * 100f)}%\""
+  },
+  {
+    "file": "PeakMapForge.Generation\\LoadOverlay.cs",
+    "line": 1297,
+    "source": "PeakMapForge.Generation.LoadOverlay.StageText",
+    "german": "(de.Length > 0) ? de : en",
+    "english": "(en.Length > 0) ? en : de"
+  },
+  {
+    "file": "PeakMapForge.Generation\\LoadOverlay.cs",
+    "line": 1303,
+    "source": "PeakMapForge.Generation.LoadOverlay.Percent",
+    "german": "text + \" %\"",
+    "english": "text + \"%\""
+  },
+  {
+    "file": "PeakMapForge.Launch\\LaunchPanel.cs",
+    "line": 692,
+    "source": "PeakMapForge.Launch.LaunchPanel.DrawPlan",
+    "german": "\"„\" + text + \"“\"",
+    "english": "\"“\" + text + \"”\""
+  },
+  {
+    "file": "PeakMapForge.Net\\JoinFlow.cs",
+    "line": 73,
+    "source": "PeakMapForge.Net.JoinFlow.get_Error",
+    "german": "_errDe",
+    "english": "_errEn"
+  },
+  {
+    "file": "PeakMapForge.Net\\JoinFlow.cs",
+    "line": 89,
+    "source": "PeakMapForge.Net.JoinFlow.get_ConfirmText",
+    "german": "_askDe",
+    "english": "_askEn"
+  },
+  {
+    "file": "PeakMapForge.Net\\LobbyBans.cs",
+    "line": 37,
+    "source": "PeakMapForge.Net.LobbyBans+KickModalPatch.Prefix",
+    "german": "_noticeTitleDe",
+    "english": "_noticeTitleEn"
+  },
+  {
+    "file": "PeakMapForge.Net\\LobbyBans.cs",
+    "line": 38,
+    "source": "PeakMapForge.Net.LobbyBans+KickModalPatch.Prefix",
+    "german": "_noticeBodyDe",
+    "english": "_noticeBodyEn"
+  },
+  {
+    "file": "PeakMapForge.Net\\LobbyHost.cs",
+    "line": 685,
+    "source": "PeakMapForge.Net.LobbyHost.SpawnWarningText",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Online\\MapPublisher.cs",
+    "line": 563,
+    "source": "PeakMapForge.Online.MapPublisher.Fail",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Online\\MapPublisher.cs",
+    "line": 690,
+    "source": "PeakMapForge.Online.MapPublisher.Routine",
+    "german": "note.de",
+    "english": "note.en"
+  },
+  {
+    "file": "PeakMapForge.Online\\NetContent.cs",
+    "line": 768,
+    "source": "PeakMapForge.Online.NetContent.Remove",
+    "german": "string.Format(\"Wird noch von {0} heruntergeladenen Karte(n) benutzt ({1}).\", list.Count, string.Join(\", \", list.Take(3)))",
+    "english": "string.Format(\"Still used by {0} downloaded map(s) ({1}).\", list.Count, string.Join(\", \", list.Take(3)))"
+  },
+  {
+    "file": "PeakMapForge.Online\\NewsItem.cs",
+    "line": 29,
+    "source": "PeakMapForge.Online.NewsItem.get_Title",
+    "german": "TitleDe",
+    "english": "string.IsNullOrEmpty(TitleEn) ? TitleDe : TitleEn"
+  },
+  {
+    "file": "PeakMapForge.Online\\NewsItem.cs",
+    "line": 31,
+    "source": "PeakMapForge.Online.NewsItem.get_Text",
+    "german": "TextDe",
+    "english": "string.IsNullOrEmpty(TextEn) ? TextDe : TextEn"
+  },
+  {
+    "file": "PeakMapForge.Online\\PmfApi.cs",
+    "line": 642,
+    "source": "PeakMapForge.Online.PmfApi.Text",
+    "german": "de",
+    "english": "en"
+  },
+  {
+    "file": "PeakMapForge.Online\\TransferProgress.cs",
+    "line": 263,
+    "source": "PeakMapForge.Online.TransferProgress.StepText",
+    "german": "StepDe",
+    "english": "StepEn"
+  },
+  {
+    "file": "PeakMapForge.Online\\TransferProgress.cs",
+    "line": 273,
+    "source": "PeakMapForge.Online.TransferProgress.StepText",
+    "german": "StepDe",
+    "english": "StepEn"
+  },
+  {
+    "file": "PeakMapForge.Online\\TransferProgress.cs",
+    "line": 326,
+    "source": "PeakMapForge.Online.TransferProgress.ErrorText",
+    "german": "ErrorDe",
+    "english": "ErrorEn"
+  },
+  {
+    "file": "PeakMapForge.Teams\\TeamState.cs",
+    "line": 391,
+    "source": "PeakMapForge.Teams.TeamState.NameOf",
+    "german": "DefaultNamesDe[num]",
+    "english": "DefaultNamesEn[num]"
+  }
+]
