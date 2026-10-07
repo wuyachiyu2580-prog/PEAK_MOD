@@ -10,10 +10,12 @@ namespace PeakWorkshopCN
         {
             internal readonly Regex German, English;
             internal readonly Func<Match, string> Format;
+            internal readonly string[] Groups;
             internal Rule(string german, string english, Func<Match, string> format)
             {
                 German = Pattern(german);
                 English = Pattern(english);
+                Groups = Array.FindAll(English.GetGroupNames(), n => n != "0");
                 Format = format;
             }
             private static Regex Pattern(string value) => new Regex("\\A" + value + "\\z",
@@ -23,10 +25,15 @@ namespace PeakWorkshopCN
         private const string Number = "[-+]?[0-9]+(?:[.,][0-9]+)?";
         private static string Num(string name) => "(?<" + name + ">" + Number + ")";
         private static string Value(Match match, string name) => match.Groups[name].Value;
-        internal static bool HasRules(string source) => source != null && (Rules.ContainsKey(source) || CatalogData.HasDynamicRules(source) || FieldSources.Contains(source));
+        internal static bool HasRules(string source)
+        {
+            source = CatalogData.CanonicalSource(source);
+            return source != null && (Rules.ContainsKey(source) || CatalogData.HasDynamicRules(source) || FieldSources.Contains(source));
+        }
 
         internal static bool TryTranslate(string source, string german, string english, out string chinese)
         {
+            source = CatalogData.CanonicalSource(source);
             chinese = null;
             if (source != null && (CatalogData.TryPair(source, german, english, out chinese) ||
                 FieldSources.Contains(source) && CatalogData.TryPair("@fields", german, english, out chinese))) return true;
@@ -41,8 +48,8 @@ namespace PeakWorkshopCN
                     var de = rule.German.Match(german);
                     if (!de.Success) continue;
                     bool consistent = true;
-                    foreach (var name in rule.English.GetGroupNames())
-                        if (name != "0" && !string.Equals(en.Groups[name].Value, de.Groups[name].Value, StringComparison.Ordinal))
+                    foreach (var name in rule.Groups)
+                        if (!string.Equals(en.Groups[name].Value, de.Groups[name].Value, StringComparison.Ordinal))
                         { consistent = false; break; }
                     if (!consistent) continue;
                     chinese = rule.Format(en);

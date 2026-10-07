@@ -17,12 +17,19 @@ foreach (var file in Directory.GetFiles(data, "*.json").Where(f => Path.GetFileN
         var translatedSlots = Regex.Matches(entry.Value, @"(?<!\{)\{\d+\}(?!\})").Select(m => m.Value).Order().ToArray();
         if (!slots.SequenceEqual(translatedSlots)) throw new Exception("Changed parameters: " + entry.Key);
     }
+// Consolidate the historical in-code fixed catalog into the generated data set.
+var core = new Dictionary<string, string>(StringComparer.Ordinal);
+var coreTree = CSharpSyntaxTree.ParseText(File.ReadAllText(Path.Combine(data, "..", "TranslationCatalog.cs")));
+foreach (var assignment in coreTree.GetRoot().DescendantNodes().OfType<AssignmentExpressionSyntax>())
+    if (assignment.Left is ImplicitElementAccessSyntax access && access.ArgumentList.Arguments[0].Expression is LiteralExpressionSyntax key && assignment.Right is LiteralExpressionSyntax value && !texts.ContainsKey(key.Token.ValueText))
+    { core[key.Token.ValueText] = value.Token.ValueText; texts[key.Token.ValueText] = value.Token.ValueText; }
+if (core.Count > 0) File.WriteAllText(Path.Combine(data, "Translations.Core.json"), JsonSerializer.Serialize(core, new JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
 foreach (var file in Directory.GetFiles(root, "*.cs", SearchOption.AllDirectories).Order())
 {
     var tree = CSharpSyntaxTree.ParseText(File.ReadAllText(file));
     var syntax = tree.GetRoot();
     if (tree.GetDiagnostics().Any(d => d.Severity == DiagnosticSeverity.Error)) throw new Exception("Syntax error: " + file);
-    foreach (var call in syntax.DescendantNodes().OfType<InvocationExpressionSyntax>().Where(c => c.Expression.ToString() == "Loc.Tr" && c.ArgumentList.Arguments.Count == 2))
+    foreach (var call in syntax.DescendantNodes().OfType<InvocationExpressionSyntax>().Where(c => (c.Expression.ToString() == "Loc.Tr" || c.Expression.ToString() == "tr" && new[] { "TeamStandardName", "TeamIssues", "PlayerIssues" }.Contains(c.Ancestors().OfType<MethodDeclarationSyntax>().FirstOrDefault()?.Identifier.ValueText)) && c.ArgumentList.Arguments.Count == 2))
     {
         string source = Source(call);
         var de = Expand(call.ArgumentList.Arguments[0].Expression);

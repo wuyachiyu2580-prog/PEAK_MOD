@@ -1,11 +1,20 @@
 # Memory Index
 
-更新时间：2026-10-05
+**2026-10-07 用户最终确认**：profile中的scanner和CN DLL是用户为暂时游玩其他内容而自行移走，明确要求不要重新复制。保留当前停用/移走状态；扫描器源码、使用说明和候选DLL保存在开发区，50项离线检查通过，实机尚未验证。此前部署记录仅为历史。
 
-- PeakWorkshopCN 第一轮补齐后待实机复测：`MOD开发/PeakWorkshopCN/IMPLEMENTATION.md`、`AUDIT.md`、`audit/2026-10-05/`；Boss 已接 DrawBosses。4,968 Tr 调用；当前固定命中 2,006/4,204；3,122 固定缺映射、749 非固定无规则属于补齐前基线，41 项测试通过。
-- 容错修复版已于 2026-10-05 16:58:48 +08:00 在确认游戏退出后覆盖 profile；304,128 字节，源/目标哈希一致，原 DLL 未变。旧日志有入口跳过警告且缺初始化完成信息，具体中断位置未确认；等待重启检查日志及多人页，泛型入口可能仍被跳过。
+更新时间：2026-10-07
 
-- PeakWorkshopCN `0.1.0` 已构建部署：固定命中 2,006/4,204，1,000 条生成规则（包含固定文字和动态模板）、配置67条非空说明；41项测试不覆盖 Unity 实际初始化，完整覆盖/实机待验收。入口 `mods/PeakWorkshopCN/README.md`，记录 `MOD开发/PeakWorkshopCN/IMPLEMENTATION.md`。
+- PeakWorkshopCNScanner `0.1.0`：用户最新漏译定位工具，已独立构建/部署，50项离线检查通过，实机未验收。索引：`mods/PeakWorkshopCNScanner/README.md`、`STATUS.md`、`TODO.md`、`RECENT.md`、`DECISIONS.md`、`FILES.md`、`temp/current.md`；开发区 `README.md`、`使用说明.md`、`VALIDATION.md`。
+- 2026-10-07 14:50 当前 profile 原 PeakWorkshop 只有 `.dll.old`，未恢复启用；此前“已恢复”的条目为历史。扫描器须启用原MOD后试用，CN DLL仍2FC50B1F…AA523。
+
+- PeakWorkshopCN `0.1.0` 资源显示修订版已构建并部署：4,246 条译文，构件/材质显示与中英文搜索继续覆盖；主项目 0/0，51 项测试通过。当前 SHA-256 `2FC50B1FDBB6AC7F82A9D3EAAA7E70DADCF7EBA8B797031FAEEA1A77033AA523`。原 PeakWorkshop.dll 已恢复，重启后进行实机和性能验收，见 `mods/PeakWorkshopCN/STATUS.md`。
+
+- PeakWorkshopCN最新接续研究：`MOD开发/PeakWorkshopCN/TERMINOLOGY_PERFORMANCE_RESEARCH.md`、`research/2026-10-05-terms-performance/`（8份CSV/JSON）、`tools/Research/`。官方术语提取866键、用户确认SHORE海岸；字体字段/高频反射/缓存优化路径已核验，22个同英文差异只是语境候选。未改插件/词表/DLL、未实施优化或测实机FPS；六件套和temp已同步。
+
+- PeakWorkshopCN最新全量复核：`MOD开发/PeakWorkshopCN/AUDIT_RECHECK.md`、`audit/2026-10-05-recheck/`、`tools/Recheck/`；474文件/原DLL均4,968Tr，固定2,006映射+2,197缺映射+1保留，764非固定；额外30处本地tr委托。全MOD范围含构件/材质显示与中文搜索，完整运行目录仍需采集。
+- 新日志确认初始化完成但Strip仍失败；另确认字段错配、回调来源、跳转边界、缓存、参数保护和Home键错译等R01–R15。本轮只审核，安装仍为16:58的0.1.0.0、304,128字节、26D877...836CC，原DLL未变；不把报告建议当已实现。
+
+- PeakWorkshopCN `0.1.0`：1,000生成规则实际907固定+93动态，配置67条说明。之前41项测试不覆盖WorkshopPatches/字体/初始化；入口 `mods/PeakWorkshopCN/README.md`，当前缺陷与修复待办看STATUS/TODO及最新复核报告。旧AUDIT.md为历史基线。
 
 - 发行文案最新规则（2026-09-21）：使用英文，保留上一版格式，README 和 CHANGELOG 均明确列出本版更新；见 common/00、05。四 MOD 已纠正，仍无 ZIP。
 
@@ -231,3 +240,4 @@
 - 不要把某个 MOD 的待办写进 `common/`。
 - 不再依赖已删除的历史文件；缺失信息必须重新从源码、日志或用户反馈确认。
 - 不要在 JSON 配置里写注释；用 `_doc`（全局）/ `note`（单条）承载说明。
+

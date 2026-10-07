@@ -33,6 +33,7 @@ namespace PeakWorkshopCN
                     return;
                 }
                 _harmony = new Harmony(Guid);
+                OfficialTerms.Initialize(key => LocalizedText.GetText(key, LocalizedText.Language.SimplifiedChinese));
                 WorkshopPatches.Install(_harmony, original.Instance.GetType().Assembly);
                 ConfigurationLocalization.Install(_harmony, original.Instance.Config);
                 FontPatches.Install(_harmony, original.Instance.GetType().Assembly);
@@ -43,14 +44,14 @@ namespace PeakWorkshopCN
                 Refresh();
                 Logger.LogInfo("PeakWorkshopCN 0.1.0: " + WorkshopPatches.PatchedSites +
                     " fixed text sites, " + WorkshopPatches.DynamicSites + " dynamic call sites, " +
-                    ConfigurationLocalization.Count + " configuration descriptions. Partial test build.");
+                    ConfigurationLocalization.Count + " configuration descriptions; " + WorkshopPatches.FailedTargets + " failed targets. Runtime acceptance remains required.");
             }
             catch (Exception ex)
             {
                 _ready = false;
-                _harmony?.UnpatchSelf();
-                FontPatches.Dispose();
                 Logger.LogError("Localization initialization failed: " + ex);
+                Cleanup("unpatch", () => _harmony?.UnpatchSelf());
+                Cleanup("font restore", FontPatches.Dispose);
             }
         }
 
@@ -63,6 +64,7 @@ namespace PeakWorkshopCN
             {
                 FontPatches.Restore();
                 FontPatches.Invalidate();
+                FontPatches.SeedExisting();
                 FontPatches.RefreshTracked();
                 WorkshopPatches.NotifyLanguageChange();
             }
@@ -70,6 +72,8 @@ namespace PeakWorkshopCN
         }
 
         internal static void Warn(string message) => Instance?.Logger.LogWarning(message);
+        private static void Cleanup(string operation, Action action)
+        { try { action(); } catch (Exception ex) { Warn("Cleanup " + operation + ": " + ex); } }
 
         private void OnDestroy()
         {
@@ -77,9 +81,9 @@ namespace PeakWorkshopCN
             if (_enabled != null) _enabled.SettingChanged -= OnEnabledChanged;
             LocalizedText.OnLangugageChanged -= Refresh;
             SceneManager.sceneLoaded -= OnSceneLoaded;
-            FontPatches.Dispose();
-            WorkshopPatches.NotifyLanguageChange();
-            _harmony?.UnpatchSelf();
+            Cleanup("font restore", FontPatches.Dispose);
+            Cleanup("language refresh", WorkshopPatches.NotifyLanguageChange);
+            Cleanup("unpatch", () => _harmony?.UnpatchSelf());
             Instance = null;
         }
     }

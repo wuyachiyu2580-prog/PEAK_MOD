@@ -1,12 +1,26 @@
 # PEAK MOD Memory
 
-## 2026-10-05 PeakWorkshopCN 第一轮补齐
+**2026-10-07 用户最终确认**：profile中的scanner和CN DLL是用户为暂时游玩其他内容而自行移走，明确要求不要重新复制。保留当前停用/移走状态；扫描器源码、使用说明和候选DLL保存在开发区，50项离线检查通过，实机尚未验证。此前部署记录仅为历史。
 
-用户反馈大量英文后要求重新审核，随后说“开始”。第一轮补齐已部署，静态固定命中 2,006/4,204；3,122 固定缺映射与 749 非固定无规则属于补齐前基线。41 项测试通过，完整覆盖和实机复测待完成。基线清单见 `MOD开发/PeakWorkshopCN/AUDIT.md` 与 `audit/2026-10-05/`。
+## 2026-10-07 14:50 独立漏译扫描器
 
-新截图复核时旧日志有 124 条入口跳过警告且无初始化完成信息，尚缺完整致命异常栈。已增加逐入口容错；2026-10-05 16:58:48 +08:00 确认 PEAK 退出后已覆盖指定 profile，源/目标哈希一致，原 DLL 哈希未变。修复版 304,128 字节，等待重启确认多人页及初始化完成日志；泛型入口仍可能跳过。
+用户改用小扫描 MOD 标注漏译，已新增并部署 PeakWorkshopCNScanner 0.1.0（181,248 字节，50项离线检查通过，实机待验证）。入口 `mods/PeakWorkshopCNScanner/README.md` / `temp/current.md`；开发区有中文使用说明。当前 profile 原 PeakWorkshop **仅 `.dll.old`，处于禁用状态**；本轮没有切换它，须在管理器启用后试用。已有 CN DLL 保持 2FC50B1F…AA523。以下“曾恢复原 DLL”等为此前历史，不能作为当前启用状态。
 
-PeakWorkshopCN `0.1.0` 对应原 PeakWorkshop 0.2.0、参考 PEAK 2.6.a；另有 1,000 条生成规则（包含固定文字及动态模板）和 67 条非空配置说明。41 项测试不覆盖 Unity 实际初始化。入口：`mods/PeakWorkshopCN/README.md`；当前交付记录：`MOD开发/PeakWorkshopCN/IMPLEMENTATION.md`。下方旧日期条目继续作为各自项目记录。
+## 2026-10-07 PeakWorkshopCN 资源显示修订
+
+PeakWorkshopCN `0.1.0` 已继续修复编辑器构件和材质显示：主项目 0/0，51 项离线测试通过，当前 DLL 哈希 `2FC50B1FDBB6AC7F82A9D3EAAA7E70DADCF7EBA8B797031FAEEA1A77033AA523`。原 PeakWorkshop.dll 已从 `.old` 备份恢复；下一步重启 profile 确认两个插件均加载后，再验收资源、卡死、页面、联机和性能。详见 `mods/PeakWorkshopCN/STATUS.md` 和 `temp/current.md`。
+
+## 2026-10-05 PeakWorkshopCN 术语与性能接续调研
+
+最新报告 `MOD开发/PeakWorkshopCN/TERMINOLOGY_PERFORMANCE_RESEARCH.md`，8份证据在 `research/2026-10-05-terms-performance/`。官方866键表确认海岸（用户已同意）、雨林、森蕈、雪山、方山、火山、熔炉、雾沼、城塞、顶峰、天底。术语按概念/官方键使用，避免同英文异义误覆盖。已定位字体重复字段遍历、getter/MarkerRef缓存问题；启动扫描与高频反射分开评估。本轮仅研究，插件源码/词表/DLL未变，未测实机帧率；先读本MOD STATUS/temp，再沿用下方全量复核。
+
+## 2026-10-05 PeakWorkshopCN 最新全量复核
+
+用户实测后要求严谨复核，明确“不只是图片里的”，构件和材质显示名也包含在内。最新报告 `MOD开发/PeakWorkshopCN/AUDIT_RECHECK.md`，全量清单 `audit/2026-10-05-recheck/`。474文件/原DLL均4,968直接Tr；固定2,006/4,204有映射、2,197无映射、1语言代码保留；另有764非固定调用和30处本地tr委托。
+
+最新日志已确认初始化完成，仍有124条扫描警告、1条Strip显式失败；审核确认字段错配、回调来源、跳转边界、缓存、参数保护和资源显示/搜索缺口。本轮只审核，未改插件/词表/DLL/config/地图；安装仍为16:58部署的304,128字节、26D877...836CC，原DLL未变。
+
+PeakWorkshopCN `0.1.0` 对应原PeakWorkshop 0.2.0、参考PEAK 2.6.a；生成规则实际为907固定+93动态，67条非空配置说明。之前41项测试不覆盖WorkshopPatches/字体/初始化。入口：`mods/PeakWorkshopCN/README.md`，当前状态以STATUS和最新复核报告为准。
 
 ## 2026-09-21 发行文件更新
 
@@ -174,3 +188,4 @@ StateKeeper最新使用归因修订见 `mods/StateKeeper/research/USE_RULES_2026
 - Jungle `Generate Segment` 空段问题二次定位：最新日志已加载新 DLL，但 `Pops_Plat` / `Props_Wall` 仍 `lateSupplementSteps=0`，说明不是外部 postfix guard，而是 Late step 收集没找到 inactive 父层级下的 `PropGrouper`。
 - `DaRuntimeEditService` 已改为手动沿 `Transform.parent` 查找最近 `PropGrouper` 来收集 Late steps；Release 构建 0/0，DLL 已覆盖 terrain profile。下次只需重启/重新加载游戏后复测 Jungle，预期 `lateSupplementSteps>0` 且灌木/藤蔓/蘑菇 runtime spawner 恢复。
 - 同日晚些时候继续修复 Late 执行语义：日志证明 Late 收集已生效但 `Go()` 补跑仍让 Roots/Snow 许多 PropSpawner 归零。当前改为 `LevelGenStep.Execute()` + `DeferredStepTiming.AfterCurrentGroupTiming` deferred 执行，并记录 `deferredAfterGroup`。最新 DLL 时间 `2026/5/20 20:57:50`。
+

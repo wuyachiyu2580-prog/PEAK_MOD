@@ -1,0 +1,121 @@
+[
+  {
+    "source": "@fields",
+    "template": "Automatic start failed: {0}",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "自动开始失败：乙"
+  },
+  {
+    "source": "@fields",
+    "template": "Removing it online failed – nothing was deleted locally: {0}",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "从在线工坊移除失败，本地内容未删除：乙"
+  },
+  {
+    "source": "@fields",
+    "template": "Make {0} public?",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "将 乙 设为公开？"
+  },
+  {
+    "source": "@fields",
+    "template": "Make {0} public?",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "将 乙 设为公开？"
+  },
+  {
+    "source": "@fields",
+    "template": "Make {0} private?",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "将 乙 设为私密？"
+  },
+  {
+    "source": "@fields",
+    "template": "Make {0} private?",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "将 乙 设为私密？"
+  },
+  {
+    "source": "@fields",
+    "template": "Remove {0} online?",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "从线上移除 乙？"
+  },
+  {
+    "source": "@fields",
+    "template": "Delete {0}?",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "删除 乙？"
+  },
+  {
+    "source": "@fields",
+    "template": "Delete {0}",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "删除 乙"
+  },
+  {
+    "source": "@fields",
+    "template": "{0}. This CANNOT be undone.",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "乙。此操作无法撤销。"
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.RunVisibility",
+    "template": "Visibility not changed: {0}",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "可见性未更改：乙"
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.RunUnpublish",
+    "template": "Not removed: {0}",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "未移除：乙"
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.AskDeleteMap",
+    "template": "Not deleted: {0}",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "未删除：乙"
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.LobbyBanList",
+    "template": "{0} left",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "剩余 乙"
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DoTrashRestore",
+    "template": "Not restored: {0}",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "未恢复：乙"
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.AskPurgeTrash",
+    "template": "Not deleted: {0}",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "未删除：乙"
+  },
+  {
+    "source": "PeakMapForge.Editor.EditorTools.CmSayUnknownHazard",
+    "template": "“{0}” is not in the hazard catalog.",
+    "kind": "no-capture-equality-check-review-parameter-semantics",
+    "input": "de=甲; en=乙",
+    "output": "危险目录中没有“乙”。"
+  }
+]

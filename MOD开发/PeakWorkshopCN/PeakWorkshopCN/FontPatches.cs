@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
@@ -9,58 +12,88 @@ namespace PeakWorkshopCN
 {
     internal static class FontPatches
     {
+        private sealed class StyleState { internal Font Original; }
+        private static ConditionalWeakTable<GUIStyle, StyleState> Styles = new ConditionalWeakTable<GUIStyle, StyleState>();
+        private static readonly List<WeakReference> Tracked = new List<WeakReference>();
+        private static readonly Dictionary<TMP_Text, Tuple<TMP_FontAsset, Material>> Texts = new Dictionary<TMP_Text, Tuple<TMP_FontAsset, Material>>();
+        private static readonly HashSet<string> Warned = new HashSet<string>();
         private static Font _font;
-        private static TMP_FontAsset _tmp;
-        private static FieldInfo _loadFont, _loadMaterial;
-        private static TMP_FontAsset _loadOriginalFont;
+        private static TMP_FontAsset _tmp, _loadOriginalFont;
         private static Material _loadOriginalMaterial;
         private static bool _loadCaptured;
-        private static int _retryFrame;
-        private static readonly Dictionary<GUIStyle, Font> StyleFonts = new Dictionary<GUIStyle, Font>();
-        private static readonly Dictionary<Tuple<object, FieldInfo>, Font> FieldFonts = new Dictionary<Tuple<object, FieldInfo>, Font>();
-        private static readonly Dictionary<TMP_Text, Tuple<TMP_FontAsset, Material>> TmpFonts = new Dictionary<TMP_Text, Tuple<TMP_FontAsset, Material>>();
-        private static readonly Dictionary<Type, FieldInfo[]> Fields = new Dictionary<Type, FieldInfo[]>();
-        private static readonly HashSet<string> Warned = new HashSet<string>();
+        private static int _fontRetry, _tmpRetry;
+        private static Action<object, TMP_FontAsset> _setLoadFont;
+        private static Action<object, Material> _setLoadMaterial;
+        private static Assembly _assembly;
 
         internal static void Install(Harmony harmony, Assembly assembly)
         {
-            var overlay = assembly.GetType("PeakMapForge.Generation.LoadOverlay");
-            _loadFont = AccessTools.Field(overlay, "_font");
-            _loadMaterial = AccessTools.Field(overlay, "_fontMaterial");
-            foreach (var target in new[]
-            {
-                "PeakMapForge.Editor.EditorUi:Styles", "PeakMapForge.Teams.TeamUi:FindFonts",
-                "PeakMapForge.Airport.WorkshopPanel:FindFonts", "PeakMapForge.Launch.LaunchPanel:Styles",
-                "PeakMapForge.Build.ForgeHud:OnGUI", "PeakMapForge.Npc.NpcHud:OnGUI"
-            }) Patch(harmony, assembly, target, nameof(StyleFieldsPostfix));
-            foreach (var target in new[]
-            {
-                "PeakMapForge.Teams.TeamUi:Style", "PeakMapForge.Airport.WorkshopPanel:St",
-                "PeakMapForge.Airport.WorkshopPanel:_fieldStyle"
-            }) Patch(harmony, assembly, target, nameof(StylePostfix));
-            Patch(harmony, assembly, "PeakMapForge.Generation.LoadOverlay:FontFor", nameof(TmpFontPostfix));
-            Patch(harmony, assembly, "PeakMapForge.Generation.LoadOverlay:NewText", nameof(TmpTextPostfix));
-            Patch(harmony, assembly, "PeakMapForge.Airport.MenuSignRig:MakeText", nameof(TmpTextPostfix));
+            _assembly = assembly;
+            var overlay = assembly.GetType("PeakMapForge.Generation.LoadOverlay", true);
+            _setLoadFont = BoundAccess.Setter<TMP_FontAsset>(AccessTools.Field(overlay, "_font"));
+            _setLoadMaterial = BoundAccess.Setter<Material>(AccessTools.Field(overlay, "_fontMaterial"));
+            Patch(harmony, assembly, "PeakMapForge.Generation.LoadOverlay", "FontFor", nameof(TmpFontPostfix));
+            Patch(harmony, assembly, "PeakMapForge.Generation.LoadOverlay", "NewText", nameof(TmpTextPostfix));
+            Patch(harmony, assembly, "PeakMapForge.Airport.MenuSignRig", "MakeText", nameof(TmpTextPostfix));
         }
 
-        private static void Patch(Harmony harmony, Assembly assembly, string target, string hook)
+        private static void Patch(Harmony harmony, Assembly assembly, string name, string method, string hook)
         {
-            try
-            {
-                int colon = target.IndexOf(':');
-                var type = assembly.GetType(target.Substring(0, colon));
-                var method = AccessTools.Method(type, target.Substring(colon + 1));
-                if (method == null) { WarnOnce(target, "Font hook not found: " + target); return; }
-                harmony.Patch(method, postfix: new HarmonyMethod(typeof(FontPatches), hook));
-            }
-            catch (Exception ex) { WarnOnce(target, "Font hook skipped: " + target + ": " + ex.Message); }
+            var target = AccessTools.Method(assembly.GetType(name, true), method);
+            if (target == null) throw new MissingMethodException(name, method);
+            harmony.Patch(target, postfix: new HarmonyMethod(typeof(FontPatches), hook));
         }
 
+        // Called by the common per-method transpiler, only while installing patches.
+        internal static void Rewrite(List<CodeInstruction> instructions)
+        {
+            foreach (var instruction in instructions)
+            {
+                if (!(instruction.operand is MethodBase method) || method.DeclaringType != typeof(GUIStyle)) continue;
+                MethodInfo replacement = null;
+                if (instruction.opcode == OpCodes.Newobj)
+                {
+                    var p = method.GetParameters();
+                    if (p.Length == 0) replacement = AccessTools.Method(typeof(FontPatches), nameof(CreateEmpty));
+                    else if (p.Length == 1 && p[0].ParameterType == typeof(GUIStyle)) replacement = AccessTools.Method(typeof(FontPatches), nameof(CreateCopy));
+                    else if (p.Length == 1 && p[0].ParameterType == typeof(string)) replacement = AccessTools.Method(typeof(FontPatches), nameof(CreateNamed));
+                }
+                else if (method.Name == "set_font") replacement = AccessTools.Method(typeof(FontPatches), nameof(SetFont));
+                else if (method.Name == "get_font") replacement = AccessTools.Method(typeof(FontPatches), nameof(GetOriginalFont));
+                if (replacement != null) { instruction.opcode = OpCodes.Call; instruction.operand = replacement; }
+            }
+        }
+
+        public static GUIStyle CreateEmpty() => Register(new GUIStyle(), null, false);
+        public static GUIStyle CreateCopy(GUIStyle source) => Register(new GUIStyle(source), GetOriginalFont(source), true);
+        public static GUIStyle CreateNamed(string name) => Register(new GUIStyle(name), null, false);
+        private static GUIStyle Register(GUIStyle style, Font original, bool explicitOriginal)
+        {
+            if (!Styles.TryGetValue(style, out var state))
+            {
+                Styles.Add(style, state = new StyleState { Original = explicitOriginal ? original : style.font });
+                Tracked.Add(new WeakReference(style));
+            }
+            Apply(style, state);
+            return style;
+        }
+        public static void SetFont(GUIStyle style, Font original)
+        {
+            if (!Styles.TryGetValue(style, out var state)) { Register(style, original, true); state = Styles.GetOrCreateValue(style); }
+            state.Original = original;
+            Apply(style, state);
+        }
+        public static Font GetOriginalFont(GUIStyle style) => Styles.TryGetValue(style, out var state) ? state.Original : style.font;
+        private static void Apply(GUIStyle style, StyleState state)
+        {
+            var desired = Plugin.Chinese ? ChineseFont() ?? state.Original : state.Original;
+            if (style.font != desired) style.font = desired;
+        }
         private static Font ChineseFont()
         {
             if (_font != null) return _font;
-            if (Time.frameCount < _retryFrame) return null;
-            _retryFrame = Time.frameCount + 300;
+            if (Time.frameCount < _fontRetry) return null;
+            _fontRetry = Time.frameCount + 300;
             try
             {
                 var available = new HashSet<string>(Font.GetOSInstalledFontNames(), StringComparer.OrdinalIgnoreCase);
@@ -71,83 +104,23 @@ namespace PeakWorkshopCN
                     font.RequestCharactersInTexture("中文工坊地图设置保存ABC012", 16);
                     if (!font.HasCharacter('中') || !font.HasCharacter('文')) { UnityEngine.Object.Destroy(font); continue; }
                     font.hideFlags = HideFlags.HideAndDontSave;
-                    _font = font;
-                    return font;
+                    return _font = font;
                 }
-                WarnOnce("imgui", "No Chinese IMGUI font was available; original font retained.");
+                WarnOnce("imgui", "No Chinese IMGUI font available; original font retained.");
             }
-            catch (Exception ex) { WarnOnce("imgui", "Chinese font initialization: " + ex.Message); }
+            catch (Exception ex) { WarnOnce("imgui", ex.Message); }
             return null;
-        }
-
-        private static void Apply(GUIStyle style, Font font)
-        {
-            if (style == null || font == null) return;
-            if (!StyleFonts.ContainsKey(style)) StyleFonts.Add(style, style.font);
-            style.font = font;
-        }
-
-        private static void StyleFieldsPostfix(object __instance, MethodBase __originalMethod)
-        {
-            if (!Plugin.Chinese) return;
-            var font = ChineseFont();
-            if (font == null) return;
-            var type = __originalMethod.DeclaringType;
-            if (!Fields.TryGetValue(type, out var fields)) Fields[type] = fields = type.GetFields(AccessTools.allDeclared);
-            foreach (var field in fields)
-            {
-                if (field.IsInitOnly || (!field.IsStatic && __instance == null)) continue;
-                object owner = field.IsStatic ? null : __instance;
-                if (field.FieldType == typeof(Font))
-                {
-                    var key = Tuple.Create(owner, field);
-                    if (!FieldFonts.ContainsKey(key)) FieldFonts.Add(key, field.GetValue(owner) as Font);
-                    field.SetValue(owner, font);
-                }
-                else if (field.FieldType == typeof(GUIStyle))
-                {
-                    var style = field.GetValue(owner) as GUIStyle;
-                    if (style != null && style.font == _font && !StyleFonts.ContainsKey(style))
-                        StyleFonts.Add(style, OriginalField(type, owner, type.Name == "EditorUi" ? "_fontBody" : "_body"));
-                    Apply(style, font);
-                }
-                else if (field.FieldType == typeof(GUISkin) && field.Name == "_skin")
-                {
-                    var skin = field.GetValue(owner) as GUISkin;
-                    if (skin == null) continue;
-                    foreach (var style in new[] { skin.label, skin.button, skin.textField, skin.textArea, skin.box, skin.toggle }) Apply(style, font);
-                    foreach (var style in skin.customStyles) Apply(style, font);
-                }
-            }
-        }
-
-        private static Font OriginalField(Type type, object owner, string name)
-        {
-            var field = AccessTools.Field(type, name);
-            if (field == null) return null;
-            owner = field.IsStatic ? null : owner;
-            return FieldFonts.TryGetValue(Tuple.Create(owner, field), out var font) ? font : field.GetValue(owner) as Font;
-        }
-
-        private static void StylePostfix(GUIStyle __result, object __instance, MethodBase __originalMethod, object[] __args)
-        {
-            if (!Plugin.Chinese || __result == null) return;
-            if (__result.font == _font && !StyleFonts.ContainsKey(__result))
-            {
-                var type = __originalMethod.DeclaringType;
-                string field = type.Name == "TeamUi" ? ((bool)__args[2] ? "_title" : "_body") :
-                    (__originalMethod.Name == "St" ? (__args[0].ToString() == "Title" ? "_fTitle" : __args[0].ToString() == "Hand" ? "_fHand" : "_fBody") : "_fBody");
-                var original = OriginalField(type, __instance, field) ?? OriginalField(type, __instance, type.Name == "TeamUi" ? "_body" : "_fBody");
-                StyleFonts.Add(__result, original);
-            }
-            Apply(__result, ChineseFont());
         }
 
         private static TMP_FontAsset ChineseTmpFont()
         {
             if (_tmp != null) return _tmp;
+            if (Time.frameCount < _tmpRetry) return null;
+            _tmpRetry = Time.frameCount + 300;
             try
             {
+                var swapper = FontFallbackSwapper.instance;
+                if (swapper != null && Covers(swapper.simplifiedChineseFont)) return _tmp = swapper.simplifiedChineseFont;
                 var gui = GUIManager.instance;
                 if (gui != null)
                 {
@@ -155,98 +128,86 @@ namespace PeakWorkshopCN
                     if (Covers(ascent?.text?.font)) return _tmp = ascent.text.font;
                     if (Covers(gui.heroDayText?.font)) return _tmp = gui.heroDayText.font;
                 }
-                var swapper = FontFallbackSwapper.instance;
-                if (swapper != null)
-                {
-                    if (Covers(swapper.mainBaseFont)) return _tmp = swapper.mainBaseFont;
-                    if (Covers(swapper.simplifiedChineseFont)) return _tmp = swapper.simplifiedChineseFont;
-                }
-                var text = UnityEngine.Object.FindAnyObjectByType<TextMeshProUGUI>();
-                if (Covers(text?.font)) return _tmp = text.font;
+                if (swapper != null && Covers(swapper.mainBaseFont)) return _tmp = swapper.mainBaseFont;
                 if (Covers(TMP_Settings.defaultFontAsset)) return _tmp = TMP_Settings.defaultFontAsset;
+                WarnOnce("tmp", "Chinese TMP font is not ready; lookup will retry.");
             }
-            catch (Exception ex) { WarnOnce("tmp", "Chinese TMP font lookup: " + ex.Message); }
+            catch (Exception ex) { WarnOnce("tmp", ex.Message); }
             return null;
         }
-
         private static bool Covers(TMP_FontAsset font) => font != null && font.HasCharacters("中文工坊地图设置ABC012", out uint[] missing, true, true);
-
         private static void TmpFontPostfix(ref TMP_FontAsset __result, ref Material material)
         {
+            if (!_loadCaptured || __result != _tmp)
+            { _loadOriginalFont = __result; _loadOriginalMaterial = material; _loadCaptured = true; }
             if (!Plugin.Chinese) return;
             var font = ChineseTmpFont();
             if (font == null) return;
-            if (!_loadCaptured || (__result != font && __result != _tmp))
-            {
-                _loadOriginalFont = __result;
-                _loadOriginalMaterial = material;
-                _loadCaptured = true;
-            }
-            _loadFont?.SetValue(null, font);
-            _loadMaterial?.SetValue(null, font.material);
-            __result = font;
-            material = font.material;
+            if (__result != font) _setLoadFont(null, font);
+            if (material != font.material) _setLoadMaterial(null, font.material);
+            __result = font; material = font.material;
         }
-
-        private static void TmpTextPostfix(object __result, MethodBase __originalMethod)
+        private static void TmpTextPostfix(object __result)
         {
             if (!(__result is TMP_Text text)) return;
-            if (!TmpFonts.ContainsKey(text))
-                TmpFonts.Add(text, __originalMethod.DeclaringType.Name == "LoadOverlay" && text.font == _tmp && _loadCaptured
-                    ? Tuple.Create(_loadOriginalFont, _loadOriginalMaterial) : Tuple.Create(text.font, text.fontSharedMaterial));
+            if (!Texts.ContainsKey(text)) Texts.Add(text, text.font == _tmp && _loadCaptured ? Tuple.Create(_loadOriginalFont, _loadOriginalMaterial) : Tuple.Create(text.font, text.fontSharedMaterial));
             if (Plugin.Chinese) ApplyTmp(text, ChineseTmpFont());
         }
-
         private static void ApplyTmp(TMP_Text text, TMP_FontAsset font)
         {
             if (text == null || font == null) return;
-            text.font = font;
-            text.fontSharedMaterial = font.material;
+            if (text.font != font) text.font = font;
+            if (text.fontSharedMaterial != font.material) text.fontSharedMaterial = font.material;
         }
 
+        // Event-only seeding covers styles constructed before the plugin installed.
+        internal static void SeedExisting()
+        {
+            if (_assembly == null) return;
+            foreach (var name in new[] { "PeakMapForge.Editor.EditorUi", "PeakMapForge.Airport.WorkshopPanel", "PeakMapForge.Teams.TeamUi", "PeakMapForge.Launch.LaunchPanel", "PeakMapForge.Build.ForgeHud" })
+            {
+                var type = _assembly.GetType(name);
+                if (type == null) continue;
+                foreach (var field in type.GetFields(AccessTools.allDeclared))
+                {
+                    if (field.FieldType != typeof(GUIStyle) && field.FieldType != typeof(GUISkin) && !typeof(IDictionary).IsAssignableFrom(field.FieldType)) continue;
+                    if (field.IsStatic) Seed(field.GetValue(null));
+                    else if (typeof(UnityEngine.Object).IsAssignableFrom(type)) foreach (var owner in Resources.FindObjectsOfTypeAll(type)) Seed(field.GetValue(owner));
+                }
+            }
+        }
+        private static void Seed(object value)
+        {
+            if (value is GUIStyle style) Register(style, null, false);
+            else if (value is IDictionary dictionary) { foreach (var item in dictionary.Values) if (item is GUIStyle s) Register(s, null, false); }
+            else if (value is GUISkin skin)
+            {
+                foreach (var s in new[] { skin.label, skin.button, skin.textField, skin.textArea, skin.box, skin.toggle }) Register(s, null, false);
+                foreach (var s in skin.customStyles) Register(s, null, false);
+            }
+        }
         internal static void Restore()
         {
-            foreach (var pair in StyleFonts) pair.Key.font = pair.Value;
-            foreach (var pair in FieldFonts)
-            {
-                if (pair.Key.Item1 is UnityEngine.Object obj && obj == null) continue;
-                pair.Key.Item2.SetValue(pair.Key.Item1, pair.Value);
-            }
-            foreach (var pair in TmpFonts)
-                if (pair.Key != null) { pair.Key.font = pair.Value.Item1; pair.Key.fontSharedMaterial = pair.Value.Item2; }
-            if (_loadCaptured)
-            {
-                _loadFont?.SetValue(null, _loadOriginalFont);
-                _loadMaterial?.SetValue(null, _loadOriginalMaterial);
-            }
+            foreach (var weak in Tracked) if (weak.Target is GUIStyle style && Styles.TryGetValue(style, out var state) && style.font != state.Original) style.font = state.Original;
+            foreach (var pair in Texts) if (pair.Key != null) { pair.Key.font = pair.Value.Item1; pair.Key.fontSharedMaterial = pair.Value.Item2; }
+            if (_loadCaptured) { _setLoadFont?.Invoke(null, _loadOriginalFont); _setLoadMaterial?.Invoke(null, _loadOriginalMaterial); }
         }
-
-        internal static void Invalidate() { _tmp = null; _retryFrame = 0; }
+        internal static void Invalidate() { _tmp = null; _fontRetry = _tmpRetry = 0; }
         internal static void RefreshTracked()
         {
+            Tracked.RemoveAll(w => !w.IsAlive);
+            foreach (var weak in Tracked) if (weak.Target is GUIStyle style && Styles.TryGetValue(style, out var state)) Apply(style, state);
             var stale = new List<TMP_Text>();
-            foreach (var text in TmpFonts.Keys) if (text == null) stale.Add(text);
-            foreach (var text in stale) TmpFonts.Remove(text);
-            if (!Plugin.Chinese) return;
-            var font = ChineseTmpFont();
-            foreach (var text in TmpFonts.Keys) ApplyTmp(text, font);
-            if (_loadCaptured && font != null)
-            {
-                _loadFont?.SetValue(null, font);
-                _loadMaterial?.SetValue(null, font.material);
-            }
+            foreach (var text in Texts.Keys) if (text == null) stale.Add(text);
+            foreach (var text in stale) Texts.Remove(text);
+            if (Plugin.Chinese) foreach (var text in Texts.Keys) ApplyTmp(text, ChineseTmpFont());
         }
         internal static void Dispose()
         {
-            Restore();
-            StyleFonts.Clear();
-            FieldFonts.Clear();
-            TmpFonts.Clear();
-            Fields.Clear();
+            Restore(); Tracked.Clear(); Styles = new ConditionalWeakTable<GUIStyle, StyleState>(); Texts.Clear();
             if (_font != null) UnityEngine.Object.Destroy(_font);
-            _font = null;
-            _tmp = null;
+            _font = null; _tmp = null; _assembly = null;
         }
-        private static void WarnOnce(string key, string message) { if (Warned.Add(key)) Plugin.Warn(message); }
+        private static void WarnOnce(string key, string message) { if (Warned.Add(key)) Plugin.Warn("Font: " + message); }
     }
 }

@@ -28684,6 +28684,221 @@
     "Same": []
   },
   {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamStandardName",
+    "De": "Team {0}",
+    "En": "Team {0}",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Modus „{0}“ ist unbekannt – coop, teams oder ffa.",
+    "En": "Mode “{0}” is unknown – coop, teams or ffa.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Bei Zeitablauf „{0}“ ist unbekannt – alive, koth oder draw.",
+    "En": "On time-out “{0}” is unknown – alive, koth or draw.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Anzahl {0} ist ungültig – erlaubt sind {1} bis {2} Teams.",
+    "En": "Count {0} is invalid – {1} to {2} teams are allowed.",
+    "Same": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Zuteilung „{0}“ ist unbekannt – host, random oder randomOnStart.",
+    "En": "Assignment “{0}” is unknown – host, random or randomOnStart.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Sieg „{0}“ ist unbekannt – lastTeam, koth, helicopter oder first.",
+    "En": "Victory “{0}” is unknown – lastTeam, koth, helicopter or first.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "KotH-Regel „{0}“ ist unbekannt – exclusive oder majority.",
+    "En": "KotH rule “{0}” is unknown – exclusive or majority.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Bei Zeitablauf „meiste Haltezeit“ braucht eine Effektzone mit „hold“ – ohne sie endet die Zeit unentschieden.",
+    "En": "On time-out “most hold time” needs an effect zone with “hold” – without one time-out ends in a draw.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Schonzeit {0} s ist ungültig – 0 bis 3600 s.",
+    "En": "Grace period {0} s is invalid – 0 to 3600 s.",
+    "Same": [
+      0
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Die Liste hat {0} Teams, gespielt werden {1} – die übrigen werden ignoriert.",
+    "En": "The list has {0} teams, {1} are played – the rest are ignored.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Team {0}: Name länger als {1} Zeichen.",
+    "En": "Team {0}: name longer than {1} characters.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Team {0}: Farbe „{1}“ ist kein #RRGGBB (leer = Standardfarbe).",
+    "En": "Team {0}: color “{1}” is not #RRGGBB (empty = default color).",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Team {0}: Spawn {1} steht doppelt in der Liste.",
+    "En": "Team {0}: spawn {1} is listed twice.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Team {0} verweist auf Spawn-Index {1}, aber die Karte hat keine eigenen Spawnpunkte (spawns.points ist leer).",
+    "En": "Team {0} refers to spawn index {1}, but the map has no custom spawn points (spawns.points is empty).",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Team {0} verweist auf Spawn-Index {1} – es gibt nur {2} Spawnpunkte (Indizes 0 bis {3}).",
+    "En": "Team {0} refers to spawn index {1} – there are only {2} spawn points (indices 0 to {3}).",
+    "Same": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Spawn {0} gehört zu {1} und zu {2} – ein Spawn gehört genau einem Team.",
+    "En": "Spawn {0} belongs to {1} and to {2} – a spawn belongs to exactly one team.",
+    "Same": [
+      0,
+      1,
+      2
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Nicht jedes Team hat eigene Spawns – Teams ohne starten auf den allgemeinen Spawns und können dort neben einem anderen Team landen.",
+    "En": "Not every team has its own spawns – teams without start on the shared spawns and may land next to another team.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "De": "Sieg „Gipfel halten“ braucht eine Effektzone mit dem Effekt „hold“ – die Karte hat keine.",
+    "En": "Victory “king of the hill” needs an effect zone with the “hold” effect – the map has none.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.PlayerIssues",
+    "De": "Spieleranzahl: mindestens {0} ist mehr als höchstens {1}.",
+    "En": "Player count: minimum {0} is more than maximum {1}.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.PlayerIssues",
+    "De": "Empfohlen ab {0} ist mehr als empfohlen bis {1}.",
+    "En": "Recommended from {0} is more than recommended up to {1}.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.PlayerIssues",
+    "De": "Die Empfehlung liegt außerhalb von mindestens–höchstens.",
+    "En": "The recommendation lies outside minimum–maximum.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.PlayerIssues",
+    "De": "Teams und jeder gegen jeden brauchen mindestens 2 Spieler – mindestens auf 2 stellen?",
+    "En": "Teams and free-for-all need at least 2 players – set the minimum to 2?",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.PlayerIssues",
+    "De": "Höchstens {0} Spieler, aber {1} Teams – mindestens ein Team bleibt leer.",
+    "En": "At most {0} players but {1} teams – at least one team stays empty.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.PlayerIssues",
+    "De": "Für bis zu {0} Spieler gibt es nur {1} Spawnpunkte – mehrere starten auf demselben Punkt.",
+    "En": "Up to {0} players but only {1} spawn points – several start on the same point.",
+    "Same": [
+      0,
+      1
+    ]
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.PlayerIssues",
+    "De": "Teamspiel ohne eigene Spawnpunkte: Alle starten am Spawn des Spiels, Gegner direkt nebeneinander.",
+    "En": "Team play without custom spawn points: everyone starts at the game's spawn, opponents right next to each other.",
+    "Same": []
+  },
+  {
+    "Source": "PeakMapForge.Editor.EditorUi.PlayerIssues",
+    "De": "{0} hat {1} Start-Spawns, bei {2} Spielern sind es bis zu {3} je Team.",
+    "En": "{0} has {1} start spawns; with {2} players there are up to {3} per team.",
+    "Same": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  {
     "Source": "PeakMapForge.Editor.EditorUi.WoMarkers",
     "De": "Marker des Spiels",
     "En": "Game markers",

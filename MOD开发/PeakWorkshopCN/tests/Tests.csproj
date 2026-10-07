@@ -12,5 +12,7 @@
     <Compile Include="..\PeakWorkshopCN\LiteralRewriter.cs" Link="LiteralRewriter.cs" />
     <Compile Include="..\PeakWorkshopCN\ConfigurationLocalization.cs" Link="ConfigurationLocalization.cs" />
     <Compile Include="..\PeakWorkshopCN\CatalogData.cs" Link="CatalogData.cs" />
+    <Compile Include="..\PeakWorkshopCN\ResourcePatches.cs" Link="ResourcePatches.cs" />
+    <Compile Include="..\PeakWorkshopCN\OfficialTerms.cs" Link="OfficialTerms.cs" />
   </ItemGroup>
 </Project>

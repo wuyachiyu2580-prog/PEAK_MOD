@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.Serialization;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
+using System.IO;
 using HarmonyLib;
 
 namespace PeakWorkshopCN
@@ -11,38 +15,57 @@ namespace PeakWorkshopCN
     {
         private static MethodInfo _tr;
         private static Func<string, string, string> _original;
-        private static MethodInfo _bump;
-        internal static int PatchedSites;
-        internal static int DynamicSites;
+        private static Action _bump;
+        private static int _generation;
+        private sealed class MarkerStamp { public MarkerStamp() { } internal int Generation = -1; internal Func<string> Maker; }
+        private static ConditionalWeakTable<object, MarkerStamp> Markers = new ConditionalWeakTable<object, MarkerStamp>();
+        private static readonly Dictionary<MethodBase, Tuple<int, int>> Sites = new Dictionary<MethodBase, Tuple<int, int>>();
+        private static readonly Dictionary<MethodBase, Tuple<Func<object, string>, Func<object, string>>> FieldReaders = new Dictionary<MethodBase, Tuple<Func<object, string>, Func<object, string>>>();
+        internal static int PatchedSites => Sites.Values.Sum(v => v.Item1);
+        internal static int DynamicSites => Sites.Values.Sum(v => v.Item2);
+        internal static int FailedTargets;
+        [DataContract] private sealed class Target
+        {
+            [DataMember] public int Token = 0;
+            [DataMember] public string Type = null;
+            [DataMember] public string Name = null;
+        }
+        [DataContract] private sealed class GenericTarget
+        {
+            [DataMember] public int Token = 0;
+            [DataMember] public string[] Arguments = null;
+        }
 
         internal static void Install(Harmony harmony, Assembly assembly)
         {
+            using (var stream = File.OpenRead(assembly.Location))
+            using (var sha = SHA256.Create())
+                if (BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "") != "CC1ECDE51B0A4F6F36DB54DE2232FB49CAB59CEDE43CBFFEECBC83EC7A868ADC")
+                    throw new InvalidOperationException("PeakWorkshop DLL differs from the verified 0.2.0 baseline; localization was not installed.");
             var loc = assembly.GetType("PeakMapForge.Loc", true);
             _tr = AccessTools.Method(loc, "Tr", new[] { typeof(string), typeof(string) });
             if (_tr == null) throw new MissingMethodException("PeakMapForge.Loc.Tr(string, string)");
             _original = (Func<string, string, string>)Delegate.CreateDelegate(typeof(Func<string, string, string>), _tr);
-            _bump = AccessTools.Method(loc, "Bump");
+            _bump = (Action)Delegate.CreateDelegate(typeof(Action), AccessTools.Method(loc, "Bump"));
+            harmony.Patch(AccessTools.Method(loc, "Bump"), postfix: new HarmonyMethod(typeof(WorkshopPatches), nameof(BumpPostfix)));
             var transpiler = new HarmonyMethod(typeof(WorkshopPatches), nameof(TranslateCalls));
-            foreach (var type in assembly.GetTypes())
+            foreach (var target in CatalogData.Load<Target[]>("PatchManifest.json"))
             {
-                foreach (var method in type.GetMethods(AccessTools.allDeclared).Cast<MethodBase>()
-                    .Concat(type.GetConstructors(AccessTools.allDeclared)))
+                try
                 {
-                    try
-                    {
-                        if (method.IsAbstract || (method.IsConstructor && method.IsStatic) || method.GetMethodBody() == null) continue;
-                        var il = PatchProcessor.ReadMethodBody(method).ToList();
-                        bool candidate = false;
-                        for (int i = 2; i < il.Count; i++)
-                            if (il[i].Key == OpCodes.Call && Equals(il[i].Value, _tr) &&
-                                il[i - 2].Key == OpCodes.Ldstr && il[i - 1].Key == OpCodes.Ldstr &&
-                                TranslationCatalog.TryGet(il[i - 1].Value as string, out _)) { candidate = true; break; }
-                        if (candidate || (DynamicCatalog.HasRules(type.FullName + "." + method.Name) &&
-                            il.Any(i => i.Key == OpCodes.Call && Equals(i.Value, _tr)))) harmony.Patch(method, transpiler: transpiler);
-                    }
-                    catch (Exception ex) { Plugin.Warn("Text hook skipped: " + type.Name + "." + method.Name + ": " + ex.Message); }
+                    var method = assembly.ManifestModule.ResolveMethod(target.Token);
+                    if (method.DeclaringType.FullName != target.Type || method.Name != target.Name) throw new InvalidOperationException("Manifest signature mismatch");
+                    harmony.Patch(method, transpiler: transpiler);
                 }
+                catch (Exception ex) { FailedTargets++; Plugin.Warn("Target failed: " + target.Type + "." + target.Name + ": " + ex); }
             }
+            // Do not transpile WorkshopPanel.Strip<T> at runtime. Unity/Mono shares
+            // the generic body between closed IList<T> instantiations; Harmony's
+            // generated wrapper can then use the wrong array element type and throw
+            // ArrayTypeMismatchException from Enumerable.ToList on every OnGUI.
+            // The callers remain patched, so their fixed/dynamic labels are safe;
+            // the generic "Show all" label is intentionally left in the original
+            // language until a non-generic display boundary is available.
             foreach (var target in new[]
             {
                 "PeakMapForge.Editor.PrefabCategories:Display",
@@ -60,12 +83,7 @@ namespace PeakWorkshopCN
                 }
                 catch (Exception ex) { Plugin.Warn("Category hook skipped: " + target + ": " + ex.Message); }
             }
-            PatchMethod(assembly, harmony, "PeakMapForge.Airport.WorkshopPanel", "LobbyPlayerRow");
-            PatchMethod(assembly, harmony, "PeakMapForge.Airport.WorkshopPanel", "NpcCategoryTiles");
-            PatchMethod(assembly, harmony, "PeakMapForge.Airport.WorkshopPanel", "Strip");
-            PatchGetter(assembly, harmony, "PeakMapForge.Editor.ScatterPreset", "Label");
-            PatchGetter(assembly, harmony, "PeakMapForge.Editor.ScatterPreset", "Hint");
-            PatchGetter(assembly, harmony, "PeakMapForge.Editor.ScatterPreset", "Short");
+            ResourcePatches.Install(assembly, harmony);
             PatchGetter(assembly, harmony, "PeakMapForge.Build.Items.ItemSounds+Preset", "Label");
             PatchGetter(assembly, harmony, "PeakMapForge.Build.Items.ForgeVfx+Element", "Name");
             PatchGetter(assembly, harmony, "PeakMapForge.Build.Items.ForgeVfx+Element", "Desc");
@@ -103,47 +121,45 @@ namespace PeakWorkshopCN
             if (getter == null) return;
             try
             {
+                if (postfixType == null)
+                {
+                    string prefix = propertyName == "Desc" ? "Desc" : propertyName == "Hint" ? "Hint" : "";
+                    FieldReaders[getter] = Tuple.Create(BoundAccess.Getter<string>(AccessTools.Field(type, prefix + "De")), BoundAccess.Getter<string>(AccessTools.Field(type, prefix + "En")));
+                }
                 harmony.Patch(getter, prefix: postfixType == null ? null : new HarmonyMethod(postfixType, postfixName),
                     postfix: postfixType == null ? new HarmonyMethod(typeof(WorkshopPatches), nameof(FieldPostfix)) : null);
             }
             catch (Exception ex) { Plugin.Warn("Field text hook skipped: " + typeName + "." + propertyName + ": " + ex.Message); }
         }
 
-        private static void FieldPostfix(object __instance, ref string __result)
+        private static void FieldPostfix(object __instance, MethodBase __originalMethod, ref string __result)
         {
             if (!Plugin.Chinese || __instance == null) return;
-            var type = __instance.GetType();
-            string de = type.GetField("De", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(__instance) as string;
-            string en = type.GetField("En", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(__instance) as string;
-            de = de ?? type.GetField("DescDe", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(__instance) as string;
-            en = en ?? type.GetField("DescEn", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(__instance) as string;
-            foreach (var prefix in new[] { "Label", "Hint", "Short", "Name" })
-            {
-                de = de ?? type.GetField(prefix + "De", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(__instance) as string;
-                en = en ?? type.GetField(prefix + "En", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(__instance) as string;
-            }
+            var readers = FieldReaders[__originalMethod];
+            string de = readers.Item1(__instance), en = readers.Item2(__instance);
             if (CatalogData.TryPair("@fields", de, en, out var chinese) || TranslationCatalog.TryGet(en, out chinese)) __result = chinese;
         }
 
-        private static void InvalidateMarkerLabel(object __instance)
+        private static void InvalidateMarkerLabel(object __instance, ref string ____cmLabel, Func<string> ___CmMakeLabel)
         {
-            var field = __instance.GetType().GetField("_cmLabelEn", BindingFlags.Instance | BindingFlags.NonPublic);
-            field?.SetValue(__instance, !LocEn());
+            var stamp = Markers.GetOrCreateValue(__instance);
+            if (stamp.Generation == _generation && ReferenceEquals(stamp.Maker, ___CmMakeLabel)) return;
+            ____cmLabel = null;
+            stamp.Generation = _generation;
+            stamp.Maker = ___CmMakeLabel;
         }
 
-        private static bool LocEn()
-        {
-            var loc = AccessTools.TypeByName("PeakMapForge.Loc");
-            return (bool)(loc?.GetField("En", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)?.GetValue(null) ?? false);
-        }
+        private static void BumpPostfix() { unchecked { _generation++; } }
 
         private static IEnumerable<CodeInstruction> TranslateCalls(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
         {
             var list = instructions.ToList();
-            PatchedSites += LiteralRewriter.Rewrite(list, _tr, AccessTools.Method(typeof(WorkshopPatches), nameof(TranslateLiteral)));
-            DynamicSites += LiteralRewriter.RewriteDynamic(list, _tr, AccessTools.Method(typeof(WorkshopPatches), nameof(TranslateDynamic)),
-                __originalMethod.DeclaringType.FullName + "." + __originalMethod.Name);
+            string source = __originalMethod.DeclaringType.FullName + "." + __originalMethod.Name;
+            int fixedCount = LiteralRewriter.Rewrite(list, _tr, AccessTools.Method(typeof(WorkshopPatches), nameof(TranslateLiteral)), CatalogData.CanonicalSource(source));
+            int dynamicCount = LiteralRewriter.RewriteDynamic(list, _tr, AccessTools.Method(typeof(WorkshopPatches), nameof(TranslateDynamic)), source);
+            Sites[__originalMethod] = Tuple.Create(fixedCount, dynamicCount);
             RawLiteralRewriter.Rewrite(list, __originalMethod.DeclaringType.FullName + "." + __originalMethod.Name);
+            FontPatches.Rewrite(list);
             return list;
         }
 
@@ -182,7 +198,7 @@ namespace PeakWorkshopCN
             }
         }
 
-        internal static void NotifyLanguageChange() => _bump?.Invoke(null, null);
+        internal static void NotifyLanguageChange() => _bump?.Invoke();
 
         private static readonly Dictionary<string, string> Categories = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {

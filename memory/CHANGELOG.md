@@ -1,6 +1,18 @@
 # Memory Changelog
 
+## 2026-10-07
+
+- [用户确认/状态] 用户说明profile中的scanner/CN DLL是自己临时移走，准备游玩其他内容，明确不要重新复制；保持现有状态，候选与源码保留。此前待确认事项已解决，后续不得自动部署或启用PeakWorkshop。
+
+- [复核/状态] 14:56发现刚部署scanner与原CN DLL都已从profile消失，原因未知；候选完整，保留外部改动并询问用户是否重复制。同步scanner/CN全部当前入口、根入口/索引、部署记录和使用说明，明确当前不算安装成功。
+
+- [新增/实现/验证/索引] PeakWorkshopCNScanner 0.1.0：按用户要求新增独立漏译扫描MOD，限定原MOD最终IMGUI绘制，排除输入框、分级标注、有限采样/抓栈/缓存及本地HTML/JSON报告；50项离线检查通过、构建0/0，14:50:46确认游戏退出后仅部署181,248字节新DLL（1847E5EA…EE76）。原MOD当前仅.old，未启用；既有CN DLL未改，Unity实机/性能未验收。新增本MOD六件套/temp、开发说明与验证，同步根入口/索引及CN当前定位方向。无外部update_memory工具，记忆已落盘为本地Markdown。
+
 ## 2026-10-05
+
+- [新增/修改/索引] PeakWorkshopCN术语/性能调研：新增TERMINOLOGY_PERFORMANCE_RESEARCH.md、tools/Research与8份研究明细；提取游戏866键官方表，用户确认SHORE海岸，查明方山/森蕈/天底等键；区分22个同词差异候选与真实冲突。确认字体重复遍历EditorUi314/59、WorkshopPanel296/4及字段/MarkerRef热点，记录事件/启动反射边界和优化验收计划。同步开发入口/六件套/temp/根入口/索引；12源码哈希、原/CN DLL未变，未实施优化或测实机FPS。无外部update_memory工具，本地MD已落盘。
+
+- [新增/修改/索引] PeakWorkshopCN全MOD二次复核：新增AUDIT_RECHECK.md、tools/Recheck、audit/2026-10-05-recheck；确认初始化完成但仍2,197固定缺映射，资源显示/搜索、字段错配、回调来源、跳转边界、缓存、参数保护等R01–R15未修。纠正生成规则为907固定+93动态，补30处tr委托；同步本MOD六件套/temp及根入口/索引、开发文档。本轮只审核，插件源码/词表/DLL/config/地图未改，仍26D877...836CC；无外部update_memory工具，本地MD已落盘。
 
 - [修改] PeakWorkshopCN IMPLEMENTATION、README/STATUS/TODO/RECENT/FILES/temp、根入口与索引：用户确认退出后，于 16:58:48 +08:00 部署既有容错修复版，版本 0.1.0.0、304,128 字节，源/目标 SHA256 26D877A2...836CC 一致、原 DLL 未变。等待重启核对初始化完成日志及多人页；同时区分历史审核基线与当前命中数，生成规则不等同于动态模板。无外部 update_memory 工具，本地 Markdown 已同步。
 
@@ -388,3 +400,9 @@
 
 - [新增] `mods/WhereIsMyAmulet/`：记录 WhereIsMyAmulet 1.0.2 的常驻/定时显示配置、定时秒数、雕像碎片识别边界、构建输出和发行包路径。
 - [修改] `MEMORY_INDEX.md`：加入 WhereIsMyAmulet 四件套入口并更新索引日期。
+- [修改] PeakWorkshopCN 六件套、README、MEMORY_INDEX：记录统一修复候选、45项测试、候选哈希及待部署/实机验收边界。
+# 2026-10-07
+
+- PeakWorkshopCN：根据实机截图继续修复编辑器资源显示，新增构件 `Basalt Cluster`、`CliffPillar`、`LavaPillar` 等及材质 `BlueRock`、`DesertRock`、`Rock Volcano` 等显示映射；接入 `RockLook.Label`，保留资源键并支持中文/原名搜索。
+- PeakWorkshopCN：主项目 0 警告/0 错误，51 项测试通过；部署 DLL SHA-256 `2FC50B1FDBB6AC7F82A9D3EAAA7E70DADCF7EBA8B797031FAEEA1A77033AA523`。发现并恢复被改名为 `.old` 的原 PeakWorkshop.dll，原哈希未变；等待重启实机确认两个插件同时加载。
+

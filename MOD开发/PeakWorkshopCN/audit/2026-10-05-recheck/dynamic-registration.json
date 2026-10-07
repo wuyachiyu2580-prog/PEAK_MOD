@@ -1,0 +1,434 @@
+[
+  {
+    "source": "PeakMapForge.Teams.TeamHud.DrawBanner",
+    "method": "System.Void PeakMapForge.Teams.TeamHud::DrawBanner(System.Single,System.Single)",
+    "trCalls": 10,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Npc.NpcHud.DrawBosses",
+    "method": "System.Void PeakMapForge.Npc.NpcHud::DrawBosses(PeakMapForge.Npc.NpcManager)",
+    "trCalls": 2,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Net.JoinFlow.get_ConfirmText",
+    "method": "System.String PeakMapForge.Net.JoinFlow::get_ConfirmText()",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Launch.LaunchPanel.OnGUI",
+    "method": "System.Void PeakMapForge.Launch.LaunchPanel::OnGUI()",
+    "trCalls": 12,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Launch.LaunchPanel.DrawTeamsLine",
+    "method": "System.Void PeakMapForge.Launch.LaunchPanel::DrawTeamsLine()",
+    "trCalls": 6,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Launch.LaunchPanel.DrawPlayers",
+    "method": "System.Void PeakMapForge.Launch.LaunchPanel::DrawPlayers(PeakMapForge.Patches.AirportPatch/Hold)",
+    "trCalls": 15,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Generation.LoadOverlay.StageText",
+    "method": "System.String PeakMapForge.Generation.LoadOverlay::StageText(System.String,System.String)",
+    "trCalls": 2,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Editor.EditorUi.OvSize",
+    "method": "System.String PeakMapForge.Editor.EditorUi::OvSize(System.Single,System.Single,System.Nullable`1<System.Single>)",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Editor.EditorUi.OvTerrainDraft",
+    "method": "System.Void PeakMapForge.Editor.EditorUi::OvTerrainDraft(PeakMapForge.Editor.EditorTools)",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Editor.EditorUi.ScRules",
+    "method": "System.Void PeakMapForge.Editor.EditorUi::ScRules(PeakMapForge.Format.ScatterSpec,PeakMapForge.Build.PlacementProfiles/Profile,System.Int32)",
+    "trCalls": 33,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Editor.ScatterPreset.get_Label",
+    "method": "System.String PeakMapForge.Editor.ScatterPreset::get_Label()",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Editor.ScatterPreset.get_Hint",
+    "method": "System.String PeakMapForge.Editor.ScatterPreset::get_Hint()",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Editor.ScatterPreset.get_Short",
+    "method": "System.String PeakMapForge.Editor.ScatterPreset::get_Short()",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Build.Items.ItemDef.Summary",
+    "method": "System.String PeakMapForge.Build.Items.ItemDef::Summary()",
+    "trCalls": 9,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.ImportSet.FromFiles",
+    "method": "System.Collections.Generic.List`1<PeakMapForge.Airport.ImportSet> PeakMapForge.Airport.ImportSet::FromFiles(System.Collections.Generic.IEnumerable`1<System.String>)",
+    "trCalls": 2,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.LobbyOverlay.Body",
+    "method": "System.Single PeakMapForge.Airport.LobbyOverlay::Body(System.Single,System.Single,System.Boolean)",
+    "trCalls": 13,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.LobbyOverlay.StepOf",
+    "method": "System.String PeakMapForge.Airport.LobbyOverlay::StepOf(PeakMapForge.Online.TransferProgress,PeakMapForge.Online.DownloadJob)",
+    "trCalls": 7,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.NewsPopup.Body",
+    "method": "System.Single PeakMapForge.Airport.NewsPopup::Body(System.Single,System.Single,System.Boolean)",
+    "trCalls": 6,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "method": "PeakMapForge.Airport.WorkshopAssets/Item PeakMapForge.Airport.WorkshopAssets::Publish(System.String,System.String,System.String,System.String,System.Collections.Generic.List`1<System.String>,System.Boolean,PeakMapForge.Airport.AssetOrigin,System.String&,System.String)",
+    "trCalls": 3,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopAssets.Publish",
+    "method": "PeakMapForge.Airport.WorkshopAssets/Item PeakMapForge.Airport.WorkshopAssets::Publish(PeakMapForge.Airport.ImportSet,System.String,System.String,System.String,System.String,System.Collections.Generic.List`1<System.String>,System.Boolean,PeakMapForge.Build.Models.ModelSidecar,PeakMapForge.Airport.AssetOrigin,System.Boolean,System.String&)",
+    "trCalls": 5,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopItems.VanillaSummary",
+    "method": "System.String PeakMapForge.Airport.WorkshopItems::VanillaSummary(Item)",
+    "trCalls": 3,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopItems.AfflictionName",
+    "method": "System.String PeakMapForge.Airport.WorkshopItems::AfflictionName(Peak.Afflictions.Affliction)",
+    "trCalls": 5,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopLibrary+Entry.get_LocalLine",
+    "method": "System.String PeakMapForge.Airport.WorkshopLibrary/Entry::get_LocalLine()",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopNpcs.Assemble",
+    "method": "System.Int32 PeakMapForge.Airport.WorkshopNpcs::Assemble(System.String,System.String,System.Collections.Generic.List`1<PeakMapForge.Format.NpcTypeSpec>,System.String,System.Collections.Generic.List`1<System.String>)",
+    "trCalls": 2,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopNpcs.DescribeTypes",
+    "method": "System.String PeakMapForge.Airport.WorkshopNpcs::DescribeTypes(System.Collections.Generic.List`1<PeakMapForge.Format.NpcTypeSpec>)",
+    "trCalls": 5,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.AssetHero",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::AssetHero(System.Single,System.Single,System.Single,System.Collections.Generic.List`1<PeakMapForge.Airport.WorkshopAssets/Item>)",
+    "trCalls": 7,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.SubscribeButton",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::SubscribeButton(UnityEngine.Rect,PeakMapForge.Airport.WorkshopAssets/Item)",
+    "trCalls": 3,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetBrowse",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawAssetBrowse(System.Single,System.Single,System.Single,System.Boolean)",
+    "trCalls": 25,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawAssetDetail",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawAssetDetail(System.Single,System.Single,System.Single)",
+    "trCalls": 52,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.ClipBar",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::ClipBar(UnityEngine.Rect,PeakMapForge.Airport.AssetViewer/Model)",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyBrowse",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawLobbyBrowse(System.Single,System.Single,System.Single)",
+    "trCalls": 14,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.LobbyRow",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::LobbyRow(System.Single,System.Single,System.Single,PeakMapForge.Online.LobbyInfo,System.Boolean)",
+    "trCalls": 12,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyDetail",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawLobbyDetail(System.Single,System.Single,System.Single,PeakMapForge.Online.LobbyInfo)",
+    "trCalls": 37,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyCode",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawLobbyCode(System.Single,System.Single,System.Single)",
+    "trCalls": 12,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawConfirm",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::DrawConfirm(UnityEngine.Rect)",
+    "trCalls": 6,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.RunVisibility",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::RunVisibility(System.String,System.String,System.String,System.String)",
+    "trCalls": 0,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.RunUnpublish",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::RunUnpublish(System.String,System.String,System.String)",
+    "trCalls": 0,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.AskDeleteMap",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::AskDeleteMap(PeakMapForge.Airport.WorkshopLibrary/Entry)",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.RunDelete",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::RunDelete(System.String,System.String,System.Boolean,System.Boolean,System.Func`1<PeakMapForge.Airport.WorkshopDelete/Outcome>,System.String,System.Action)",
+    "trCalls": 0,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.ApplyTemplate",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::ApplyTemplate(PeakMapForge.Build.Items.ItemDef,PeakMapForge.Airport.WorkshopItems/Vanilla)",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawItemEditorCore",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawItemEditorCore(System.Single,System.Single,System.Single)",
+    "trCalls": 5,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.EditorStepModel",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::EditorStepModel(System.Single,System.Single,System.Single)",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.AssetPicker",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::AssetPicker(System.Single,System.Single,System.Single,System.String,System.Action`1<PeakMapForge.Airport.WorkshopAssets/Item>)",
+    "trCalls": 8,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.RangedSettings",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::RangedSettings(System.Single,System.Single,System.Single,PeakMapForge.Build.Items.RangedDef)",
+    "trCalls": 19,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.EffectsEditor",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::EffectsEditor(System.Single,System.Single,System.Single,System.Collections.Generic.List`1<PeakMapForge.Build.Items.EffectDef>,System.String,System.Boolean)",
+    "trCalls": 6,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.ItemHero",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::ItemHero(System.Single,System.Single,System.Single,System.Collections.Generic.List`1<PeakMapForge.Airport.WorkshopItems/Entry>)",
+    "trCalls": 5,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.ItemCategoryTiles",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::ItemCategoryTiles(System.Single,System.Single,System.Single)",
+    "trCalls": 1,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.VanillaStrip",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::VanillaStrip(System.Single,System.Single,System.Single)",
+    "trCalls": 3,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.ItemCard",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::ItemCard(UnityEngine.Rect,PeakMapForge.Airport.WorkshopItems/Entry)",
+    "trCalls": 3,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.ItemSubscribeButton",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::ItemSubscribeButton(UnityEngine.Rect,PeakMapForge.Airport.WorkshopItems/Entry)",
+    "trCalls": 3,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawItemBrowse",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawItemBrowse(System.Single,System.Single,System.Single,System.Boolean)",
+    "trCalls": 16,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.GameItemPanel",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::GameItemPanel(System.Single,System.Single,System.Single,PeakMapForge.Airport.WorkshopItems/Vanilla)",
+    "trCalls": 5,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawItemDetail",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawItemDetail(System.Single,System.Single,System.Single)",
+    "trCalls": 46,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.LobbyStats",
+    "method": "System.String PeakMapForge.Airport.WorkshopPanel::LobbyStats()",
+    "trCalls": 4,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyMine",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawLobbyMine(System.Single,System.Single,System.Single)",
+    "trCalls": 7,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawLobbyPlayers",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawLobbyPlayers(System.Single,System.Single,System.Single,PeakMapForge.Teams.TeamConfig,System.Boolean)",
+    "trCalls": 3,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapLine",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::LobbyMapLine(System.Single,System.Single,System.Single)",
+    "trCalls": 10,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.LobbyMapUse",
+    "method": "System.ValueTuple`4<PeakMapForge.Airport.WorkshopPanel/LbMapUse,UnityEngine.Color,System.String,System.Boolean> PeakMapForge.Airport.WorkshopPanel::LobbyMapUse(PeakMapForge.Airport.WorkshopLibrary/Entry,System.Boolean)",
+    "trCalls": 9,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.LobbySettingsEditor",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::LobbySettingsEditor(System.Single,System.Single,System.Single,PeakMapForge.Net.LobbySettings,System.String)",
+    "trCalls": 15,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.MapHero",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::MapHero(System.Single,System.Single,System.Single,System.Collections.Generic.List`1<PeakMapForge.Airport.WorkshopLibrary/Entry>)",
+    "trCalls": 13,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawMapDetail",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawMapDetail(System.Single,System.Single,System.Single)",
+    "trCalls": 54,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.NeStepFigure",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::NeStepFigure(System.Single,System.Single,System.Single)",
+    "trCalls": 11,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.FigurePicker",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::FigurePicker(System.Single,System.Single,System.Single)",
+    "trCalls": 10,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.NpcHero",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::NpcHero(System.Single,System.Single,System.Single,System.Collections.Generic.List`1<PeakMapForge.Airport.WorkshopNpcs/Entry>)",
+    "trCalls": 8,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.NpcCard",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::NpcCard(UnityEngine.Rect,PeakMapForge.Airport.WorkshopNpcs/Entry)",
+    "trCalls": 2,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawNpcDetail",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawNpcDetail(System.Single,System.Single,System.Single)",
+    "trCalls": 27,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.DrawRemoteDetail",
+    "method": "System.Single PeakMapForge.Airport.WorkshopPanel::DrawRemoteDetail(System.Single,System.Single,System.Single,PeakMapForge.Online.OnlineCatalog/Remote,UnityEngine.Texture)",
+    "trCalls": 42,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.MapCard",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::MapCard(UnityEngine.Rect,PeakMapForge.Airport.WorkshopLibrary/Entry)",
+    "trCalls": 10,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.AssetCard",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::AssetCard(UnityEngine.Rect,PeakMapForge.Airport.WorkshopAssets/Item)",
+    "trCalls": 5,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.UsedCard",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::UsedCard(UnityEngine.Rect,PeakMapForge.Airport.MapContents/Use)",
+    "trCalls": 11,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.AskPurgeTrash",
+    "method": "System.Void PeakMapForge.Airport.WorkshopPanel::AskPurgeTrash(PeakMapForge.Airport.WorkshopTrash/Entry)",
+    "trCalls": 0,
+    "generic": false
+  },
+  {
+    "source": "PeakMapForge.Airport.WorkshopPanel.SourceInfo",
+    "method": "System.String PeakMapForge.Airport.WorkshopPanel::SourceInfo(PeakMapForge.Airport.ImportSet)",
+    "trCalls": 8,
+    "generic": false
+  }
+]

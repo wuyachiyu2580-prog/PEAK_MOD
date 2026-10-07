@@ -589,6 +589,34 @@
   },
   {
     "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 24588,
+    "source": "PeakMapForge.Editor.EditorUi.TeamStandardName",
+    "german": "WoTeamNamesDe[team]",
+    "english": "WoTeamNamesEn[team]"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 24729,
+    "source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "german": "string.Format(\"Haltezeit {0} s ist ungültig – 0 bis {1:0} s.\", valueOrDefault2.ToString(\"0.#\", invariantCulture), 36000f)",
+    "english": "string.Format(\"Hold time {0} s is invalid – 0 to {1:0} s.\", valueOrDefault2.ToString(\"0.#\", invariantCulture), 36000f)"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 24734,
+    "source": "PeakMapForge.Editor.EditorUi.TeamIssues",
+    "german": "string.Format(\"Zeitlimit {0} s ist ungültig – 0 (keins) bis {1:0} s.\", valueOrDefault3.ToString(\"0.#\", invariantCulture), 36000f)",
+    "english": "string.Format(\"Time limit {0} s is invalid – 0 (none) to {1:0} s.\", valueOrDefault3.ToString(\"0.#\", invariantCulture), 36000f)"
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
+    "line": 24852,
+    "source": "PeakMapForge.Editor.EditorUi.PlayerIssues",
+    "german": "$\"Spieleranzahl „{arg}“ {num2} ist ungültig – 0 (keine Angabe) bis {num}.\"",
+    "english": "$\"Player count “{arg2}” {num2} is invalid – 0 (not specified) to {num}.\""
+  },
+  {
+    "file": "PeakMapForge.Editor\\EditorUi.cs",
     "line": 25396,
     "source": "PeakMapForge.Editor.EditorUi.DrawSegment",
     "german": "de",

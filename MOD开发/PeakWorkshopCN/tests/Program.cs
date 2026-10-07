@@ -34,6 +34,16 @@ internal static class Program
         Check(!TranslationCatalog.TryGet(null, out _), "null input falls back");
         Check(TranslationCatalog.TryGet("Save", out var save) && save == "保存", "known fixed label");
         Check(TranslationCatalog.TryGet("Home", out var home) && home == "首页", "expanded fixed catalog");
+        Check(ResourcePatches.Display("Desert_Rock_1") == "方山岩石 1", "official prefab display name");
+        Check(ResourcePatches.Display("CliffPillar") == "峭壁石柱", "rock prefab display name");
+        Check(ResourcePatches.Display("Basalt Cluster") == "玄武岩簇", "basalt prefab display name");
+        Check(ResourcePatches.Display("Rock Volcano") == "火山岩石", "volcano material display name");
+        Check(ResourcePatches.Display("M_Rock") == "岩石材质", "material display name remains stable");
+        Check(ResourcePatches.Display("Desert_Rock_2") == "方山 Rock 2", "prefab prefix display name");
+        Check(ResourcePatches.Display("M_Rock_02") == "岩石材质 02", "material prefix display name");
+        Check(ResourcePatches.SearchIndex("M_Rock", "材质", StringComparison.OrdinalIgnoreCase) >= 0, "Chinese material search");
+        Check(ResourcePatches.SearchIndex("Desert_Rock_2", "方山", StringComparison.OrdinalIgnoreCase) >= 0, "Chinese prefab search");
+        Check(ResourcePatches.Display("model:AuthorAsset") == "model:AuthorAsset", "author resource key remains unchanged");
         Check(CatalogData.TryPair("PeakMapForge.Npc.NpcHud.DrawBosses", "Boss名字 BESIEGT!", "Boss名字 DEFEATED!", out var boss) && boss == "已击败 Boss名字！", "catalog dynamic rule");
 
         var literal = new List<CodeInstruction> { new CodeInstruction(OpCodes.Ldstr, "Speichern"),
@@ -48,10 +58,11 @@ internal static class Program
         var branch = new List<CodeInstruction> { new CodeInstruction(OpCodes.Ldstr, "Speichern"),
             new CodeInstruction(OpCodes.Ldstr, "Save"), new CodeInstruction(OpCodes.Call, Original) };
         branch[2].labels.Add(new DynamicMethod("labels", typeof(void), Type.EmptyTypes).GetILGenerator().DefineLabel());
-        Check(LiteralRewriter.Rewrite(branch, Original, Replacement) == 0, "branch labels are not invalidated");
-        branch[2].labels.Clear();
+        Check(LiteralRewriter.Rewrite(branch, Original, Replacement) == 1 && branch.Count == 4 && branch[2].labels.Count == 1 && Equals(branch[3].operand, Replacement), "branch labels move to inserted argument");
+        branch = new List<CodeInstruction> { new CodeInstruction(OpCodes.Ldstr, "Speichern"),
+            new CodeInstruction(OpCodes.Ldstr, "Save"), new CodeInstruction(OpCodes.Call, Original) };
         branch[2].blocks.Add(new ExceptionBlock(ExceptionBlockType.EndExceptionBlock));
-        Check(LiteralRewriter.Rewrite(branch, Original, Replacement) == 0, "exception boundaries are not moved");
+        Check(LiteralRewriter.Rewrite(branch, Original, Replacement) == 1 && branch.Count == 4 && branch[3].blocks.Count == 1, "end exception boundary stays after call");
 
         Dynamic("PeakMapForge.Launch.LaunchPanel.OnGUI", "17 im Kartenordner", "17 in the maps folder", "地图文件夹中有 17 张地图");
         Dynamic("PeakMapForge.Launch.LaunchPanel.DrawTeamsLine", "2/4 bereit", "2/4 ready", "2/4 已就绪");

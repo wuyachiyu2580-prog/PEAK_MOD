@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
+using System.Linq.Expressions;
 using BepInEx.Configuration;
 using HarmonyLib;
 
@@ -11,6 +13,8 @@ namespace PeakWorkshopCN
         private static readonly Dictionary<ConfigDescription, string> Descriptions = new Dictionary<ConfigDescription, string>();
         private static ConfigFile _config;
         private static bool _titleWarning;
+        private static readonly Dictionary<Type, Func<object, ConfigEntryBase>> EntryReaders = new Dictionary<Type, Func<object, ConfigEntryBase>>();
+        private static readonly Dictionary<ConfigEntryBase, string> EntryNames = new Dictionary<ConfigEntryBase, string>();
         internal static int Count => Descriptions.Count;
 
         internal static void Install(Harmony harmony, ConfigFile config)
@@ -19,6 +23,7 @@ namespace PeakWorkshopCN
             foreach (var pair in config)
             {
                 var entry = pair.Value;
+                if (ConfigNames.TryGetValue(pair.Key.Section + "/" + pair.Key.Key, out var name)) EntryNames[entry] = name;
                 if (entry.Description == null || entry.Description == ConfigDescription.Empty) continue;
                 if (ConfigTexts.TryGetValue(pair.Key.Section + "/" + pair.Key.Key, out var text)) Descriptions[entry.Description] = text;
             }
@@ -34,7 +39,12 @@ namespace PeakWorkshopCN
                 {
                     if (type.FullName == null || !type.FullName.StartsWith("PEAKLib.ModConfig.SettingOptions.BepInEx", StringComparison.Ordinal) ||
                         type.ContainsGenericParameters || type.IsAbstract) continue;
-                    var method = AccessTools.Method(type, "GetDisplayName", Type.EmptyTypes);
+                    var property = type.GetInterfaces().SelectMany(t => t.GetProperties()).FirstOrDefault(p => p.Name == "ConfigBase" && typeof(ConfigEntryBase).IsAssignableFrom(p.PropertyType)) ?? AccessTools.Property(type, "ConfigBase");
+                    if (property == null) continue;
+                    var instance = Expression.Parameter(typeof(object), "instance");
+                    EntryReaders[type] = Expression.Lambda<Func<object, ConfigEntryBase>>(Expression.Convert(Expression.Property(Expression.Convert(instance, property.DeclaringType), property), typeof(ConfigEntryBase)), instance).Compile();
+                    var found = AccessTools.Method(type, "GetDisplayName", Type.EmptyTypes);
+                    var method = found == null ? null : AccessTools.DeclaredMethod(found.DeclaringType, found.Name, Type.EmptyTypes);
                     if (method == null || !patched.Add(method)) continue;
                     harmony.Patch(method, postfix: new HarmonyMethod(typeof(ConfigurationLocalization), nameof(DisplayNamePostfix)));
                 }
@@ -52,16 +62,10 @@ namespace PeakWorkshopCN
             if (!Plugin.Chinese) return;
             try
             {
-                ConfigEntryBase entry = null;
-                foreach (var contract in __instance.GetType().GetInterfaces())
-                {
-                    var property = contract.GetProperty("ConfigBase", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    if (property != null && typeof(ConfigEntryBase).IsAssignableFrom(property.PropertyType))
-                    { entry = property.GetValue(__instance, null) as ConfigEntryBase; break; }
-                }
-                if (entry == null) entry = AccessTools.Property(__instance.GetType(), "ConfigBase")?.GetValue(__instance, null) as ConfigEntryBase;
+                if (!EntryReaders.TryGetValue(__instance.GetType(), out var read)) return;
+                var entry = read(__instance);
                 if (entry?.ConfigFile != _config) return;
-                if (ConfigNames.TryGetValue(entry.Definition.Section + "/" + entry.Definition.Key, out var text)) __result = text;
+                if (EntryNames.TryGetValue(entry, out var text)) __result = text;
             }
             catch (Exception ex)
             {
@@ -84,9 +88,9 @@ namespace PeakWorkshopCN
             ["Generation/Seed"] = "地图、变体和物件随机选择前使用的随机种子。",
             ["Generation/RandomSeed"] = "每次开始时随机生成一个新种子。",
             ["Generation/Slot1"] = "第 1 个地形槽位，原版固定为 Shore（海岸）。",
-            ["Generation/Slot2"] = "第 2 个地形槽位：Tropics（热带）或 Roots（根林）。",
-            ["Generation/Slot3"] = "第 3 个地形槽位：Alpine（高山）或 Mesa（荒漠）。",
-            ["Generation/Slot4"] = "第 4 个地形槽位：Volcano（火山）或 Swamp（沼泽）。",
+            ["Generation/Slot2"] = "第 2 个地形槽位：Tropics（雨林）或 Roots（森蕈）。",
+            ["Generation/Slot3"] = "第 3 个地形槽位：Alpine（雪山）或 Mesa（方山）。",
+            ["Generation/Slot4"] = "第 4 个地形槽位：Volcano（火山）或 Swamp（雾沼）。",
             ["Probe/BuildProbeGeometry"] = "未加载地图时在起点旁生成测试山丘，仅用于开发验证。",
             ["Probe/RockCount"] = "在测试山丘上随机散布的游戏岩石数量。",
             ["Probe/OffsetX"] = "测试山丘中心相对出生点的 X 偏移，单位米。",
