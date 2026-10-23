@@ -1,0 +1,14 @@
+--- 2.4.b/Affliction.cs
+
++++ 3.0.0/Affliction.cs
+
+@@ -52,7 +52,7 @@
+
+ 	{
+ 		return afflictionType switch
+ 		{
+-			AfflictionType.PoisonOverTime => new Affliction_PoisonOverTime(),
++			AfflictionType.PoisonOverTime => (Affliction)new Affliction_PoisonOverTime(),
+ 			AfflictionType.InfiniteStamina => new Affliction_InfiniteStamina(),
+ 			AfflictionType.FasterBoi => new Affliction_FasterBoi(),
+ 			AfflictionType.Exhausted => new Affliction_Exhaustion(),

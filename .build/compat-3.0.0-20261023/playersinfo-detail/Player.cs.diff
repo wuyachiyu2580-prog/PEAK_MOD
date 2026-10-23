@@ -1,0 +1,229 @@
+--- 2.4.b/Player.cs
+
++++ 3.0.0/Player.cs
+
+@@ -34,17 +34,21 @@
+
+ 		backpackSlot = new BackpackSlot(3);
+ 		if (view != null)
+ 		{
++			if (!view.IsMine && !this.HasValidUserId())
++			{
++				Debug.LogError(name + " is about to register itself with an invalid user ID which breaks stuff!!");
++			}
+ 			PlayerHandler.RegisterPlayer(this);
+ 			if (view.IsMine)
+ 			{
+ 				localPlayer = this;
+ 				AssignUserID(PlatformManager.Platform.UserID);
+ 				AssignPlatformFamily(PlatformManager.Platform.PlatformFamily);
+-				AssignProductUserID(UserManager.CurrentUser.Id);
+-			}
+-		}
+-		base.gameObject.name = "Player: " + view.Owner.NickName;
+-		if (base.photonView.IsMine)
++				AssignProductUserID(UserManager.GetUserId);
++			}
++		}
++		gameObject.name = "Player: " + view.Owner.NickName;
++		if (photonView.IsMine)
+ 		{
+ 			GlobalEvents.OnAchievementThrown = (Action<ACHIEVEMENTTYPE>)Delegate.Combine(GlobalEvents.OnAchievementThrown, new Action<ACHIEVEMENTTYPE>(OnAchievementProgressChanged));
+ 		}
+@@ -55,16 +59,16 @@
+
+ 		{
+ 			GlobalEvents.OnAchievementThrown = (Action<ACHIEVEMENTTYPE>)Delegate.Remove(GlobalEvents.OnAchievementThrown, new Action<ACHIEVEMENTTYPE>(OnAchievementProgressChanged));
+ 		}
+-		if (base.photonView.IsMine)
+-		{
+-			PhotonNetwork.Destroy(base.photonView);
++		if (photonView.IsMine)
++		{
++			PhotonNetwork.Destroy(photonView);
+ 		}
+ 	}
+ 	private void Update()
+ 	{
+ 		if (_shouldSendCheevUpdate && AchievementManager.Initialized)
+ 		{
+-			base.photonView.RPC("UpdateAchievementProgress", RpcTarget.Others, Singleton<AchievementManager>.Instance.runBasedValueData);
++			photonView.RPC("UpdateAchievementProgress", RpcTarget.All, Singleton<AchievementManager>.Instance.runBasedValueData);
+ 			_shouldSendCheevUpdate = false;
+ 		}
+ 	}
+@@ -77,23 +81,19 @@
+
+ 		}
+ 		if (!PhotonNetwork.IsMasterClient)
+ 		{
+-			Debug.LogError("Only Master Client can add items!");
+ 			slot = null;
+ 			return false;
+ 		}
+ 		if (!ItemDatabase.TryGetItem(itemID, out var ItemPrefab))
+ 		{
+-			Debug.LogError($"Failed to get item from item ID: {itemID}");
+ 			slot = null;
+ 			return false;
+ 		}
+ 		slot = AddToSlot();
+ 		if (slot == null)
+ 		{
+-			Debug.LogError("Failed adding " + ItemPrefab.name + " to " + base.name + "'s inventory, no slots available!");
+ 			return false;
+ 		}
+-		Debug.Log($"Granting {base.name}: {ItemPrefab.name} and added to slot: {slot.itemSlotID}");
+ 		byte[] array = IBinarySerializable.ToManagedArray(new InventorySyncData(itemSlots, backpackSlot, tempFullSlot));
+ 		view.RPC("SyncInventoryRPC", RpcTarget.Others, array, false);
+ 		return true;
+@@ -132,7 +132,6 @@
+
+ 			NetCode.Matchmaking.LeaveLobby();
+ 		}
+ 		PhotonNetwork.Disconnect();
+-		Debug.Log("Leaving game and returning to main menu.");
+ 	}
+ 	private void OnAchievementProgressChanged(ACHIEVEMENTTYPE _)
+ 	{
+@@ -140,11 +139,7 @@
+
+ 	}
+ 	public void OnAchievementProgressChanged()
+ 	{
+-		if (!base.photonView.IsMine)
+-		{
+-			Debug.LogError("Can't broadcast " + base.name + "'s achievement data because that's not the local player!");
+-		}
+-		else
++		if (photonView.IsMine)
+ 		{
+ 			_shouldSendCheevUpdate = true;
+ 		}
+@@ -179,11 +174,7 @@
+
+ 	[PunRPC]
+ 	public void RPC_GetKicked(PhotonMessageInfo info)
+ 	{
+-		if (!info.Sender.IsMasterClient)
+-		{
+-			Debug.LogWarning("Some naughty player attempted to kick me without authority to do so!");
+-		}
+-		else
++		if (info.Sender.IsMasterClient)
+ 		{
+ 			NetworkConnector.ChangeConnectionState<KickedState>();
+ 		}
+@@ -191,20 +182,17 @@
+
+ 	[PunRPC]
+ 	public void RPCRemoveItemFromSlot(byte slotID)
+ 	{
+-		if (!PhotonNetwork.IsMasterClient)
+-		{
+-			Debug.LogError("Only Master Client can remove items!");
+-			return;
+-		}
+-		GetItemSlot(slotID)?.EmptyOut();
+-		InventorySyncData syncData = new InventorySyncData(itemSlots, backpackSlot, tempFullSlot);
+-		view.RPC("SyncInventoryRPC", RpcTarget.Others, IBinarySerializable.ToManagedArray(syncData), false);
++		if (PhotonNetwork.IsMasterClient)
++		{
++			GetItemSlot(slotID)?.EmptyOut();
++			InventorySyncData syncData = new InventorySyncData(itemSlots, backpackSlot, tempFullSlot);
++			view.RPC("SyncInventoryRPC", RpcTarget.Others, IBinarySerializable.ToManagedArray(syncData), false);
++		}
+ 	}
+ 	public void EmptySlot(Optionable<byte> slot, bool andBroadcast = true)
+ 	{
+ 		if (slot.IsNone)
+ 		{
+-			Debug.LogError("Can't empty none slot");
+ 			return;
+ 		}
+ 		byte value = slot.Value;
+@@ -243,7 +231,6 @@
+
+ 		default:
+ 			if (!itemSlots.WithinRange(slotID))
+ 			{
+-				Debug.LogError($"{base.name} is attempting to get a non-existent ItemSlot index: {slotID}", this);
+ 				return null;
+ 			}
+ 			return itemSlots[slotID];
+@@ -257,7 +244,6 @@
+
+ 	{
+ 		if (!ItemDatabase.TryGetItem(itemID, out var item))
+ 		{
+-			Debug.LogError($"Failed to get item from item ID: {itemID}");
+ 			return false;
+ 		}
+ 		if (item is Backpack)
+@@ -277,7 +263,6 @@
+
+ 	[ContextMenu("Debug Print Player ID")]
+ 	private void DebugPrintPlayerID()
+ 	{
+-		Debug.Log(base.photonView.Owner.ActorNumber);
+ 	}
+ 	public bool HasInAnySlot(ushort itemID)
+ 	{
+@@ -298,14 +283,11 @@
+
+ 		ItemSlot[] array = player.itemSlots;
+ 		foreach (ItemSlot itemSlot in array)
+ 		{
+-			Debug.Log($"Slot{b}: {itemSlot.ToString()}");
+ 			if (!itemSlot.IsEmpty())
+ 			{
+-				Debug.Log($"Data [{itemSlot.data.guid}, keys: {itemSlot.data.data.Count}]");
+ 				foreach (KeyValuePair<DataEntryKey, DataEntryValue> datum in itemSlot.data.data)
+ 				{
+-					Debug.Log($"{datum.Key} : {datum.Value.GetType().Name}");
+-					Debug.Log(datum.Value.ToString());
++					_ = datum;
+ 				}
+ 			}
+ 			b++;
+@@ -313,18 +295,24 @@
+
+ 	}
+ 	private void AssignUserID(ulong userID)
+ 	{
+-		Debug.Log($"AssignUserID {userID}");
+-		character.data.userID = userID;
++		string text = userID.ToString();
++		if ((bool)character && (bool)character.data)
++		{
++			character.data.userID = text;
++		}
++		else
++		{
++			Debug.LogWarning("Attempted to assign userID to " + name + " before character was initialized! Hopefully a fallback will properly assign this later.");
++		}
+ 		Hashtable customProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+-		if (customProperties.TryAdd("UserID", userID.ToString()))
+-		{
+-			customProperties["UserID"] = userID.ToString();
++		if (customProperties.TryAdd("UserID", text))
++		{
++			customProperties["UserID"] = text;
+ 		}
+ 		PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
+ 	}
+ 	private void AssignPlatformFamily(PlatformUtility.PlatformFamily platformFamily)
+ 	{
+-		Debug.Log($"AssignPlatformFamily {platformFamily}");
+ 		character.data.platformFamily = platformFamily;
+ 		Hashtable customProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+ 		if (customProperties.TryAdd("PlatformFamily", platformFamily.ToString()))
+@@ -335,7 +323,6 @@
+
+ 	}
+ 	private void AssignProductUserID(string productUserID)
+ 	{
+-		Debug.Log("AssignProductUserID " + productUserID);
+ 		character.data.productUserID = productUserID;
+ 		Hashtable customProperties = PhotonNetwork.LocalPlayer.CustomProperties;
+ 		if (customProperties.TryAdd("ProductUserID", productUserID))

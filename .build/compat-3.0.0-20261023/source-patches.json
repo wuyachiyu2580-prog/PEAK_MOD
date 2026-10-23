@@ -1,0 +1,478 @@
+[
+  {
+    "project": "ItemInfoCN",
+    "file": "MOD开发\\ItemInfoCN\\ItemInfoCN\\Patches\\ItemInfoPatches.cs",
+    "line": 34,
+    "target": "CharacterItems.Update",
+    "status": "found"
+  },
+  {
+    "project": "ItemInfoCN",
+    "file": "MOD开发\\ItemInfoCN\\ItemInfoCN\\Patches\\ItemInfoPatches.cs",
+    "line": 85,
+    "target": "CharacterItems.Equip",
+    "status": "found"
+  },
+  {
+    "project": "ItemInfoCN",
+    "file": "MOD开发\\ItemInfoCN\\ItemInfoCN\\Patches\\ItemInfoPatches.cs",
+    "line": 105,
+    "target": "ItemCooking.FinishCooking",
+    "status": "found"
+  },
+  {
+    "project": "ItemInfoCN",
+    "file": "MOD开发\\ItemInfoCN\\ItemInfoCN\\Patches\\ItemInfoPatches.cs",
+    "line": 125,
+    "target": "Action_ReduceUses.ReduceUsesRPC",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\BugleUltimatePatch.cs",
+    "line": 17,
+    "target": "BugleSFX.RPC_StartToot",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\CampfireRestorePatch.cs",
+    "line": 12,
+    "target": "Campfire.Light_Rpc",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\CampfireRestorePatch.cs",
+    "line": 106,
+    "target": "Campfire.Awake",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\LanternFuelOverridePatch.cs",
+    "line": 59,
+    "target": "Lantern.Awake",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\LanternFuelOverridePatch.cs",
+    "line": 86,
+    "target": "Lantern.OnInstanceDataSet",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\LanternFuelOverridePatch.cs",
+    "line": 134,
+    "target": "Lantern.LightLanternRPC",
+    "status": "MISSING"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\LanternFuelOverridePatch.cs",
+    "line": 149,
+    "target": "Lantern.UpdateFuel",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\LanternFuelOverridePatch.cs",
+    "line": 207,
+    "target": "Lantern.UpdateFuel",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\MuteZombieTornadoPatch.cs",
+    "line": 10,
+    "target": "MushroomZombie.RPC_PlaySFX",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\MuteZombieTornadoPatch.cs",
+    "line": 36,
+    "target": "Tornado.Start",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\ReduceLanternWarmthPatch.cs",
+    "line": 123,
+    "target": "CharacterAfflictions.AddStatus",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\ReduceLanternWarmthPatch.cs",
+    "line": 201,
+    "target": "CharacterHeatEmission.Update",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\ReduceLanternWarmthPatch.cs",
+    "line": 244,
+    "target": "CharacterAfflictions.SubtractStatus",
+    "status": "found"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\ReduceLanternWarmthPatch.cs",
+    "line": 286,
+    "target": "StatusField.Update",
+    "status": "found"
+  },
+  {
+    "project": "PlayersInfo",
+    "file": "MOD开发\\PlayersInfo\\PlayersInfo\\Patches\\GUIManagerReadyPatch.cs",
+    "line": 12,
+    "target": "GUIManager.Start",
+    "status": "found"
+  },
+  {
+    "project": "PlayersInfo",
+    "file": "MOD开发\\PlayersInfo\\PlayersInfo\\Patches\\LocalStaminaBarPatch.cs",
+    "line": 20,
+    "target": "StaminaBar.Update",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 7,
+    "target": "CharacterSyncer.OnDataReceived",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 15,
+    "target": "Character.OnJump",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 25,
+    "target": "GlobalEvents.TriggerSomeoneWonRun",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 34,
+    "target": "GlobalEvents.TriggerRunEnded",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 43,
+    "target": "GlobalEvents.TriggerCharacterDied",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 54,
+    "target": "GlobalEvents.TriggerCharacterPassedOut",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 65,
+    "target": "Item.Interact",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 76,
+    "target": "CharacterItems.OnPickupAccepted",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 91,
+    "target": "Item.StartUsePrimary",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 108,
+    "target": "Item.FinishCastPrimary",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 121,
+    "target": "Item.FinishCastSecondary",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 134,
+    "target": "Character.GetFedItemRPC",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 162,
+    "target": "Action_ModifyStatus.RunAction",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 200,
+    "target": "RescueHook.RPCA_RescueCharacter",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 215,
+    "target": "Character.RPCA_ReviveAtPosition",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 229,
+    "target": "Item.Consume",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 247,
+    "target": "Action_ReduceUses.ReduceUsesRPC",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\GamePatches.cs",
+    "line": 261,
+    "target": "Character.UseStamina",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\PauseMenuMainPagePatches.cs",
+    "line": 5,
+    "target": "PauseMenuMainPage.Start",
+    "status": "found"
+  },
+  {
+    "project": "StateKeeper",
+    "file": "MOD开发\\StateKeeper\\StateKeeper\\PauseMenuMainPagePatches.cs",
+    "line": 14,
+    "target": "PauseMenuMainPage.OnEnable",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\AirportPatches.cs",
+    "line": 13,
+    "target": "GameUtils.OnEnable",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\AirportPatches.cs",
+    "line": 26,
+    "target": "BoardingPass.Initialize",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\AirportPatches.cs",
+    "line": 35,
+    "target": "BoardingPass.OnOpen",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\AirportPatches.cs",
+    "line": 48,
+    "target": "BoardingPass.OnClose",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\AirportPatches.cs",
+    "line": 61,
+    "target": "AirportCheckInKiosk.BeginIslandLoadRPC",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs",
+    "line": 10,
+    "target": "ImGuiTextures.BuildFontAtlas",
+    "status": "external"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\NetworkPatches.cs",
+    "line": 12,
+    "target": "GameHandler.Awake",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\NetworkPatches.cs",
+    "line": 21,
+    "target": "GameUtils.OnPlayerLeftRoom",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\SessionPatches.cs",
+    "line": 11,
+    "target": "MainMenu.Start",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\SessionPatches.cs",
+    "line": 20,
+    "target": "RunManager.StartRun",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\SessionPatches.cs",
+    "line": 29,
+    "target": "PauseMenuMainPage.Quit",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\SessionPatches.cs",
+    "line": 38,
+    "target": "SteamLobbyHandler.OnLobbyEnter",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 95,
+    "target": "JungleVine.Awake",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 96,
+    "target": "JungleVine.PickTreePlatforms",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 97,
+    "target": "SpawnConnectingBridge.CheckCondition",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 104,
+    "target": "Looker.ToggleLookers",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 134,
+    "target": "PropGrouper.RunAll",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 216,
+    "target": "PropSpawner_Sphere.SpawnNew",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 372,
+    "target": "PropSpawner.SpawnNew",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 464,
+    "target": "PropSpawner.Execute",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 484,
+    "target": "PropSpawner_Sphere.Execute",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 504,
+    "target": "PropSpawner_Line.Execute",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 524,
+    "target": "PropSpawner.Spawn",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 552,
+    "target": "PropSpawner_Sphere.Spawn",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 580,
+    "target": "PropSpawner_Line.Spawn",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 608,
+    "target": "PropSpawner_Sphere.Clear",
+    "status": "found"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainGeneration\\GenerationPatches.cs",
+    "line": 621,
+    "target": "MapHandler.InitializeMap",
+    "status": "found"
+  },
+  {
+    "project": "UprightCockroach",
+    "file": "MOD开发\\UprightCockroach\\UprightCockroach\\CharacterPatch.cs",
+    "line": 5,
+    "target": "Character.Start",
+    "status": "found"
+  }
+]

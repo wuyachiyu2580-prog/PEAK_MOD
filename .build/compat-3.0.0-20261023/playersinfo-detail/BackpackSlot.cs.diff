@@ -1,0 +1,14 @@
+--- 2.4.b/BackpackSlot.cs
+
++++ 3.0.0/BackpackSlot.cs
+
+@@ -14,7 +14,7 @@
+
+ 	public BackpackSlot(byte slotID)
+ 		: base(slotID)
+ 	{
+-		base.data = new ItemInstanceData(Guid.Empty);
++		data = new ItemInstanceData(Guid.Empty);
+ 	}
+ 	public override void EmptyOut()
+ 	{

@@ -1,0 +1,368 @@
+--- 2.4.b/Item.cs
+
++++ 3.0.0/Item.cs
+
+@@ -137,6 +137,7 @@
+
+ 	[HideInInspector]
+ 	public ItemParticles particles;
+ 	private int packLayer;
++	private bool hasAwoken;
+ 	public bool offsetLuggageSpawn;
+ 	public Vector3 offsetLuggagePosition;
+ 	public Vector3 offsetLuggageRotation;
+@@ -184,6 +185,7 @@
+
+ 		}
+ 	}
+ 	public bool isUsingPrimary { get; set; }
++	private bool HasInstanceData => data != null;
+ 	public ItemCooking cooking { get; private set; }
+ 	public new Transform transform
+ 	{
+@@ -231,6 +233,7 @@
+
+ 			return true;
+ 		}
+ 	}
++	public bool raycastingCharacter { get; set; }
+ 	public float totalSecondaryUsingTime
+ 	{
+ 		get
+@@ -270,8 +273,9 @@
+
+ 	}
+ 	protected virtual void Awake()
+ 	{
++		hasAwoken = true;
+ 		view = GetComponent<PhotonView>();
+-		cooking = base.gameObject.GetOrAddComponent<ItemCooking>();
++		cooking = gameObject.GetOrAddComponent<ItemCooking>();
+ 		_hasUseFeedback = TryGetComponent<ItemUseFeedback>(out _useFeedback);
+ 		AddPhysics();
+ 		GetItemActions();
+@@ -279,7 +283,7 @@
+
+ 		particles = GetComponent<ItemParticles>();
+ 		if (!particles)
+ 		{
+-			particles = base.gameObject.AddComponent<ItemParticles>();
++			particles = gameObject.AddComponent<ItemParticles>();
+ 		}
+ 		itemComponents = GetComponents<ItemComponent>();
+ 		physicsSyncer = GetComponent<ItemPhysicsSyncer>();
+@@ -379,7 +383,7 @@
+
+ 	}
+ 	protected virtual void AddPhysics()
+ 	{
+-		rig = base.gameObject.GetOrAddComponent<Rigidbody>();
++		rig = gameObject.GetOrAddComponent<Rigidbody>();
+ 		rig.mass = mass;
+ 		centerOfMass = rig.centerOfMass;
+ 		rig.interpolation = RigidbodyInterpolation.Interpolate;
+@@ -400,7 +404,7 @@
+
+ 				transform.SetPositionAndRotation(backpackSlotTransform.position - rotation * centerOfMass * 0.5f, rotation);
+ 			}
+ 		}
+-		else if (itemState == ItemState.Ground && base.photonView.IsMine)
++		else if (itemState == ItemState.Ground && photonView.IsMine)
+ 		{
+ 			float y = transform.position.y;
+ 			if (y < -2000f || y > 4000f)
+@@ -408,7 +412,7 @@
+
+ 				destroyTick += Time.deltaTime;
+ 				if (destroyTick > 2f)
+ 				{
+-					PhotonNetwork.Destroy(base.gameObject);
++					PhotonNetwork.Destroy(gameObject);
+ 				}
+ 			}
+ 			else
+@@ -441,9 +445,8 @@
+
+ 			return;
+ 		}
+ 		GlobalEvents.TriggerItemRequested(this, interactor);
+-		base.gameObject.SetActive(value: false);
++		gameObject.SetActive(value: false);
+ 		view.RPC("RequestPickup", RpcTarget.MasterClient, interactor.GetComponent<PhotonView>());
+-		Debug.Log("Picking up " + base.gameObject.name);
+ 		if (TryGetComponent<ItemBackpackVisuals>(out var component))
+ 		{
+ 			component.RemoveVisuals();
+@@ -452,7 +455,7 @@
+
+ 	[PunRPC]
+ 	public void DenyPickupRPC()
+ 	{
+-		base.gameObject.SetActive(value: true);
++		gameObject.SetActive(value: true);
+ 		SetKinematicNetworked(value: false, transform.position, transform.rotation);
+ 	}
+ 	[PunRPC]
+@@ -462,7 +465,7 @@
+
+ 		if ((bool)isSecretlyOtherItemPrefab && !isSecretlyOtherItemPrefab.UIData.canPocket && component.data.isClimbing)
+ 		{
+ 			PhotonNetwork.Instantiate("0_Items/" + isSecretlyOtherItemPrefab.gameObject.name, transform.position, transform.rotation, 0);
+-			PhotonNetwork.Destroy(base.gameObject);
++			PhotonNetwork.Destroy(gameObject);
+ 			return;
+ 		}
+ 		ushort num = (isSecretlyOtherItemPrefab ? isSecretlyOtherItemPrefab.itemID : itemID);
+@@ -472,7 +475,7 @@
+
+ 			if (flag)
+ 			{
+ 				component.refs.view.RPC("OnPickupAccepted", component.player.photonView.Owner, slot.itemSlotID);
+-				PhotonNetwork.Destroy(base.gameObject);
++				PhotonNetwork.Destroy(gameObject);
+ 			}
+ 			else
+ 			{
+@@ -616,16 +619,9 @@
+
+ 			{
+ 				wearerCharacter = null;
+ 			}
+-			if (PhotonNetwork.IsMasterClient)
+-			{
+-				if (character == null)
+-				{
+-					Debug.LogError("{name} set to Held but no HolderCharacter assigned! Something broken??");
+-				}
+-				else
+-				{
+-					base.photonView.TransferOwnership(character.GetComponent<PhotonView>().Owner);
+-				}
++			if (PhotonNetwork.IsMasterClient && !(character == null))
++			{
++				photonView.TransferOwnership(character.GetComponent<PhotonView>().Owner);
+ 			}
+ 			SetColliders(enabled: true, isTrigger: false, excludeLayer: true);
+ 			if (forceScale)
+@@ -637,7 +633,7 @@
+
+ 	}
+ 	private void HideRenderers()
+ 	{
+-		GetComponentsInChildren<Renderer>().ForEach(delegate(Renderer meshRenderer)
++		GetComponentsInChildren<Renderer>().ForEach((Renderer meshRenderer) =>
+ 		{
+ 			meshRenderer.enabled = false;
+ 		});
+@@ -760,30 +756,14 @@
+
+ 	}
+ 	public void CancelUsePrimary()
+ 	{
++		if (OnPrimaryCancelled != null && isUsingPrimary)
++		{
++			OnPrimaryCancelled();
++		}
+ 		isUsingPrimary = false;
+ 		castProgress = 0f;
+ 		finishedCast = false;
+-		if (OnPrimaryCancelled != null)
+-		{
+-			OnPrimaryCancelled();
+-		}
+-		if (Player.localPlayer == null)
+-		{
+-			Debug.LogError("Player.localPlayer is null, cannot play movement animation");
+-		}
+-		else if (Player.localPlayer.character == null)
+-		{
+-			Debug.LogError("Player.localPlayer.character is null, cannot play movement animation");
+-		}
+-		else if (Player.localPlayer.character.refs == null)
+-		{
+-			Debug.LogError("Player.localPlayer.character.refs is null, cannot play movement animation");
+-		}
+-		else if (Player.localPlayer.character.refs.animations == null)
+-		{
+-			Debug.LogError("Player.localPlayer.character.refs.animations is null, cannot play movement animation");
+-		}
+-		else
++		if (!(Player.localPlayer == null) && !(Player.localPlayer.character == null) && Player.localPlayer.character.refs != null && !(Player.localPlayer.character.refs.animations == null))
+ 		{
+ 			Player.localPlayer.character.refs.animations.PlaySpecificAnimation("Movement");
+ 		}
+@@ -836,7 +816,7 @@
+
+ 			finishedCast = false;
+ 			if ((bool)holderCharacter && canUseOnFriend && Interaction.instance.hasValidTargetCharacter)
+ 			{
+-				base.photonView.RPC("SendFeedDataRPC", RpcTarget.All, holderCharacter.photonView.ViewID, Interaction.instance.bestCharacter.character.photonView.ViewID, (int)itemID, totalSecondaryUsingTime);
++				photonView.RPC("SendFeedDataRPC", RpcTarget.All, holderCharacter.photonView.ViewID, Interaction.instance.bestCharacter.character.photonView.ViewID, (int)itemID, totalSecondaryUsingTime);
+ 			}
+ 			if (OnSecondaryStarted != null)
+ 			{
+@@ -890,7 +870,7 @@
+
+ 			if ((bool)holderCharacter)
+ 			{
+ 				holderCharacter.data.lastConsumedItem = Time.time;
+-				base.photonView.RPC("RemoveFeedDataRPC", RpcTarget.All, holderCharacter.photonView.ViewID);
++				photonView.RPC("RemoveFeedDataRPC", RpcTarget.All, holderCharacter.photonView.ViewID);
+ 			}
+ 			if ((bool)trueHolderCharacter)
+ 			{
+@@ -901,7 +881,7 @@
+
+ 			{
+ 				component.FeederAction(holderCharacter, Interaction.instance.bestCharacter.character);
+ 			}
+-			base.photonView.RPC("RemoveFeedDataRPC", RpcTarget.All, (int)itemID);
++			photonView.RPC("RemoveFeedDataRPC", RpcTarget.All, (int)itemID);
+ 		}
+ 		else if (OnSecondaryFinishedCast != null)
+ 		{
+@@ -920,7 +900,7 @@
+
+ 		Player.localPlayer.character.refs.animations.PlaySpecificAnimation("Movement");
+ 		if ((bool)lastHolderCharacter)
+ 		{
+-			base.photonView.RPC("RemoveFeedDataRPC", RpcTarget.All, lastHolderCharacter.photonView.ViewID);
++			photonView.RPC("RemoveFeedDataRPC", RpcTarget.All, lastHolderCharacter.photonView.ViewID);
+ 		}
+ 	}
+ 	public IEnumerator ConsumeDelayed(bool ignoreActions = false)
+@@ -936,7 +916,7 @@
+
+ 			OnConsumed();
+ 		}
+ 		yield return null;
+-		base.photonView.RPC("Consume", RpcTarget.All, consumerID);
++		photonView.RPC("Consume", RpcTarget.All, consumerID);
+ 	}
+ 	[PunRPC]
+ 	public void Consume(int consumerID)
+@@ -957,21 +937,14 @@
+
+ 			{
+ 				Optionable<byte> currentSelectedSlot = holderCharacter.refs.items.currentSelectedSlot;
+ 				holderCharacter.refs.animator.SetBool("Consumed Item", value: true);
+-				if (holderCharacter.IsLocal)
++				if (holderCharacter.IsLocal && currentSelectedSlot.IsSome)
+ 				{
+-					if (currentSelectedSlot.IsSome)
+-					{
+-						holderCharacter.player.EmptySlot(currentSelectedSlot);
+-						holderCharacter.refs.items.EquipSlot(currentSelectedSlot);
+-					}
+-					else
+-					{
+-						Debug.LogError("No Item Selected locally but still consuming?? THIS IS BAD. CALL ZORRO");
+-					}
++					holderCharacter.player.EmptySlot(currentSelectedSlot);
++					holderCharacter.refs.items.EquipSlot(currentSelectedSlot);
+ 				}
+ 			}
+ 		}
+-		base.gameObject.SetActive(value: false);
++		gameObject.SetActive(value: false);
+ 	}
+ 	public virtual void OnStash()
+ 	{
+@@ -983,14 +956,14 @@
+
+ 	public void AddDefaultFoodScripts()
+ 	{
+ 		usingTimePrimary = 1.2f;
+-		Action_PlayAnimation action_PlayAnimation = base.gameObject.AddComponent<Action_PlayAnimation>();
++		Action_PlayAnimation action_PlayAnimation = gameObject.AddComponent<Action_PlayAnimation>();
+ 		action_PlayAnimation.OnPressed = true;
+ 		action_PlayAnimation.animationName = "PlayerEat";
+-		Action_ModifyStatus action_ModifyStatus = base.gameObject.AddComponent<Action_ModifyStatus>();
++		Action_ModifyStatus action_ModifyStatus = gameObject.AddComponent<Action_ModifyStatus>();
+ 		action_ModifyStatus.OnCastFinished = true;
+ 		action_ModifyStatus.statusType = CharacterAfflictions.STATUSTYPE.Hunger;
+ 		action_ModifyStatus.changeAmount = -0.1f;
+-		base.gameObject.AddComponent<Action_Consume>().OnCastFinished = true;
++		gameObject.AddComponent<Action_Consume>().OnCastFinished = true;
+ 	}
+ 	public void HoverEnter()
+ 	{
+@@ -1020,11 +993,11 @@
+
+ 	}
+ 	public void SetKinematicNetworked(bool value)
+ 	{
+-		base.photonView.RPC("SetKinematicRPC", RpcTarget.AllBuffered, value, transform.position, transform.rotation);
++		photonView.RPC("SetKinematicRPC", RpcTarget.AllBuffered, value, transform.position, transform.rotation);
+ 	}
+ 	public void SetKinematicNetworked(bool value, Vector3 position, Quaternion rotation)
+ 	{
+-		base.photonView.RPC("SetKinematicRPC", RpcTarget.AllBuffered, value, position, rotation);
++		photonView.RPC("SetKinematicRPC", RpcTarget.AllBuffered, value, position, rotation);
+ 	}
+ 	[PunRPC]
+ 	public void SetKinematicAndResetSyncData(bool value, Vector3 position, Quaternion rotation)
+@@ -1095,14 +1068,15 @@
+
+ 		data = instanceData;
+ 		if (data != null)
+ 		{
++			if (!hasAwoken)
++			{
++				Debug.Log(name + " received instance data before it had a chance to initialize. Getting its itemComponents now", this);
++				itemComponents = GetComponents<ItemComponent>();
++			}
+ 			OnInstanceDataRecieved();
+ 			if (itemComponents.IsNullOrEmpty())
+ 			{
+-				Debug.LogWarning(base.name + " doesn't have any itemComponents assigned. It won't be able to apply " + $"instance data for guid {instanceData.guid}", this);
+-			}
+-			else
+-			{
+-				Debug.Log($"Instance data set for {base.name}#{instanceData.guid}");
++				Debug.LogWarning(name + " doesn't have any itemComponents assigned. It won't be able to apply " + $"instance data for guid {instanceData.guid}", this);
+ 			}
+ 			ItemComponent[] array = itemComponents;
+ 			for (int i = 0; i < array.Length; i++)
+@@ -1204,14 +1178,22 @@
+
+ 		{
+ 			position += Vector3.up * 0.5f;
+ 		}
+-		if (PhotonNetwork.Instantiate("0_Items/" + value.name, position, transform.rotation, 0).TryGetComponent<Item>(out var component))
+-		{
+-			Backpack backpack = component as Backpack;
+-			if (!(backpack != null) || (backpack.backpackType != BackpackSlot.BackpackType.Fannypack && backpack.backpackType != BackpackSlot.BackpackType.Backpack))
+-			{
+-				component.photonView.RPC("SetItemInstanceDataRPC", RpcTarget.All, data.Copy());
+-			}
+-			component.SetKinematicNetworked(value: false);
++		if (!PhotonNetwork.Instantiate("0_Items/" + value.name, position, transform.rotation, 0).TryGetComponent<Item>(out var component))
++		{
++			return;
++		}
++		component.SetKinematicNetworked(value: false);
++		Backpack backpack = component as Backpack;
++		if ((!(backpack != null) || (backpack.backpackType != BackpackSlot.BackpackType.Fannypack && backpack.backpackType != BackpackSlot.BackpackType.Backpack)) && data != null)
++		{
++			ItemInstanceData itemInstanceData = data.Copy();
++			if (ItemInstanceDataHandler.TryGetInstanceData(itemInstanceData.guid, out var _))
++			{
++				Debug.LogError("Uh oh! Our cloned item " + name + " already had instance data for that guid. Did something go wrong??");
++				itemInstanceData.guid = Guid.NewGuid();
++			}
++			ItemInstanceDataHandler.AddInstanceData(itemInstanceData);
++			component.photonView.RPC("SetItemInstanceDataRPC", RpcTarget.All, itemInstanceData);
+ 		}
+ 	}
+ 	public bool TryGetFeeder(out Character feeder)
+@@ -1227,7 +1209,7 @@
+
+ 	public bool IsValidToSpawn()
+ 	{
+ 		LootData component = GetComponent<LootData>();
+-		if (!RunSettings.IsItemEnabled((component != null && component.useOtherItemForSpawningValidity != null) ? component.useOtherItemForSpawningValidity.gameObject.name : base.gameObject.name))
++		if (!RunSettings.IsItemEnabled((component != null && component.useOtherItemForSpawningValidity != null) ? component.useOtherItemForSpawningValidity.gameObject.name : gameObject.name))
+ 		{
+ 			return false;
+ 		}

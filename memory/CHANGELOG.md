@@ -1,6 +1,69 @@
 # Memory Changelog
 
+## 2026-10-23 PlayersInfo 复核纠正
+
+- [审核/状态/待办/索引] 新增 PlayersInfo 专项报告，补查实际 2.4.b 基线并收窄“无需更新”表述：0.2.5 未查到强制断点；原始昵称优先是既有一致性问题，建议维护；terrain 0.1.1 需更新安装，实机待验。同步六件套/current 和根入口，总审核补充适用范围；源码、版本、配置和 DLL 不变。
+
+## 2026-10-23 PEAK 3.0.0 兼容性审核
+
+- [审核/基线/状态/待办/索引] 新增 COMPATIBILITY_3.0.0_2026-10-23.md：12 工程隔离构建（8 通过），确认 ItemInfoCN、灯笼整合及 TerrainCustomiserCN 兼容欠账；WhySoLaggy 22过/1旧目录失败，63 RPC另核验全部在；StateKeeper 78过/1缺样本跳过，蟑螂14+49过。更新通用3.0.0基线及项目入口，源码/版本/profile DLL未改、未部署/实机。原始证据在 .build/compat-3.0.0-20261023/；240文件哈希保留。本地Markdown已同步，无外部update_memory工具。
+
+## 2026-10-15
+
+- [UprightCockroach/实机问题修正] 2026-10-15 00:02 根据用户第二张实机截图修正 URP 背面剔除和第一人称触须遮挡：第一人称默认隐藏触须网格、保留腹部与手臂；PEAK 退出后部署修正版 DLL（12,261,376 bytes，SHA256 `431C3D4EFE9E7CBE2A8DB4A5923DE6E21A4E19C603928D1CBA61D90A1F258BEB`），待重启 PEAK 验收。
+## 2026-10-14
+
+- [UprightCockroach/模型/构建] 2026-10-14 23:38 用户确认使用本地 FBX、保留四臂、去麦克风和草丛；原 FBX 哈希不变。新增离线转换资源 uprightcockroach.roach（24网格、91,600三角形、59,440顶点、8张贴图），以 Scout bind pose 建立身体/双腿/四臂/触须骨链，候选 DLL 内嵌资源并按 PEAK URP shader 解码；47项模型/配置检查与离线姿态压力检查通过。Release 0警告/0错误，DLL 12,261,376 bytes、SHA256 163D9AF10E58B0FB9C33498B0C173916F5603661CFD4D18B21E12A844F412566，确认 PEAK 未运行后部署到 2.0.a，旧 DLL/配置备份。尚未进行游戏内画面、多人和生命周期验收。
+
+- [模型检查/实现/测试/部署/索引] 21:20 UprightCockroach 检查用户本地 FBX：29网格、95,802三角形、18内嵌2K图，无骨架/蒙皮；生成预览与报告，源文件不改。实际四臂卡通造型不同于先选 Cockroach alien，已提问等待造型/四臂选择。实现48项触须 config 与每秒重载、失败回退和可逆原模型隐藏；Release 0/0、13配置检查通过，游戏退出后备份部署21,504 bytes DLL（SHA 2E2A49F6…03B1D7D）。FBX未接入，实机/材质白色/局部轴仍待验。六件套/current、总索引和本地MD同步；无外部 update_memory 工具。
+
+- [调研/纠错/待办/索引] UprightCockroach 完成正式模型首轮筛选：优先免费 CC BY 4.0 的 Friendly Cockroach Character（10,000 三角面、官方预览直立双足、GLB 归档存在），保存模型报告及元数据 JSON。源文件未下载、骨架未核验、未导入。记录用户触须 config/正式模型需求，并将旧“无实机证据/按 CharacterCustomization 子树隐藏”纠正为截图已有视觉缺陷/按 AllRenderers 隐藏；本轮未改插件代码、构建或部署。本地 MD 六件套/current 与总索引已同步。
+
+- [实现/修正/构建] UprightCockroach MVP 改为复用 `CustomizationRefs.AllRenderers` 精确隐藏人形外观，保留背包/手中物品；补充 Scout 四肢骨段、Bot/Zombie/Scoutmaster 跳过、Shader 回退和 2.6.b 骨骼快照说明，Release 仍 0 警告 0 错误。
+- [新增/验收] 新增 `MOD开发/UprightCockroach/TEST_PLAN.md`，明确单人/多人、第一/第三人称、死亡/昏迷/搬运/复活、装备可见性和 Photon 不变的首轮测试；当前无 PEAK 实机运行证据。
+- [修改/视觉] 第一人称改为显示蟑螂手臂/手、触须、翅膀和下腹部，隐藏贴脸头部，等待实机调整位置。
+
+## 2026-10-13
+
+- [实现/构建/状态/索引] 新增 `MOD开发/UprightCockroach/` net472 BepInEx MVP：在 `Character.Start` 后挂接程序化直立蟑螂外壳，沿用原角色动画/物理/Photon，仅替换本地 Renderer；Release 构建 0 警告 0 错误并输出到 2.0.a profile，更新 UprightCockroach 六件套、根入口与索引。
+
+- [新增/调研/索引] 新增 `mods/UprightCockroach/` 六件套及临时恢复摘要，记录直立蟑螂客户端视觉替换方案、PEAK 2.6.b 证据、模型骨骼要求和后续待办；同步 `mods/README.md` 与 `MEMORY_INDEX.md`。
+
+## 2026-10-12
+
+- [归档/状态/索引] 按用户要求，将 PeakWorkshopCN 及 PeakWorkshopCNScanner 整体移到 `MOD开发/作废/`，收集 8 个专属构建目录、散落审核 JSON、原 memory、两份 profile 配置；源码、两轮原扫描报告、审核和发行文件均保留，1,518 个搬移或快照文件逐项大小/SHA256 校验一致，原路径及目标路径写入归档清单。
+- [规则/待办] 两项目停止维护，旧修复、扫描、验收、发行和自动同步 profile 约定失效；重建作废六件套/current、同步根入口/总索引/待办，撤下通用文档中的旧部署流水。修改前公共文档快照完整保留；下方原履历仅作历史，不再代表活动任务。
+- [运行状态] 指定 2.0.a profile 原本已无两插件 DLL/PDB/运行报告目录，仅配置残留已归档；原 PeakWorkshop `.dll.old` 未改。本轮未构建、部署或启用插件，未关闭游戏。本地 Markdown 已落盘，无外部 update_memory 工具。
+
+## 2026-10-07 0.1.0发行文件
+
+- [发行/状态/索引] 2026-10-07：按用户“简单的发行一版”准备 `MOD开发/PeakWorkshopCN/发行/0.1.0/`，包含PeakWorkshopCN.dll、icon.png（256×256）、英文README/CHANGELOG和manifest五件套；无ZIP、未上传。版本保持0.1.0，DLL为已验证产物3C80504A…4F4F（2,077,696字节），源/发行哈希一致；依赖BepInExPack_PEAK 5.4.75301和PeakCode-PeakWorkshop 0.2.0。README明确最新修复的完整实机/联机/性能验收待完成。
+
+18:43左右只读检查发现此前18:19部署的profile根目录PeakWorkshopCN.dll现已不存在，原因未确认；只剩同名PDB及扫描器DLL。本轮为发行文件准备，保留外部变动，未自动恢复profile。后续构建验证后直接同步profiles的用户偏好仍有效，不能把18:19历史部署当当前文件存在的证明。
+
+当前发行与安装状态以本节为准；下方未发行/未准备与已部署描述为各自历史阶段。本地Markdown记忆已同步，无外部update_memory工具。
+
+## 2026-10-07 18:19部署与后续约定
+
+- [用户偏好/部署/状态/索引] 2026-10-07 18:19用户明确要求后续DLL直接放进profiles，已取代此前不自动复制的偏好。本次已在确认PEAK退出后，备份并部署复扫修复版到 `C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/PeakWorkshopCN.dll`。版本0.1.0.0，2,077,696字节，SHA-256 `3C80504A8F0B080FA1D31F2BDDFAA5D67966DBD1722FE56E65E4CA743E914F4F`，源/目标一致；启动标记 `[rescan-fix-20261007]`。已部署，等待重启实机验收。后续本MOD构建验证完成后直接同步该profile，无需再次询问复制权限；游戏运行或DLL被占用时等待退出，插件其他启停状态仍按用户安排。 已同步当前入口、六件套、通用偏好/构建规范和开发记录；本地MD已落盘，无外部update_memory工具。
+
+下方“未部署/不自动复制”等为此前阶段记录，不再代表当前部署状态或授权。
+
+## 2026-10-07复扫后修复候选
+
+2026-10-07 17:27复扫后的修复候选已完成，版本仍0.1.0。主/测试Release均0警告0错误，359项离线检查通过（与359条扫描记录是不同计数）。候选 `.build/peakworkshopcn-rescan-fixes/candidate/PeakWorkshopCN.dll`，2,077,696字节，SHA-256 `3C80504A8F0B080FA1D31F2BDDFAA5D67966DBD1722FE56E65E4CA743E914F4F`；**未部署、未实机**。profile仍为用户此前试用的 `52B45C6E…5F16`。完整结果：`MOD开发/PeakWorkshopCN/RESCAN_FIXES_2026-10-07.md`。 [实现/验证/状态/索引] 同步CN六件套/current、scanner状态引用及开发文档；旧CN七文件归档。本地MD已落盘，无外部update_memory工具。
+
+## 2026-10-07 17:27最新运行复核
+
+- [复核/证据/状态/索引] 2026-10-07 17:27实机复扫已复核：用户已运行新CN候选，profile/报告SHA-256均为 `52B45C6E925B10CFF1EBEE20C0909CD23B4C96607338E231037304FA9F6A5F16`（0.1.0，2,070,016字节）。日志确认28个新增UI目标、0失败；运行游戏为2.6.b，本地反编译目录仍2.6.a。359条逐项审核：100确认显示缺陷、254保留、5待语境，记录不等于独立bug。报告：`MOD开发/PeakWorkshopCNScanner/SCAN_REVIEW_2026-10-07_1727.md`。本轮只读审核、保存证据与memory，未改插件源码/配置/地图、未构建或覆盖DLL。 同步CN/scanner六件套及current、根入口/索引；359条全覆盖且绑定报告哈希，记录ModConfig警告及停顿边界。无外部update_memory工具，本地MD已落盘。
+
+## 2026-10-07 扫描后修复候选
+
+- [实现/验证/状态/索引] 2026-10-07 扫描后修复候选已完成，版本仍0.1.0，208项离线检查通过、构建0警告0错误。候选 `.build/peakworkshopcn-scan-fixes/candidate/PeakWorkshopCN.dll`，2,070,016字节，SHA-256 `52B45C6E925B10CFF1EBEE20C0909CD23B4C96607338E231037304FA9F6A5F16`。**未部署**，profile仍为扫描时旧CN `2FC50B1F…AA523`；用户曾明确不要自动重复制/启用，勿擅自覆盖。完整结果：`MOD开发/PeakWorkshopCN/SCAN_FIXES_2026-10-07.md`。 610构件/43材质/216物品映射，637条状态回填；同步CN六件套/current及开发文档，旧矛盾条目归档。Unity、173扩展名称与6语境仍待验。本地Markdown记忆已落盘，无外部update_memory工具。
+
 ## 2026-10-07
+
+- [实机复核/归档/索引] 16:19接收用户扫描会话075322-7312，637条分类为129确认显示缺陷/474资源逐键待核对/28保留/6待语境确认；CN全enabled，scanner无Failure/上限。新增SCAN_REVIEW_2026-10-07及原报告/分类清单/限定日志，定位postfix覆盖、子串误伤、材质键混用和旧测试错误预期。用户已自行恢复三个插件，本轮不改代码/不覆盖DLL。重整scanner六件套/current，并同步CN及根入口/索引；本地Markdown已落盘，无外部update_memory工具。
 
 - [用户确认/状态] 用户说明profile中的scanner/CN DLL是自己临时移走，准备游玩其他内容，明确不要重新复制；保持现有状态，候选与源码保留。此前待确认事项已解决，后续不得自动部署或启用PeakWorkshop。
 
@@ -405,4 +468,3 @@
 
 - PeakWorkshopCN：根据实机截图继续修复编辑器资源显示，新增构件 `Basalt Cluster`、`CliffPillar`、`LavaPillar` 等及材质 `BlueRock`、`DesertRock`、`Rock Volcano` 等显示映射；接入 `RockLook.Label`，保留资源键并支持中文/原名搜索。
 - PeakWorkshopCN：主项目 0 警告/0 错误，51 项测试通过；部署 DLL SHA-256 `2FC50B1FDBB6AC7F82A9D3EAAA7E70DADCF7EBA8B797031FAEEA1A77033AA523`。发现并恢复被改名为 `.old` 的原 PeakWorkshop.dll，原哈希未变；等待重启实机确认两个插件同时加载。
-

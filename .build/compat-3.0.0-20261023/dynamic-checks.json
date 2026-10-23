@@ -1,0 +1,84 @@
+{
+  "reflection": [
+    {
+      "type": "CharacterData",
+      "kind": "fields",
+      "member": "isInvincible",
+      "found": true
+    },
+    {
+      "type": "ThornOnMe",
+      "kind": "fields",
+      "member": "popOutTime",
+      "found": true
+    },
+    {
+      "type": "ScoutStatue",
+      "kind": "fields",
+      "member": "hasAmulets",
+      "found": true
+    },
+    {
+      "type": "Rope",
+      "kind": "fields",
+      "member": "attachedToAnchor",
+      "found": true
+    },
+    {
+      "type": "Item",
+      "kind": "fields",
+      "member": "lastThrownCharacter",
+      "found": true
+    },
+    {
+      "type": "Spawner",
+      "kind": "methods",
+      "member": "GetSpawnPool",
+      "found": true
+    },
+    {
+      "type": "CharacterHeatEmission",
+      "kind": "fields",
+      "member": "character",
+      "found": true
+    },
+    {
+      "type": "Lantern",
+      "kind": "fields",
+      "member": "lit",
+      "found": false
+    },
+    {
+      "type": "Lantern",
+      "kind": "fields",
+      "member": "fuel",
+      "found": true
+    },
+    {
+      "type": "ZombieManager",
+      "kind": "fields",
+      "member": "zombies",
+      "found": true
+    }
+  ],
+  "watched_rpc_count": 63,
+  "game_rpc_count": 247,
+  "missing_rpc": [],
+  "source_patch_count": 68,
+  "source_patch_issues": [
+    {
+      "project": "Lantern&ShootZombies&Night",
+      "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\LanternFuelOverridePatch.cs",
+      "line": 134,
+      "target": "Lantern.LightLanternRPC",
+      "status": "MISSING"
+    },
+    {
+      "project": "TerrainCustomiserCN",
+      "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs",
+      "line": 10,
+      "target": "ImGuiTextures.BuildFontAtlas",
+      "status": "external"
+    }
+  ]
+}

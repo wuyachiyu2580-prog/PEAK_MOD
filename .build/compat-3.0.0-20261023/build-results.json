@@ -1,0 +1,179 @@
+[
+  {
+    "project": "ItemInfoCN",
+    "exit": 1,
+    "seconds": 8.2,
+    "diagnostics": [
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\ItemInfoCN\\ItemInfoCN\\Plugin.Processing.cs(140,73): error CS1061: “Mandrake”未包含“aoe”的定义，并且找不到可接受第一个“Mandrake”类型参数的可访问扩展方法“aoe”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\ItemInfoCN\\ItemInfoCN\\ItemInfoCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\ItemInfoCN\\ItemInfoCN\\Plugin.Processing.cs(141,45): error CS1061: “Mandrake”未包含“aoe”的定义，并且找不到可接受第一个“Mandrake”类型参数的可访问扩展方法“aoe”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\ItemInfoCN\\ItemInfoCN\\ItemInfoCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\ItemInfoCN\\ItemInfoCN\\Plugin.Processing.cs(142,53): error CS1061: “Mandrake”未包含“aoe”的定义，并且找不到可接受第一个“Mandrake”类型参数的可访问扩展方法“aoe”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\ItemInfoCN\\ItemInfoCN\\ItemInfoCN.csproj]"
+    ],
+    "log": ".build\\compat-3.0.0-20261023\\ItemInfoCN.build.log"
+  },
+  {
+    "project": "Lantern&ShootZombies&Night",
+    "exit": 1,
+    "seconds": 2.1,
+    "diagnostics": [
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\ItemSpawnHelper.cs(109,68): error CS1061: “BackpackSlot”未包含“hasBackpack”的定义，并且找不到可接受第一个“BackpackSlot”类型参数的可访问扩展方法“hasBackpack”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\ItemSpawnHelper.cs(112,20): error CS0165: 使用了未赋值的局部变量“bpData” [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\ItemSpawnHelper.cs(130,75): error CS1061: “BackpackSlot”未包含“hasBackpack”的定义，并且找不到可接受第一个“BackpackSlot”类型参数的可访问扩展方法“hasBackpack”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\ItemSpawnHelper.cs(140,68): error CS1061: “BackpackSlot”未包含“hasBackpack”的定义，并且找不到可接受第一个“BackpackSlot”类型参数的可访问扩展方法“hasBackpack”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\ItemSpawnHelper.cs(143,20): error CS0165: 使用了未赋值的局部变量“bpData” [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\LanternHelper.cs(188,55): error CS1061: “BackpackSlot”未包含“hasBackpack”的定义，并且找不到可接受第一个“BackpackSlot”类型参数的可访问扩展方法“hasBackpack”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\ExtraLanternPurger.cs(193,68): error CS1061: “BackpackSlot”未包含“hasBackpack”的定义，并且找不到可接受第一个“BackpackSlot”类型参数的可访问扩展方法“hasBackpack”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\ExtraLanternPurger.cs(196,20): error CS0165: 使用了未赋值的局部变量“bpData” [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\LanternHelper.cs(515,54): error CS1061: “BackpackSlot”未包含“hasBackpack”的定义，并且找不到可接受第一个“BackpackSlot”类型参数的可访问扩展方法“hasBackpack”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\BugleUltimatePatch.cs(100,54): error CS1061: “BackpackSlot”未包含“hasBackpack”的定义，并且找不到可接受第一个“BackpackSlot”类型参数的可访问扩展方法“hasBackpack”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\BugleUltimatePatch.cs(102,20): error CS0165: 使用了未赋值的局部变量“backpackData” [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Helpers\\LanternHelper.cs(602,54): error CS1061: “BackpackSlot”未包含“hasBackpack”的定义，并且找不到可接受第一个“BackpackSlot”类型参数的可访问扩展方法“hasBackpack”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj]"
+    ],
+    "log": ".build\\compat-3.0.0-20261023\\Lantern&ShootZombies&Night.build.log"
+  },
+  {
+    "project": "ModConfigDiagnostics",
+    "exit": 0,
+    "seconds": 2.1,
+    "diagnostics": [],
+    "log": ".build\\compat-3.0.0-20261023\\ModConfigDiagnostics.build.log"
+  },
+  {
+    "project": "PeakMapBrowser",
+    "exit": 0,
+    "seconds": 2.1,
+    "diagnostics": [],
+    "log": ".build\\compat-3.0.0-20261023\\PeakMapBrowser.build.log"
+  },
+  {
+    "project": "PlayersInfo",
+    "exit": 0,
+    "seconds": 2.2,
+    "diagnostics": [],
+    "log": ".build\\compat-3.0.0-20261023\\PlayersInfo.build.log"
+  },
+  {
+    "project": "StateKeeper",
+    "exit": 0,
+    "seconds": 2.1,
+    "diagnostics": [],
+    "log": ".build\\compat-3.0.0-20261023\\StateKeeper.build.log"
+  },
+  {
+    "project": "TerrainCustomiserCN",
+    "exit": 1,
+    "seconds": 2.0,
+    "diagnostics": [
+      "C:\\Program Files\\dotnet\\sdk\\10.0.401\\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3245: 未能解析此引用。未能找到程序集“UBImGui”。请检查磁盘上是否存在该程序集。 如果您的代码需要此引用，则可能出现编译错误。 [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Program Files\\dotnet\\sdk\\10.0.401\\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3245: 未能解析此引用。未能找到程序集“PhotonCustomPropsUtils”。请检查磁盘上是否存在该程序集。 如果您的代码需要此引用，则可能出现编译错误。 [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\ChineseFontManager.cs(4,7): error CS0246: 未能找到类型或命名空间名“UBImGui”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\NetworkManager.cs(5,7): error CS0246: 未能找到类型或命名空间名“PhotonCustomPropsUtils”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\WindowsManager.cs(4,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(4,7): error CS0246: 未能找到类型或命名空间名“UBImGui”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\ContextMenu.cs(5,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\HierarchyView.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\ImGuiHelpers.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\ConfirmationModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\CreateVariantModal.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\DeleteSegmentModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\LoadModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\RenameModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\SaveModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\SaveSelectionModal.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\SwapBiomeModal.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\WidgetFactory.cs(6,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\AirportWindow.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\EditorWindow.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\FreeCamWindow.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\ImGuiWindowBase.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\InspectorWindow.cs(4,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\ResourceWindow.cs(4,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(13,31): error CS0246: 未能找到类型或命名空间名“ImGuiIOPtr”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(13,50): error CS0246: 未能找到类型或命名空间名“ImGuiFontAsset”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\ChineseFontManager.cs(25,52): error CS0246: 未能找到类型或命名空间名“ImGuiFontAsset”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\ChineseFontManager.cs(25,19): error CS0246: 未能找到类型或命名空间名“ImGuiFontAsset”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\ChineseFontManager.cs(21,18): error CS0246: 未能找到类型或命名空间名“ImGuiFontAsset”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(10,24): error CS0246: 未能找到类型或命名空间名“ImGuiTextures”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\NetworkManager.cs(131,18): error CS0246: 未能找到类型或命名空间名“PhotonScopedManager”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\ImGuiWindowBase.cs(25,18): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\AirportWindow.cs(26,19): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\EditorWindow.cs(22,19): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\FreeCamWindow.cs(18,19): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\ResourceWindow.cs(19,19): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]"
+    ],
+    "log": ".build\\compat-3.0.0-20261023\\TerrainCustomiserCN.build.log"
+  },
+  {
+    "project": "TerrainCustomiserCNCollector",
+    "exit": 1,
+    "seconds": 1.9,
+    "diagnostics": [
+      "C:\\Program Files\\dotnet\\sdk\\10.0.401\\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3245: 未能解析此引用。未能找到程序集“UBImGui”。请检查磁盘上是否存在该程序集。 如果您的代码需要此引用，则可能出现编译错误。 [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Program Files\\dotnet\\sdk\\10.0.401\\Microsoft.Common.CurrentVersion.targets(2453,5): warning MSB3245: 未能解析此引用。未能找到程序集“PhotonCustomPropsUtils”。请检查磁盘上是否存在该程序集。 如果您的代码需要此引用，则可能出现编译错误。 [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\ChineseFontManager.cs(4,7): error CS0246: 未能找到类型或命名空间名“UBImGui”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\NetworkManager.cs(5,7): error CS0246: 未能找到类型或命名空间名“PhotonCustomPropsUtils”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\WindowsManager.cs(4,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(4,7): error CS0246: 未能找到类型或命名空间名“UBImGui”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\ContextMenu.cs(5,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\HierarchyView.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\ImGuiHelpers.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\ConfirmationModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\CreateVariantModal.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\DeleteSegmentModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\LoadModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\RenameModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\SaveModal.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\SaveSelectionModal.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Modals\\SwapBiomeModal.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\WidgetFactory.cs(6,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\AirportWindow.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\EditorWindow.cs(3,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\FreeCamWindow.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\ImGuiWindowBase.cs(2,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\InspectorWindow.cs(4,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\ResourceWindow.cs(4,7): error CS0246: 未能找到类型或命名空间名“ImGuiNET”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\ChineseFontManager.cs(25,52): error CS0246: 未能找到类型或命名空间名“ImGuiFontAsset”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\ChineseFontManager.cs(25,19): error CS0246: 未能找到类型或命名空间名“ImGuiFontAsset”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\ChineseFontManager.cs(21,18): error CS0246: 未能找到类型或命名空间名“ImGuiFontAsset”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Managers\\NetworkManager.cs(131,18): error CS0246: 未能找到类型或命名空间名“PhotonScopedManager”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(13,31): error CS0246: 未能找到类型或命名空间名“ImGuiIOPtr”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(13,50): error CS0246: 未能找到类型或命名空间名“ImGuiFontAsset”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs(10,24): error CS0246: 未能找到类型或命名空间名“ImGuiTextures”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\ImGuiWindowBase.cs(25,18): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\FreeCamWindow.cs(18,19): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\EditorWindow.cs(22,19): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\AirportWindow.cs(26,19): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]",
+      "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\UI\\Windows\\ResourceWindow.cs(19,19): error CS0246: 未能找到类型或命名空间名“ImGuiWindowFlags”(是否缺少 using 指令或程序集引用?) [C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj]"
+    ],
+    "log": ".build\\compat-3.0.0-20261023\\TerrainCustomiserCNCollector.build.log"
+  },
+  {
+    "project": "UprightCockroach",
+    "exit": 0,
+    "seconds": 1.7,
+    "diagnostics": [],
+    "log": ".build\\compat-3.0.0-20261023\\UprightCockroach.build.log"
+  },
+  {
+    "project": "WhereIsMyAmulet",
+    "exit": 0,
+    "seconds": 1.9,
+    "diagnostics": [],
+    "log": ".build\\compat-3.0.0-20261023\\WhereIsMyAmulet.build.log"
+  },
+  {
+    "project": "WhereIsThing",
+    "exit": 0,
+    "seconds": 1.9,
+    "diagnostics": [],
+    "log": ".build\\compat-3.0.0-20261023\\WhereIsThing.build.log"
+  },
+  {
+    "project": "WhySoLaggy",
+    "exit": 0,
+    "seconds": 1.7,
+    "diagnostics": [],
+    "log": ".build\\compat-3.0.0-20261023\\WhySoLaggy.build.log"
+  }
+]

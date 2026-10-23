@@ -1,0 +1,19 @@
+--- 2.6.b/Rope.cs
+
++++ 3.0.0/Rope.cs
+
+@@ -266,8 +266,12 @@
+
+ 		{
+ 			Detach_Rpc(ropeLength);
+ 		}
+-		attachedToAnchor = anchorView.GetComponent<RopeAnchor>();
+ 		attachmenState = ATTACHMENT.anchored;
++		if (!anchorView.TryGetComponent<RopeAnchor>(out attachedToAnchor))
++		{
++			Debug.LogWarning(name + " doesn't have a RopeAnchor component. It's probably broken.", this);
++			return;
++		}
+ 		ropeBoneVisualizer.StartTransform = attachedToAnchor.anchorPoint;
+ 		if (photonView.IsMine)
+ 		{

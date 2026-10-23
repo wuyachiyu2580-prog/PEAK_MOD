@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="e93c7137-611e-422a-a6c4-2f998bc8d45d" name="Administrator@DESKTOP-3PF2CMK 2026-10-23 18:25:01" runUser="DESKTOP-3PF2CMK\Administrator" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-23T18:25:01.1818787+08:00" queuing="2026-10-23T18:25:01.1818791+08:00" start="2026-10-23T18:24:58.9255084+08:00" finish="2026-10-23T18:25:01.3745431+08:00" />
+  <TestSettings name="default" id="e67013e1-71b2-411b-ba0b-7e1b663d603c">
+    <Deployment runDeploymentRoot="Administrator_DESKTOP-3PF2CMK_2026-10-23_18_25_01" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="6bdf59d7-5529-4292-a963-f705c8e666b1" testId="ccda3a1e-d388-2d63-9361-65f92299eea2" testName="Ownership_ReadsNonPublicInterfacePropertyUsedByModConfig182" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0019510" startTime="2026-10-23T18:25:01.2908708+08:00" endTime="2026-10-23T18:25:01.2928663+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6bdf59d7-5529-4292-a963-f705c8e666b1" />
+    <UnitTestResult executionId="213860a5-4079-48e9-9f0e-46b883e5a524" testId="c0d140ae-ad95-d33e-2ccf-4bb8b31babba" testName="Ownership_UsesConfigFileInsteadOfSharedSectionAndKey" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0075057" startTime="2026-10-23T18:25:01.2828918+08:00" endTime="2026-10-23T18:25:01.2908708+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="213860a5-4079-48e9-9f0e-46b883e5a524" />
+    <UnitTestResult executionId="b4d96b23-2bf5-445b-9c77-7bd7f3dd645d" testId="d6a681ad-0a5a-1edb-0a67-5823fc277667" testName="ModConfigLocalization_RejectsOtherPluginsWithSharedSectionNames" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0015095" startTime="2026-10-23T18:25:01.1786622+08:00" endTime="2026-10-23T18:25:01.1796595+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b4d96b23-2bf5-445b-9c77-7bd7f3dd645d" />
+    <UnitTestResult executionId="2b161c0e-471f-43b8-b7ea-eda7128a5ac5" testId="34cc89e9-eadb-a8cc-0b23-ef776ebcda53" testName="AlertCooldown_IsolatedKeysAndReportsSuppressedPeak" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0039831" startTime="2026-10-23T18:25:00.2679733+08:00" endTime="2026-10-23T18:25:00.2719454+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b161c0e-471f-43b8-b7ea-eda7128a5ac5" />
+    <UnitTestResult executionId="49b09e5e-1491-42cd-b18d-08a45f55ce89" testId="c92a6218-fefc-521c-f181-f90c9d7893c2" testName="StructuredLogger_RetainsRotatedFilesPerFormatWithinLimits" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0341072" startTime="2026-10-23T18:25:01.0453476+08:00" endTime="2026-10-23T18:25:01.0797665+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="49b09e5e-1491-42cd-b18d-08a45f55ce89" />
+    <UnitTestResult executionId="cd8acebb-85a2-430b-8d09-277ef4c695f3" testId="ae967974-8e9f-5bf3-531f-f0f9df8f9d11" testName="WatchedRpcNames_AllExistInPeak24bPunRpcSet" computerName="DESKTOP-3PF2CMK" duration="00:00:00.1005591" startTime="2026-10-23T18:25:01.1806572+08:00" endTime="2026-10-23T18:25:01.2818941+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd8acebb-85a2-430b-8d09-277ef4c695f3">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Fail 失败。Could not locate 引用参考代码\反编译\2.4.b\Assembly-CSharp.</Message>
+          <StackTrace>   在 WhySoLaggy.Tests.CoreBehaviorTests.FindPeak24bAssemblyCSharp() 位置 C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhySoLaggy\WhySoLaggy.Tests\CoreBehaviorTests.cs:行号 422&#xD;
+   在 WhySoLaggy.Tests.CoreBehaviorTests.WatchedRpcNames_AllExistInPeak24bPunRpcSet() 位置 C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhySoLaggy\WhySoLaggy.Tests\CoreBehaviorTests.cs:行号 365&#xD;
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="11c51b37-646d-48cf-b69d-3218062aa934" testId="7dbaa6ef-df8c-a184-ebbe-9fecdd0be7e1" testName="OwnershipParser_UsesPun23aCodesAndPayloadShapes" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0124773" startTime="2026-10-23T18:25:00.0156132+08:00" endTime="2026-10-23T18:25:00.2549903+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="11c51b37-646d-48cf-b69d-3218062aa934" />
+    <UnitTestResult executionId="3e199a82-a6c8-43d1-8829-b6ec6149e92e" testId="2df70924-f373-10c0-f884-1a7112746a30" testName="EventType_CompatibilityValuesRemainStable" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0000727" startTime="2026-10-23T18:25:01.2828918+08:00" endTime="2026-10-23T18:25:01.2828918+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3e199a82-a6c8-43d1-8829-b6ec6149e92e" />
+    <UnitTestResult executionId="978fa6cd-0a63-4df4-970f-0c06d34bdbb9" testId="5bc2fef0-9caa-01fe-5d23-414c0eab0c19" testName="ModConfigLocalization_ShutdownIsIdempotent" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0008973" startTime="2026-10-23T18:25:01.1796595+08:00" endTime="2026-10-23T18:25:01.1806572+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="978fa6cd-0a63-4df4-970f-0c06d34bdbb9" />
+    <UnitTestResult executionId="ccb79194-acd2-4761-8493-1a903d17dabd" testId="c7c75d47-2b82-4841-fc76-4f7def64ab10" testName="PatchProfiler_EstimatesFromSamplesButKeepsExactCalls" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0030250" startTime="2026-10-23T18:25:00.2719454+08:00" endTime="2026-10-23T18:25:00.2749370+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ccb79194-acd2-4761-8493-1a903d17dabd" />
+    <UnitTestResult executionId="45140234-4fb6-420f-af5d-e52b8f684240" testId="9314de19-35b7-7458-4eee-da0ea738f29f" testName="FieldProbe_GroupsRulesAndPatchesEachCallbackOnce" computerName="DESKTOP-3PF2CMK" duration="00:00:00.5751462" startTime="2026-10-23T18:25:00.4191279+08:00" endTime="2026-10-23T18:25:00.9944814+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="45140234-4fb6-420f-af5d-e52b8f684240" />
+    <UnitTestResult executionId="0df038f7-3987-42d4-98a4-e21e213cb72b" testId="16e37cf4-1a60-baab-f0d3-0ea2f0439c70" testName="ModConfigLocalization_CoversEveryWhySoLaggyConfigEntry" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0487743" startTime="2026-10-23T18:25:01.1276379+08:00" endTime="2026-10-23T18:25:01.1766674+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0df038f7-3987-42d4-98a4-e21e213cb72b" />
+    <UnitTestResult executionId="2663428a-6fb2-4f56-9b4d-8d3d0e8512c1" testId="59e7ca2a-f76e-9cc4-4046-6947d955d4cd" testName="FieldProbe_StaticRootReadsFirstStaticMember" computerName="DESKTOP-3PF2CMK" duration="00:00:00.1387837" startTime="2026-10-23T18:25:00.2799239+08:00" endTime="2026-10-23T18:25:00.4191279+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2663428a-6fb2-4f56-9b4d-8d3d0e8512c1" />
+    <UnitTestResult executionId="788dbe04-5ff0-45ef-9193-f3d352756e9f" testId="814845ca-ce89-03be-307a-5ac89b5739e7" testName="HookResolution_ReturnsDeclaredClosedGenericMethodsAndSkipsMissingMembers" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0006189" startTime="2026-10-23T18:25:01.2998494+08:00" endTime="2026-10-23T18:25:01.3018437+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="788dbe04-5ff0-45ef-9193-f3d352756e9f" />
+    <UnitTestResult executionId="2a786db0-5e82-45a5-96b1-6768495177a6" testId="c481dc2e-9d4e-0669-a0d0-26899db718fe" testName="MonitorShutdown_IsIdempotentAndAllowsDisabledFieldProbeReinit" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0130141" startTime="2026-10-23T18:25:01.1136752+08:00" endTime="2026-10-23T18:25:01.1276379+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2a786db0-5e82-45a5-96b1-6768495177a6" />
+    <UnitTestResult executionId="fe8b204e-458f-4a5e-8ae7-1c26789db946" testId="b2a0011f-a3a2-b0c4-4cf8-1676ee603cbc" testName="EnumTranslation_PreservesRawChoicesIndicesAndStoredValuesAcrossLanguages" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0054589" startTime="2026-10-23T18:25:01.2928663+08:00" endTime="2026-10-23T18:25:01.2988513+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fe8b204e-458f-4a5e-8ae7-1c26789db946" />
+    <UnitTestResult executionId="ad9c6900-a35d-43e9-b552-b4a4529b03c3" testId="a32dd71c-a5cd-ae80-4f5d-ab2e3f1c42c2" testName="StructuredLogger_BatchesRotatesSchemaAndReinitializes" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0505675" startTime="2026-10-23T18:25:00.9944814+08:00" endTime="2026-10-23T18:25:01.0453476+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad9c6900-a35d-43e9-b552-b4a4529b03c3" />
+    <UnitTestResult executionId="aa4ea45f-852a-4e21-a1f5-03432a77c71a" testId="633f427a-fb31-cf84-25b7-212410ed4a2b" testName="StructuredLogger_RpcSchemaContainsEnqueueAndRuntimeColumns" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0003584" startTime="2026-10-23T18:25:01.1136752+08:00" endTime="2026-10-23T18:25:01.1136752+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aa4ea45f-852a-4e21-a1f5-03432a77c71a" />
+    <UnitTestResult executionId="02f09042-6cd8-4968-9aad-37b9a474f5dd" testId="eed2aad0-e58e-fcd1-7de1-7a020c0d5c59" testName="ModConfigLocalization_ScopesDuplicateKeysAndSupportsBothLanguages" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0013342" startTime="2026-10-23T18:25:01.1766674+08:00" endTime="2026-10-23T18:25:01.1776652+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02f09042-6cd8-4968-9aad-37b9a474f5dd" />
+    <UnitTestResult executionId="8ed4f3bb-089b-45d1-81b7-d2c1f85e70d7" testId="08c71b63-f581-5f39-6403-aa5eccafc6c3" testName="MethodKey_IsCanonicalAndAcceptsLegacyIgnore" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0043377" startTime="2026-10-23T18:25:00.2749370+08:00" endTime="2026-10-23T18:25:00.2799239+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8ed4f3bb-089b-45d1-81b7-d2c1f85e70d7" />
+    <UnitTestResult executionId="a9e25c79-8dfe-4b75-b259-9b5602be0f22" testId="ae82fcaa-7627-4c29-23a8-c711ca4d6c5f" testName="AssemblyAndPluginVersions_Are105" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0002448" startTime="2026-10-23T18:25:01.2818941+08:00" endTime="2026-10-23T18:25:01.2828918+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9e25c79-8dfe-4b75-b259-9b5602be0f22" />
+    <UnitTestResult executionId="39e03cd5-3dd6-441d-907f-8fd82ddd4610" testId="a1c73bf6-6d88-195a-7992-4efca2e183bf" testName="LanguageFieldSubscription_IsIdempotentAndPreservesOtherListeners" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0008565" startTime="2026-10-23T18:25:01.2988513+08:00" endTime="2026-10-23T18:25:01.2998494+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="39e03cd5-3dd6-441d-907f-8fd82ddd4610" />
+    <UnitTestResult executionId="47826787-2810-4d9d-9f46-c4ef1a144887" testId="b2e8c5f8-1220-f0b9-5939-d4e7cfe94b62" testName="BoundedQueue_DropsOldestAndRetainsNewest" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0029109" startTime="2026-10-23T18:25:00.2639667+08:00" endTime="2026-10-23T18:25:00.2679733+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="47826787-2810-4d9d-9f46-c4ef1a144887" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="BoundedQueue_DropsOldestAndRetainsNewest" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="b2e8c5f8-1220-f0b9-5939-d4e7cfe94b62">
+      <Execution id="47826787-2810-4d9d-9f46-c4ef1a144887" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="BoundedQueue_DropsOldestAndRetainsNewest" />
+    </UnitTest>
+    <UnitTest name="ModConfigLocalization_RejectsOtherPluginsWithSharedSectionNames" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="d6a681ad-0a5a-1edb-0a67-5823fc277667">
+      <Execution id="b4d96b23-2bf5-445b-9c77-7bd7f3dd645d" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="ModConfigLocalization_RejectsOtherPluginsWithSharedSectionNames" />
+    </UnitTest>
+    <UnitTest name="StructuredLogger_BatchesRotatesSchemaAndReinitializes" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="a32dd71c-a5cd-ae80-4f5d-ab2e3f1c42c2">
+      <Execution id="ad9c6900-a35d-43e9-b552-b4a4529b03c3" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="StructuredLogger_BatchesRotatesSchemaAndReinitializes" />
+    </UnitTest>
+    <UnitTest name="AssemblyAndPluginVersions_Are105" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="ae82fcaa-7627-4c29-23a8-c711ca4d6c5f">
+      <Execution id="a9e25c79-8dfe-4b75-b259-9b5602be0f22" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="AssemblyAndPluginVersions_Are105" />
+    </UnitTest>
+    <UnitTest name="AlertCooldown_IsolatedKeysAndReportsSuppressedPeak" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="34cc89e9-eadb-a8cc-0b23-ef776ebcda53">
+      <Execution id="2b161c0e-471f-43b8-b7ea-eda7128a5ac5" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="AlertCooldown_IsolatedKeysAndReportsSuppressedPeak" />
+    </UnitTest>
+    <UnitTest name="FieldProbe_StaticRootReadsFirstStaticMember" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="59e7ca2a-f76e-9cc4-4046-6947d955d4cd">
+      <Execution id="2663428a-6fb2-4f56-9b4d-8d3d0e8512c1" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="FieldProbe_StaticRootReadsFirstStaticMember" />
+    </UnitTest>
+    <UnitTest name="EnumTranslation_PreservesRawChoicesIndicesAndStoredValuesAcrossLanguages" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="b2a0011f-a3a2-b0c4-4cf8-1676ee603cbc">
+      <Execution id="fe8b204e-458f-4a5e-8ae7-1c26789db946" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.ModConfigIntegrationTests" name="EnumTranslation_PreservesRawChoicesIndicesAndStoredValuesAcrossLanguages" />
+    </UnitTest>
+    <UnitTest name="MethodKey_IsCanonicalAndAcceptsLegacyIgnore" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="08c71b63-f581-5f39-6403-aa5eccafc6c3">
+      <Execution id="8ed4f3bb-089b-45d1-81b7-d2c1f85e70d7" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="MethodKey_IsCanonicalAndAcceptsLegacyIgnore" />
+    </UnitTest>
+    <UnitTest name="OwnershipParser_UsesPun23aCodesAndPayloadShapes" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="7dbaa6ef-df8c-a184-ebbe-9fecdd0be7e1">
+      <Execution id="11c51b37-646d-48cf-b69d-3218062aa934" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="OwnershipParser_UsesPun23aCodesAndPayloadShapes" />
+    </UnitTest>
+    <UnitTest name="ModConfigLocalization_CoversEveryWhySoLaggyConfigEntry" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="16e37cf4-1a60-baab-f0d3-0ea2f0439c70">
+      <Execution id="0df038f7-3987-42d4-98a4-e21e213cb72b" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="ModConfigLocalization_CoversEveryWhySoLaggyConfigEntry" />
+    </UnitTest>
+    <UnitTest name="LanguageFieldSubscription_IsIdempotentAndPreservesOtherListeners" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="a1c73bf6-6d88-195a-7992-4efca2e183bf">
+      <Execution id="39e03cd5-3dd6-441d-907f-8fd82ddd4610" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.ModConfigIntegrationTests" name="LanguageFieldSubscription_IsIdempotentAndPreservesOtherListeners" />
+    </UnitTest>
+    <UnitTest name="MonitorShutdown_IsIdempotentAndAllowsDisabledFieldProbeReinit" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="c481dc2e-9d4e-0669-a0d0-26899db718fe">
+      <Execution id="2a786db0-5e82-45a5-96b1-6768495177a6" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="MonitorShutdown_IsIdempotentAndAllowsDisabledFieldProbeReinit" />
+    </UnitTest>
+    <UnitTest name="HookResolution_ReturnsDeclaredClosedGenericMethodsAndSkipsMissingMembers" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="814845ca-ce89-03be-307a-5ac89b5739e7">
+      <Execution id="788dbe04-5ff0-45ef-9193-f3d352756e9f" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.ModConfigIntegrationTests" name="HookResolution_ReturnsDeclaredClosedGenericMethodsAndSkipsMissingMembers" />
+    </UnitTest>
+    <UnitTest name="PatchProfiler_EstimatesFromSamplesButKeepsExactCalls" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="c7c75d47-2b82-4841-fc76-4f7def64ab10">
+      <Execution id="ccb79194-acd2-4761-8493-1a903d17dabd" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="PatchProfiler_EstimatesFromSamplesButKeepsExactCalls" />
+    </UnitTest>
+    <UnitTest name="StructuredLogger_RpcSchemaContainsEnqueueAndRuntimeColumns" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="633f427a-fb31-cf84-25b7-212410ed4a2b">
+      <Execution id="aa4ea45f-852a-4e21-a1f5-03432a77c71a" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="StructuredLogger_RpcSchemaContainsEnqueueAndRuntimeColumns" />
+    </UnitTest>
+    <UnitTest name="ModConfigLocalization_ShutdownIsIdempotent" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="5bc2fef0-9caa-01fe-5d23-414c0eab0c19">
+      <Execution id="978fa6cd-0a63-4df4-970f-0c06d34bdbb9" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="ModConfigLocalization_ShutdownIsIdempotent" />
+    </UnitTest>
+    <UnitTest name="FieldProbe_GroupsRulesAndPatchesEachCallbackOnce" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="9314de19-35b7-7458-4eee-da0ea738f29f">
+      <Execution id="45140234-4fb6-420f-af5d-e52b8f684240" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="FieldProbe_GroupsRulesAndPatchesEachCallbackOnce" />
+    </UnitTest>
+    <UnitTest name="WatchedRpcNames_AllExistInPeak24bPunRpcSet" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="ae967974-8e9f-5bf3-531f-f0f9df8f9d11">
+      <Execution id="cd8acebb-85a2-430b-8d09-277ef4c695f3" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="WatchedRpcNames_AllExistInPeak24bPunRpcSet" />
+    </UnitTest>
+    <UnitTest name="Ownership_ReadsNonPublicInterfacePropertyUsedByModConfig182" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="ccda3a1e-d388-2d63-9361-65f92299eea2">
+      <Execution id="6bdf59d7-5529-4292-a963-f705c8e666b1" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.ModConfigIntegrationTests" name="Ownership_ReadsNonPublicInterfacePropertyUsedByModConfig182" />
+    </UnitTest>
+    <UnitTest name="StructuredLogger_RetainsRotatedFilesPerFormatWithinLimits" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="c92a6218-fefc-521c-f181-f90c9d7893c2">
+      <Execution id="49b09e5e-1491-42cd-b18d-08a45f55ce89" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="StructuredLogger_RetainsRotatedFilesPerFormatWithinLimits" />
+    </UnitTest>
+    <UnitTest name="Ownership_UsesConfigFileInsteadOfSharedSectionAndKey" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="c0d140ae-ad95-d33e-2ccf-4bb8b31babba">
+      <Execution id="213860a5-4079-48e9-9f0e-46b883e5a524" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.ModConfigIntegrationTests" name="Ownership_UsesConfigFileInsteadOfSharedSectionAndKey" />
+    </UnitTest>
+    <UnitTest name="ModConfigLocalization_ScopesDuplicateKeysAndSupportsBothLanguages" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="eed2aad0-e58e-fcd1-7de1-7a020c0d5c59">
+      <Execution id="02f09042-6cd8-4968-9aad-37b9a474f5dd" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="ModConfigLocalization_ScopesDuplicateKeysAndSupportsBothLanguages" />
+    </UnitTest>
+    <UnitTest name="EventType_CompatibilityValuesRemainStable" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\whysolaggy\whysolaggy.tests.dll" id="2df70924-f373-10c0-f884-1a7112746a30">
+      <Execution id="3e199a82-a6c8-43d1-8829-b6ec6149e92e" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\WhySoLaggy\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.CoreBehaviorTests" name="EventType_CompatibilityValuesRemainStable" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ccda3a1e-d388-2d63-9361-65f92299eea2" executionId="6bdf59d7-5529-4292-a963-f705c8e666b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c0d140ae-ad95-d33e-2ccf-4bb8b31babba" executionId="213860a5-4079-48e9-9f0e-46b883e5a524" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d6a681ad-0a5a-1edb-0a67-5823fc277667" executionId="b4d96b23-2bf5-445b-9c77-7bd7f3dd645d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="34cc89e9-eadb-a8cc-0b23-ef776ebcda53" executionId="2b161c0e-471f-43b8-b7ea-eda7128a5ac5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c92a6218-fefc-521c-f181-f90c9d7893c2" executionId="49b09e5e-1491-42cd-b18d-08a45f55ce89" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ae967974-8e9f-5bf3-531f-f0f9df8f9d11" executionId="cd8acebb-85a2-430b-8d09-277ef4c695f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7dbaa6ef-df8c-a184-ebbe-9fecdd0be7e1" executionId="11c51b37-646d-48cf-b69d-3218062aa934" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2df70924-f373-10c0-f884-1a7112746a30" executionId="3e199a82-a6c8-43d1-8829-b6ec6149e92e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5bc2fef0-9caa-01fe-5d23-414c0eab0c19" executionId="978fa6cd-0a63-4df4-970f-0c06d34bdbb9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c7c75d47-2b82-4841-fc76-4f7def64ab10" executionId="ccb79194-acd2-4761-8493-1a903d17dabd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9314de19-35b7-7458-4eee-da0ea738f29f" executionId="45140234-4fb6-420f-af5d-e52b8f684240" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="16e37cf4-1a60-baab-f0d3-0ea2f0439c70" executionId="0df038f7-3987-42d4-98a4-e21e213cb72b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="59e7ca2a-f76e-9cc4-4046-6947d955d4cd" executionId="2663428a-6fb2-4f56-9b4d-8d3d0e8512c1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="814845ca-ce89-03be-307a-5ac89b5739e7" executionId="788dbe04-5ff0-45ef-9193-f3d352756e9f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c481dc2e-9d4e-0669-a0d0-26899db718fe" executionId="2a786db0-5e82-45a5-96b1-6768495177a6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b2a0011f-a3a2-b0c4-4cf8-1676ee603cbc" executionId="fe8b204e-458f-4a5e-8ae7-1c26789db946" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a32dd71c-a5cd-ae80-4f5d-ab2e3f1c42c2" executionId="ad9c6900-a35d-43e9-b552-b4a4529b03c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="633f427a-fb31-cf84-25b7-212410ed4a2b" executionId="aa4ea45f-852a-4e21-a1f5-03432a77c71a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eed2aad0-e58e-fcd1-7de1-7a020c0d5c59" executionId="02f09042-6cd8-4968-9aad-37b9a474f5dd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="08c71b63-f581-5f39-6403-aa5eccafc6c3" executionId="8ed4f3bb-089b-45d1-81b7-d2c1f85e70d7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ae82fcaa-7627-4c29-23a8-c711ca4d6c5f" executionId="a9e25c79-8dfe-4b75-b259-9b5602be0f22" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a1c73bf6-6d88-195a-7992-4efca2e183bf" executionId="39e03cd5-3dd6-441d-907f-8fd82ddd4610" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b2e8c5f8-1220-f0b9-5939-d4e7cfe94b62" executionId="47826787-2810-4d9d-9f46-c4ef1a144887" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="23" executed="23" passed="22" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

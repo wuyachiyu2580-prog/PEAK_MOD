@@ -1,0 +1,19 @@
+--- 2.4.b/BarAffliction.cs
+
++++ 3.0.0/BarAffliction.cs
+
+@@ -39,11 +39,11 @@
+
+ 			{
+ 				size = bar.minAfflictionWidth;
+ 			}
+-			base.gameObject.SetActive(value: true);
++			gameObject.SetActive(value: true);
+ 		}
+ 		else
+ 		{
+-			base.gameObject.SetActive(value: false);
++			gameObject.SetActive(value: false);
+ 		}
+ 	}
+ 	public void UpdateAffliction(StaminaBar bar)

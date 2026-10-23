@@ -1,0 +1,74 @@
+--- 2.6.b/PlayerHandler.cs
+
++++ 3.0.0/PlayerHandler.cs
+
+@@ -5,6 +5,7 @@
+
+ using Peak.Network;
+ using Photon.Pun;
+ using Photon.Realtime;
++using Portningsbolaget.Utilities;
+ using UnityEngine;
+ using Zorro.Core;
+ 
+@@ -141,6 +142,7 @@
+
+ 			Player player2 = m_playerLookup[actorNumber];
+ 			if (!(player2 == null))
+ 			{
++				Debug.LogError("Found player " + player2.name + " already in the lookup table. This shouldn't be possible! Replacing with " + player.name);
+ 				player2.gameObject.SetActive(value: false);
+ 			}
+ 			m_playerLookup.Remove(actorNumber);
+@@ -227,13 +229,47 @@
+
+ 
+ 	public static Player GetPlayer(string userID)
+ 	{
++		if (userID.Length == 64)
++		{
++			return GetHashedPlayer(userID);
++		}
+ 		PlayerSessionData value = null;
+-		PlayerHandler instance = Instance;
+-		if (instance == null || !instance.m_playerSessionData.TryGetValue(userID, out value))
+-		{
++		if (Instance == null || !Instance.m_playerSessionData.TryGetValue(userID, out value))
++		{
++			if (Instance == null)
++			{
++				Debug.LogWarning("Tried to get session data before PlayerHandler was initialized");
++			}
++			else
++			{
++				Debug.LogWarning("Tried to get session data for a player before they were registered.");
++			}
+ 			return null;
+ 		}
+ 		return Instance.m_playerLookup.GetValueOrDefault(value.ActorNumber);
++	}
++
++	public static Player GetHashedPlayer(string userID)
++	{
++		if (Instance == null)
++		{
++			return null;
++		}
++		foreach (KeyValuePair<string, PlayerSessionData> playerSessionDatum in Instance.m_playerSessionData)
++		{
++			if (playerSessionDatum.Key.Length == 64)
++			{
++				if (playerSessionDatum.Key == userID)
++				{
++					return Instance.m_playerLookup.GetValueOrDefault(playerSessionDatum.Value.ActorNumber);
++				}
++			}
++			else if (Utilities.GetSha256Hash(playerSessionDatum.Key) == userID)
++			{
++				return Instance.m_playerLookup.GetValueOrDefault(playerSessionDatum.Value.ActorNumber);
++			}
++		}
++		return null;
+ 	}
+ 
+ 	public static bool IsBanned(string id)

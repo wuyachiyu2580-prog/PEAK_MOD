@@ -20,6 +20,7 @@
 - `PEAK-MAP/`：StateKeeper 自愿匿名数据提交的网站集成调研，当前仅有 memory 方案，未改网站源码。
 - `ModConfigDiagnostics/`：当前版本 `0.1.0`；只读检查 ModConfig/PEAKLib 版本、重复 DLL/设置和异常 UI 文本。实测已把 `LOC: 0` 收敛到未激活的原版 `SettingsCell` 模板，公共依赖和五个旧菜单类型兼容项目的修改建议见 `PLAN.md`。
 - `OldPC/`：当前开发版本 `0.0.1`；本地旧电脑画面和望远镜清晰模式，尚未记录构建、发行或实机验收。
+- `UprightCockroach/`：触须 config 已实现/部署；本地 FBX 实测为四臂双足卡通蟑螂，无骨架/蒙皮，预览与贴图已提取。待确认造型/四臂处理后绑定导入；占位外壳材质/位置和实机验收仍未完成。
 - `DreamyAscent/`：永久暂停/归档。研究资料位于 `archive/`，除非用户明确恢复，否则不要继续 DA 工作。
 - `WhySoLaggy/`：`1.0.5` 发行文件已备齐，含当前全部已实现改动；无 ZIP、未上传，完整实机待验收。
 - `TerrainCustomiserCN/`：当前发布 `0.1.2`，对应原版 `TerrainCustomiser 0.3.2`；详情以该目录四件套为准。

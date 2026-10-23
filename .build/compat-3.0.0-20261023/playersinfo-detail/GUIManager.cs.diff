@@ -1,0 +1,112 @@
+--- 2.4.b/GUIManager.cs
+
++++ 3.0.0/GUIManager.cs
+
+@@ -75,6 +75,7 @@
+
+ 	public GameObject spectatingObject;
+ 	public GameObject spectatingInputs;
+ 	public TextMeshProUGUI spectatingNameText;
++	public LocalizedText spectatingNameLoc;
+ 	public Color spectatingNameColor;
+ 	public Color spectatingYourselfColor;
+ 	public GameObject heroObject;
+@@ -125,6 +126,7 @@
+
+ 	public GameObject reticleKick;
+ 	public GameObject reticleLadder;
+ 	public Image reticleDefaultImage;
++	public Image reticleShootImage;
+ 	public Color reticleColorDefault;
+ 	public Color reticleColorHighlight;
+ 	private Coroutine _heroRoutine;
+@@ -398,7 +400,6 @@
+
+ 	}
+ 	public void CloseBackpackWheel()
+ 	{
+-		Debug.Log("Close Input Wheel");
+ 		Character.localCharacter.data.usingBackpackWheel = false;
+ 		backpackWheel.gameObject.SetActive(value: false);
+ 	}
+@@ -456,13 +457,15 @@
+
+ 			spectatingInputs.SetActive(Character.localCharacter.data.dead);
+ 			if (currentSpecCharacter == Character.localCharacter)
+ 			{
+-				spectatingNameText.text = LocalizedText.GetText("YOURSELF");
++				spectatingNameLoc.autoSet = true;
++				spectatingNameLoc.SetIndex("YOURSELF");
+ 				spectatingNameText.color = spectatingYourselfColor;
+ 				return;
+ 			}
+ 			CharacterItems characterItems2 = currentSpecCharacter.refs.items;
+ 			characterItems2.onSlotEquipped = (Action)Delegate.Combine(characterItems2.onSlotEquipped, new Action(UpdateItemSelections));
+ 			UpdateItemSelections();
++			spectatingNameLoc.autoSet = false;
+ 			spectatingNameText.text = MainCameraMovement.specCharacter.characterName;
+ 			spectatingNameText.color = spectatingNameColor;
+ 		}
+@@ -561,6 +564,14 @@
+
+ 		else if ((bool)Character.localCharacter.data.currentItem && Character.localCharacter.data.currentItem.UIData.isShootable && Character.localCharacter.data.currentItem.CanUsePrimary())
+ 		{
+ 			SetReticle(reticleShoot);
++			if (Character.localCharacter.data.currentItem.raycastingCharacter)
++			{
++				reticleShootImage.color = reticleColorHighlight;
++			}
++			else
++			{
++				reticleShootImage.color = reticleColorDefault;
++			}
+ 		}
+ 		else if (!emoteWheel.gameObject.activeSelf)
+ 		{
+@@ -756,12 +767,12 @@
+
+ 	{
+ 		sequence.Kill();
+ 		sequence = DOTween.Sequence();
+-		sequence.Append(DOTween.To(() => volume.weight, delegate(float x)
++		sequence.Append(DOTween.To(() => volume.weight, (float x) =>
+ 		{
+ 			volume.weight = x;
+-		}, amount, 0.06f));
++		}, amount, photosensitivity ? 0.12f : 0.06f));
+ 		sequence.AppendInterval(0.25f * amount);
+-		sequence.Append(DOTween.To(() => volume.weight, delegate(float x)
++		sequence.Append(DOTween.To(() => volume.weight, (float x) =>
+ 		{
+ 			volume.weight = x;
+ 		}, 0f, 0.45f));
+@@ -773,7 +784,7 @@
+
+ 		{
+ 			endValue = 0.25f;
+ 		}
+-		DOTween.To(() => sugarRushVolume.weight, delegate(float x)
++		DOTween.To(() => sugarRushVolume.weight, (float x) =>
+ 		{
+ 			sugarRushVolume.weight = x;
+ 		}, endValue, 0.5f);
+@@ -781,7 +792,7 @@
+
+ 	}
+ 	public void EndSugarRush()
+ 	{
+-		DOTween.To(() => sugarRushVolume.weight, delegate(float x)
++		DOTween.To(() => sugarRushVolume.weight, (float x) =>
+ 		{
+ 			sugarRushVolume.weight = x;
+ 		}, 0f, 0.5f);
+@@ -1036,7 +1047,7 @@
+
+ 	public void StopNumb()
+ 	{
+ 		staminaCanvasGroup.DOFade(1f, 1f);
+-		mushroomsCanvasGroup.DOFade(0f, 1f).OnComplete(delegate
++		mushroomsCanvasGroup.DOFade(0f, 1f).OnComplete(() =>
+ 		{
+ 			mushroomsCanvasGroup.gameObject.SetActive(value: false);
+ 		});

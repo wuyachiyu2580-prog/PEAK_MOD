@@ -1,26 +1,23 @@
 # PEAK MOD Memory
 
-**2026-10-07 用户最终确认**：profile中的scanner和CN DLL是用户为暂时游玩其他内容而自行移走，明确要求不要重新复制。保留当前停用/移走状态；扫描器源码、使用说明和候选DLL保存在开发区，50项离线检查通过，实机尚未验证。此前部署记录仅为历史。
+## 2026-10-23 PlayersInfo 复核补充
 
-## 2026-10-07 14:50 独立漏译扫描器
+[PlayersInfo 专项报告](mods/PlayersInfo/COMPATIBILITY_3.0.0_2026-10-23.md)：补查 2.4.b → 3.0.0，0.2.5 暂无确定的强制 API/核心读数适配项；新增昵称读取顺序维护建议，并保留 3.0.0 实机验收。terrain 中 0.1.1 仍需更新。仅更新审核记录，源码及部署未改。
 
-用户改用小扫描 MOD 标注漏译，已新增并部署 PeakWorkshopCNScanner 0.1.0（181,248 字节，50项离线检查通过，实机待验证）。入口 `mods/PeakWorkshopCNScanner/README.md` / `temp/current.md`；开发区有中文使用说明。当前 profile 原 PeakWorkshop **仅 `.dll.old`，处于禁用状态**；本轮没有切换它，须在管理器启用后试用。已有 CN DLL 保持 2FC50B1F…AA523。以下“曾恢复原 DLL”等为此前历史，不能作为当前启用状态。
+## 2026-10-23 PEAK 3.0.0 兼容性审核
 
-## 2026-10-07 PeakWorkshopCN 资源显示修订
+当前游戏检查基线为 3.0.0，对照归档 2.6.b；12 个活动插件工程中 8 个隔离 Release 构建 0 警告/0 错误。ItemInfoCN、Lantern_ShootZombies_Night、TerrainCustomiserCN（含 Collector）需要适配；WhySoLaggy 另需更新写死 2.4.b 的测试路径。详见 [COMPATIBILITY_3.0.0_2026-10-23.md](COMPATIBILITY_3.0.0_2026-10-23.md)。本轮只审核并记录，插件源码/配置/版本/已安装 DLL/发行文件未改，未部署或启动游戏。
 
-PeakWorkshopCN `0.1.0` 已继续修复编辑器构件和材质显示：主项目 0/0，51 项离线测试通过，当前 DLL 哈希 `2FC50B1FDBB6AC7F82A9D3EAAA7E70DADCF7EBA8B797031FAEEA1A77033AA523`。原 PeakWorkshop.dll 已从 `.old` 备份恢复；下一步重启 profile 确认两个插件均加载后，再验收资源、卡死、页面、联机和性能。详见 `mods/PeakWorkshopCN/STATUS.md` 和 `temp/current.md`。
+## 2026-10-12 PeakWorkshopCN 与扫描器已作废
 
-## 2026-10-05 PeakWorkshopCN 术语与性能接续调研
+按用户要求，PeakWorkshopCN 和 PeakWorkshopCNScanner 均已停止维护并集中到 `MOD开发/作废/`。源码、扫描证据、发行文件、8 个专属构建目录、散落审核文件及旧 memory 完整保留，1,518 个搬移或快照文件的大小与 SHA256 校验一致。
 
-最新报告 `MOD开发/PeakWorkshopCN/TERMINOLOGY_PERFORMANCE_RESEARCH.md`，8份证据在 `research/2026-10-05-terms-performance/`。官方866键表确认海岸（用户已同意）、雨林、森蕈、雪山、方山、火山、熔炉、雾沼、城塞、顶峰、天底。术语按概念/官方键使用，避免同英文异义误覆盖。已定位字体重复字段遍历、getter/MarkerRef缓存问题；启动扫描与高频反射分开评估。本轮仅研究，插件源码/词表/DLL未变，未测实机帧率；先读本MOD STATUS/temp，再沿用下方全量复核。
+- [PeakWorkshopCN 作废说明](../MOD开发/作废/PeakWorkshopCN/作废说明.md)；当前 memory 入口：`mods/PeakWorkshopCN/README.md`。
+- [PeakWorkshopCNScanner 作废说明](../MOD开发/作废/PeakWorkshopCNScanner/作废说明.md)；当前 memory 入口：`mods/PeakWorkshopCNScanner/README.md`。
 
-## 2026-10-05 PeakWorkshopCN 最新全量复核
+指定 2.0.a profile 原本已无这两个插件的 DLL/PDB；两份残留配置也已移入归档。原 PeakWorkshop 保留原状。本次未构建、部署或启用任何插件。旧漏翻、复扫、性能验收、发行及自动同步 profile 的约定停止执行，仅在用户明确恢复后重新评估。
 
-用户实测后要求严谨复核，明确“不只是图片里的”，构件和材质显示名也包含在内。最新报告 `MOD开发/PeakWorkshopCN/AUDIT_RECHECK.md`，全量清单 `audit/2026-10-05-recheck/`。474文件/原DLL均4,968直接Tr；固定2,006/4,204有映射、2,197无映射、1语言代码保留；另有764非固定调用和30处本地tr委托。
-
-最新日志已确认初始化完成，仍有124条扫描警告、1条Strip显式失败；审核确认字段错配、回调来源、跳转边界、缓存、参数保护和资源显示/搜索缺口。本轮只审核，未改插件/词表/DLL/config/地图；安装仍为16:58部署的304,128字节、26D877...836CC，原DLL未变。
-
-PeakWorkshopCN `0.1.0` 对应原PeakWorkshop 0.2.0、参考PEAK 2.6.a；生成规则实际为907固定+93动态，67条非空配置说明。之前41项测试不覆盖WorkshopPatches/字体/初始化。入口：`mods/PeakWorkshopCN/README.md`，当前状态以STATUS和最新复核报告为准。
+原六件套/current 与公共入口旧内容分别保存在各项目 `归档资料/memory/` 和中文补丁的 `归档资料/global-memory-before-2026-10-12/`；历史记录中的“当前”“下一步”不代表活动任务。归档不表示未完成的实机验收已通过。
 
 ## 2026-09-21 发行文件更新
 
@@ -188,4 +185,3 @@ StateKeeper最新使用归因修订见 `mods/StateKeeper/research/USE_RULES_2026
 - Jungle `Generate Segment` 空段问题二次定位：最新日志已加载新 DLL，但 `Pops_Plat` / `Props_Wall` 仍 `lateSupplementSteps=0`，说明不是外部 postfix guard，而是 Late step 收集没找到 inactive 父层级下的 `PropGrouper`。
 - `DaRuntimeEditService` 已改为手动沿 `Transform.parent` 查找最近 `PropGrouper` 来收集 Late steps；Release 构建 0/0，DLL 已覆盖 terrain profile。下次只需重启/重新加载游戏后复测 Jungle，预期 `lateSupplementSteps>0` 且灌木/藤蔓/蘑菇 runtime spawner 恢复。
 - 同日晚些时候继续修复 Late 执行语义：日志证明 Late 收集已生效但 `Go()` 补跑仍让 Roots/Snow 许多 PropSpawner 归零。当前改为 `LevelGenStep.Execute()` + `DeferredStepTiming.AfterCurrentGroupTiming` deferred 执行，并记录 `deferredAfterGroup`。最新 DLL 时间 `2026/5/20 20:57:50`。
-

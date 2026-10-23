@@ -1,0 +1,14 @@
+--- 2.6.b/AOE.cs
+
++++ 3.0.0/AOE.cs
+
+@@ -152,7 +152,7 @@
+
+ 							}
+ 						}
+ 					}
+-					if (character.IsLocal && gameObject.CompareTag("Trap"))
++					if (character.IsLocal && gameObject.CompareTag("Trap") && !character.statusesLocked)
+ 					{
+ 						Singleton<AchievementManager>.Instance.LocalCharacterHitByTrap();
+ 					}

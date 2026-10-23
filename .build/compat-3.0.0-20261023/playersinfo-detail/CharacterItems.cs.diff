@@ -1,0 +1,152 @@
+--- 2.4.b/CharacterItems.cs
+
++++ 3.0.0/CharacterItems.cs
+
+@@ -249,7 +249,6 @@
+
+ 			ItemSlot itemSlot = character.player.GetItemSlot(currentSelectedSlot.Value);
+ 			if (itemSlot == null)
+ 			{
+-				Debug.LogError($"Attempted to get an item in invalid slot {currentSelectedSlot.Value}");
+ 				return;
+ 			}
+ 			photonView.RPC("DropItemRpc", RpcTarget.All, throwChargeLevel, currentSelectedSlot.Value, position, vector, character.data.currentItem.transform.rotation, itemSlot.data, false);
+@@ -271,21 +270,17 @@
+
+ 		{
+ 			return;
+ 		}
+-		Transform obj = character.GetBodypart(BodypartType.Hip).transform;
+-		Vector3 vector = obj.forward;
++		Transform transform = character.GetBodypart(BodypartType.Hip).transform;
++		Vector3 vector = transform.forward;
+ 		if (Vector3.Dot(vector, Vector3.up) < 0f)
+ 		{
+ 			vector = -vector;
+ 		}
+-		Vector3 vector2 = obj.position + vector * 0.6f;
++		Vector3 vector2 = transform.position + vector * 0.6f;
+ 		if (currentSelectedSlot.IsSome && (bool)character.data.currentItem)
+ 		{
+ 			ItemSlot itemSlot = character.player.GetItemSlot(currentSelectedSlot.Value);
+-			if (itemSlot == null)
+-			{
+-				Debug.LogError($"Couldn't get item slot for index {currentSelectedSlot.Value}");
+-			}
+-			else if (!(itemSlot.prefab != null) || itemSlot.prefab.UIData.canDrop)
++			if (itemSlot != null && (!(itemSlot.prefab != null) || itemSlot.prefab.UIData.canDrop))
+ 			{
+ 				photonView.RPC("DropItemRpc", RpcTarget.All, throwChargeLevel, currentSelectedSlot.Value, character.data.currentItem.transform.position, Vector3.zero, character.data.currentItem.transform.rotation, itemSlot.data, true);
+ 				vector2 += Vector3.up * 0.5f;
+@@ -312,7 +307,6 @@
+
+ 		ItemSlot itemSlot = character.player.GetItemSlot(slotID);
+ 		if (itemSlot == null)
+ 		{
+-			Debug.LogError($"Can't drop item from non-existent slot {slotID}");
+ 			return;
+ 		}
+ 		if (!itemSlot.IsEmpty())
+@@ -405,10 +399,9 @@
+
+ 			{
+ 				if (slotID == 250)
+ 				{
+-					Debug.LogWarning("Accidental wall stow in temp slot detected! Dropping item.");
+-					Transform obj = character.GetBodypart(BodypartType.Hip).transform;
+-					Vector3 forward = obj.forward;
+-					Vector3 vector = obj.position - forward * 0.6f;
++					Transform transform = character.GetBodypart(BodypartType.Hip).transform;
++					Vector3 forward = transform.forward;
++					Vector3 vector = transform.position - forward * 0.6f;
+ 					photonView.RPC("DropItemFromSlotRPC", RpcTarget.All, slotID, vector);
+ 				}
+ 			}
+@@ -481,7 +474,6 @@
+
+ 						Vector3 vector2 = 0.6f * transform.forward;
+ 						if (Physics.Raycast(transform.position, transform.forward, out var hitInfo, 0.6f, LayerMask.GetMask("Terrain", "Map")))
+ 						{
+-							Debug.Log($"Hit terrain at {hitInfo.distance} from hip. Adjusting equip location");
+ 							vector2 = Mathf.Max(hitInfo.distance - 0.4f, 0.1f) * transform.forward;
+ 						}
+ 						Vector3 position = transform.position + vector2;
+@@ -586,10 +578,6 @@
+
+ 				{
+ 					collider.enabled = true;
+ 				}
+-				else
+-				{
+-					Debug.LogError("NULL ITEM");
+-				}
+ 			}
+ 			if ((bool)item)
+ 			{
+@@ -672,6 +660,10 @@
+
+ 		UnAttachItem();
+ 		character.data.currentItem = null;
+ 	}
++	public void LockFromSwitching(float time)
++	{
++		lastEquippedSlotTime = Time.time + time;
++	}
+ 	private void DoSwitching()
+ 	{
+ 		if (timesSwitchedRecently > 0 && lastSwitched + 0.4f < Time.time)
+@@ -693,7 +685,6 @@
+
+ 			byte b = decimal.ToByte(lastSelectedSlot.Value + 1);
+ 			if (b > character.player.itemSlots.Length)
+ 			{
+-				Debug.Log("Looping to start");
+ 				b = 0;
+ 			}
+ 			lastSwitched = Time.time;
+@@ -711,7 +702,6 @@
+
+ 			if (num < 0)
+ 			{
+ 				num = decimal.ToByte(3m);
+-				Debug.Log("Looping to end");
+ 			}
+ 			lastSwitched = Time.time;
+ 			timesSwitchedRecently++;
+@@ -848,14 +838,12 @@
+
+ 		base.OnPlayerEnteredRoom(newPlayer);
+ 		if (PhotonNetwork.IsMasterClient && character.data.currentItem != null)
+ 		{
+-			Debug.Log("Setting " + base.gameObject.name + " to hold " + character.data.currentItem.name);
+ 			photonView.RPC("RPC_InitHoldingItem", newPlayer, character.data.currentItem.GetComponent<PhotonView>());
+ 		}
+ 	}
+ 	[PunRPC]
+ 	public void RPC_InitHoldingItem(PhotonView item)
+ 	{
+-		Debug.Log("Init holding item: " + item.name);
+ 		Equip(item.GetComponent<Item>());
+ 	}
+ 	public void UpdateClimbingSpikeCount(ItemSlot[] slots)
+@@ -887,10 +875,6 @@
+
+ 		if (character.refs.items.currentSelectedSlot.IsSome)
+ 		{
+ 			ItemSlot itemSlot = character.player.GetItemSlot(character.refs.items.currentSelectedSlot.Value);
+-			if (itemSlot == null)
+-			{
+-				Debug.LogError($"Can't get invalid item slot {character.refs.items.currentSelectedSlot.Value}");
+-			}
+ 			if (!itemSlot.IsEmpty() && character.refs.items.currentSelectedSlot.Value != 3 && character.refs.items.currentSelectedSlot.IsSome && (bool)itemSlot.prefab.GetComponent<Balloon>())
+ 			{
+ 				character.refs.balloons.heldBalloonCount = 1;
+@@ -985,7 +969,6 @@
+
+ 	{
+ 		if ((bool)currentClimbingSpikePreview)
+ 		{
+-			Debug.Log("Cancelling climbing spike");
+ 			UnityEngine.Object.Destroy(currentClimbingSpikePreview);
+ 		}
+ 		climbingSpikeTick = 0f;

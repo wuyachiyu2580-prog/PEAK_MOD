@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="39d9e55e-d90c-439f-9fab-e73d97d389de" name="Administrator@DESKTOP-3PF2CMK 2026-10-23 18:25:01" runUser="DESKTOP-3PF2CMK\Administrator" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-23T18:25:01.1360832+08:00" queuing="2026-10-23T18:25:01.1360835+08:00" start="2026-10-23T18:24:58.9625502+08:00" finish="2026-10-23T18:26:28.4214863+08:00" />
+  <TestSettings name="default" id="eac2fc59-423d-40b1-9b25-f0babef3dcdb">
+    <Deployment runDeploymentRoot="Administrator_DESKTOP-3PF2CMK_2026-10-23_18_25_01" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="a2b9dcdb-77de-4b5e-9f31-b8e7a266292c" testId="5042ea75-ec0f-6b6d-6e87-3f1d01b8d8b7" testName="MushroomContext_ControlsDelayedAfflictionAndNeverUsesFutureContext" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0052352" startTime="2026-10-23T18:25:01.1126782+08:00" endTime="2026-10-23T18:25:01.1186617+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a2b9dcdb-77de-4b5e-9f31-b8e7a266292c" />
+    <UnitTestResult executionId="3f1e1519-3590-41a7-9fcb-0291056e44ad" testId="086a92b6-4d67-cf4a-0201-20d3a0142cbf" testName="PassiveHealing_IsAnIntervalAndStopsAfterDisabled" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0069840" startTime="2026-10-23T18:25:01.1256433+08:00" endTime="2026-10-23T18:25:01.1336221+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3f1e1519-3590-41a7-9fcb-0291056e44ad" />
+    <UnitTestResult executionId="8065316c-c8d9-42c7-af18-cfd469314c33" testId="5d7c5a13-e855-e457-3453-789155fad2a8" testName="DifferentEpochsNeverMergeEvenWithSameGuidAndTimestamp" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0010015" startTime="2026-10-23T18:25:01.2285286+08:00" endTime="2026-10-23T18:25:01.2295259+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8065316c-c8d9-42c7-af18-cfd469314c33" />
+    <UnitTestResult executionId="79ae33f4-f233-4f93-beba-d11c6d7463a8" testId="5f484604-9fc9-686a-475f-8b94eab5c28a" testName="TransferAndSlotMove_AreFlowWithoutUseCounts" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0012559" startTime="2026-10-23T18:25:01.2145659+08:00" endTime="2026-10-23T18:25:01.2165604+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="79ae33f4-f233-4f93-beba-d11c6d7463a8" />
+    <UnitTestResult executionId="6d0a8da7-15f3-424e-a982-2441beef3bb3" testId="78d72c4e-bc92-b090-42b8-8537bf97f4bc" testName="CancellationIsCheckedBeforeReportFinalization" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0007506" startTime="2026-10-23T18:26:27.9518176+08:00" endTime="2026-10-23T18:26:27.9528152+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6d0a8da7-15f3-424e-a982-2441beef3bb3" />
+    <UnitTestResult executionId="1d741f4b-0383-46fb-b6bb-040ad9432128" testId="5162181b-e6ce-9b09-76c5-a928bcf517a4" testName="IndependentItemsCompete_AndDoNotBecomeCertainHelp" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0016555" startTime="2026-10-23T18:25:01.0897403+08:00" endTime="2026-10-23T18:25:01.0917349+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d741f4b-0383-46fb-b6bb-040ad9432128" />
+    <UnitTestResult executionId="fa5bc593-0606-4ce7-9881-0461301588f5" testId="dc4be833-548e-e62f-3980-dc56be206643" testName="OldRecording_HasUnknownCoverageAndPetrification" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0014688" startTime="2026-10-23T18:25:01.0194151+08:00" endTime="2026-10-23T18:25:01.0214094+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fa5bc593-0606-4ce7-9881-0461301588f5" />
+    <UnitTestResult executionId="a5159fd9-952a-4630-a8f7-09fe83779bec" testId="5fafb4f4-0dae-2bc5-8f0f-705d0c927277" testName="ResourceLossWithoutDirectEvent_IsLikelyAndPreservesChargeDelta" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0010505" startTime="2026-10-23T18:25:01.2135695+08:00" endTime="2026-10-23T18:25:01.2145659+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a5159fd9-952a-4630-a8f7-09fe83779bec" />
+    <UnitTestResult executionId="7d9e872e-fe41-4963-a446-caa426466340" testId="2634704e-2996-1a52-3a57-25dd475e98db" testName="CharacterCenteredAura_HasAnObservedSpatialOrigin" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0023824" startTime="2026-10-23T18:25:01.1966140+08:00" endTime="2026-10-23T18:25:01.1996060+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7d9e872e-fe41-4963-a446-caa426466340" />
+    <UnitTestResult executionId="dfb10d86-4633-4604-88b4-99f79a2702eb" testId="dcb23484-ab22-466f-8b0e-419cd11b19bd" testName="UnknownGuidDoesNotMergeDifferentItemsOrDifferentTargets" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0025075" startTime="2026-10-23T18:25:01.2185549+08:00" endTime="2026-10-23T18:25:01.2205500+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dfb10d86-4633-4604-88b4-99f79a2702eb" />
+    <UnitTestResult executionId="1d81f8d7-e077-45e0-b075-dd3963213186" testId="b5854507-9bb0-20b3-2a0e-897b99d0d814" testName="SubsequentTransferDoesNotEraseCompletedUse" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0012232" startTime="2026-10-23T18:25:01.2295259+08:00" endTime="2026-10-23T18:25:01.2305232+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d81f8d7-e077-45e0-b075-dd3963213186" />
+    <UnitTestResult executionId="2c81a078-5728-494c-816d-38e1627d8d5b" testId="36624d6b-4695-771c-2787-83e36d226694" testName="InferredHolderIsNotReportedAsTheConfirmedUser" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0037731" startTime="2026-10-23T18:25:01.2235418+08:00" endTime="2026-10-23T18:25:01.2275308+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2c81a078-5728-494c-816d-38e1627d8d5b" />
+    <UnitTestResult executionId="c63f8c8a-de4d-400a-adde-4c22ddc2c2a8" testId="aad57ac4-ae05-8fd0-d523-ce53ac09d1f2" testName="DelayedPoison_ContinuesBeyondOldFourSecondWindow" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0130395" startTime="2026-10-23T18:25:01.0997129+08:00" endTime="2026-10-23T18:25:01.1126782+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c63f8c8a-de4d-400a-adde-4c22ddc2c2a8" />
+    <UnitTestResult executionId="7347184c-81ee-43ee-b7e8-a045835e6f8d" testId="364ec5ff-6e2b-5307-6b90-d079b546423c" testName="Schema3Fields_RoundTripAndOptionalUsesRemainDistinguishable" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0012464" startTime="2026-10-23T18:26:28.2978908+08:00" endTime="2026-10-23T18:26:28.2988889+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7347184c-81ee-43ee-b7e8-a045835e6f8d" />
+    <UnitTestResult executionId="87c979de-b15b-4850-8e9d-5fddb2474c91" testId="67529712-d8ca-82cf-2c76-6ccda7831dc5" testName="DeathSentinelDriftCannotStretchDistanceAxis" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0008217" startTime="2026-10-23T18:26:27.8894686+08:00" endTime="2026-10-23T18:26:27.8904638+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="87c979de-b15b-4850-8e9d-5fddb2474c91" />
+    <UnitTestResult executionId="7fd41e82-4dc0-4da8-a48d-6695791547ec" testId="481fbe21-2018-8e95-b3f6-19c4d9483e17" testName="CustomNameFavoriteAndOldSchema_AreStableAcrossRestart" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0546270" startTime="2026-10-23T18:26:28.3048726+08:00" endTime="2026-10-23T18:26:28.3607231+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7fd41e82-4dc0-4da8-a48d-6695791547ec" />
+    <UnitTestResult executionId="e14c1000-6048-480a-a154-f9a0ca146823" testId="14a5a958-61e1-c15d-59c4-2d9aac4e4d5c" testName="DuplicateDirectTreatment_DoesNotDuplicateProofOrHealingTotal" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0006796" startTime="2026-10-23T18:25:01.2075847+08:00" endTime="2026-10-23T18:25:01.2075847+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e14c1000-6048-480a-a154-f9a0ca146823" />
+    <UnitTestResult executionId="8ec8ac8b-c6f9-4e96-8bd4-335201198851" testId="1666558c-0ccd-92f9-68e6-bd89747b8e45" testName="ActualHealing_RejectsBlockedAndNonFiniteChanges" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0017758" startTime="2026-10-23T18:25:01.0024597+08:00" endTime="2026-10-23T18:25:01.0054522+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8ec8ac8b-c6f9-4e96-8bd4-335201198851" />
+    <UnitTestResult executionId="4970befe-0d91-4595-ab7b-cbe04c07f7cb" testId="c13c677d-89e7-0f5d-7022-73e0c0a9576a" testName="ResourceReduction_FindsNearbyRecipientWithoutFeedRpc" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0276463" startTime="2026-10-23T18:25:01.0573138+08:00" endTime="2026-10-23T18:25:01.0857495+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4970befe-0d91-4595-ab7b-cbe04c07f7cb" />
+    <UnitTestResult executionId="5f0cea9a-1556-4907-b932-478c8a180013" testId="038996a5-31eb-8512-3647-a90e0b0076d1" testName="DisappearanceAndTransfer_AreNotCertainUse" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0023027" startTime="2026-10-23T18:25:01.0917349+08:00" endTime="2026-10-23T18:25:01.0937283+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5f0cea9a-1556-4907-b932-478c8a180013" />
+    <UnitTestResult executionId="909261e4-fa86-4ec0-a8ca-543b9d4e6b9d" testId="dae5d711-a3a0-d2c7-86ca-60b1ad7d001b" testName="Assistance_UsesExplicitActorOnlyAndSeparatesPullsFromTreatment" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0096835" startTime="2026-10-23T18:25:01.0054522+08:00" endTime="2026-10-23T18:25:01.0154257+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="909261e4-fa86-4ec0-a8ca-543b9d4e6b9d" />
+    <UnitTestResult executionId="2a3d116b-ad1f-497f-9b5a-7ea357ef7926" testId="e623237d-039f-83a6-1cb7-7780f076108d" testName="AvailableRecordings_UseRulesReadOnlyReplay" computerName="DESKTOP-3PF2CMK" duration="00:00:57.0858774" startTime="2026-10-23T18:25:01.2315207+08:00" endTime="2026-10-23T18:25:58.3182992+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2a3d116b-ad1f-497f-9b5a-7ea357ef7926">
+      <Output>
+        <StdOut>TestContext 消息:&#xD;
+17f91e76-2a6d-422b-acca-e9c029bf83eb samples=2089 groups=30 useCount=0 resourceOnly=0 missing=0 ms=279&#xD;
+21f668ba-dace-4cee-adb7-4157950469b4 samples=5732 groups=249 useCount=37 resourceOnly=52 missing=0 ms=455&#xD;
+635b97e3-fbc3-4bde-a948-132ddaba6bae samples=24985 groups=2627 useCount=296 resourceOnly=173 missing=0 ms=7073&#xD;
+63aedb40-9fc5-46ed-8dc5-8160a87fadd7 samples=1312 groups=16 useCount=0 resourceOnly=0 missing=0 ms=143&#xD;
+67eb3a83-ad86-453d-9f61-539c212ed026 samples=23520 groups=2397 useCount=300 resourceOnly=139 missing=0 ms=12754&#xD;
+77f6bbb7-b690-4b95-9ee1-3b5091aea50d samples=8956 groups=615 useCount=68 resourceOnly=41 missing=0 ms=1678&#xD;
+98fc17ac-7ede-495c-a0a2-7dd00f208fb7 samples=21367 groups=1328 useCount=165 resourceOnly=91 missing=0 ms=4868&#xD;
+9a590415-76a1-4663-abbb-fb85b0f08b69 samples=60050 groups=62 useCount=6 resourceOnly=0 missing=0 ms=3684&#xD;
+a120f547-2d68-4799-9acd-0e409f0acc15 samples=28302 groups=1444 useCount=201 resourceOnly=60 missing=0 ms=6862&#xD;
+c04474d0-aefc-42bc-b089-f3e2fa7b9936 samples=306 groups=3 useCount=0 resourceOnly=0 missing=0 ms=88&#xD;
+c5a9803c-a429-4eb7-bf22-8ece520413c6 samples=5714 groups=383 useCount=55 resourceOnly=34 missing=0 ms=2335&#xD;
+d8bbd969-fc76-46d5-8d9a-baea6cb448dc samples=14229 groups=574 useCount=14 resourceOnly=13 missing=0 ms=1950&#xD;
+e1fc66f8-483a-46b4-96ca-ebf6cf723114 samples=16763 groups=346 useCount=46 resourceOnly=13 missing=0 ms=2010&#xD;
+e34c93d8-b006-4950-82d8-dec15cd7cf61 samples=20401 groups=508 useCount=110 resourceOnly=112 missing=0 ms=1366&#xD;
+ee16a817-6f4f-4eb3-9997-b59cd38a3aaf samples=38013 groups=2923 useCount=439 resourceOnly=137 missing=0 ms=11288&#xD;
+Runs=15 chunks=1610 samples=271739 inventory=11581 events=342089</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cdbd28dd-45eb-4ded-9748-492e244e3f0c" testId="3971ceff-7223-8bcd-3932-f5c167ae95da" testName="TransformedCharacterCannotGenerateNormalRiskIntervals" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0005562" startTime="2026-10-23T18:26:27.9463170+08:00" endTime="2026-10-23T18:26:27.9473148+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cdbd28dd-45eb-4ded-9748-492e244e3f0c" />
+    <UnitTestResult executionId="b58d16c7-5d4f-473d-9ff9-d5f59fe63928" testId="93622556-ca62-42c1-372b-bdc848a66789" testName="RecoveryAfterInferredHelp_IsPossibleRescueNotDirectCredit" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0018996" startTime="2026-10-23T18:25:01.1866413+08:00" endTime="2026-10-23T18:25:01.1886363+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b58d16c7-5d4f-473d-9ff9-d5f59fe63928" />
+    <UnitTestResult executionId="41bc3b35-cadc-43dc-ae2f-c6affbd2679e" testId="06a96055-3f5e-5aff-aed5-35baf4654b33" testName="ProgressPointStartsItsStageAndLastStageReachesRunEnd" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0007216" startTime="2026-10-23T18:26:27.8924583+08:00" endTime="2026-10-23T18:26:27.8934557+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="41bc3b35-cadc-43dc-ae2f-c6affbd2679e" />
+    <UnitTestResult executionId="c0b58ca3-4bce-42ff-8a74-37e5cf0dc498" testId="0fd54c09-60cb-72b3-56ba-1fe97b1daba4" testName="SharedDangerRequiresOverlapAndTogetherUsesHysteresis" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0016650" startTime="2026-10-23T18:26:27.9473148+08:00" endTime="2026-10-23T18:26:27.9493091+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c0b58ca3-4bce-42ff-8a74-37e5cf0dc498" />
+    <UnitTestResult executionId="c1f96acd-4c88-4306-a899-32a5f5dd0959" testId="df40c35c-0d25-a37a-83a0-a48e77614dc6" testName="DeathGapOrTeleport_CannotBridgeIntoARecoveryAttribution" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0087034" startTime="2026-10-23T18:25:01.1336221+08:00" endTime="2026-10-23T18:25:01.1425978+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c1f96acd-4c88-4306-a899-32a5f5dd0959" />
+    <UnitTestResult executionId="52a9a4db-c316-45a7-8fdd-8c6aac6c31ed" testId="ff6415d0-03e0-c75d-2d44-3f26fad212c6" testName="InitiallyDeadSingleFrameCannotConfirmAnUnrelatedDeath" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0003219" startTime="2026-10-23T18:26:27.9453197+08:00" endTime="2026-10-23T18:26:27.9453197+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="52a9a4db-c316-45a7-8fdd-8c6aac6c31ed" />
+    <UnitTestResult executionId="63ebc97a-ab13-4e7a-9017-67ef8a82ed8c" testId="230c4055-08a2-8e67-3490-b58baa505560" testName="Analysis_MissingChunkIsReportedWithoutBlockingOtherData" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0268837" startTime="2026-10-23T18:25:00.8959192+08:00" endTime="2026-10-23T18:25:00.9228488+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="63ebc97a-ab13-4e7a-9017-67ef8a82ed8c" />
+    <UnitTestResult executionId="4a7c723a-874f-4518-acdc-1a8b010e471f" testId="33f96ec8-1978-3254-cc0c-df549eff3dd5" testName="DirectTreatment_IsCertainEvenWhenNoFollowingFrameExists" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0008005" startTime="2026-10-23T18:25:01.1806572+08:00" endTime="2026-10-23T18:25:01.1816549+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4a7c723a-874f-4518-acdc-1a8b010e471f" />
+    <UnitTestResult executionId="37dbc143-d962-46f7-9106-e6d4520f7b82" testId="1e954491-51e0-8627-309b-a42c9df6884a" testName="OptionalItemData_HasDataFalseDoesNotProduceValidUses" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0050829" startTime="2026-10-23T18:26:28.2998865+08:00" endTime="2026-10-23T18:26:28.3048726+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="37dbc143-d962-46f7-9106-e6d4520f7b82" />
+    <UnitTestResult executionId="9d825407-db9d-4071-b1aa-3e2bb39a8a45" testId="1cb9264f-7617-f779-239e-2e2b84d1181b" testName="OneDose_HasACumulativeBudgetAcrossSamples" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0016582" startTime="2026-10-23T18:25:01.1846464+08:00" endTime="2026-10-23T18:25:01.1866413+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9d825407-db9d-4071-b1aa-3e2bb39a8a45" />
+    <UnitTestResult executionId="0a39a5cb-7de6-49a7-a334-f47cbb9249ca" testId="28acaf56-7639-e1c7-8e10-39adfa472716" testName="DisabledCollectorRejectsHookEventsBeforeAccessingUnity" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0146341" startTime="2026-10-23T18:26:27.8705199+08:00" endTime="2026-10-23T18:26:27.8844817+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0a39a5cb-7de6-49a7-a334-f47cbb9249ca" />
+    <UnitTestResult executionId="29dbb6f2-f34a-49b5-808d-a90739811761" testId="ded57860-1501-2177-1396-3581e123cc6a" testName="DisablingExistingRecordingSchedulesAnExplicitResumeBoundary" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0003172" startTime="2026-10-23T18:26:27.8844817+08:00" endTime="2026-10-23T18:26:27.8854793+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="29dbb6f2-f34a-49b5-808d-a90739811761" />
+    <UnitTestResult executionId="efe93ed5-9ef4-4a22-957b-c9b2e5ad0003" testId="bb90a1f5-ffdd-48f4-df52-e3c876902105" testName="FuelGainAndCookingAreNotUseEvidence" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0002303" startTime="2026-10-23T18:25:01.2235418+08:00" endTime="2026-10-23T18:25:01.2235418+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="efe93ed5-9ef4-4a22-957b-c9b2e5ad0003" />
+    <UnitTestResult executionId="11244474-e71f-4666-8df1-032085dfa7c0" testId="4418e837-7e79-54f8-471b-2f458f6345bd" testName="RapidRepeatedUsesAndExactDuplicate_KeepCorrectCount" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0014951" startTime="2026-10-23T18:25:01.2205500+08:00" endTime="2026-10-23T18:25:01.2225445+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="11244474-e71f-4666-8df1-032085dfa7c0" />
+    <UnitTestResult executionId="d27d1315-b62c-4585-af92-1b822ac8b954" testId="5eb7ebe4-7668-5dd2-5692-af6cc544e93a" testName="LateCookingMetadata_PreservesDirectTreatmentRule" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0009219" startTime="2026-10-23T18:25:01.2075847+08:00" endTime="2026-10-23T18:25:01.2095792+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d27d1315-b62c-4585-af92-1b822ac8b954" />
+    <UnitTestResult executionId="8276defd-4d70-481f-a8c3-512f700a1682" testId="9feb4c7b-330b-0177-6682-50313b7cc3a2" testName="SixReferenceRecordings_ReadOnlyReplay" computerName="DESKTOP-3PF2CMK" duration="00:00:29.5379743" startTime="2026-10-23T18:25:58.3312647+08:00" endTime="2026-10-23T18:26:27.8695217+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8276defd-4d70-481f-a8c3-512f700a1682">
+      <Output>
+        <StdOut>TestContext 消息:&#xD;
+98fc17ac-7ede-495c-a0a2-7dd00f208fb7 schema=2 chunks=128 elapsedMs=3505 backwards=12 itemRows=1386 effects=4457 likelyGroups=0&#xD;
+77f6bbb7-b690-4b95-9ee1-3b5091aea50d schema=2 chunks=53 elapsedMs=1278 backwards=562 itemRows=661 effects=908 likelyGroups=0&#xD;
+67eb3a83-ad86-453d-9f61-539c212ed026 schema=2 chunks=142 elapsedMs=10973 backwards=23 itemRows=2656 effects=13059 likelyGroups=0&#xD;
+a120f547-2d68-4799-9acd-0e409f0acc15 schema=2 chunks=167 elapsedMs=4166 backwards=2 itemRows=1536 effects=5230 likelyGroups=0&#xD;
+635b97e3-fbc3-4bde-a948-132ddaba6bae schema=2 chunks=149 elapsedMs=5687 backwards=2 itemRows=2821 effects=8848 likelyGroups=0&#xD;
+CrossPlayer: 228.001 Bandages 2-&gt;0 attribution=Ambiguous effects=3 reasons=StatusTypeNotRecorded,ObservedWithoutMatchingRule&#xD;
+CrossPlayer: 1013.882 Hot Dog 2-&gt;0 attribution=Likely effects=3 reasons=UnsupportedAction:Action_TryHotDogAchievement,AmountOrBudgetMismatch,ObservedWithoutMatchingRule&#xD;
+CrossPlayer: 1805.191 Button Shroom 1-&gt;3 attribution=Likely effects=2 reasons=ObservedWithoutMatchingRule&#xD;
+CrossPlayer: 2134.8 Sports Drink 1-&gt;2 attribution=Likely effects=3 reasons=StatusTypeNotRecorded,ObservedWithoutMatchingRule&#xD;
+CrossPlayer: 2538.929 Hot Dog 2-&gt;0 attribution=Likely effects=3 reasons=UnsupportedAction:Action_TryHotDogAchievement,ObservedWithoutMatchingRule,AmountOrBudgetMismatch&#xD;
+27276489-b68f-46eb-9993-1dfd89ffbed4 schema=3 chunks=174 elapsedMs=3907 backwards=0 itemRows=1850 effects=4684 likelyGroups=116</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6121400e-c360-45e2-9aa3-7204ed5741fd" testId="a3fa60dd-66e4-8201-43f2-cdf0bd8c7a47" testName="RealRevivalRearmsAndUncorroboratedDeathStaysUnknown" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0005517" startTime="2026-10-23T18:26:27.8864765+08:00" endTime="2026-10-23T18:26:27.8874738+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6121400e-c360-45e2-9aa3-7204ed5741fd" />
+    <UnitTestResult executionId="82790b7e-9cd3-4f9f-a21d-6cd3166d7ce7" testId="8a8f5d6a-e3e7-7973-5cec-8e12d6357b0c" testName="UseSummary_CombinesDirectResourceAndRemovalEvidence" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0016598" startTime="2026-10-23T18:25:01.2095792+08:00" endTime="2026-10-23T18:25:01.2105764+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82790b7e-9cd3-4f9f-a21d-6cd3166d7ce7" />
+    <UnitTestResult executionId="cb7384bb-8fc5-485a-8391-a47bec11a111" testId="f792199b-a63d-a01d-5fb3-88e08b154242" testName="AnalysisCancellation_IsObservedBeforeProcessingChunk" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0018347" startTime="2026-10-23T18:25:01.1926252+08:00" endTime="2026-10-23T18:25:01.1946201+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cb7384bb-8fc5-485a-8391-a47bec11a111" />
+    <UnitTestResult executionId="3bce2e91-50d0-4eb3-a869-187975363caf" testId="cf9332f0-256a-9999-50a7-b947477c56f0" testName="AreaEffect_ExplainsMultipleRecipientsButKeepsMissingOriginUncertain" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0062012" startTime="2026-10-23T18:25:01.1186617+08:00" endTime="2026-10-23T18:25:01.1246459+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3bce2e91-50d0-4eb3-a869-187975363caf" />
+    <UnitTestResult executionId="3c993eac-5946-46ec-8ac7-acd926ceac52" testId="f312ec3f-f13c-18a6-2885-d55027fce8bc" testName="LegacyScalarParametersAndCooking_AreReadWithoutInventingEnums" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0365334" startTime="2026-10-23T18:25:01.1443865+08:00" endTime="2026-10-23T18:25:01.1806572+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c993eac-5946-46ec-8ac7-acd926ceac52" />
+    <UnitTestResult executionId="9074b47f-05dd-473a-b13f-5a4662b67f99" testId="c458ddc9-9112-11cb-8b2d-9f442bce1bbf" testName="UnknownModAction_RemainsInspectableWithoutGuessedEffects" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0016410" startTime="2026-10-23T18:25:01.1425978+08:00" endTime="2026-10-23T18:25:01.1443865+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9074b47f-05dd-473a-b13f-5a4662b67f99" />
+    <UnitTestResult executionId="8e59e5f5-6d78-4c71-8c96-2bf23ba457f1" testId="41ed90e4-89e4-5fab-a52d-5c231da3bef3" testName="RealLargeDistanceIsNotClampedAndInconsistentMetersAreExcluded" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0005128" startTime="2026-10-23T18:26:27.8904638+08:00" endTime="2026-10-23T18:26:27.8914610+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8e59e5f5-6d78-4c71-8c96-2bf23ba457f1" />
+    <UnitTestResult executionId="b82ee0dd-8419-4315-905e-6c740d972d84" testId="7d96f211-0c9f-c87a-a531-4fd170cd27c8" testName="FuelDepletion_HasNativeTotalButNoFabricatedActionCount" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0012766" startTime="2026-10-23T18:25:01.2115738+08:00" endTime="2026-10-23T18:25:01.2135695+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b82ee0dd-8419-4315-905e-6c740d972d84" />
+    <UnitTestResult executionId="c9d58f3b-3e51-47d3-903f-856452ef4287" testId="f57c95cb-1d72-2725-bd70-5dafba3ed5ac" testName="ClockAmbiguityCannotProduceCertainUse" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0002665" startTime="2026-10-23T18:25:01.2225445+08:00" endTime="2026-10-23T18:25:01.2235418+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c9d58f3b-3e51-47d3-903f-856452ef4287" />
+    <UnitTestResult executionId="233fd860-5014-49ff-9953-a61e382882d5" testId="3a780f06-103b-7b68-ac03-7f59687b1190" testName="ClockAmbiguousConsumeDoesNotUseLaterInventoryToInventActor" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0007540" startTime="2026-10-23T18:26:27.9503085+08:00" endTime="2026-10-23T18:26:27.9508262+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="233fd860-5014-49ff-9953-a61e382882d5" />
+    <UnitTestResult executionId="f4afb833-56b6-466d-8593-abacffdc4966" testId="a63f8030-e15b-b230-4565-4b9850cb2189" testName="EarlierOutcome_CanMatchNextFrameConsume" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0019836" startTime="2026-10-23T18:25:01.0977179+08:00" endTime="2026-10-23T18:25:01.0997129+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f4afb833-56b6-466d-8593-abacffdc4966" />
+    <UnitTestResult executionId="d8bf0c6d-7290-4086-bbcd-28ba776fd48a" testId="f59ed16f-f2cc-d369-2d98-be5ef8e546ce" testName="CompletedActionAtRecordingEnd_RemainsCertainWithoutAnEffect" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0004572" startTime="2026-10-23T18:25:01.2105764+08:00" endTime="2026-10-23T18:25:01.2115738+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d8bf0c6d-7290-4086-bbcd-28ba776fd48a" />
+    <UnitTestResult executionId="421c5b5b-f3f9-4a4b-9009-cc563e2b060c" testId="65185c0d-8fda-48cf-8d7b-053c0ad58e3b" testName="StateOnlyDeathRemainsSeparateFromConfirmedEventCount" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0006762" startTime="2026-10-23T18:26:27.9538129+08:00" endTime="2026-10-23T18:26:27.9548096+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="421c5b5b-f3f9-4a4b-9009-cc563e2b060c" />
+    <UnitTestResult executionId="6c8387af-d6d9-477c-9b1a-0f83b242a1ba" testId="9f7076f9-7dbe-15f7-cf0d-34c8c5897cfa" testName="MatchingTwoRecipientsOrConflictingGuid_DoesNotPickOneWinner" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0028139" startTime="2026-10-23T18:25:01.1886363+08:00" endTime="2026-10-23T18:25:01.1916280+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6c8387af-d6d9-477c-9b1a-0f83b242a1ba" />
+    <UnitTestResult executionId="2de9492c-c93c-4599-bb4b-62704adad8d3" testId="4dc60b82-4a10-fc9f-fb75-5c16b4aea80d" testName="MissingFieldsAndDifferentRecipientCoverageCannotBecomeComparableZero" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0007376" startTime="2026-10-23T18:26:27.9508262+08:00" endTime="2026-10-23T18:26:27.9518176+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2de9492c-c93c-4599-bb4b-62704adad8d3" />
+    <UnitTestResult executionId="2491a636-708c-4fbf-a877-a7efdb116147" testId="ecced673-5ada-cdef-f9a0-2f10d54e19f3" testName="FeedingConsumptionBelongsToRecipientNotInventoryOwner" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0004630" startTime="2026-10-23T18:26:27.8884713+08:00" endTime="2026-10-23T18:26:27.8884713+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2491a636-708c-4fbf-a877-a7efdb116147" />
+    <UnitTestResult executionId="b1b825b2-e0f8-4cd8-a815-5de6734e6291" testId="c5d8c851-f1d7-3fd1-5270-5580787abd63" testName="InventoryConflictOrDisappearance_DoesNotBecomeRescueOrTransfer" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0034244" startTime="2026-10-23T18:25:01.0154257+08:00" endTime="2026-10-23T18:25:01.0194151+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b1b825b2-e0f8-4cd8-a815-5de6734e6291" />
+    <UnitTestResult executionId="b9c8aadc-b18d-4b8f-9f91-c727985abdc7" testId="5d1bf572-66a5-d02f-646f-a01e3112a599" testName="DeathFactsAreDeduplicatedAndRequireStateEvidence" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0011701" startTime="2026-10-23T18:26:27.8854793+08:00" endTime="2026-10-23T18:26:27.8864765+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b9c8aadc-b18d-4b8f-9f91-c727985abdc7" />
+    <UnitTestResult executionId="825acccb-744c-4c87-a3e1-f2a441c98432" testId="350a9876-b2f1-8e53-b669-100c7a90e126" testName="RetentionAndFavorite_MoveManifestTogetherWithChunks" computerName="DESKTOP-3PF2CMK" duration="00:00:00.1416944" startTime="2026-10-23T18:26:28.1562704+08:00" endTime="2026-10-23T18:26:28.2978908+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="825acccb-744c-4c87-a3e1-f2a441c98432" />
+    <UnitTestResult executionId="30e0eeba-7c07-4793-8217-434df8a172b4" testId="3342bd28-b4d4-2c3d-8aee-81a19a99323d" testName="PrimaryAndSecondaryActionsRemainSeparate" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0008572" startTime="2026-10-23T18:25:01.2305232+08:00" endTime="2026-10-23T18:25:01.2315207+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="30e0eeba-7c07-4793-8217-434df8a172b4" />
+    <UnitTestResult executionId="6ba785da-fd4c-480e-85c1-0ff6c4c4f204" testId="aaca8872-82ea-6039-9bd7-347d5577702c" testName="JumpEvidenceRetainsDistinctClockIntervals" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0008184" startTime="2026-10-23T18:26:27.8884713+08:00" endTime="2026-10-23T18:26:27.8894686+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6ba785da-fd4c-480e-85c1-0ff6c4c4f204" />
+    <UnitTestResult executionId="5ea5c577-f4cb-4111-9452-d33f36c4f2c8" testId="22cd6da5-e76b-7db1-87b3-40278d51bc6c" testName="ExpirySideEffect_UsesObservedRemovalInsteadOfAnAssumedTimer" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0056409" startTime="2026-10-23T18:25:01.2016007+08:00" endTime="2026-10-23T18:25:01.2075847+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5ea5c577-f4cb-4111-9452-d33f36c4f2c8" />
+    <UnitTestResult executionId="e2ec5192-53a0-4c64-ad0b-ce4bf91719cc" testId="daf11254-c926-345b-372a-aab15912de02" testName="Analysis_ProducesDynamicSegmentsDistanceStaminaAndGuidTransfer" computerName="DESKTOP-3PF2CMK" duration="00:00:00.6444975" startTime="2026-10-23T18:25:00.0205968+08:00" endTime="2026-10-23T18:25:00.8869432+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e2ec5192-53a0-4c64-ad0b-ce4bf91719cc" />
+    <UnitTestResult executionId="8159443d-3b74-42a9-85a4-a3af51f986b1" testId="1124e235-8db8-1648-a815-14af65fb8018" testName="EightPlayerChunk_StaysBoundedAndRecoversActiveData" computerName="DESKTOP-3PF2CMK" duration="00:00:00.2005634" startTime="2026-10-23T18:26:27.9548096+08:00" endTime="2026-10-23T18:26:28.1562704+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8159443d-3b74-42a9-85a4-a3af51f986b1">
+      <Output>
+        <StdOut>TestContext 消息:&#xD;
+151 samples, 8 players: 9,961 compressed bytes in 193 ms; projected two-hour chunk count: 240.</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="950f928b-82f8-4ef6-b87c-7e4b4145f638" testId="8325bffe-d9e5-f17d-30c8-71811350ffc5" testName="NaturalPoisonDecay_IsNotCreditedToAConvenientItem" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0028601" startTime="2026-10-23T18:25:01.0937283+08:00" endTime="2026-10-23T18:25:01.0977179+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="950f928b-82f8-4ef6-b87c-7e4b4145f638" />
+    <UnitTestResult executionId="8b26d852-39f1-46f7-ad3f-8e2e5f45e6ea" testId="bc7b29a3-ba0c-5a49-f8cb-92824ef0950c" testName="SinglePlayerObservationGapDoesNotResetTeammates" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0008179" startTime="2026-10-23T18:26:27.9453197+08:00" endTime="2026-10-23T18:26:27.9463170+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b26d852-39f1-46f7-ad3f-8e2e5f45e6ea" />
+    <UnitTestResult executionId="8964532f-b92d-489b-b62f-8252eadb8ef4" testId="d99e2b9e-9b47-717a-4f44-fc8684d82886" testName="ComparisonKeepsLightweightIdentityMetricsNotFullRuns" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0011158" startTime="2026-10-23T18:26:27.9528152+08:00" endTime="2026-10-23T18:26:27.9538129+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8964532f-b92d-489b-b62f-8252eadb8ef4" />
+    <UnitTestResult executionId="5b7d28ce-d389-4db2-9087-c5d2fc1cf53d" testId="f7f690a7-b785-74c8-4f8c-621de7217e71" testName="DeathRemovalIsLost_ButLaterUseDoesNotJoinEarlierGroup" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0020125" startTime="2026-10-23T18:25:01.2165604+08:00" endTime="2026-10-23T18:25:01.2185549+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5b7d28ce-d389-4db2-9087-c5d2fc1cf53d" />
+    <UnitTestResult executionId="1f0ab2a9-a5e7-4101-a40e-e89e90c27062" testId="26e748c7-4cbd-d163-7175-490a3ecc6da5" testName="OptionalAssistanceFields_RoundTrip" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0021740" startTime="2026-10-23T18:25:01.0214094+08:00" endTime="2026-10-23T18:25:01.0234040+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1f0ab2a9-a5e7-4101-a40e-e89e90c27062" />
+    <UnitTestResult executionId="b5c6a4ec-a404-47f6-904c-7a7659c2bf97" testId="7e4f0789-71a4-f135-d0a8-456dd75e6bca" testName="HealingBudget_DoesNotApplyFullBudgetToEveryStatus" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0022834" startTime="2026-10-23T18:25:01.1816549+08:00" endTime="2026-10-23T18:25:01.1846464+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b5c6a4ec-a404-47f6-904c-7a7659c2bf97" />
+    <UnitTestResult executionId="9579a002-dda6-4b70-8965-c944a8a71273" testId="aa796155-d612-2455-f563-1edb06237a99" testName="LatestRecordingReadOnlyReportRegression" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0480411" startTime="2026-10-23T18:26:27.8964475+08:00" endTime="2026-10-23T18:26:27.9453197+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9579a002-dda6-4b70-8965-c944a8a71273">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Inconclusive 失败。Optional local recording not present.</Message>
+          <StackTrace>   在 StateKeeper.Tests.ReportTests.LatestRecordingReadOnlyReportRegression() 位置 C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\StateKeeper\StateKeeper.Tests\ReportTests.cs:行号 146&#xD;
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4e4ab57c-ea09-4da2-b8f0-5f3a0c37f220" testId="2d52d23b-0144-59f8-af7f-172b678c1c58" testName="Transfer_HandlesReceivingInventoryArrivingBeforeSourceRemoval" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0015873" startTime="2026-10-23T18:25:01.1996060+08:00" endTime="2026-10-23T18:25:01.2016007+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4e4ab57c-ea09-4da2-b8f0-5f3a0c37f220" />
+    <UnitTestResult executionId="f955d9e5-2472-4d95-a68a-5e123fcbdb87" testId="be4104e4-b91e-633c-6cb7-6be61062723b" testName="ClockRollbackRetainsEveryInventorySnapshot" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0007753" startTime="2026-10-23T18:26:27.8914610+08:00" endTime="2026-10-23T18:26:27.8924583+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f955d9e5-2472-4d95-a68a-5e123fcbdb87" />
+    <UnitTestResult executionId="bf7af2f4-8477-4ebc-add9-0abee0daa418" testId="686fd34c-e36c-0fa8-a948-4cf533e9e635" testName="DistanceRangeQuantilesRespectEpochAndKeepPeaks" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0007450" startTime="2026-10-23T18:26:27.9493091+08:00" endTime="2026-10-23T18:26:27.9503085+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bf7af2f4-8477-4ebc-add9-0abee0daa418" />
+    <UnitTestResult executionId="28d2800f-6663-4313-9fc5-7d0036b76682" testId="a7c7945d-0271-7d56-35e9-133c74c5000f" testName="ConsumeCastAndInventoryDelta_FormOneCandidate" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0036840" startTime="2026-10-23T18:25:01.0857495+08:00" endTime="2026-10-23T18:25:01.0897403+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="28d2800f-6663-4313-9fc5-7d0036b76682" />
+    <UnitTestResult executionId="ec8e1f5a-5d96-4b84-ba19-2b38a5fa8910" testId="9b4d6b45-0913-f150-f1fb-120a996cded6" testName="RescueThreshold_RejectsDuplicateActionsDeadSelfRecoveryAndPetrification" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0003664" startTime="2026-10-23T18:25:01.0054522+08:00" endTime="2026-10-23T18:25:01.0054522+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ec8e1f5a-5d96-4b84-ba19-2b38a5fa8910" />
+    <UnitTestResult executionId="56afc915-312d-441f-81dc-7c4836799cdf" testId="4d08bf7d-a630-8546-c392-e74b7162803d" testName="UnknownConcurrentUse_PreventsKnownItemFromAutomaticallyWinning" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0020861" startTime="2026-10-23T18:25:01.1946201+08:00" endTime="2026-10-23T18:25:01.1966140+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="56afc915-312d-441f-81dc-7c4836799cdf" />
+    <UnitTestResult executionId="14fc458a-3bc9-4090-9b14-24d3ffdcad4f" testId="29af76b5-db81-0892-c2ff-3baccf67a378" testName="PreviousAnalysisVersionCache_IsRebuilt" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0792419" startTime="2026-10-23T18:25:00.9228488+08:00" endTime="2026-10-23T18:25:01.0024597+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="14fc458a-3bc9-4090-9b14-24d3ffdcad4f" />
+    <UnitTestResult executionId="d248e114-a517-43b9-bdd2-f99e7620fa28" testId="6df85c1f-edb5-fbb1-486a-2de583be7757" testName="RisksNeedDurationAndStopAtGaps" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0014478" startTime="2026-10-23T18:26:27.8934557+08:00" endTime="2026-10-23T18:26:27.8944530+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d248e114-a517-43b9-bdd2-f99e7620fa28" />
+    <UnitTestResult executionId="6fd5937c-1bbc-4290-8996-657d4b2c3b97" testId="bf28e72f-191a-d7ed-5da4-f977adfc9b63" testName="ClockReadsDoNotAccumulateAndCrossRunIdentityIsStrict" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0014943" startTime="2026-10-23T18:26:27.8944530+08:00" endTime="2026-10-23T18:26:27.8964475+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6fd5937c-1bbc-4290-8996-657d4b2c3b97" />
+    <UnitTestResult executionId="e8a4ebb0-0c12-413c-b1c0-327addfc786c" testId="e1b20fc9-392d-d244-5b32-91221aac86f2" testName="RepeatedEventsAfterRapidRevivalCannotReusePreviousDeathInterval" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0005076" startTime="2026-10-23T18:26:27.8874738+08:00" endTime="2026-10-23T18:26:27.8884713+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e8a4ebb0-0c12-413c-b1c0-327addfc786c" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ClockAmbiguousConsumeDoesNotUseLaterInventoryToInventActor" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="3a780f06-103b-7b68-ac03-7f59687b1190">
+      <Execution id="233fd860-5014-49ff-9953-a61e382882d5" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="ClockAmbiguousConsumeDoesNotUseLaterInventoryToInventActor" />
+    </UnitTest>
+    <UnitTest name="InitiallyDeadSingleFrameCannotConfirmAnUnrelatedDeath" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="ff6415d0-03e0-c75d-2d44-3f26fad212c6">
+      <Execution id="52a9a4db-c316-45a7-8fdd-8c6aac6c31ed" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="InitiallyDeadSingleFrameCannotConfirmAnUnrelatedDeath" />
+    </UnitTest>
+    <UnitTest name="DisablingExistingRecordingSchedulesAnExplicitResumeBoundary" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="ded57860-1501-2177-1396-3581e123cc6a">
+      <Execution id="29dbb6f2-f34a-49b5-808d-a90739811761" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReleaseAuditTests" name="DisablingExistingRecordingSchedulesAnExplicitResumeBoundary" />
+    </UnitTest>
+    <UnitTest name="RapidRepeatedUsesAndExactDuplicate_KeepCorrectCount" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="4418e837-7e79-54f8-471b-2f458f6345bd">
+      <Execution id="11244474-e71f-4666-8df1-032085dfa7c0" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="RapidRepeatedUsesAndExactDuplicate_KeepCorrectCount" />
+    </UnitTest>
+    <UnitTest name="DeathFactsAreDeduplicatedAndRequireStateEvidence" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="5d1bf572-66a5-d02f-646f-a01e3112a599">
+      <Execution id="b9c8aadc-b18d-4b8f-9f91-c727985abdc7" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="DeathFactsAreDeduplicatedAndRequireStateEvidence" />
+    </UnitTest>
+    <UnitTest name="CustomNameFavoriteAndOldSchema_AreStableAcrossRestart" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="481fbe21-2018-8e95-b3f6-19c4d9483e17">
+      <Execution id="7fd41e82-4dc0-4da8-a48d-6695791547ec" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.RunStoreTests" name="CustomNameFavoriteAndOldSchema_AreStableAcrossRestart" />
+    </UnitTest>
+    <UnitTest name="Transfer_HandlesReceivingInventoryArrivingBeforeSourceRemoval" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="2d52d23b-0144-59f8-af7f-172b678c1c58">
+      <Execution id="4e4ab57c-ea09-4da2-b8f0-5f3a0c37f220" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="Transfer_HandlesReceivingInventoryArrivingBeforeSourceRemoval" />
+    </UnitTest>
+    <UnitTest name="DuplicateDirectTreatment_DoesNotDuplicateProofOrHealingTotal" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="14a5a958-61e1-c15d-59c4-2d9aac4e4d5c">
+      <Execution id="e14c1000-6048-480a-a154-f9a0ca146823" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="DuplicateDirectTreatment_DoesNotDuplicateProofOrHealingTotal" />
+    </UnitTest>
+    <UnitTest name="SharedDangerRequiresOverlapAndTogetherUsesHysteresis" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="0fd54c09-60cb-72b3-56ba-1fe97b1daba4">
+      <Execution id="c0b58ca3-4bce-42ff-8a74-37e5cf0dc498" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="SharedDangerRequiresOverlapAndTogetherUsesHysteresis" />
+    </UnitTest>
+    <UnitTest name="OneDose_HasACumulativeBudgetAcrossSamples" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="1cb9264f-7617-f779-239e-2e2b84d1181b">
+      <Execution id="9d825407-db9d-4071-b1aa-3e2bb39a8a45" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="OneDose_HasACumulativeBudgetAcrossSamples" />
+    </UnitTest>
+    <UnitTest name="HealingBudget_DoesNotApplyFullBudgetToEveryStatus" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="7e4f0789-71a4-f135-d0a8-456dd75e6bca">
+      <Execution id="b5c6a4ec-a404-47f6-904c-7a7659c2bf97" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="HealingBudget_DoesNotApplyFullBudgetToEveryStatus" />
+    </UnitTest>
+    <UnitTest name="AreaEffect_ExplainsMultipleRecipientsButKeepsMissingOriginUncertain" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="cf9332f0-256a-9999-50a7-b947477c56f0">
+      <Execution id="3bce2e91-50d0-4eb3-a869-187975363caf" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="AreaEffect_ExplainsMultipleRecipientsButKeepsMissingOriginUncertain" />
+    </UnitTest>
+    <UnitTest name="FuelDepletion_HasNativeTotalButNoFabricatedActionCount" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="7d96f211-0c9f-c87a-a531-4fd170cd27c8">
+      <Execution id="b82ee0dd-8419-4315-905e-6c740d972d84" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="FuelDepletion_HasNativeTotalButNoFabricatedActionCount" />
+    </UnitTest>
+    <UnitTest name="DeathRemovalIsLost_ButLaterUseDoesNotJoinEarlierGroup" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="f7f690a7-b785-74c8-4f8c-621de7217e71">
+      <Execution id="5b7d28ce-d389-4db2-9087-c5d2fc1cf53d" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="DeathRemovalIsLost_ButLaterUseDoesNotJoinEarlierGroup" />
+    </UnitTest>
+    <UnitTest name="UseSummary_CombinesDirectResourceAndRemovalEvidence" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="8a8f5d6a-e3e7-7973-5cec-8e12d6357b0c">
+      <Execution id="82790b7e-9cd3-4f9f-a21d-6cd3166d7ce7" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="UseSummary_CombinesDirectResourceAndRemovalEvidence" />
+    </UnitTest>
+    <UnitTest name="InventoryConflictOrDisappearance_DoesNotBecomeRescueOrTransfer" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="c5d8c851-f1d7-3fd1-5270-5580787abd63">
+      <Execution id="b1b825b2-e0f8-4cd8-a815-5de6734e6291" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AssistanceTests" name="InventoryConflictOrDisappearance_DoesNotBecomeRescueOrTransfer" />
+    </UnitTest>
+    <UnitTest name="CancellationIsCheckedBeforeReportFinalization" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="78d72c4e-bc92-b090-42b8-8537bf97f4bc">
+      <Execution id="6d0a8da7-15f3-424e-a982-2441beef3bb3" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="CancellationIsCheckedBeforeReportFinalization" />
+    </UnitTest>
+    <UnitTest name="Schema3Fields_RoundTripAndOptionalUsesRemainDistinguishable" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="364ec5ff-6e2b-5307-6b90-d079b546423c">
+      <Execution id="7347184c-81ee-43ee-b7e8-a045835e6f8d" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.RunStoreTests" name="Schema3Fields_RoundTripAndOptionalUsesRemainDistinguishable" />
+    </UnitTest>
+    <UnitTest name="SubsequentTransferDoesNotEraseCompletedUse" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="b5854507-9bb0-20b3-2a0e-897b99d0d814">
+      <Execution id="1d81f8d7-e077-45e0-b075-dd3963213186" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="SubsequentTransferDoesNotEraseCompletedUse" />
+    </UnitTest>
+    <UnitTest name="OptionalItemData_HasDataFalseDoesNotProduceValidUses" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="1e954491-51e0-8627-309b-a42c9df6884a">
+      <Execution id="37dbc143-d962-46f7-9106-e6d4520f7b82" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.RunStoreTests" name="OptionalItemData_HasDataFalseDoesNotProduceValidUses" />
+    </UnitTest>
+    <UnitTest name="DeathGapOrTeleport_CannotBridgeIntoARecoveryAttribution" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="df40c35c-0d25-a37a-83a0-a48e77614dc6">
+      <Execution id="c1f96acd-4c88-4306-a899-32a5f5dd0959" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="DeathGapOrTeleport_CannotBridgeIntoARecoveryAttribution" />
+    </UnitTest>
+    <UnitTest name="PreviousAnalysisVersionCache_IsRebuilt" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="29af76b5-db81-0892-c2ff-3baccf67a378">
+      <Execution id="14fc458a-3bc9-4090-9b14-24d3ffdcad4f" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AnalysisTests" name="PreviousAnalysisVersionCache_IsRebuilt" />
+    </UnitTest>
+    <UnitTest name="TransferAndSlotMove_AreFlowWithoutUseCounts" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="5f484604-9fc9-686a-475f-8b94eab5c28a">
+      <Execution id="79ae33f4-f233-4f93-beba-d11c6d7463a8" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="TransferAndSlotMove_AreFlowWithoutUseCounts" />
+    </UnitTest>
+    <UnitTest name="ProgressPointStartsItsStageAndLastStageReachesRunEnd" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="06a96055-3f5e-5aff-aed5-35baf4654b33">
+      <Execution id="41bc3b35-cadc-43dc-ae2f-c6affbd2679e" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="ProgressPointStartsItsStageAndLastStageReachesRunEnd" />
+    </UnitTest>
+    <UnitTest name="AvailableRecordings_UseRulesReadOnlyReplay" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="e623237d-039f-83a6-1cb7-7780f076108d">
+      <Execution id="2a3d116b-ad1f-497f-9b5a-7ea357ef7926" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.RecordingRegressionTests" name="AvailableRecordings_UseRulesReadOnlyReplay" />
+    </UnitTest>
+    <UnitTest name="LateCookingMetadata_PreservesDirectTreatmentRule" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="5eb7ebe4-7668-5dd2-5692-af6cc544e93a">
+      <Execution id="d27d1315-b62c-4585-af92-1b822ac8b954" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="LateCookingMetadata_PreservesDirectTreatmentRule" />
+    </UnitTest>
+    <UnitTest name="SinglePlayerObservationGapDoesNotResetTeammates" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="bc7b29a3-ba0c-5a49-f8cb-92824ef0950c">
+      <Execution id="8b26d852-39f1-46f7-ad3f-8e2e5f45e6ea" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="SinglePlayerObservationGapDoesNotResetTeammates" />
+    </UnitTest>
+    <UnitTest name="UnknownGuidDoesNotMergeDifferentItemsOrDifferentTargets" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="dcb23484-ab22-466f-8b0e-419cd11b19bd">
+      <Execution id="dfb10d86-4633-4604-88b4-99f79a2702eb" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="UnknownGuidDoesNotMergeDifferentItemsOrDifferentTargets" />
+    </UnitTest>
+    <UnitTest name="DistanceRangeQuantilesRespectEpochAndKeepPeaks" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="686fd34c-e36c-0fa8-a948-4cf533e9e635">
+      <Execution id="bf7af2f4-8477-4ebc-add9-0abee0daa418" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="DistanceRangeQuantilesRespectEpochAndKeepPeaks" />
+    </UnitTest>
+    <UnitTest name="RetentionAndFavorite_MoveManifestTogetherWithChunks" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="350a9876-b2f1-8e53-b669-100c7a90e126">
+      <Execution id="825acccb-744c-4c87-a3e1-f2a441c98432" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.RunStoreTests" name="RetentionAndFavorite_MoveManifestTogetherWithChunks" />
+    </UnitTest>
+    <UnitTest name="PrimaryAndSecondaryActionsRemainSeparate" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="3342bd28-b4d4-2c3d-8aee-81a19a99323d">
+      <Execution id="30e0eeba-7c07-4793-8217-434df8a172b4" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="PrimaryAndSecondaryActionsRemainSeparate" />
+    </UnitTest>
+    <UnitTest name="Analysis_ProducesDynamicSegmentsDistanceStaminaAndGuidTransfer" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="daf11254-c926-345b-372a-aab15912de02">
+      <Execution id="e2ec5192-53a0-4c64-ad0b-ce4bf91719cc" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AnalysisTests" name="Analysis_ProducesDynamicSegmentsDistanceStaminaAndGuidTransfer" />
+    </UnitTest>
+    <UnitTest name="CharacterCenteredAura_HasAnObservedSpatialOrigin" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="2634704e-2996-1a52-3a57-25dd475e98db">
+      <Execution id="7d9e872e-fe41-4963-a446-caa426466340" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="CharacterCenteredAura_HasAnObservedSpatialOrigin" />
+    </UnitTest>
+    <UnitTest name="MushroomContext_ControlsDelayedAfflictionAndNeverUsesFutureContext" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="5042ea75-ec0f-6b6d-6e87-3f1d01b8d8b7">
+      <Execution id="a2b9dcdb-77de-4b5e-9f31-b8e7a266292c" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="MushroomContext_ControlsDelayedAfflictionAndNeverUsesFutureContext" />
+    </UnitTest>
+    <UnitTest name="OldRecording_HasUnknownCoverageAndPetrification" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="dc4be833-548e-e62f-3980-dc56be206643">
+      <Execution id="fa5bc593-0606-4ce7-9881-0461301588f5" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AssistanceTests" name="OldRecording_HasUnknownCoverageAndPetrification" />
+    </UnitTest>
+    <UnitTest name="NaturalPoisonDecay_IsNotCreditedToAConvenientItem" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="8325bffe-d9e5-f17d-30c8-71811350ffc5">
+      <Execution id="950f928b-82f8-4ef6-b87c-7e4b4145f638" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="NaturalPoisonDecay_IsNotCreditedToAConvenientItem" />
+    </UnitTest>
+    <UnitTest name="LegacyScalarParametersAndCooking_AreReadWithoutInventingEnums" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="f312ec3f-f13c-18a6-2885-d55027fce8bc">
+      <Execution id="3c993eac-5946-46ec-8ac7-acd926ceac52" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="LegacyScalarParametersAndCooking_AreReadWithoutInventingEnums" />
+    </UnitTest>
+    <UnitTest name="ConsumeCastAndInventoryDelta_FormOneCandidate" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="a7c7945d-0271-7d56-35e9-133c74c5000f">
+      <Execution id="28d2800f-6663-4313-9fc5-7d0036b76682" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="ConsumeCastAndInventoryDelta_FormOneCandidate" />
+    </UnitTest>
+    <UnitTest name="RecoveryAfterInferredHelp_IsPossibleRescueNotDirectCredit" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="93622556-ca62-42c1-372b-bdc848a66789">
+      <Execution id="b58d16c7-5d4f-473d-9ff9-d5f59fe63928" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="RecoveryAfterInferredHelp_IsPossibleRescueNotDirectCredit" />
+    </UnitTest>
+    <UnitTest name="ExpirySideEffect_UsesObservedRemovalInsteadOfAnAssumedTimer" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="22cd6da5-e76b-7db1-87b3-40278d51bc6c">
+      <Execution id="5ea5c577-f4cb-4111-9452-d33f36c4f2c8" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="ExpirySideEffect_UsesObservedRemovalInsteadOfAnAssumedTimer" />
+    </UnitTest>
+    <UnitTest name="DeathSentinelDriftCannotStretchDistanceAxis" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="67529712-d8ca-82cf-2c76-6ccda7831dc5">
+      <Execution id="87c979de-b15b-4850-8e9d-5fddb2474c91" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="DeathSentinelDriftCannotStretchDistanceAxis" />
+    </UnitTest>
+    <UnitTest name="JumpEvidenceRetainsDistinctClockIntervals" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="aaca8872-82ea-6039-9bd7-347d5577702c">
+      <Execution id="6ba785da-fd4c-480e-85c1-0ff6c4c4f204" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="JumpEvidenceRetainsDistinctClockIntervals" />
+    </UnitTest>
+    <UnitTest name="FuelGainAndCookingAreNotUseEvidence" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="bb90a1f5-ffdd-48f4-df52-e3c876902105">
+      <Execution id="efe93ed5-9ef4-4a22-957b-c9b2e5ad0003" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="FuelGainAndCookingAreNotUseEvidence" />
+    </UnitTest>
+    <UnitTest name="RisksNeedDurationAndStopAtGaps" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="6df85c1f-edb5-fbb1-486a-2de583be7757">
+      <Execution id="d248e114-a517-43b9-bdd2-f99e7620fa28" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="RisksNeedDurationAndStopAtGaps" />
+    </UnitTest>
+    <UnitTest name="InferredHolderIsNotReportedAsTheConfirmedUser" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="36624d6b-4695-771c-2787-83e36d226694">
+      <Execution id="2c81a078-5728-494c-816d-38e1627d8d5b" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="InferredHolderIsNotReportedAsTheConfirmedUser" />
+    </UnitTest>
+    <UnitTest name="ResourceLossWithoutDirectEvent_IsLikelyAndPreservesChargeDelta" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="5fafb4f4-0dae-2bc5-8f0f-705d0c927277">
+      <Execution id="a5159fd9-952a-4630-a8f7-09fe83779bec" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="ResourceLossWithoutDirectEvent_IsLikelyAndPreservesChargeDelta" />
+    </UnitTest>
+    <UnitTest name="DisappearanceAndTransfer_AreNotCertainUse" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="038996a5-31eb-8512-3647-a90e0b0076d1">
+      <Execution id="5f0cea9a-1556-4907-b932-478c8a180013" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="DisappearanceAndTransfer_AreNotCertainUse" />
+    </UnitTest>
+    <UnitTest name="ClockAmbiguityCannotProduceCertainUse" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="f57c95cb-1d72-2725-bd70-5dafba3ed5ac">
+      <Execution id="c9d58f3b-3e51-47d3-903f-856452ef4287" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="ClockAmbiguityCannotProduceCertainUse" />
+    </UnitTest>
+    <UnitTest name="ClockReadsDoNotAccumulateAndCrossRunIdentityIsStrict" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="bf28e72f-191a-d7ed-5da4-f977adfc9b63">
+      <Execution id="6fd5937c-1bbc-4290-8996-657d4b2c3b97" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="ClockReadsDoNotAccumulateAndCrossRunIdentityIsStrict" />
+    </UnitTest>
+    <UnitTest name="PassiveHealing_IsAnIntervalAndStopsAfterDisabled" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="086a92b6-4d67-cf4a-0201-20d3a0142cbf">
+      <Execution id="3f1e1519-3590-41a7-9fcb-0291056e44ad" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="PassiveHealing_IsAnIntervalAndStopsAfterDisabled" />
+    </UnitTest>
+    <UnitTest name="Analysis_MissingChunkIsReportedWithoutBlockingOtherData" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="230c4055-08a2-8e67-3490-b58baa505560">
+      <Execution id="63ebc97a-ab13-4e7a-9017-67ef8a82ed8c" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AnalysisTests" name="Analysis_MissingChunkIsReportedWithoutBlockingOtherData" />
+    </UnitTest>
+    <UnitTest name="TransformedCharacterCannotGenerateNormalRiskIntervals" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="3971ceff-7223-8bcd-3932-f5c167ae95da">
+      <Execution id="cdbd28dd-45eb-4ded-9748-492e244e3f0c" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="TransformedCharacterCannotGenerateNormalRiskIntervals" />
+    </UnitTest>
+    <UnitTest name="RescueThreshold_RejectsDuplicateActionsDeadSelfRecoveryAndPetrification" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="9b4d6b45-0913-f150-f1fb-120a996cded6">
+      <Execution id="ec8e1f5a-5d96-4b84-ba19-2b38a5fa8910" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AssistanceTests" name="RescueThreshold_RejectsDuplicateActionsDeadSelfRecoveryAndPetrification" />
+    </UnitTest>
+    <UnitTest name="Assistance_UsesExplicitActorOnlyAndSeparatesPullsFromTreatment" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="dae5d711-a3a0-d2c7-86ca-60b1ad7d001b">
+      <Execution id="909261e4-fa86-4ec0-a8ca-543b9d4e6b9d" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AssistanceTests" name="Assistance_UsesExplicitActorOnlyAndSeparatesPullsFromTreatment" />
+    </UnitTest>
+    <UnitTest name="MissingFieldsAndDifferentRecipientCoverageCannotBecomeComparableZero" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="4dc60b82-4a10-fc9f-fb75-5c16b4aea80d">
+      <Execution id="2de9492c-c93c-4599-bb4b-62704adad8d3" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="MissingFieldsAndDifferentRecipientCoverageCannotBecomeComparableZero" />
+    </UnitTest>
+    <UnitTest name="DelayedPoison_ContinuesBeyondOldFourSecondWindow" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="aad57ac4-ae05-8fd0-d523-ce53ac09d1f2">
+      <Execution id="c63f8c8a-de4d-400a-adde-4c22ddc2c2a8" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="DelayedPoison_ContinuesBeyondOldFourSecondWindow" />
+    </UnitTest>
+    <UnitTest name="ActualHealing_RejectsBlockedAndNonFiniteChanges" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="1666558c-0ccd-92f9-68e6-bd89747b8e45">
+      <Execution id="8ec8ac8b-c6f9-4e96-8bd4-335201198851" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AssistanceTests" name="ActualHealing_RejectsBlockedAndNonFiniteChanges" />
+    </UnitTest>
+    <UnitTest name="CompletedActionAtRecordingEnd_RemainsCertainWithoutAnEffect" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="f59ed16f-f2cc-d369-2d98-be5ef8e546ce">
+      <Execution id="d8bf0c6d-7290-4086-bbcd-28ba776fd48a" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="CompletedActionAtRecordingEnd_RemainsCertainWithoutAnEffect" />
+    </UnitTest>
+    <UnitTest name="UnknownConcurrentUse_PreventsKnownItemFromAutomaticallyWinning" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="4d08bf7d-a630-8546-c392-e74b7162803d">
+      <Execution id="56afc915-312d-441f-81dc-7c4836799cdf" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="UnknownConcurrentUse_PreventsKnownItemFromAutomaticallyWinning" />
+    </UnitTest>
+    <UnitTest name="RealRevivalRearmsAndUncorroboratedDeathStaysUnknown" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="a3fa60dd-66e4-8201-43f2-cdf0bd8c7a47">
+      <Execution id="6121400e-c360-45e2-9aa3-7204ed5741fd" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="RealRevivalRearmsAndUncorroboratedDeathStaysUnknown" />
+    </UnitTest>
+    <UnitTest name="DisabledCollectorRejectsHookEventsBeforeAccessingUnity" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="28acaf56-7639-e1c7-8e10-39adfa472716">
+      <Execution id="0a39a5cb-7de6-49a7-a334-f47cbb9249ca" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReleaseAuditTests" name="DisabledCollectorRejectsHookEventsBeforeAccessingUnity" />
+    </UnitTest>
+    <UnitTest name="ClockRollbackRetainsEveryInventorySnapshot" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="be4104e4-b91e-633c-6cb7-6be61062723b">
+      <Execution id="f955d9e5-2472-4d95-a68a-5e123fcbdb87" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="ClockRollbackRetainsEveryInventorySnapshot" />
+    </UnitTest>
+    <UnitTest name="FeedingConsumptionBelongsToRecipientNotInventoryOwner" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="ecced673-5ada-cdef-f9a0-2f10d54e19f3">
+      <Execution id="2491a636-708c-4fbf-a877-a7efdb116147" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="FeedingConsumptionBelongsToRecipientNotInventoryOwner" />
+    </UnitTest>
+    <UnitTest name="DirectTreatment_IsCertainEvenWhenNoFollowingFrameExists" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="33f96ec8-1978-3254-cc0c-df549eff3dd5">
+      <Execution id="4a7c723a-874f-4518-acdc-1a8b010e471f" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="DirectTreatment_IsCertainEvenWhenNoFollowingFrameExists" />
+    </UnitTest>
+    <UnitTest name="RealLargeDistanceIsNotClampedAndInconsistentMetersAreExcluded" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="41ed90e4-89e4-5fab-a52d-5c231da3bef3">
+      <Execution id="8e59e5f5-6d78-4c71-8c96-2bf23ba457f1" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="RealLargeDistanceIsNotClampedAndInconsistentMetersAreExcluded" />
+    </UnitTest>
+    <UnitTest name="SixReferenceRecordings_ReadOnlyReplay" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="9feb4c7b-330b-0177-6682-50313b7cc3a2">
+      <Execution id="8276defd-4d70-481f-a8c3-512f700a1682" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.RecordingRegressionTests" name="SixReferenceRecordings_ReadOnlyReplay" />
+    </UnitTest>
+    <UnitTest name="LatestRecordingReadOnlyReportRegression" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="aa796155-d612-2455-f563-1edb06237a99">
+      <Execution id="9579a002-dda6-4b70-8965-c944a8a71273" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="LatestRecordingReadOnlyReportRegression" />
+    </UnitTest>
+    <UnitTest name="StateOnlyDeathRemainsSeparateFromConfirmedEventCount" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="65185c0d-8fda-48cf-8d7b-053c0ad58e3b">
+      <Execution id="421c5b5b-f3f9-4a4b-9009-cc563e2b060c" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="StateOnlyDeathRemainsSeparateFromConfirmedEventCount" />
+    </UnitTest>
+    <UnitTest name="AnalysisCancellation_IsObservedBeforeProcessingChunk" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="f792199b-a63d-a01d-5fb3-88e08b154242">
+      <Execution id="cb7384bb-8fc5-485a-8391-a47bec11a111" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="AnalysisCancellation_IsObservedBeforeProcessingChunk" />
+    </UnitTest>
+    <UnitTest name="IndependentItemsCompete_AndDoNotBecomeCertainHelp" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="5162181b-e6ce-9b09-76c5-a928bcf517a4">
+      <Execution id="1d741f4b-0383-46fb-b6bb-040ad9432128" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="IndependentItemsCompete_AndDoNotBecomeCertainHelp" />
+    </UnitTest>
+    <UnitTest name="RepeatedEventsAfterRapidRevivalCannotReusePreviousDeathInterval" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="e1b20fc9-392d-d244-5b32-91221aac86f2">
+      <Execution id="e8a4ebb0-0c12-413c-b1c0-327addfc786c" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="RepeatedEventsAfterRapidRevivalCannotReusePreviousDeathInterval" />
+    </UnitTest>
+    <UnitTest name="EightPlayerChunk_StaysBoundedAndRecoversActiveData" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="1124e235-8db8-1648-a815-14af65fb8018">
+      <Execution id="8159443d-3b74-42a9-85a4-a3af51f986b1" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.RunStoreTests" name="EightPlayerChunk_StaysBoundedAndRecoversActiveData" />
+    </UnitTest>
+    <UnitTest name="ResourceReduction_FindsNearbyRecipientWithoutFeedRpc" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="c13c677d-89e7-0f5d-7022-73e0c0a9576a">
+      <Execution id="4970befe-0d91-4595-ab7b-cbe04c07f7cb" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="ResourceReduction_FindsNearbyRecipientWithoutFeedRpc" />
+    </UnitTest>
+    <UnitTest name="DifferentEpochsNeverMergeEvenWithSameGuidAndTimestamp" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="5d7c5a13-e855-e457-3453-789155fad2a8">
+      <Execution id="8065316c-c8d9-42c7-af18-cfd469314c33" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="DifferentEpochsNeverMergeEvenWithSameGuidAndTimestamp" />
+    </UnitTest>
+    <UnitTest name="UnknownModAction_RemainsInspectableWithoutGuessedEffects" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="c458ddc9-9112-11cb-8b2d-9f442bce1bbf">
+      <Execution id="9074b47f-05dd-473a-b13f-5a4662b67f99" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="UnknownModAction_RemainsInspectableWithoutGuessedEffects" />
+    </UnitTest>
+    <UnitTest name="ComparisonKeepsLightweightIdentityMetricsNotFullRuns" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="d99e2b9e-9b47-717a-4f44-fc8684d82886">
+      <Execution id="8964532f-b92d-489b-b62f-8252eadb8ef4" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.ReportTests" name="ComparisonKeepsLightweightIdentityMetricsNotFullRuns" />
+    </UnitTest>
+    <UnitTest name="EarlierOutcome_CanMatchNextFrameConsume" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="a63f8030-e15b-b230-4565-4b9850cb2189">
+      <Execution id="f4afb833-56b6-466d-8593-abacffdc4966" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="EarlierOutcome_CanMatchNextFrameConsume" />
+    </UnitTest>
+    <UnitTest name="OptionalAssistanceFields_RoundTrip" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="26e748c7-4cbd-d163-7175-490a3ecc6da5">
+      <Execution id="1f0ab2a9-a5e7-4101-a40e-e89e90c27062" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AssistanceTests" name="OptionalAssistanceFields_RoundTrip" />
+    </UnitTest>
+    <UnitTest name="MatchingTwoRecipientsOrConflictingGuid_DoesNotPickOneWinner" storage="c:\users\administrator\desktop\mod\peak\.build\compat-3.0.0-20261023\tests\statekeeper\statekeeper.tests.dll" id="9f7076f9-7dbe-15f7-cf0d-34c8c5897cfa">
+      <Execution id="6c8387af-d6d9-477c-9b1a-0f83b242a1ba" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="StateKeeper.Tests.AttributionTests" name="MatchingTwoRecipientsOrConflictingGuid_DoesNotPickOneWinner" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="5042ea75-ec0f-6b6d-6e87-3f1d01b8d8b7" executionId="a2b9dcdb-77de-4b5e-9f31-b8e7a266292c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="086a92b6-4d67-cf4a-0201-20d3a0142cbf" executionId="3f1e1519-3590-41a7-9fcb-0291056e44ad" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d7c5a13-e855-e457-3453-789155fad2a8" executionId="8065316c-c8d9-42c7-af18-cfd469314c33" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5f484604-9fc9-686a-475f-8b94eab5c28a" executionId="79ae33f4-f233-4f93-beba-d11c6d7463a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="78d72c4e-bc92-b090-42b8-8537bf97f4bc" executionId="6d0a8da7-15f3-424e-a982-2441beef3bb3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5162181b-e6ce-9b09-76c5-a928bcf517a4" executionId="1d741f4b-0383-46fb-b6bb-040ad9432128" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dc4be833-548e-e62f-3980-dc56be206643" executionId="fa5bc593-0606-4ce7-9881-0461301588f5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5fafb4f4-0dae-2bc5-8f0f-705d0c927277" executionId="a5159fd9-952a-4630-a8f7-09fe83779bec" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2634704e-2996-1a52-3a57-25dd475e98db" executionId="7d9e872e-fe41-4963-a446-caa426466340" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dcb23484-ab22-466f-8b0e-419cd11b19bd" executionId="dfb10d86-4633-4604-88b4-99f79a2702eb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b5854507-9bb0-20b3-2a0e-897b99d0d814" executionId="1d81f8d7-e077-45e0-b075-dd3963213186" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="36624d6b-4695-771c-2787-83e36d226694" executionId="2c81a078-5728-494c-816d-38e1627d8d5b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aad57ac4-ae05-8fd0-d523-ce53ac09d1f2" executionId="c63f8c8a-de4d-400a-adde-4c22ddc2c2a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="364ec5ff-6e2b-5307-6b90-d079b546423c" executionId="7347184c-81ee-43ee-b7e8-a045835e6f8d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="67529712-d8ca-82cf-2c76-6ccda7831dc5" executionId="87c979de-b15b-4850-8e9d-5fddb2474c91" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="481fbe21-2018-8e95-b3f6-19c4d9483e17" executionId="7fd41e82-4dc0-4da8-a48d-6695791547ec" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="14a5a958-61e1-c15d-59c4-2d9aac4e4d5c" executionId="e14c1000-6048-480a-a154-f9a0ca146823" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1666558c-0ccd-92f9-68e6-bd89747b8e45" executionId="8ec8ac8b-c6f9-4e96-8bd4-335201198851" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c13c677d-89e7-0f5d-7022-73e0c0a9576a" executionId="4970befe-0d91-4595-ab7b-cbe04c07f7cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="038996a5-31eb-8512-3647-a90e0b0076d1" executionId="5f0cea9a-1556-4907-b932-478c8a180013" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dae5d711-a3a0-d2c7-86ca-60b1ad7d001b" executionId="909261e4-fa86-4ec0-a8ca-543b9d4e6b9d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e623237d-039f-83a6-1cb7-7780f076108d" executionId="2a3d116b-ad1f-497f-9b5a-7ea357ef7926" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3971ceff-7223-8bcd-3932-f5c167ae95da" executionId="cdbd28dd-45eb-4ded-9748-492e244e3f0c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="93622556-ca62-42c1-372b-bdc848a66789" executionId="b58d16c7-5d4f-473d-9ff9-d5f59fe63928" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="06a96055-3f5e-5aff-aed5-35baf4654b33" executionId="41bc3b35-cadc-43dc-ae2f-c6affbd2679e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0fd54c09-60cb-72b3-56ba-1fe97b1daba4" executionId="c0b58ca3-4bce-42ff-8a74-37e5cf0dc498" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df40c35c-0d25-a37a-83a0-a48e77614dc6" executionId="c1f96acd-4c88-4306-a899-32a5f5dd0959" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ff6415d0-03e0-c75d-2d44-3f26fad212c6" executionId="52a9a4db-c316-45a7-8fdd-8c6aac6c31ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="230c4055-08a2-8e67-3490-b58baa505560" executionId="63ebc97a-ab13-4e7a-9017-67ef8a82ed8c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="33f96ec8-1978-3254-cc0c-df549eff3dd5" executionId="4a7c723a-874f-4518-acdc-1a8b010e471f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1e954491-51e0-8627-309b-a42c9df6884a" executionId="37dbc143-d962-46f7-9106-e6d4520f7b82" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1cb9264f-7617-f779-239e-2e2b84d1181b" executionId="9d825407-db9d-4071-b1aa-3e2bb39a8a45" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="28acaf56-7639-e1c7-8e10-39adfa472716" executionId="0a39a5cb-7de6-49a7-a334-f47cbb9249ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ded57860-1501-2177-1396-3581e123cc6a" executionId="29dbb6f2-f34a-49b5-808d-a90739811761" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bb90a1f5-ffdd-48f4-df52-e3c876902105" executionId="efe93ed5-9ef4-4a22-957b-c9b2e5ad0003" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4418e837-7e79-54f8-471b-2f458f6345bd" executionId="11244474-e71f-4666-8df1-032085dfa7c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5eb7ebe4-7668-5dd2-5692-af6cc544e93a" executionId="d27d1315-b62c-4585-af92-1b822ac8b954" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9feb4c7b-330b-0177-6682-50313b7cc3a2" executionId="8276defd-4d70-481f-a8c3-512f700a1682" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a3fa60dd-66e4-8201-43f2-cdf0bd8c7a47" executionId="6121400e-c360-45e2-9aa3-7204ed5741fd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8a8f5d6a-e3e7-7973-5cec-8e12d6357b0c" executionId="82790b7e-9cd3-4f9f-a21d-6cd3166d7ce7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f792199b-a63d-a01d-5fb3-88e08b154242" executionId="cb7384bb-8fc5-485a-8391-a47bec11a111" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cf9332f0-256a-9999-50a7-b947477c56f0" executionId="3bce2e91-50d0-4eb3-a869-187975363caf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f312ec3f-f13c-18a6-2885-d55027fce8bc" executionId="3c993eac-5946-46ec-8ac7-acd926ceac52" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c458ddc9-9112-11cb-8b2d-9f442bce1bbf" executionId="9074b47f-05dd-473a-b13f-5a4662b67f99" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="41ed90e4-89e4-5fab-a52d-5c231da3bef3" executionId="8e59e5f5-6d78-4c71-8c96-2bf23ba457f1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7d96f211-0c9f-c87a-a531-4fd170cd27c8" executionId="b82ee0dd-8419-4315-905e-6c740d972d84" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f57c95cb-1d72-2725-bd70-5dafba3ed5ac" executionId="c9d58f3b-3e51-47d3-903f-856452ef4287" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3a780f06-103b-7b68-ac03-7f59687b1190" executionId="233fd860-5014-49ff-9953-a61e382882d5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a63f8030-e15b-b230-4565-4b9850cb2189" executionId="f4afb833-56b6-466d-8593-abacffdc4966" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f59ed16f-f2cc-d369-2d98-be5ef8e546ce" executionId="d8bf0c6d-7290-4086-bbcd-28ba776fd48a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="65185c0d-8fda-48cf-8d7b-053c0ad58e3b" executionId="421c5b5b-f3f9-4a4b-9009-cc563e2b060c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9f7076f9-7dbe-15f7-cf0d-34c8c5897cfa" executionId="6c8387af-d6d9-477c-9b1a-0f83b242a1ba" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4dc60b82-4a10-fc9f-fb75-5c16b4aea80d" executionId="2de9492c-c93c-4599-bb4b-62704adad8d3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ecced673-5ada-cdef-f9a0-2f10d54e19f3" executionId="2491a636-708c-4fbf-a877-a7efdb116147" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c5d8c851-f1d7-3fd1-5270-5580787abd63" executionId="b1b825b2-e0f8-4cd8-a815-5de6734e6291" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d1bf572-66a5-d02f-646f-a01e3112a599" executionId="b9c8aadc-b18d-4b8f-9f91-c727985abdc7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="350a9876-b2f1-8e53-b669-100c7a90e126" executionId="825acccb-744c-4c87-a3e1-f2a441c98432" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3342bd28-b4d4-2c3d-8aee-81a19a99323d" executionId="30e0eeba-7c07-4793-8217-434df8a172b4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aaca8872-82ea-6039-9bd7-347d5577702c" executionId="6ba785da-fd4c-480e-85c1-0ff6c4c4f204" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="22cd6da5-e76b-7db1-87b3-40278d51bc6c" executionId="5ea5c577-f4cb-4111-9452-d33f36c4f2c8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="daf11254-c926-345b-372a-aab15912de02" executionId="e2ec5192-53a0-4c64-ad0b-ce4bf91719cc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1124e235-8db8-1648-a815-14af65fb8018" executionId="8159443d-3b74-42a9-85a4-a3af51f986b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8325bffe-d9e5-f17d-30c8-71811350ffc5" executionId="950f928b-82f8-4ef6-b87c-7e4b4145f638" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bc7b29a3-ba0c-5a49-f8cb-92824ef0950c" executionId="8b26d852-39f1-46f7-ad3f-8e2e5f45e6ea" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d99e2b9e-9b47-717a-4f44-fc8684d82886" executionId="8964532f-b92d-489b-b62f-8252eadb8ef4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f7f690a7-b785-74c8-4f8c-621de7217e71" executionId="5b7d28ce-d389-4db2-9087-c5d2fc1cf53d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="26e748c7-4cbd-d163-7175-490a3ecc6da5" executionId="1f0ab2a9-a5e7-4101-a40e-e89e90c27062" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7e4f0789-71a4-f135-d0a8-456dd75e6bca" executionId="b5c6a4ec-a404-47f6-904c-7a7659c2bf97" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aa796155-d612-2455-f563-1edb06237a99" executionId="9579a002-dda6-4b70-8965-c944a8a71273" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2d52d23b-0144-59f8-af7f-172b678c1c58" executionId="4e4ab57c-ea09-4da2-b8f0-5f3a0c37f220" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="be4104e4-b91e-633c-6cb7-6be61062723b" executionId="f955d9e5-2472-4d95-a68a-5e123fcbdb87" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="686fd34c-e36c-0fa8-a948-4cf533e9e635" executionId="bf7af2f4-8477-4ebc-add9-0abee0daa418" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a7c7945d-0271-7d56-35e9-133c74c5000f" executionId="28d2800f-6663-4313-9fc5-7d0036b76682" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9b4d6b45-0913-f150-f1fb-120a996cded6" executionId="ec8e1f5a-5d96-4b84-ba19-2b38a5fa8910" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4d08bf7d-a630-8546-c392-e74b7162803d" executionId="56afc915-312d-441f-81dc-7c4836799cdf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="29af76b5-db81-0892-c2ff-3baccf67a378" executionId="14fc458a-3bc9-4090-9b14-24d3ffdcad4f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6df85c1f-edb5-fbb1-486a-2de583be7757" executionId="d248e114-a517-43b9-bdd2-f99e7620fa28" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bf28e72f-191a-d7ed-5da4-f977adfc9b63" executionId="6fd5937c-1bbc-4290-8996-657d4b2c3b97" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e1b20fc9-392d-d244-5b32-91221aac86f2" executionId="e8a4ebb0-0c12-413c-b1c0-327addfc786c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="79" executed="78" passed="78" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>在测试运行中跳过测试“LatestRecordingReadOnlyReportRegression”。&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

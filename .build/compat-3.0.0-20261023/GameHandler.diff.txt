@@ -1,0 +1,181 @@
+--- 2.6.b/GameHandler.cs
+
++++ 3.0.0/GameHandler.cs
+
+@@ -7,6 +7,7 @@
+
+ using Photon.Pun;
+ using Portningsbolaget.Photon;
+ using Portningsbolaget.Platforms;
++using Portningsbolaget.Utilities;
+ using Unity.Multiplayer.PlayMode;
+ using UnityEngine;
+ using UnityEngine.SceneManagement;
+@@ -101,7 +102,7 @@
+
+ 
+ 	public static bool IsInMultiplayerScene => Instance.IsMultiplayerScene(SceneManager.GetActiveScene());
+ 
+-	public static bool IsInGameplayScene => Instance.IsGameplayScene(SceneManager.GetActiveScene());
++	public static bool IsInGameplayScene => IsGameplayScene(SceneManager.GetActiveScene());
+ 
+ 	public void Initialize()
+ 	{
+@@ -137,7 +138,7 @@
+
+ 		return true;
+ 	}
+ 
+-	private bool IsGameplayScene(Scene scene)
++	private static bool IsGameplayScene(Scene scene)
+ 	{
+ 		if (!scene.name.Contains("Island"))
+ 		{
+@@ -151,12 +152,9 @@
+
+ 		Debug.Log("Initializing GameHandler");
+ 		m_gameStatus = new Dictionary<Type, GameStatus>();
+ 		m_gameServices = new Dictionary<Type, GameService>();
+-		List<ConsoleCommand> consoleCommands = ConsoleHandler.ScanForConsoleCommands();
+-		Dictionary<Type, CLITypeParser> typeParsers = ConsoleHandler.ScanForTypeParsers();
+-		CustomTypeRPCSerialization.Initialize();
+-		ConsoleHandler.Initialize(consoleCommands, typeParsers);
+ 		RetrievableResourceSingleton<InputHandler>.Instance.Initialize(() => false, () => !DebugUIHandler.IsOpen);
+ 		NetworkStats networkStats = gameObject.AddComponent<NetworkStats>();
++		RegisterService(new MapBundleService());
+ 		RegisterService(new PlayerHandler());
+ 		RegisterService(new ConnectionService());
+ 		RegisterService(new PersistentPlayerDataService());
+@@ -289,37 +287,102 @@
+
+ 		}
+ 		PhotonAuthManager.Update();
+ 		PlatformManager.Update();
+-		UserManager.Tick();
++		if (PhotonNetwork.IsConnected && !PhotonNetwork.OfflineMode)
++		{
++			UserManager.Tick();
++		}
+ 		Debug.ClearDeveloperConsole();
+ 	}
+ 
+-	private void OnJoinedSession(string region, string room)
++	public void OnJoinedSession(string region, string room)
+ 	{
+ 		StartCoroutine(JoinRoomViaInvite(region, room));
+ 	}
+ 
+ 	private IEnumerator JoinRoomViaInvite(string region, string room)
+ 	{
+-		while (!(SceneManager.GetActiveScene().name == "Title"))
++		while (!(SceneManager.GetActiveScene().name != "Pretitle"))
+ 		{
+ 			yield return new WaitForSeconds(1f);
+ 		}
+-		PlatformManager.CanPlayMultiplayer((bool allowed) =>
+-		{
+-			if (!allowed)
+-			{
+-				ShowInviteFailedModal();
++		bool shouldShowRestrictedMessageAfterCheck = true;
++		PlatformManager.CanPlayMultiplayer((RestrictedReason allowed) =>
++		{
++			if (allowed != RestrictedReason.None)
++			{
++				string id = allowed switch
++				{
++					RestrictedReason.ParentalControl => "PLAYOFFLINE", 
++					RestrictedReason.SocialRestriction => "PLAYOFFLINE", 
++					_ => "MODAL_CANTFINDLOBBY_TITLE", 
++				};
++				string id2 = allowed switch
++				{
++					RestrictedReason.ParentalControl => "PARENTAL_CONTROL_INFO", 
++					RestrictedReason.SocialRestriction => "PARENTAL_CONTROL_INFO", 
++					_ => "MODAL_CANTFINDLOBBY_BODY", 
++				};
++				string text = LocalizedText.GetText(id);
++				string text2 = LocalizedText.GetText(id2);
++				if (!Modal.IsOpen & shouldShowRestrictedMessageAfterCheck)
++				{
++					OpenModal(text, text2, region, room, continuable: false);
++				}
+ 			}
+ 			else
+ 			{
+-				JoinSpecificRoomState joinSpecificRoomState = GetService<ConnectionService>().StateMachine.SwitchState<JoinSpecificRoomState>();
+-				joinSpecificRoomState.RoomName = room.ToUpper();
+-				joinSpecificRoomState.RegionToJoin = region;
+-				RetrievableResourceSingleton<LoadingScreenHandler>.Instance.Load(LoadingScreen.LoadingScreenType.Basic, null, RetrievableResourceSingleton<LoadingScreenHandler>.Instance.LoadSceneProcess("Airport", networked: false, yieldForCharacterSpawn: true));
++				var (targetPlatform, usesMods) = Utilities.CodeToPlatformModState(room[1]);
++				PlatformManager.CanCrossPlay(targetPlatform, (bool flag) =>
++				{
++					if (!flag)
++					{
++						string text3 = LocalizedText.GetText("CROSSPLAY");
++						string text4 = LocalizedText.GetText("CANTCROSSPLAY");
++						OpenModal(text3, text4, region, room, continuable: false);
++					}
++					else if (usesMods)
++					{
++						string text5 = LocalizedText.GetText("MODDEDGAME");
++						string text6 = LocalizedText.GetText("MODWARNING");
++						OpenModal(text5, text6, region, room, continuable: true);
++					}
++					else
++					{
++						JoinRoom(region, room);
++					}
++				});
+ 			}
+ 		});
+ 	}
+ 
++	private void JoinRoom(string region, string room)
++	{
++		ConnectionService service = GetService<ConnectionService>();
++		if (PhotonNetwork.InRoom)
++		{
++			ChangeRoomState changeRoomState = service.StateMachine.SwitchState<ChangeRoomState>();
++			changeRoomState.RoomName = room.ToUpper();
++			changeRoomState.RegionToJoin = region;
++			NetworkConnector.LeaveRoom();
++		}
++		else
++		{
++			JoinSpecificRoomState joinSpecificRoomState = service.StateMachine.SwitchState<JoinSpecificRoomState>();
++			joinSpecificRoomState.RoomName = room.ToUpper();
++			joinSpecificRoomState.RegionToJoin = region;
++			RetrievableResourceSingleton<LoadingScreenHandler>.Instance.Load(LoadingScreen.LoadingScreenType.Basic, null, RetrievableResourceSingleton<LoadingScreenHandler>.Instance.LoadSceneProcess("Airport", networked: false, yieldForCharacterSpawn: true));
++		}
++	}
++
++	private void OpenModal(string title, string message, string region, string room, bool continuable)
++	{
++		ModalButtonsOption bodyContentOption = new ModalButtonsOption(new ModalButtonsOption.Option[1] { continuable ? new ModalButtonsOption.Option(LocalizedText.GetText("CONTINUE"), () =>
++		{
++			JoinRoom(region, room);
++		}) : new ModalButtonsOption.Option(LocalizedText.GetText("OK"), null) });
++		Modal.OpenModal(new DefaultHeaderModalOption(title, message), bodyContentOption);
++	}
++
+ 	private void OnSignedInStateChanged(bool isSignedIn)
+ 	{
+ 		if (!isSignedIn && !PhotonNetwork.OfflineMode)
+@@ -327,15 +390,4 @@
+
+ 			PhotonNetwork.Disconnect();
+ 		}
+ 	}
+-
+-	private void ShowInviteFailedModal()
+-	{
+-		string text = LocalizedText.GetText("MODAL_CANTFINDLOBBY_TITLE");
+-		string text2 = LocalizedText.GetText("MODAL_CANTFINDLOBBY_BODY");
+-		ModalButtonsOption bodyContentOption = new ModalButtonsOption(new ModalButtonsOption.Option[1]
+-		{
+-			new ModalButtonsOption.Option(LocalizedText.GetText("OK"), null)
+-		});
+-		Modal.OpenModal(new DefaultHeaderModalOption(text, text2), bodyContentOption);
+-	}
+ }

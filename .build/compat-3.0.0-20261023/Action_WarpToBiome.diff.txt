@@ -1,0 +1,19 @@
+--- 2.6.b/Action_WarpToBiome.cs
+
++++ 3.0.0/Action_WarpToBiome.cs
+
+@@ -20,11 +20,11 @@
+
+ 			{
+ 				if (photonView.IsMine)
+ 				{
+-					RetrievableResourceSingleton<LoadingScreenHandler>.Instance.LoadWithoutDisablingQueue(LoadingScreen.LoadingScreenType.WhiteInstant, null, MapHandler.GoToVoidRoutine(clearStatus: true));
++					RetrievableResourceSingleton<LoadingScreenHandler>.Instance.LoadWithoutDisablingQueue(LoadingScreen.LoadingScreenType.WhiteInstant, null, MapHandler.GoToVoidRoutine());
+ 				}
+ 				else
+ 				{
+-					RetrievableResourceSingleton<LoadingScreenHandler>.Instance.LoadWithoutDisablingQueue(LoadingScreen.LoadingScreenType.White, null, MapHandler.GoToVoidRoutine(clearStatus: true));
++					RetrievableResourceSingleton<LoadingScreenHandler>.Instance.LoadWithoutDisablingQueue(LoadingScreen.LoadingScreenType.White, null, MapHandler.GoToVoidRoutine());
+ 				}
+ 			}
+ 		}

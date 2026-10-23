@@ -1,0 +1,3749 @@
+{
+  "input": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\3d66.com_JDH5455253615.fbx",
+  "bytes": 23051232,
+  "sha256": "8d8f6567677e0c55f1180a92eea78ec2c598e5b7fcccc86586c645650f36c72e",
+  "fbx_version": 7500,
+  "global_settings": {
+    "UpAxis": [
+      1
+    ],
+    "UpAxisSign": [
+      1
+    ],
+    "FrontAxis": [
+      2
+    ],
+    "FrontAxisSign": [
+      1
+    ],
+    "CoordAxis": [
+      0
+    ],
+    "CoordAxisSign": [
+      1
+    ],
+    "OriginalUpAxis": [
+      2
+    ],
+    "OriginalUpAxisSign": [
+      1
+    ],
+    "UnitScaleFactor": [
+      1.0
+    ],
+    "OriginalUnitScaleFactor": [
+      1.0
+    ],
+    "AmbientColor": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "DefaultCamera": [
+      "Producer Top"
+    ],
+    "TimeMode": [
+      6
+    ],
+    "TimeProtocol": [
+      2
+    ],
+    "SnapOnFrameMode": [
+      0
+    ],
+    "TimeSpanStart": [
+      0
+    ],
+    "TimeSpanStop": [
+      307907720000
+    ],
+    "CustomFrameRate": [
+      -1.0
+    ],
+    "TimeMarker": [],
+    "CurrentTimeMarker": [
+      -1
+    ]
+  },
+  "object_counts": {
+    "Geometry": 29,
+    "Model": 31,
+    "Material": 11,
+    "Video": 18,
+    "Texture": 18,
+    "AnimationStack": 1,
+    "AnimationLayer": 1,
+    "CollectionExclusive": 3
+  },
+  "models": [
+    {
+      "id": 1698726496640,
+      "name": "Obj3d66-9753952-1-971",
+      "type": "Null",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -117.2659912109375,
+          186.83262634277344,
+          -151.0095672607422
+        ],
+        "Freeze": [
+          1
+        ],
+        "LODBox": [
+          1
+        ],
+        "UDP3DSMAX": [
+          "3d66Models: www.3d66.com-ID:9753952\r\n"
+        ],
+        "MaxHandle": [
+          7459
+        ]
+      }
+    },
+    {
+      "id": 1698726507600,
+      "name": "dda1c2af-a16d-4cc8-9259-d9ff7f0d5a28",
+      "type": "Null",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "MaxHandle": [
+          20529
+        ]
+      }
+    },
+    {
+      "id": 1698726514176,
+      "name": "3c28414d-6ef6-42e7-b3fd-cc3495bbb518",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20530
+        ]
+      }
+    },
+    {
+      "id": 1698726522944,
+      "name": "0372835a-a723-4a88-a366-4df05c53b920",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20531
+        ]
+      }
+    },
+    {
+      "id": 1698726494448,
+      "name": "8e90c5a0-11f0-49fa-97b9-01847a84d9ae",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20532
+        ]
+      }
+    },
+    {
+      "id": 1698726525136,
+      "name": "047bce75-4b0b-49b6-83e7-01b79ad325d1",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20533
+        ]
+      }
+    },
+    {
+      "id": 1698726527328,
+      "name": "82f722f2-348b-4302-a021-c120082678e8",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20534
+        ]
+      }
+    },
+    {
+      "id": 1698726498832,
+      "name": "80e5175d-e812-45c5-b440-14dc139e18c3",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20535
+        ]
+      }
+    },
+    {
+      "id": 1698726501024,
+      "name": "4139de82-4a4c-4f2b-9c11-7745e57ed25c",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20536
+        ]
+      }
+    },
+    {
+      "id": 1698647558288,
+      "name": "3b8c5d6a-857f-4f8b-ba0b-a3ec40b81bc0",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20537
+        ]
+      }
+    },
+    {
+      "id": 1699845582288,
+      "name": "a7c3a76d-2362-4798-a6db-91374b6cabfc",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20538
+        ]
+      }
+    },
+    {
+      "id": 1699845573520,
+      "name": "7156f072-ef7d-4c88-86b8-27936555ce8a",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20539
+        ]
+      }
+    },
+    {
+      "id": 1699845580096,
+      "name": "901a9e2f-f6fa-47d4-99e5-6af2cbe58e00",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20540
+        ]
+      }
+    },
+    {
+      "id": 1699845604208,
+      "name": "6bd714d7-a943-45f5-8987-541597a17a05",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20541
+        ]
+      }
+    },
+    {
+      "id": 1699845597632,
+      "name": "a8d50fa6-051f-4dcb-912a-89fde9df68e5",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20542
+        ]
+      }
+    },
+    {
+      "id": 1699845584480,
+      "name": "9debb5eb-e01e-4eb3-bb9a-dec988e57e4e",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20543
+        ]
+      }
+    },
+    {
+      "id": 1699845599824,
+      "name": "774ba67d-8e80-4b44-914d-2b19ad1b9d3d",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20544
+        ]
+      }
+    },
+    {
+      "id": 1699845575712,
+      "name": "c0e5fec7-48f5-41af-ab3a-d6912b7b29d2",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20545
+        ]
+      }
+    },
+    {
+      "id": 1699845602016,
+      "name": "6dca3403-b4c8-4727-9811-5792d425f082",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20546
+        ]
+      }
+    },
+    {
+      "id": 1699845586672,
+      "name": "e291afd2-e34d-459a-ab7f-a72efe150d33",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20547
+        ]
+      }
+    },
+    {
+      "id": 1699845606400,
+      "name": "09fabebf-3bc2-4a78-af7c-32e5f473ff5a",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20548
+        ]
+      }
+    },
+    {
+      "id": 1699845577904,
+      "name": "4981e530-bb35-4d3b-b545-4fcce1f10295",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20549
+        ]
+      }
+    },
+    {
+      "id": 1699845595440,
+      "name": "f70c6932-516c-4eb6-8efc-6f4a9c5219b5",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20550
+        ]
+      }
+    },
+    {
+      "id": 1699845593248,
+      "name": "2b8d4d46-ec8b-491b-8a51-cd30962e9d4d",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20551
+        ]
+      }
+    },
+    {
+      "id": 1699845608592,
+      "name": "7720e441-442a-4670-a341-f73a3e8272db",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20552
+        ]
+      }
+    },
+    {
+      "id": 1699845588864,
+      "name": "cf74e842-1adf-4edc-a517-a528feb215a7",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20553
+        ]
+      }
+    },
+    {
+      "id": 1699845615168,
+      "name": "7a039c00-489e-419b-b6bc-7af00a3e61c6",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20554
+        ]
+      }
+    },
+    {
+      "id": 1699845610784,
+      "name": "8095a1b2-0dc8-4683-8b68-e3e811b32391",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20555
+        ]
+      }
+    },
+    {
+      "id": 1699845612976,
+      "name": "b7ed9fc2-ceed-4e39-b158-212efcdf39dd",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20556
+        ]
+      }
+    },
+    {
+      "id": 1699845617360,
+      "name": "a4ba73f2-071a-4431-860e-9545207616d8",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20557
+        ]
+      }
+    },
+    {
+      "id": 1699845619552,
+      "name": "160bceb1-a9a6-4b90-a033-ab29affdf1f8",
+      "type": "Mesh",
+      "properties": {
+        "PreRotation": [
+          -90.0,
+          -0.0,
+          0.0
+        ],
+        "RotationActive": [
+          1
+        ],
+        "InheritType": [
+          1
+        ],
+        "ScalingMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "GeometricTranslation": [
+          -110.37841033935547,
+          199.05902099609375,
+          -151.0095672607422
+        ],
+        "DefaultAttributeIndex": [
+          0
+        ],
+        "MaxHandle": [
+          20558
+        ]
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "id": 1698692189952,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 672,
+      "polygons": 336,
+      "triangles": 336,
+      "local_bounds": [
+        [
+          -5.883997440338135,
+          13.180203437805176
+        ],
+        [
+          -54.6506462097168,
+          -28.77569007873535
+        ],
+        [
+          130.81939697265625,
+          179.89913940429688
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692193216,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 195,
+      "polygons": 336,
+      "triangles": 336,
+      "local_bounds": [
+        [
+          30.923551559448242,
+          63.99970245361328
+        ],
+        [
+          -17.402137756347656,
+          12.355916976928711
+        ],
+        [
+          125.20264434814453,
+          167.0677490234375
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692190496,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 549,
+      "polygons": 888,
+      "triangles": 888,
+      "local_bounds": [
+        [
+          5.809502124786377,
+          11.214353561401367
+        ],
+        [
+          -40.0612907409668,
+          -23.21894073486328
+        ],
+        [
+          104.35185241699219,
+          117.20390319824219
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692186688,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 549,
+      "polygons": 888,
+      "triangles": 888,
+      "local_bounds": [
+        [
+          21.8551025390625,
+          32.143306732177734
+        ],
+        [
+          -27.856239318847656,
+          -13.25318717956543
+        ],
+        [
+          100.25270080566406,
+          113.75404357910156
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692187232,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 241,
+      "polygons": 448,
+      "triangles": 448,
+      "local_bounds": [
+        [
+          17.87370491027832,
+          26.365306854248047
+        ],
+        [
+          -22.511289596557617,
+          -17.128137588500977
+        ],
+        [
+          113.7153549194336,
+          122.4133529663086
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692169824,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 257,
+      "polygons": 448,
+      "triangles": 448,
+      "local_bounds": [
+        [
+          9.644702911376953,
+          18.27715492248535
+        ],
+        [
+          -28.31184196472168,
+          -22.571687698364258
+        ],
+        [
+          115.74139404296875,
+          124.53365325927734
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692192128,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 2100,
+      "polygons": 3584,
+      "triangles": 3584,
+      "local_bounds": [
+        [
+          9.864151954650879,
+          20.375255584716797
+        ],
+        [
+          -26.102890014648438,
+          -19.174739837646484
+        ],
+        [
+          102.03485107421875,
+          111.2959976196289
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692167648,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 2960,
+      "polygons": 5328,
+      "triangles": 5328,
+      "local_bounds": [
+        [
+          4.933000564575195,
+          33.72670364379883
+        ],
+        [
+          -31.413291931152344,
+          -6.060987949371338
+        ],
+        [
+          98.97850036621094,
+          133.46995544433594
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692166560,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 1170,
+      "polygons": 720,
+      "triangles": 720,
+      "local_bounds": [
+        [
+          20.45980453491211,
+          37.2712516784668
+        ],
+        [
+          -33.190391540527344,
+          -24.108388900756836
+        ],
+        [
+          72.06515502929688,
+          96.43515014648438
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692186144,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 436,
+      "polygons": 640,
+      "triangles": 640,
+      "local_bounds": [
+        [
+          2.645550012588501,
+          21.199752807617188
+        ],
+        [
+          -6.837388515472412,
+          11.243263244628906
+        ],
+        [
+          53.10169982910156,
+          91.14689636230469
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692171456,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 113,
+      "polygons": 192,
+      "triangles": 192,
+      "local_bounds": [
+        [
+          -22.253049850463867,
+          -3.296751022338867
+        ],
+        [
+          -7.1604905128479,
+          19.19561195373535
+        ],
+        [
+          11.758649826049805,
+          108.98419952392578
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692191040,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 113,
+      "polygons": 192,
+      "triangles": 192,
+      "local_bounds": [
+        [
+          -15.362704277038574,
+          10.612098693847656
+        ],
+        [
+          3.87791109085083,
+          24.303661346435547
+        ],
+        [
+          12.711298942565918,
+          111.22380828857422
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692164384,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 141,
+      "polygons": 240,
+      "triangles": 240,
+      "local_bounds": [
+        [
+          -19.636152267456055,
+          10.431899070739746
+        ],
+        [
+          10.181110382080078,
+          26.23886489868164
+        ],
+        [
+          11.651799201965332,
+          104.93040466308594
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692194304,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 386,
+      "polygons": 640,
+      "triangles": 640,
+      "local_bounds": [
+        [
+          -14.780951499938965,
+          22.862102508544922
+        ],
+        [
+          -17.737939834594727,
+          16.383811950683594
+        ],
+        [
+          98.86309814453125,
+          131.0408477783203
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692178528,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 8665,
+      "polygons": 7488,
+      "triangles": 7488,
+      "local_bounds": [
+        [
+          -21.764301300048828,
+          20.30895233154297
+        ],
+        [
+          -17.602388381958008,
+          21.56026268005371
+        ],
+        [
+          13.441349029541016,
+          126.56209564208984
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692173632,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 6691,
+      "polygons": 11048,
+      "triangles": 11048,
+      "local_bounds": [
+        [
+          -48.052799224853516,
+          5.952150344848633
+        ],
+        [
+          -35.616943359375,
+          -3.603738784790039
+        ],
+        [
+          2.745999336242676,
+          89.92085266113281
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692164928,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 6255,
+      "polygons": 10408,
+      "triangles": 10408,
+      "local_bounds": [
+        [
+          -37.58799743652344,
+          0.8776005506515503
+        ],
+        [
+          -39.36659622192383,
+          -12.483989715576172
+        ],
+        [
+          53.85390090942383,
+          86.18879699707031
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692172000,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 1213,
+      "polygons": 2112,
+      "triangles": 2112,
+      "local_bounds": [
+        [
+          -16.649749755859375,
+          2.0112502574920654
+        ],
+        [
+          -13.735939025878906,
+          5.610061168670654
+        ],
+        [
+          82.34645080566406,
+          111.2761001586914
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692170912,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 1213,
+      "polygons": 2112,
+      "triangles": 2112,
+      "local_bounds": [
+        [
+          2.5758984088897705,
+          15.052350044250488
+        ],
+        [
+          -2.096087694168091,
+          16.736913681030273
+        ],
+        [
+          84.19224548339844,
+          111.94219970703125
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692194848,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 6584,
+      "polygons": 10968,
+      "triangles": 10968,
+      "local_bounds": [
+        [
+          6.926550388336182,
+          50.837303161621094
+        ],
+        [
+          -11.604538917541504,
+          12.420015335083008
+        ],
+        [
+          86.82369995117188,
+          109.29584503173828
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692177440,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 6691,
+      "polygons": 11048,
+      "triangles": 11048,
+      "local_bounds": [
+        [
+          6.574700355529785,
+          34.783355712890625
+        ],
+        [
+          -32.27783966064453,
+          8.79361343383789
+        ],
+        [
+          76.34844970703125,
+          100.928955078125
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692191584,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 6255,
+      "polygons": 10408,
+      "triangles": 10408,
+      "local_bounds": [
+        [
+          16.981801986694336,
+          44.8161506652832
+        ],
+        [
+          -0.12323713302612305,
+          30.801166534423828
+        ],
+        [
+          1.6552491188049316,
+          62.128501892089844
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692161664,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 6584,
+      "polygons": 10968,
+      "triangles": 10968,
+      "local_bounds": [
+        [
+          -30.732101440429688,
+          6.637551307678223
+        ],
+        [
+          -39.250789642333984,
+          -6.9993896484375
+        ],
+        [
+          92.70525360107422,
+          125.03465270996094
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692183968,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 141,
+      "polygons": 240,
+      "triangles": 240,
+      "local_bounds": [
+        [
+          -23.624502182006836,
+          -3.377352714538574
+        ],
+        [
+          -6.914290428161621,
+          21.60346031188965
+        ],
+        [
+          12.111199378967285,
+          104.774658203125
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692189408,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 436,
+      "polygons": 640,
+      "triangles": 640,
+      "local_bounds": [
+        [
+          -8.134249687194824,
+          9.392801284790039
+        ],
+        [
+          -16.891389846801758,
+          -6.474789619445801
+        ],
+        [
+          75.4063491821289,
+          99.64410400390625
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692185600,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 1215,
+      "polygons": 1160,
+      "triangles": 1160,
+      "local_bounds": [
+        [
+          -86.67200469970703,
+          -21.667451858520508
+        ],
+        [
+          -42.52029800415039,
+          22.57670783996582
+        ],
+        [
+          -7.152557373046875e-07,
+          46.8135986328125
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692181248,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 4,
+      "polygons": 2,
+      "triangles": 2,
+      "local_bounds": [
+        [
+          -205.4745635986328,
+          205.4745635986328
+        ],
+        [
+          -183.90780639648438,
+          183.90785217285156
+        ],
+        [
+          2.5477490425109863,
+          2.5477490425109863
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692172544,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 1215,
+      "polygons": 1160,
+      "triangles": 1160,
+      "local_bounds": [
+        [
+          -46.09480667114258,
+          6.784397602081299
+        ],
+        [
+          19.884809494018555,
+          69.5107650756836
+        ],
+        [
+          0.2013993263244629,
+          44.622352600097656
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    },
+    {
+      "id": 1698692165472,
+      "name": "",
+      "type": "Mesh",
+      "vertices": 1215,
+      "polygons": 1160,
+      "triangles": 1160,
+      "local_bounds": [
+        [
+          9.983951568603516,
+          45.33075714111328
+        ],
+        [
+          -30.655790328979492,
+          4.501463413238525
+        ],
+        [
+          1.5997490882873535,
+          29.409496307373047
+        ]
+      ],
+      "layers": [
+        "LayerElementNormal",
+        "LayerElementUV",
+        "LayerElementVisibility",
+        "LayerElementMaterial"
+      ]
+    }
+  ],
+  "deformers": [],
+  "textures": [
+    {
+      "id": 1698696416224,
+      "name": "3d66-export-JDH5455253615-002",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-002.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-002.jpg"
+    },
+    {
+      "id": 1698696421024,
+      "name": "3d66-export-JDH5455253615-003",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-003.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-003.jpg"
+    },
+    {
+      "id": 1698696438784,
+      "name": "3d66-export-JDH5455253615-004",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-004.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-004.jpg"
+    },
+    {
+      "id": 1698696418624,
+      "name": "3d66-export-JDH5455253615-005",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-005.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-005.jpg"
+    },
+    {
+      "id": 1698696435904,
+      "name": "3d66-export-JDH5455253615-006",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-006.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-006.jpg"
+    },
+    {
+      "id": 1698696443584,
+      "name": "3d66-export-JDH5455253615-007",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-007.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-007.jpg"
+    },
+    {
+      "id": 1698696438304,
+      "name": "3d66-export-JDH5455253615-008",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-008.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-008.jpg"
+    },
+    {
+      "id": 1698696413344,
+      "name": "3d66-export-JDH5455253615-009",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-009.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-009.jpg"
+    },
+    {
+      "id": 1698696436384,
+      "name": "3d66-export-JDH5455253615-010",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-010.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-010.jpg"
+    },
+    {
+      "id": 1698696419584,
+      "name": "3d66-export-JDH5455253615-011",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-011.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-011.jpg"
+    },
+    {
+      "id": 1698696420064,
+      "name": "3d66-export-JDH5455253615-012",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-012.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-012.jpg"
+    },
+    {
+      "id": 1698696440224,
+      "name": "3d66-export-JDH5455253615-013",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-013.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-013.jpg"
+    },
+    {
+      "id": 1698696440704,
+      "name": "3d66-export-JDH5455253615-014",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-014.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-014.jpg"
+    },
+    {
+      "id": 1698696442144,
+      "name": "3d66-export-JDH5455253615-015",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-015.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-015.jpg"
+    },
+    {
+      "id": 1698696414304,
+      "name": "3d66-export-JDH5455253615-016",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-016.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-016.jpg"
+    },
+    {
+      "id": 1698696423424,
+      "name": "3d66-export-JDH5455253615-017",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-017.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-017.jpg"
+    },
+    {
+      "id": 1698696424384,
+      "name": "3d66-export-JDH5455253615-018",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-018.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-018.jpg"
+    },
+    {
+      "id": 1698696424864,
+      "name": "3d66-export-JDH5455253615-019",
+      "type": "",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-019.jpg",
+      "relative_filename": "..\\..\\..\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-019.jpg"
+    }
+  ],
+  "materials": [
+    {
+      "id": 1698696415264,
+      "name": "326f62ce-3f47-45b5-9c6b-542a6b39d3d8",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696435424,
+      "name": "ec67e69d-6512-4b1c-9db2-cdaad43fcd11",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696439264,
+      "name": "14c3efa5-4adc-4d6b-8b7f-cfdbf2c5f221",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.9803921580314636,
+          0.9803921580314636,
+          0.9803921580314636
+        ],
+        "DiffuseColor": [
+          0.9803921580314636,
+          0.9803921580314636,
+          0.9803921580314636
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.9803921580314636,
+          0.9803921580314636,
+          0.9803921580314636
+        ],
+        "Diffuse": [
+          0.9803921580314636,
+          0.9803921580314636,
+          0.9803921580314636
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696419104,
+      "name": "c7fb4efe-ca0d-4251-9ca4-d300522072a5",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696430144,
+      "name": "6933dace-2042-46cb-a132-09a96139bba5",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696418144,
+      "name": "20e1479a-061c-40e8-aa16-07010f7a034d",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696433024,
+      "name": "ed6f247c-c5d5-499b-9649-e25c79189eca",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696413824,
+      "name": "5a2f5385-2fb1-4d03-9743-b88ed1b9379f",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696421504,
+      "name": "bf464b55-70d6-44dc-b580-823ea24b9ce0",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696436864,
+      "name": "72deaaae-1401-41f0-af13-e17bfd68c488",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    },
+    {
+      "id": 1698696420544,
+      "name": "2a09cf2c-37c7-49e9-b596-566521b30192",
+      "type": "",
+      "properties": {
+        "ShadingModel": [
+          "phong"
+        ],
+        "EmissiveFactor": [
+          0.0
+        ],
+        "AmbientColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "DiffuseColor": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "TransparentColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "SpecularColor": [
+          0.8999999761581421,
+          0.8999999761581421,
+          0.8999999761581421
+        ],
+        "SpecularFactor": [
+          0.0
+        ],
+        "ShininessExponent": [
+          2.0
+        ],
+        "Emissive": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Ambient": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Diffuse": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "Specular": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "Shininess": [
+          2.0
+        ],
+        "Opacity": [
+          1.0
+        ],
+        "Reflectivity": [
+          0.0
+        ]
+      }
+    }
+  ],
+  "embedded_images": [
+    {
+      "id": 1698696425344,
+      "name": "3d66-export-JDH5455253615-002",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-002.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-002.jpg",
+      "bytes": 181667,
+      "sha256": "2c363e6defcfcf1bb7ceb3a7f9179079a85633fb9a03744ed19457d958c97b13",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696425824,
+      "name": "3d66-export-JDH5455253615-003",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-003.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-003.jpg",
+      "bytes": 1300404,
+      "sha256": "c135accdfa11d0c35987379cd966e2ff8f1e06c57499aefd83d19a8803d5bf6b",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696426304,
+      "name": "3d66-export-JDH5455253615-004",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-004.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-004.jpg",
+      "bytes": 2290560,
+      "sha256": "86e35e81c41b72fad2d1ce7d52ad846826efa482d5b2caee8c7ce8b85461a063",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696431104,
+      "name": "3d66-export-JDH5455253615-005",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-005.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-005.jpg",
+      "bytes": 1057763,
+      "sha256": "56cff70f3899080556ec604d32c56ff8fc0b16fb39eeb6ac0e0a4b8fb0d1ea29",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696427744,
+      "name": "3d66-export-JDH5455253615-006",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-006.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-006.jpg",
+      "bytes": 945919,
+      "sha256": "867682911ed0fb6ce25ac97f6c710ad86c398e226998c2f9658e1467e8ff9671",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696428224,
+      "name": "3d66-export-JDH5455253615-007",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-007.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-007.jpg",
+      "bytes": 956250,
+      "sha256": "0035b2ef5ef50a6450f58f2368dca9aa7d439f4e7d4d4ea2ccad31a527c83f3d",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696433504,
+      "name": "3d66-export-JDH5455253615-008",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-008.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-008.jpg",
+      "bytes": 684484,
+      "sha256": "74746675211b69821c025bbc321394304810c75b881be0b0df89dadc2a5a78b1",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696428704,
+      "name": "3d66-export-JDH5455253615-009",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-009.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-009.jpg",
+      "bytes": 1300040,
+      "sha256": "c52d2d0c141d4578433da8777775d254574c8ce1466be60a0bdd9ab9f25c74e8",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696429184,
+      "name": "3d66-export-JDH5455253615-010",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-010.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-010.jpg",
+      "bytes": 2095553,
+      "sha256": "dc99504248cdf36ee6db61a2f7e21e209384220dd73d97a405d5564f46f07f64",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696431584,
+      "name": "3d66-export-JDH5455253615-011",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-011.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-011.jpg",
+      "bytes": 874690,
+      "sha256": "c290bc91ce8678bd8f5a6204157e19890b8bf87ca5434c496f8d8bb8d0b5ad58",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696432064,
+      "name": "3d66-export-JDH5455253615-012",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-012.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-012.jpg",
+      "bytes": 1058613,
+      "sha256": "f49ba757f9e3b09acd9f07c188fc3fcd09d6622cf3d5b1a71ea60067446da3ad",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696433984,
+      "name": "3d66-export-JDH5455253615-013",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-013.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-013.jpg",
+      "bytes": 785787,
+      "sha256": "59f598d916dfc764bd2a59e519e11190fba66967bf713186803518e4138076e4",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696459424,
+      "name": "3d66-export-JDH5455253615-014",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-014.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-014.jpg",
+      "bytes": 1094136,
+      "sha256": "a217798abb243b5c9f3f311f0be6ba5d7b1c652747a9cda82ceae03326f43ee2",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696464224,
+      "name": "3d66-export-JDH5455253615-015",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-015.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-015.jpg",
+      "bytes": 606795,
+      "sha256": "a3dad98b100054715ab5aa05caee842d8fcaa8963493e1fbd8b4326e098f5722",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696461824,
+      "name": "3d66-export-JDH5455253615-016",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-016.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-016.jpg",
+      "bytes": 1299826,
+      "sha256": "ab081aa89c6c5ac829183b16125b63ecf8c2cb10366626b54850d05199d57dcd",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696459904,
+      "name": "3d66-export-JDH5455253615-017",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-017.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-017.jpg",
+      "bytes": 963772,
+      "sha256": "d8dd68ad7e48841688fb8236d7c42cbbe93868d7d0fd184b9288633b8d7c9186",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696458464,
+      "name": "3d66-export-JDH5455253615-018",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-018.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-018.jpg",
+      "bytes": 24966,
+      "sha256": "cfa8a68a152388f3d3c25fa51fb0417cb5d6640ebb052d3cd9f9d8cdb1ff9c79",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    },
+    {
+      "id": 1698696452704,
+      "name": "3d66-export-JDH5455253615-019",
+      "type": "Clip",
+      "filename": "C:\\BlendChangeName\\Tmp\\9753952\\FbxBeforeConversion\\unzip\\TempMap\\3d66-export-JDH5455253615-019.jpg",
+      "extracted": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\UprightCockroach\\model-import\\textures\\3d66-export-JDH5455253615-019.jpg",
+      "bytes": 721007,
+      "sha256": "47441454306d89c5682a0699f11aec53b5a031985c37a898eb569fb09213c358",
+      "image_size": [
+        2048,
+        2048
+      ],
+      "image_mode": "RGB"
+    }
+  ],
+  "connections": [
+    [
+      "OO",
+      1698726496640,
+      0
+    ],
+    [
+      "OO",
+      1698726507600,
+      0
+    ],
+    [
+      "OO",
+      1698726514176,
+      0
+    ],
+    [
+      "OO",
+      1698726522944,
+      0
+    ],
+    [
+      "OO",
+      1698726494448,
+      0
+    ],
+    [
+      "OO",
+      1698726525136,
+      0
+    ],
+    [
+      "OO",
+      1698726527328,
+      0
+    ],
+    [
+      "OO",
+      1698726498832,
+      0
+    ],
+    [
+      "OO",
+      1698726501024,
+      0
+    ],
+    [
+      "OO",
+      1698647558288,
+      0
+    ],
+    [
+      "OO",
+      1699845582288,
+      0
+    ],
+    [
+      "OO",
+      1699845573520,
+      0
+    ],
+    [
+      "OO",
+      1699845580096,
+      0
+    ],
+    [
+      "OO",
+      1699845604208,
+      0
+    ],
+    [
+      "OO",
+      1699845597632,
+      0
+    ],
+    [
+      "OO",
+      1699845584480,
+      0
+    ],
+    [
+      "OO",
+      1699845599824,
+      0
+    ],
+    [
+      "OO",
+      1699845575712,
+      0
+    ],
+    [
+      "OO",
+      1699845602016,
+      0
+    ],
+    [
+      "OO",
+      1699845586672,
+      0
+    ],
+    [
+      "OO",
+      1699845606400,
+      0
+    ],
+    [
+      "OO",
+      1699845577904,
+      0
+    ],
+    [
+      "OO",
+      1699845595440,
+      0
+    ],
+    [
+      "OO",
+      1699845593248,
+      0
+    ],
+    [
+      "OO",
+      1699845608592,
+      0
+    ],
+    [
+      "OO",
+      1699845588864,
+      0
+    ],
+    [
+      "OO",
+      1699845615168,
+      0
+    ],
+    [
+      "OO",
+      1699845610784,
+      0
+    ],
+    [
+      "OO",
+      1699845612976,
+      0
+    ],
+    [
+      "OO",
+      1699845617360,
+      0
+    ],
+    [
+      "OO",
+      1699845619552,
+      0
+    ],
+    [
+      "OO",
+      1698294414080,
+      1698782563216
+    ],
+    [
+      "OO",
+      1698692189952,
+      1698726514176
+    ],
+    [
+      "OO",
+      1698696415264,
+      1698726514176
+    ],
+    [
+      "OO",
+      1698692193216,
+      1698726522944
+    ],
+    [
+      "OO",
+      1698696415264,
+      1698726522944
+    ],
+    [
+      "OO",
+      1698692190496,
+      1698726494448
+    ],
+    [
+      "OO",
+      1698696435424,
+      1698726494448
+    ],
+    [
+      "OO",
+      1698692186688,
+      1698726525136
+    ],
+    [
+      "OO",
+      1698696435424,
+      1698726525136
+    ],
+    [
+      "OO",
+      1698692187232,
+      1698726527328
+    ],
+    [
+      "OO",
+      1698696439264,
+      1698726527328
+    ],
+    [
+      "OO",
+      1698692169824,
+      1698726498832
+    ],
+    [
+      "OO",
+      1698696439264,
+      1698726498832
+    ],
+    [
+      "OO",
+      1698692192128,
+      1698726501024
+    ],
+    [
+      "OO",
+      1698696419104,
+      1698726501024
+    ],
+    [
+      "OO",
+      1698692167648,
+      1698647558288
+    ],
+    [
+      "OO",
+      1698696430144,
+      1698647558288
+    ],
+    [
+      "OO",
+      1698692166560,
+      1699845582288
+    ],
+    [
+      "OO",
+      1698696418144,
+      1699845582288
+    ],
+    [
+      "OO",
+      1698692186144,
+      1699845573520
+    ],
+    [
+      "OO",
+      1698696433024,
+      1699845573520
+    ],
+    [
+      "OO",
+      1698692171456,
+      1699845580096
+    ],
+    [
+      "OO",
+      1698696413824,
+      1699845580096
+    ],
+    [
+      "OO",
+      1698692191040,
+      1699845604208
+    ],
+    [
+      "OO",
+      1698696413824,
+      1699845604208
+    ],
+    [
+      "OO",
+      1698692164384,
+      1699845597632
+    ],
+    [
+      "OO",
+      1698696413824,
+      1699845597632
+    ],
+    [
+      "OO",
+      1698692194304,
+      1699845584480
+    ],
+    [
+      "OO",
+      1698696421504,
+      1699845584480
+    ],
+    [
+      "OO",
+      1698692178528,
+      1699845599824
+    ],
+    [
+      "OO",
+      1698696435424,
+      1699845599824
+    ],
+    [
+      "OO",
+      1698692173632,
+      1699845575712
+    ],
+    [
+      "OO",
+      1698696433024,
+      1699845575712
+    ],
+    [
+      "OO",
+      1698692164928,
+      1699845602016
+    ],
+    [
+      "OO",
+      1698696433024,
+      1699845602016
+    ],
+    [
+      "OO",
+      1698692172000,
+      1699845586672
+    ],
+    [
+      "OO",
+      1698696435424,
+      1699845586672
+    ],
+    [
+      "OO",
+      1698692170912,
+      1699845606400
+    ],
+    [
+      "OO",
+      1698696435424,
+      1699845606400
+    ],
+    [
+      "OO",
+      1698692194848,
+      1699845577904
+    ],
+    [
+      "OO",
+      1698696433024,
+      1699845577904
+    ],
+    [
+      "OO",
+      1698692177440,
+      1699845595440
+    ],
+    [
+      "OO",
+      1698696433024,
+      1699845595440
+    ],
+    [
+      "OO",
+      1698692191584,
+      1699845593248
+    ],
+    [
+      "OO",
+      1698696433024,
+      1699845593248
+    ],
+    [
+      "OO",
+      1698692161664,
+      1699845608592
+    ],
+    [
+      "OO",
+      1698696433024,
+      1699845608592
+    ],
+    [
+      "OO",
+      1698692183968,
+      1699845588864
+    ],
+    [
+      "OO",
+      1698696413824,
+      1699845588864
+    ],
+    [
+      "OO",
+      1698692189408,
+      1699845615168
+    ],
+    [
+      "OO",
+      1698696433024,
+      1699845615168
+    ],
+    [
+      "OO",
+      1698692185600,
+      1699845610784
+    ],
+    [
+      "OO",
+      1698696436864,
+      1699845610784
+    ],
+    [
+      "OO",
+      1698692181248,
+      1699845612976
+    ],
+    [
+      "OO",
+      1698696420544,
+      1699845612976
+    ],
+    [
+      "OO",
+      1698692172544,
+      1699845617360
+    ],
+    [
+      "OO",
+      1698696436864,
+      1699845617360
+    ],
+    [
+      "OO",
+      1698692165472,
+      1699845619552
+    ],
+    [
+      "OO",
+      1698696436864,
+      1699845619552
+    ],
+    [
+      "OP",
+      1698696416224,
+      1698696415264,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      1698696421024,
+      1698696415264,
+      "Bump"
+    ],
+    [
+      "OO",
+      1698696425344,
+      1698696416224
+    ],
+    [
+      "OO",
+      1698696425824,
+      1698696421024
+    ],
+    [
+      "OP",
+      1698696438784,
+      1698696435424,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      1698696418624,
+      1698696435424,
+      "Bump"
+    ],
+    [
+      "OO",
+      1698696426304,
+      1698696438784
+    ],
+    [
+      "OO",
+      1698696431104,
+      1698696418624
+    ],
+    [
+      "OP",
+      1698696435904,
+      1698696439264,
+      "DiffuseColor"
+    ],
+    [
+      "OO",
+      1698696427744,
+      1698696435904
+    ],
+    [
+      "OP",
+      1698696443584,
+      1698696419104,
+      "DiffuseColor"
+    ],
+    [
+      "OO",
+      1698696428224,
+      1698696443584
+    ],
+    [
+      "OP",
+      1698696438304,
+      1698696430144,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      1698696413344,
+      1698696430144,
+      "Bump"
+    ],
+    [
+      "OO",
+      1698696433504,
+      1698696438304
+    ],
+    [
+      "OO",
+      1698696428704,
+      1698696413344
+    ],
+    [
+      "OP",
+      1698696436384,
+      1698696418144,
+      "DiffuseColor"
+    ],
+    [
+      "OO",
+      1698696429184,
+      1698696436384
+    ],
+    [
+      "OP",
+      1698696419584,
+      1698696433024,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      1698696420064,
+      1698696433024,
+      "Bump"
+    ],
+    [
+      "OO",
+      1698696431584,
+      1698696419584
+    ],
+    [
+      "OO",
+      1698696432064,
+      1698696420064
+    ],
+    [
+      "OP",
+      1698696440224,
+      1698696413824,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      1698696440704,
+      1698696413824,
+      "Bump"
+    ],
+    [
+      "OO",
+      1698696433984,
+      1698696440224
+    ],
+    [
+      "OO",
+      1698696459424,
+      1698696440704
+    ],
+    [
+      "OP",
+      1698696442144,
+      1698696421504,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      1698696414304,
+      1698696421504,
+      "Bump"
+    ],
+    [
+      "OO",
+      1698696464224,
+      1698696442144
+    ],
+    [
+      "OO",
+      1698696461824,
+      1698696414304
+    ],
+    [
+      "OP",
+      1698696423424,
+      1698696436864,
+      "DiffuseColor"
+    ],
+    [
+      "OO",
+      1698696459904,
+      1698696423424
+    ],
+    [
+      "OP",
+      1698696424384,
+      1698696420544,
+      "DiffuseColor"
+    ],
+    [
+      "OP",
+      1698696424864,
+      1698696420544,
+      "TransparentColor"
+    ],
+    [
+      "OO",
+      1698696458464,
+      1698696424384
+    ],
+    [
+      "OO",
+      1698696452704,
+      1698696424864
+    ],
+    [
+      "OO",
+      1698726496640,
+      1698697885024
+    ]
+  ],
+  "summary": {
+    "mesh_count": 29,
+    "vertices": 64259,
+    "polygons": 95802,
+    "triangles": 95802,
+    "bone_nodes": 0,
+    "skin_deformers": 0,
+    "clusters": 0,
+    "embedded_images": 18
+  }
+}

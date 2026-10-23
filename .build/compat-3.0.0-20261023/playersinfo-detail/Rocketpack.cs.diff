@@ -1,0 +1,26 @@
+--- 2.4.b/Rocketpack.cs
+
++++ 3.0.0/Rocketpack.cs
+
+@@ -38,16 +38,16 @@
+
+ 			while (t < 3f)
+ 			{
+ 				t += Time.fixedDeltaTime;
+-				backpack.rig.AddForce(base.transform.up * flyawayForce, ForceMode.Impulse);
+-				backpack.rig.AddTorque(Vector3.Cross(base.transform.up, backpack.rig.linearVelocity.normalized) * flyAwayTorque);
++				backpack.rig.AddForce(transform.up * flyawayForce, ForceMode.Impulse);
++				backpack.rig.AddTorque(Vector3.Cross(transform.up, backpack.rig.linearVelocity.normalized) * flyAwayTorque);
+ 				yield return new WaitForFixedUpdate();
+ 			}
+ 			rocketFX.RocketExtinguish();
+ 			lit = false;
+-			Object.Instantiate(explosionPrefab, base.transform.position, Quaternion.identity);
++			Object.Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+ 			if (PhotonNetwork.IsMasterClient)
+ 			{
+-				PhotonNetwork.Destroy(base.gameObject);
++				PhotonNetwork.Destroy(gameObject);
+ 			}
+ 		}
+ 	}

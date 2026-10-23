@@ -1,0 +1,91 @@
+--- 2.6.b/Peak.Network\NetworkingUtilities.cs
+
++++ 3.0.0/Peak.Network\NetworkingUtilities.cs
+
+@@ -4,6 +4,8 @@
+
+ using ExitGames.Client.Photon;
+ using Photon.Pun;
+ using Photon.Realtime;
++using Portningsbolaget.Photon;
++using Portningsbolaget.Platforms;
+ using Steamworks;
+ using Unity.Multiplayer.PlayMode;
+ using UnityEngine;
+@@ -105,7 +107,7 @@
+
+ 		return true;
+ 	}
+ 
+-	public static bool ConnectToNetwork(Action<bool> callback = null)
++	public static bool ConnectToNetwork(Action<bool> callback = null, bool explicitRetry = false)
+ 	{
+ 		if (PhotonNetwork.IsConnected)
+ 		{
+@@ -113,7 +115,37 @@
+
+ 			return false;
+ 		}
+ 		ConnectingToNetwork = true;
+-		return ConnectToPhotonNetwork();
++		PlatformManager.Platform.HasInternetConnection((bool hasInternet) =>
++		{
++			if (!hasInternet)
++			{
++				Debug.LogError("No internet connection");
++				FailedToAuth = true;
++				ConnectingToNetwork = false;
++				callback?.Invoke(obj: false);
++			}
++			else
++			{
++				PhotonUtility.Authenticate((bool success) =>
++				{
++					FailedToAuth = !success;
++					if (success)
++					{
++						if (ConnectToPhotonNetwork())
++						{
++							UserManager.RenewAuthAsync();
++						}
++					}
++					else
++					{
++						Debug.LogError("Can't connect to network");
++						ConnectingToNetwork = false;
++					}
++					callback?.Invoke(success);
++				});
++			}
++		}, explicitRetry);
++		return true;
+ 	}
+ 
+ 	private static bool ConnectToPhotonNetwork()
+@@ -125,7 +157,6 @@
+
+ 		PhotonNetwork.GameVersion = buildVersion.ToString();
+ 		PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = buildVersion.ToMatchmaking();
+ 		PhotonNetwork.NickName = GetUsername();
+-		PhotonNetwork.AuthValues = LoadUserID();
+ 		Debug.Log("Photon Start" + PhotonNetwork.NetworkClientState.ToString() + " using app version: " + buildVersion.ToMatchmaking());
+ 		bool result = PhotonNetwork.ConnectUsingSettings();
+ 		ConnectingToNetwork = false;
+@@ -151,6 +182,16 @@
+
+ 		PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
+ 	}
+ 
++	public static string GetUserIdPhoton(Photon.Realtime.Player player)
++	{
++		Hashtable customProperties = player.CustomProperties;
++		if (customProperties.ContainsKey("UserID"))
++		{
++			return (string)customProperties["UserID"];
++		}
++		return string.Empty;
++	}
++
+ 	public static bool HasValidUserId(this Player self)
+ 	{
+ 		string userId = self.GetUserId();

@@ -1,0 +1,24 @@
+--- 2.6.b/Player.cs
+
++++ 3.0.0/Player.cs
+
+@@ -47,13 +47,17 @@
+
+ 		backpackSlot = new BackpackSlot(3);
+ 		if (view != null)
+ 		{
++			if (!view.IsMine && !this.HasValidUserId())
++			{
++				Debug.LogError(name + " is about to register itself with an invalid user ID which breaks stuff!!");
++			}
+ 			PlayerHandler.RegisterPlayer(this);
+ 			if (view.IsMine)
+ 			{
+ 				localPlayer = this;
+ 				AssignUserID(PlatformManager.Platform.UserID);
+ 				AssignPlatformFamily(PlatformManager.Platform.PlatformFamily);
+-				AssignProductUserID(UserManager.CurrentUser.Id);
++				AssignProductUserID(UserManager.GetUserId);
+ 			}
+ 		}
+ 		gameObject.name = "Player: " + view.Owner.NickName;

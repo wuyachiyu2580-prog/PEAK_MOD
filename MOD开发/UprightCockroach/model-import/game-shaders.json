@@ -1,0 +1,4530 @@
+[
+  {
+    "name": "Legacy Shaders/VertexLit",
+    "properties": [
+      "_Color",
+      "_SpecColor",
+      "_Emission",
+      "_Shininess",
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Legacy Shaders/Diffuse",
+    "properties": [
+      "_Color",
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-StencilWrite",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Internal-DepthNormalsTexture",
+    "properties": [
+      "_MainTex",
+      "_Cutoff",
+      "_Color"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-ScreenSpaceShadows",
+    "properties": [
+      "_ShadowMapTexture",
+      "_ODSWorldTexture"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-CombineDepthNormals",
+    "properties": []
+  },
+  {
+    "name": "Hidden/BlitCopy",
+    "properties": [
+      "_MainTex",
+      "_Color"
+    ]
+  },
+  {
+    "name": "Hidden/BlitCopyDepth",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/ConvertTexture",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Internal-DeferredShading",
+    "properties": [
+      "_LightTexture0",
+      "_LightTextureB0",
+      "_ShadowMapTexture",
+      "_SrcBlend",
+      "_DstBlend"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-DeferredReflections",
+    "properties": [
+      "_SrcBlend",
+      "_DstBlend"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-MotionVectors",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Internal-Flare",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Internal-Halo",
+    "properties": []
+  },
+  {
+    "name": "Hidden/BlitCopyWithDepth",
+    "properties": [
+      "_MainTex",
+      "_Color"
+    ]
+  },
+  {
+    "name": "Hidden/BlitToDepth",
+    "properties": [
+      "_MainTex",
+      "_Color"
+    ]
+  },
+  {
+    "name": "Hidden/BlitToDepth_MSAA",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/BlitCopyHDRTonemap",
+    "properties": [
+      "_MainTex",
+      "_NitsForPaperWhite",
+      "_ColorGamut",
+      "_ForceGammaToLinear",
+      "_MaxDisplayNits"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-DebugPattern",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-GUITextureClip",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-GUITextureClipText",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-GUITexture",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-GUITextureBlit",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-GUIRoundedRect",
+    "properties": [
+      "_MainTex",
+      "_SrcBlend",
+      "_DstBlend"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-GUIRoundedRectWithColorPerBorder",
+    "properties": [
+      "_MainTex",
+      "_SrcBlend",
+      "_DstBlend"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-UIRDefault",
+    "properties": [
+      "_MainTex",
+      "_FontTex",
+      "_CustomTex",
+      "_Color"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-UIRAtlasBlitCopy",
+    "properties": [
+      "_MainTex0",
+      "_MainTex1",
+      "_MainTex2",
+      "_MainTex3",
+      "_MainTex4",
+      "_MainTex5",
+      "_MainTex6",
+      "_MainTex7"
+    ]
+  },
+  {
+    "name": "Sprites/Default",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "PixelSnap",
+      "_RendererColor",
+      "_Flip",
+      "_AlphaTex",
+      "_EnableExternalAlpha"
+    ]
+  },
+  {
+    "name": "Sprites/Mask",
+    "properties": [
+      "_MainTex",
+      "_AlphaTex",
+      "_Cutoff",
+      "_Color",
+      "_EnableExternalAlpha",
+      "PixelSnap"
+    ]
+  },
+  {
+    "name": "UI/Default",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "UI/DefaultETC1",
+    "properties": [
+      "_MainTex",
+      "_AlphaTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/CubeBlur",
+    "properties": [
+      "_MainTex",
+      "_Texel",
+      "_Level",
+      "_Scale"
+    ]
+  },
+  {
+    "name": "Hidden/CubeCopy",
+    "properties": [
+      "_MainTex",
+      "_Level"
+    ]
+  },
+  {
+    "name": "Hidden/CubeBlend",
+    "properties": [
+      "_TexA",
+      "_TexB",
+      "_value"
+    ]
+  },
+  {
+    "name": "Hidden/VR/BlitTexArraySlice",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-ODSWorldTexture",
+    "properties": [
+      "_MainTex",
+      "_Cutoff",
+      "_Color"
+    ]
+  },
+  {
+    "name": "Hidden/Internal-CubemapToEquirect",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/VR/BlitFromTex2DToTexArraySlice",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/VideoComposite",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/VideoDecode",
+    "properties": [
+      "_MainTex",
+      "_SecondTex",
+      "_ThirdTex"
+    ]
+  },
+  {
+    "name": "Hidden/TextCore/Distance Field SSD",
+    "properties": [
+      "_FaceColor",
+      "_FaceDilate",
+      "_OutlineColor",
+      "_OutlineWidth",
+      "_OutlineSoftness",
+      "_UnderlayColor",
+      "_UnderlayOffsetX",
+      "_UnderlayOffsetY",
+      "_UnderlayDilate",
+      "_UnderlaySoftness",
+      "_WeightNormal",
+      "_WeightBold",
+      "_ShaderFlags",
+      "_ScaleRatioA",
+      "_ScaleRatioB",
+      "_ScaleRatioC",
+      "_MainTex",
+      "_TextureWidth",
+      "_TextureHeight",
+      "_GradientScale",
+      "_ScaleX",
+      "_ScaleY",
+      "_PerspectiveFilter",
+      "_Sharpness",
+      "_VertexOffsetX",
+      "_VertexOffsetY"
+    ]
+  },
+  {
+    "name": "Hidden/Physics2D/SDF_CircleGeometry",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Physics2D/SDF_CapsuleGeometry",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Physics2D/SDF_PolygonGeometry",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Physics2D/SDF_Line",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Physics2D/SDF_Point",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Shader Graph/FallbackError",
+    "properties": []
+  },
+  {
+    "name": "Shader Graphs/EyeBlink",
+    "properties": [
+      "_Blur",
+      "_EyeOpen",
+      "_Texture2D",
+      "_Noise_Intensity",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Shader Graphs/Screen Space Fog",
+    "properties": [
+      "_Fog_Tightness",
+      "_Fog_Depth",
+      "_Fog_Color",
+      "_Height_Fog_Position",
+      "_Noise",
+      "_Noise_Scale",
+      "_Noise_Amount",
+      "_Noise_Speed",
+      "_Color_Variation",
+      "_Fog_Variation_Color",
+      "_Textture_Height_Offset",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Shader Graphs/Scary",
+    "properties": [
+      "_Grain",
+      "_Strength",
+      "_GrainMult",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Shader Graphs/FogFeature",
+    "properties": [
+      "_Noise_Texture",
+      "_Noise_Distort_Amount",
+      "_Distance_Range",
+      "_Haze_Speed",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Shader Graphs/BinocularsOverlay",
+    "properties": [
+      "_Binoc_Mask",
+      "_Noise_Tex",
+      "_Noise_Distort_Amount",
+      "_Noise_Smoothstep",
+      "_Flip_NoiseTex",
+      "_Edge_Warp",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Particles/Standard Unlit",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_Cutoff",
+      "_BumpScale",
+      "_BumpMap",
+      "_EmissionColor",
+      "_EmissionMap",
+      "_DistortionStrength",
+      "_DistortionBlend",
+      "_SoftParticlesNearFadeDistance",
+      "_SoftParticlesFarFadeDistance",
+      "_CameraNearFadeDistance",
+      "_CameraFarFadeDistance",
+      "_Mode",
+      "_ColorMode",
+      "_FlipbookMode",
+      "_LightingEnabled",
+      "_DistortionEnabled",
+      "_EmissionEnabled",
+      "_BlendOp",
+      "_SrcBlend",
+      "_DstBlend",
+      "_ZWrite",
+      "_Cull",
+      "_SoftParticlesEnabled",
+      "_CameraFadingEnabled",
+      "_SoftParticleFadeParams",
+      "_CameraFadeParams",
+      "_ColorAddSubDiff",
+      "_DistortionStrengthScaled"
+    ]
+  },
+  {
+    "name": "SmokeParticleSimple",
+    "properties": [
+      "_Opacity",
+      "_ShadowStr",
+      "_DepthFadeDistance",
+      "_Roundness",
+      "_RoundnessExp",
+      "_Textureu",
+      "_TexScroll",
+      "_Flip",
+      "_AlphaRemap",
+      "_TextureInfluence",
+      "_Color",
+      "_Color2",
+      "_Color2Remap",
+      "_Color3",
+      "_Color3Remap",
+      "_TextureRotateSpeed",
+      "_SunGlowLighting",
+      "_FinalAlphaRemap",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Kuwahara",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/Sampling",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Colorize",
+    "properties": []
+  },
+  {
+    "name": "Hidden/VoxelizeShader",
+    "properties": []
+  },
+  {
+    "name": "GD/FireParticle",
+    "properties": [
+      "_Opacity",
+      "_ShadowStr",
+      "_DepthFadeDistance",
+      "_DepthFadeSmoothstep",
+      "_Roundness",
+      "_RoundnessExp",
+      "_Textureu",
+      "_Flip",
+      "_AlphaRemap",
+      "_TextureInfluence",
+      "_Color",
+      "_DistortionTexture",
+      "_DistortionScale",
+      "_Distortion",
+      "_DistortionScroll",
+      "_TextureRotateSpeed",
+      "_SunGlowLighting",
+      "_Glow",
+      "_BackgroundGlow",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "W/Peak_Waterfall",
+    "properties": [
+      "_Cutoff",
+      "_SSS",
+      "_AmbientColor",
+      "_WhiteWater",
+      "_WhiteWaterRange",
+      "_NormalTex",
+      "_TimeScaleTwo",
+      "_GrabPassTint",
+      "_NormalScale",
+      "_TimeScale",
+      "_Tiling",
+      "_WhiteWaterTiling",
+      "_SpecColor",
+      "_WhiteWaterTex",
+      "_DepthFadeDist",
+      "_GrabPassNormalStrength",
+      "_SpecularStep",
+      "_Vector0",
+      "_WhiteWaterStep",
+      "_WorldPositionY",
+      "_WorldPositionYFalloff",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Color Split",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/Stop NaN",
+    "properties": []
+  },
+  {
+    "name": "Hidden/CoreSRP/CoreCopy",
+    "properties": []
+  },
+  {
+    "name": "Jelly",
+    "properties": [
+      "_Zoom",
+      "_Metalic",
+      "_Outline",
+      "_Texture2Scale",
+      "_INVERT_TEX_2",
+      "_VertexColor",
+      "_Texture2Color",
+      "_Texture2",
+      "_Texture",
+      "_Remap",
+      "_Color",
+      "_Color2",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Universal Render Pipeline/2D/Sprite-Unlit-Default",
+    "properties": [
+      "_MainTex",
+      "_ZWrite",
+      "_Color",
+      "PixelSnap",
+      "_RendererColor",
+      "_AlphaTex",
+      "_EnableExternalAlpha"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Overlay",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Kaleidoscope",
+    "properties": []
+  },
+  {
+    "name": "RainPost",
+    "properties": [
+      "_SprinkleColor",
+      "_WaterColor",
+      "_SkyColor",
+      "_DistortStrength",
+      "_DistortScale",
+      "_DistortTexture",
+      "_DistortScroll",
+      "_Sparkle",
+      "_SparkleRemap",
+      "_SparkleScale",
+      "_SparkleScroll",
+      "_SparkleSkyColor",
+      "_Alpha",
+      "_RainSpatterEdge",
+      "_SpatterTexture",
+      "_SpatterSmoothstep",
+      "_SpatterScale",
+      "_SpatterIntensity",
+      "_SpecularIntensity",
+      "_SpecularPower",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Danger",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/CameraMotionBlur",
+    "properties": []
+  },
+  {
+    "name": "Unlit/SimpleShadow",
+    "properties": [
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/ClusterDeferred",
+    "properties": [
+      "_LitStencilRef",
+      "_LitStencilReadMask",
+      "_LitStencilWriteMask",
+      "_SimpleLitStencilRef",
+      "_SimpleLitStencilReadMask",
+      "_SimpleLitStencilWriteMask"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Tube Distortion",
+    "properties": []
+  },
+  {
+    "name": "W/Peak_GroundTransition",
+    "properties": [
+      "_AddSpecular",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_BaseMetallic",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_Clip",
+      "_VertexColorAmount",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/SpeedLines",
+    "properties": []
+  },
+  {
+    "name": "UI/Procedural UI Image",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/TerrainEngine/Details/UniversalPipeline/BillboardWavingDoublePass",
+    "properties": [
+      "_WavingTint",
+      "_MainTex",
+      "_WaveAndDistance",
+      "_Cutoff"
+    ]
+  },
+  {
+    "name": "Hidden/Sirenix/Editor/GUIIcon",
+    "properties": [
+      "_MainTex",
+      "_Color"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/BokehDepthOfField",
+    "properties": []
+  },
+  {
+    "name": "Scouts/UI",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip",
+      "_Noise",
+      "_NoiseScale",
+      "_Step",
+      "_StepSmooth",
+      "_R_IS_ALPHA",
+      "_WiggleTime",
+      "_TextureSample1",
+      "_TexScale",
+      "_USE_MAINTEX",
+      "_TexColor",
+      "_MainTexTint",
+      "_AlphaStrength",
+      "_SCROLLING",
+      "_ScrollSpeed",
+      "_Tex",
+      "_VERTEXCOLOR_A_IS_CLIP",
+      "_VERTEXCOLORTOSCROLLSPEED",
+      "_NoiseRemap",
+      "_OverlayTexture",
+      "_OverlayColor",
+      "_OverlayScale",
+      "_OverlaySmoothstep",
+      "_OverlayMotionAmount",
+      "_FlipOverlay"
+    ]
+  },
+  {
+    "name": "Hidden/VFX/Empty",
+    "properties": []
+  },
+  {
+    "name": "NickPost/Poison",
+    "properties": [
+      "_Texture",
+      "_Edge",
+      "_Color",
+      "_TextureStrength",
+      "_EdgeAdd",
+      "_Intensity",
+      "_Pixels",
+      "_T_Scroll",
+      "_D_Scroll",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/Core/FallbackError",
+    "properties": []
+  },
+  {
+    "name": "GD/HeliRotors",
+    "properties": [
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_DistortTex",
+      "_DistortMovementSpeed",
+      "_DistortTexScale",
+      "_BladeMovementSpeed",
+      "_Distortionamount",
+      "_TwistAmount",
+      "_BladeSize",
+      "_Rotors",
+      "_MainColor",
+      "_SecondaryColor",
+      "_ColorRemap",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "NickPost/Energy",
+    "properties": [
+      "_Edge",
+      "_Color",
+      "_LineColor",
+      "_EdgeAdd",
+      "_Intensity",
+      "_SpeedLines",
+      "_LengthScale",
+      "_RadialScale",
+      "_Step",
+      "_ScrollSpeed",
+      "_EdgeFadeRemap",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Edge Detection",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Posterize",
+    "properties": []
+  },
+  {
+    "name": "W/Peak_Ice",
+    "properties": [
+      "_Cutoff",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_UseLocalTopColor",
+      "_LocalTopDirection",
+      "_TriplanarScale",
+      "_TopColorTex",
+      "_TopColorRemap",
+      "_TopColorTexInfuence",
+      "_TopColorTexScale",
+      "_TopColorAlpha",
+      "_TopColor",
+      "_TopColorSecondary",
+      "_CavityTopColorAlpha",
+      "_CavityTopColor",
+      "_CavityTopColorSecondary",
+      "_SnowPuff",
+      "_SpecularTightness",
+      "_DebugTopSurface",
+      "_SpecularAmount",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_SparkleTex",
+      "_SparkleRangeSmoothstep",
+      "_SparkleSmoothstep1",
+      "_SparkleSize",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Pixelize",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/XR/XROcclusionMesh",
+    "properties": []
+  },
+  {
+    "name": "NickPost/Hot",
+    "properties": [
+      "_Texture",
+      "_Edge",
+      "_Color",
+      "_TextureStrength",
+      "_EdgeAdd",
+      "_Intensity",
+      "_ScrollSpeed",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Sharpen",
+    "properties": []
+  },
+  {
+    "name": "Storm",
+    "properties": [
+      "_Texture",
+      "_Cuttof",
+      "_MixToGray",
+      "_Value",
+      "_SunPower",
+      "_Tint",
+      "_CavityMapBlend",
+      "_DepthFadeBlend",
+      "_SurfaceDepthBlend",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "FogWall",
+    "properties": [
+      "_Noise",
+      "_Tex",
+      "_N_Scale",
+      "_N_Scroll",
+      "_Offset",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Mosaic",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Radial Blur",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/DepthNormals",
+    "properties": []
+  },
+  {
+    "name": "W/Peak_Standard",
+    "properties": [
+      "_UseAlpha",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_BaseMetallic",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_VertexColorAmount",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Sketch",
+    "properties": []
+  },
+  {
+    "name": "VolumeParticles",
+    "properties": [
+      "_WindDir",
+      "_Offset",
+      "_Smoothstep",
+      "_DepthFadeDistance",
+      "_scale",
+      "_3DNoise",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "LavaStream",
+    "properties": [
+      "_Cutoff",
+      "_T",
+      "_T_Scale",
+      "_T_Scroll",
+      "_D",
+      "_D_Scale",
+      "_D_Scroll",
+      "_D_Str",
+      "_Color1",
+      "_Color2",
+      "_Color3",
+      "_C_Remap1",
+      "_C_Remap2",
+      "_C_Remaps",
+      "_EdgeWidth",
+      "_C3_Remap",
+      "_C3_T_Remap",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "GD/SphereFog",
+    "properties": [
+      "_FogCenter",
+      "_FogDepth",
+      "_SphereUVScale",
+      "_DistortTexture",
+      "_DistortTexScale",
+      "_DistorttexMovement",
+      "_GroundFadeSoftness",
+      "_GroundFadeOffset",
+      "_GroundFadeTextureInfluence",
+      "_GroundFadeSoftness2",
+      "_GroundFadeOffset2",
+      "_GroundFadeTextureInfluence2",
+      "_DistanceVisibilitysoftness",
+      "_DistanceVisibilityOffset",
+      "_DistanceMaskNoise",
+      "_InFogThresholdSoftness",
+      "_InFogThresholdOffset",
+      "_CloseDistance",
+      "_CloseFogTightness",
+      "_CloseMaskAmount",
+      "_CloseMaskNoise",
+      "_SkyFogPosition",
+      "_SkyFogSoftness",
+      "_SkyFogTextureInfluence",
+      "_Innernoise",
+      "_NoiseScale",
+      "_Insidefognoisemovement",
+      "_InsideNoiseDistortAmount",
+      "_FogtintColor",
+      "_DebugColor",
+      "_DebugAlphaMasks",
+      "_DebugAlphaMaskIndex",
+      "_RevealAmount",
+      "_TextureSample0",
+      "_MountainScale",
+      "_MountainTextureDistort",
+      "_MountainOffset",
+      "_FakeMountainAmount",
+      "_Enabled",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/Edge Adaptive Spatial Upsampling",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal/HDRDebugView",
+    "properties": []
+  },
+  {
+    "name": "Kiosk",
+    "properties": [
+      "_MainUI",
+      "_TopSection",
+      "_BGColor",
+      "_BGPatternColor",
+      "_BGTileTexture",
+      "_PatternScrollSpeed",
+      "_TopSectionBounce",
+      "_Glow",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/GaussianDepthOfField",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/Bloom",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Lensflares",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Double Vision",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Core/VrsVisualization",
+    "properties": []
+  },
+  {
+    "name": "Scouts/UI_Rope",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip",
+      "_TextureSample3",
+      "_UV_X_Remap",
+      "_Radial",
+      "_Endcap"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/SubpixelMorphologicalAntialiasing",
+    "properties": [
+      "_StencilRef",
+      "_StencilMask"
+    ]
+  },
+  {
+    "name": "Lava Haze",
+    "properties": [
+      "_DistortTexture",
+      "_Distortamount",
+      "_DistortSpeed",
+      "_DistortScale",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Universal Render Pipeline/Unlit",
+    "properties": [
+      "_BaseMap",
+      "_BaseColor",
+      "_Cutoff",
+      "_Surface",
+      "_Blend",
+      "_Cull",
+      "_AlphaClip",
+      "_BlendOp",
+      "_SrcBlend",
+      "_DstBlend",
+      "_SrcBlendAlpha",
+      "_DstBlendAlpha",
+      "_ZWrite",
+      "_AlphaToMask",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass",
+      "_QueueOffset",
+      "_MainTex",
+      "_Color",
+      "_SampleGI"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/LutBuilderLdr",
+    "properties": []
+  },
+  {
+    "name": "TextMeshPro/Distance Field",
+    "properties": [
+      "_FaceTex",
+      "_FaceUVSpeedX",
+      "_FaceUVSpeedY",
+      "_FaceColor",
+      "_FaceDilate",
+      "_OutlineColor",
+      "_OutlineTex",
+      "_OutlineUVSpeedX",
+      "_OutlineUVSpeedY",
+      "_OutlineWidth",
+      "_OutlineSoftness",
+      "_Bevel",
+      "_BevelOffset",
+      "_BevelWidth",
+      "_BevelClamp",
+      "_BevelRoundness",
+      "_LightAngle",
+      "_SpecularColor",
+      "_SpecularPower",
+      "_Reflectivity",
+      "_Diffuse",
+      "_Ambient",
+      "_BumpMap",
+      "_BumpOutline",
+      "_BumpFace",
+      "_ReflectFaceColor",
+      "_ReflectOutlineColor",
+      "_Cube",
+      "_EnvMatrixRotation",
+      "_UnderlayColor",
+      "_UnderlayOffsetX",
+      "_UnderlayOffsetY",
+      "_UnderlayDilate",
+      "_UnderlaySoftness",
+      "_GlowColor",
+      "_GlowOffset",
+      "_GlowInner",
+      "_GlowOuter",
+      "_GlowPower",
+      "_WeightNormal",
+      "_WeightBold",
+      "_ShaderFlags",
+      "_ScaleRatioA",
+      "_ScaleRatioB",
+      "_ScaleRatioC",
+      "_MainTex",
+      "_TextureWidth",
+      "_TextureHeight",
+      "_GradientScale",
+      "_ScaleX",
+      "_ScaleY",
+      "_PerspectiveFilter",
+      "_Sharpness",
+      "_VertexOffsetX",
+      "_VertexOffsetY",
+      "_MaskCoord",
+      "_ClipRect",
+      "_MaskSoftnessX",
+      "_MaskSoftnessY",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_CullMode",
+      "_ColorMask"
+    ]
+  },
+  {
+    "name": "Particle_Cutout",
+    "properties": [
+      "_Texture",
+      "_Color",
+      "_Clip",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/LensFlareDataDriven",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/LensFlareScreenSpace",
+    "properties": []
+  },
+  {
+    "name": "W/Peak_Rope",
+    "properties": [
+      "_AddSpecular",
+      "_BaseTexture",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_BaseMetallic",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_RopeBreaks",
+      "_BrokenRopeColor",
+      "_RopeBreakAmount",
+      "_BreaksSmoothstep",
+      "_RopeJitter",
+      "_JitterScale",
+      "_JitterAmount",
+      "_JitterDirection",
+      "_JitterSpeed",
+      "_Invert",
+      "_VertexColorAmount",
+      "_RopeCutoff",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Peak/Grass",
+    "properties": [
+      "_AddSpecular",
+      "_PlayerPushRadius",
+      "_PlayerPushAmount",
+      "_GlobalWorldScale",
+      "_Tint",
+      "_TopHueStr",
+      "_CavityMapHueShift",
+      "_CavityMapHuetightness",
+      "_TopHueShifts",
+      "_TopBaseSmooth",
+      "_TopColor1",
+      "_TopSmooth1",
+      "_TopTex",
+      "_TopTriplanar1On",
+      "_TopUV1",
+      "_FlipTop1",
+      "_TopRemap1",
+      "_TopColor2",
+      "_TopSmooth2",
+      "_TopTex2",
+      "_TopUV2",
+      "_TopTriplanar2On",
+      "_Flip2",
+      "_TopRemap2",
+      "_TopColor",
+      "_GrassMask",
+      "_UVWindSpeed",
+      "_UVWindAmount",
+      "_WindTexture1",
+      "_WindTexture",
+      "_UVWIndScale",
+      "_VertexWindScale",
+      "_VertexWindSpeed",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/FallbackLoading",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Fog",
+    "properties": []
+  },
+  {
+    "name": "GD/CharacterBadges",
+    "properties": [
+      "_AddSpecular",
+      "_Smoothness",
+      "_BadgeArray",
+      "_RandomRotationAmount",
+      "_RandomRotTex",
+      "BadgeUnlockTexture",
+      "_VertexGhost",
+      "_Opacity",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/StencilDitherMaskSeed",
+    "properties": [
+      "_StencilRefDitherMask",
+      "_StencilWriteDitherMask"
+    ]
+  },
+  {
+    "name": "Lava",
+    "properties": [
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_Color1",
+      "_Texture1",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Texture2",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Texture3",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_TriplanarScale",
+      "_EdgeColor",
+      "_EdgeTightness",
+      "_ScrollSpeed",
+      "_Distorttex",
+      "_DistortAmount",
+      "_DistortSpeed",
+      "_DistortScale",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "W/Peak_Glass",
+    "properties": [
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_BaseMetallic",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_Opacity",
+      "_VertexGhost",
+      "_FresnelPower",
+      "_FresnelScale",
+      "_SphereFrenel",
+      "_InnerGlowPower",
+      "_InnerGlowIntensity",
+      "_TransparencyDistortion",
+      "_MinTransparency",
+      "_MaxTransparency",
+      "_SpecularPower",
+      "_SpecularIntensity",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "W/Peak_Rock",
+    "properties": [
+      "_Cutoff",
+      "_VertexColorAmount",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_GlobalWorldScale",
+      "_TopHueStr",
+      "_CavityMapHueShift",
+      "_CavityMapHuetightness",
+      "_TopHueShifts",
+      "_TopBaseSmooth",
+      "_TopColor1",
+      "_TopSmooth1",
+      "_TopTex",
+      "_TopTriplanar1On",
+      "_TopUV1",
+      "_FlipTop1",
+      "_TopRemap1",
+      "_TopColor2",
+      "_TopSmooth2",
+      "_TopTex2",
+      "_TopUV2",
+      "_TopTriplanar2On",
+      "_Flip2",
+      "_TopRemap2",
+      "_TopColor",
+      "_DebugTopSurface",
+      "_UseLocalTopColor",
+      "_UVTopColor",
+      "_TopColorCavityFade",
+      "_LocalTopDirection",
+      "_TriplanarScale",
+      "_TopColorMaskTex",
+      "_TopColorRemap",
+      "_TopColorAmount",
+      "_TopColorTexInfuence",
+      "_TopColorTexScale",
+      "_TopColorShadowAmount",
+      "_TopColorShadowSmoothstep",
+      "_HeightOffset",
+      "_Metallic",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_FlipCavityMap",
+      "_CavityMapTightness",
+      "_SparkleAmount",
+      "_SparkleTex",
+      "_SparkleSize",
+      "_SparkleSmoothstep1",
+      "_SparkleRangeSmoothstep",
+      "_CavityMapGlowSmoothstep",
+      "_CavityMapGlowFresnelSmoothstep",
+      "_CavityMapGlow",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Transition",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/LUT",
+    "properties": []
+  },
+  {
+    "name": "Universal Render Pipeline/Lit",
+    "properties": [
+      "_WorkflowMode",
+      "_BaseMap",
+      "_BaseColor",
+      "_Cutoff",
+      "_Smoothness",
+      "_SmoothnessTextureChannel",
+      "_Metallic",
+      "_MetallicGlossMap",
+      "_SpecColor",
+      "_SpecGlossMap",
+      "_SpecularHighlights",
+      "_EnvironmentReflections",
+      "_BumpScale",
+      "_BumpMap",
+      "_Parallax",
+      "_ParallaxMap",
+      "_OcclusionStrength",
+      "_OcclusionMap",
+      "_EmissionColor",
+      "_EmissionMap",
+      "_DetailMask",
+      "_DetailAlbedoMapScale",
+      "_DetailAlbedoMap",
+      "_DetailNormalMapScale",
+      "_DetailNormalMap",
+      "_ClearCoatMask",
+      "_ClearCoatSmoothness",
+      "_Surface",
+      "_Blend",
+      "_Cull",
+      "_AlphaClip",
+      "_SrcBlend",
+      "_DstBlend",
+      "_SrcBlendAlpha",
+      "_DstBlendAlpha",
+      "_ZWrite",
+      "_BlendModePreserveSpecular",
+      "_AlphaToMask",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass",
+      "_ReceiveShadows",
+      "_QueueOffset",
+      "_MainTex",
+      "_Color",
+      "_GlossMapScale",
+      "_Glossiness",
+      "_GlossyReflections",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/Universal/CoreBlit",
+    "properties": []
+  },
+  {
+    "name": "BlindPost",
+    "properties": [
+      "_Tiling",
+      "_Texture",
+      "_Scale",
+      "_Scroll",
+      "_Color2",
+      "_Color1",
+      "_ColorRemap",
+      "_DTexture",
+      "_DScale",
+      "_DStr",
+      "_DScroll",
+      "_Alpha",
+      "_MinFog",
+      "_FogDistance",
+      "_FogPow",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/Sirenix/SdfIconShader",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Scanlines",
+    "properties": []
+  },
+  {
+    "name": "GD/FoliageGD-Opaque",
+    "properties": [
+      "_AddSpecular",
+      "_UVWindAmount",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_VertexWindAmount",
+      "_VertexOffsetMaskAmount",
+      "_Shape",
+      "_TextureInfluence",
+      "_UVWorldOffset",
+      "_UseSimpleMask",
+      "_Tint",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Height1",
+      "_Texture1",
+      "_Triplanar1",
+      "_UV1",
+      "_Remap1",
+      "_Color2",
+      "_Smooth2",
+      "_Height2",
+      "_Texture2",
+      "_Triplanar2",
+      "_UV2",
+      "_Remap2",
+      "_Color3",
+      "_Smooth3",
+      "_Height3",
+      "_Texture3",
+      "_Triplanar3",
+      "_UV3",
+      "_Flip2",
+      "_Flip1",
+      "_FlipLightOnbackFaces",
+      "_UsePlayerSquish",
+      "_Flip3",
+      "_Remap3",
+      "_HueShiftStr",
+      "_HueShifts",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Tilt Shift",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/TemporalAA",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Dithering",
+    "properties": []
+  },
+  {
+    "name": "GD/Water-GD",
+    "properties": [
+      "_SpecularPower",
+      "_Cloudtex2",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_cloudscale",
+      "_Cloudtex",
+      "_WaterTintPreFoam",
+      "_WaterTint",
+      "_WaterColorShallow",
+      "_WaterColorPrimary",
+      "_WaterColorSecodary",
+      "_Depth",
+      "_Foam",
+      "_SeaNoise1",
+      "_FoamTexture",
+      "_FoamDepth",
+      "_FoamSmooth",
+      "_FoamTextureScale",
+      "_FoamTint",
+      "_SeaFoamTextureScale",
+      "_FoamNoisespeed",
+      "_FoamSeanoiseamount",
+      "_SeaNoise",
+      "_SeaNoiseAmount",
+      "_SeaNoiseScale",
+      "_SeaNoiseSpeed",
+      "_SeaFoam",
+      "_SeaFoamNoisespeed",
+      "_SeaFoamSmoothness",
+      "_VertexOffset",
+      "_CloudTightness",
+      "_CloudIntensity",
+      "_SpecularIntensity",
+      "_Specularsmooth",
+      "_UseRadialMask",
+      "_Crud",
+      "_CrudColor",
+      "_CrudSpeed",
+      "_CrudScale",
+      "_CrudRemap",
+      "_FlipCrud",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/PaniniProjection",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal/BlitHDROverlay",
+    "properties": []
+  },
+  {
+    "name": "SmokeParticle",
+    "properties": [
+      "_Opacity",
+      "_ShadowStr",
+      "_DepthFadeDistance",
+      "_Roundness",
+      "_RoundnessExp",
+      "_Textureu",
+      "_TexScroll",
+      "_Flip",
+      "_AlphaRemap",
+      "_TextureInfluence",
+      "_Color",
+      "_Color2",
+      "_Color2Remap",
+      "_Color3",
+      "_Color3Remap",
+      "_DistortionTexture",
+      "_DistortionScale",
+      "_Distortion",
+      "_DistortionScroll",
+      "_TextureRotateSpeed",
+      "_SunGlowLighting",
+      "_FinalAlphaRemap",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Decal",
+    "properties": [
+      "_Opacity",
+      "_TriplanarScale",
+      "_BaseColor",
+      "_Inner",
+      "_FlipInner",
+      "_AlphaRemap",
+      "_Texture1",
+      "_Flip1",
+      "_Remap1",
+      "_Color1",
+      "_Shape1",
+      "_Pow",
+      "_DistanceMult",
+      "_FlickerSpeed",
+      "_FlickerRemap",
+      "_FlickerRange",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/Core/DebugOccluder",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Gradient",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Cloud Shadows",
+    "properties": []
+  },
+  {
+    "name": "W/Peak_Clip",
+    "properties": [
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_VertexColorAmount",
+      "_BaseMetallic",
+      "_Clip",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "W/Peak_Guidebook",
+    "properties": [
+      "_Interactable",
+      "_INTERACTABLE",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_GLOW",
+      "_GlowTex",
+      "_GlowColor",
+      "_Emissive",
+      "_FLIPBEND",
+      "_Bend",
+      "_ClipTex",
+      "_VertexColorAmount",
+      "_Clip",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Refraction",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/HBAO",
+    "properties": [
+      "_MainTex",
+      "_HBAOTex",
+      "_TempTex",
+      "_NoiseTex",
+      "_DepthTex",
+      "_NormalsTex"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/3D Hue Shift",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/FinalPost",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/CameraMotionVectors",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Caustics",
+    "properties": []
+  },
+  {
+    "name": "W/Peak_Splash",
+    "properties": [
+      "_Cutoff",
+      "_WhiteWater",
+      "_TimeScale",
+      "_Tiling",
+      "_WhiteWaterTex",
+      "_DepthFadeDist",
+      "_Clip",
+      "_SplashColor",
+      "_Ambient",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Black Bars",
+    "properties": []
+  },
+  {
+    "name": "GD/Face Cards",
+    "properties": [
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_MainTex",
+      "_TalkSprite",
+      "_BlushTex",
+      "_BaseScale",
+      "_Scale",
+      "_IsEyes",
+      "_ShaderEyeTracking",
+      "_EyePosition",
+      "_PupilScale",
+      "_Spin",
+      "_Opacity",
+      "_SkinColor",
+      "_VertexGhost1",
+      "_UseTalkSprites",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Ripples",
+    "properties": []
+  },
+  {
+    "name": "GD/Mirror",
+    "properties": [
+      "_AlphaCutoff",
+      "_EmissionColor",
+      "_TextureSample0",
+      "_MainTex",
+      "_TextureAmount",
+      "_TextureSmoothstep",
+      "_FlipTexture",
+      "_Float3",
+      "_texcoord",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "GD/Lit Clouds Sky",
+    "properties": [
+      "_cloudscale",
+      "_CloudSpeed",
+      "_CloudOffset",
+      "_CloudClip",
+      "_Cloudtex",
+      "_DistortTex",
+      "_CloudTightness",
+      "_SunPower",
+      "_SunIntensity",
+      "_SunSize",
+      "_CloudEdgeWarp",
+      "_DistortScale",
+      "_CloudDistortion",
+      "_TextureSample0",
+      "_MoonSliver"
+    ]
+  },
+  {
+    "name": "GD/ScreenFog",
+    "properties": [
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "TextMeshPro/Sprite",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_CullMode",
+      "_ColorMask",
+      "_ClipRect",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/Debug/DebugReplacement",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal/CoreBlitColorAndDepth",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Sun Shafts",
+    "properties": []
+  },
+  {
+    "name": "WavingFabric",
+    "properties": [
+      "_Cutoff",
+      "_UseAlpha",
+      "_VertexAO",
+      "_VertexColorPinning",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_Metallic",
+      "_WIndTexture",
+      "_WindSpeed",
+      "_WindScale",
+      "_WindAmount",
+      "_WindDir",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/Core/DebugOcclusionTest",
+    "properties": []
+  },
+  {
+    "name": "Hidden/SC Post Effects/Light Streaks",
+    "properties": []
+  },
+  {
+    "name": "W/Vine",
+    "properties": [
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_UVWindAmount",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_Shape",
+      "_UVWorldOffset",
+      "_UseSimpleMask",
+      "_AlphaClip",
+      "_Tint",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Height1",
+      "_Texture1",
+      "_Triplanar1",
+      "_UV1",
+      "_Remap1",
+      "_Color2",
+      "_Smooth2",
+      "_Height2",
+      "_Texture2",
+      "_Triplanar2",
+      "_UV2",
+      "_Remap2",
+      "_Color3",
+      "_Smooth3",
+      "_Height3",
+      "_Texture3",
+      "_Triplanar3",
+      "_UV3",
+      "_Flip2",
+      "_Hang",
+      "_Flip1",
+      "_Flip3",
+      "_Remap3",
+      "_BreakPoint",
+      "_HueShiftStr",
+      "_BreakAmount",
+      "_LengthScale",
+      "_HueShifts",
+      "_JitterTexture",
+      "_JitterScale",
+      "_JitterAmount",
+      "_JitterDirection",
+      "_JitterSpeed",
+      "_SwayAmount",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/XR/XRMirrorView",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/CopyDepth",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Shader Graph/FallbackError",
+    "properties": []
+  },
+  {
+    "name": "DepartureBoard",
+    "properties": [
+      "_BaseTexture",
+      "_Rows",
+      "_Columns",
+      "_HeaderTilingOffset",
+      "_SlotsTilingOffset",
+      "_HeaderMaskV",
+      "_HeaderMaskU",
+      "_Background",
+      "_Background2",
+      "_slices",
+      "_Glow",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "GD/GDGrass",
+    "properties": [
+      "_AddSpecular",
+      "_GrassMask",
+      "_GlobalWorldScale",
+      "_Tint",
+      "_TopHueStr",
+      "_CavityMapHueShift",
+      "_CavityMapHuetightness",
+      "_TopHueShifts",
+      "_TopColor1",
+      "_TopTex",
+      "_TopTriplanar1On",
+      "_TopUV1",
+      "_FlipTop1",
+      "_TopRemap1",
+      "_TopColor2",
+      "_TopTex2",
+      "_TopUV2",
+      "_TopTriplanar2On",
+      "_Flip2",
+      "_TopRemap2",
+      "_TopColor",
+      "_vvvvvr1",
+      "_WindTexture",
+      "_VertexWindScale",
+      "_VertexWindSpeed",
+      "_VertexWindAmount",
+      "_UVWindSpeed",
+      "_UVWindAmount",
+      "_UVWIndScale",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/TerrainEngine/Details/UniversalPipeline/WavingDoublePass",
+    "properties": [
+      "_WavingTint",
+      "_MainTex",
+      "_WaveAndDistance",
+      "_Cutoff"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Ambient Occlusion 2D",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/FallbackError",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/UberPost",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/Scaling Setup",
+    "properties": []
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/StencilDeferred",
+    "properties": [
+      "_StencilRef",
+      "_StencilReadMask",
+      "_StencilWriteMask",
+      "_LitPunctualStencilRef",
+      "_LitPunctualStencilReadMask",
+      "_LitPunctualStencilWriteMask",
+      "_SimpleLitPunctualStencilRef",
+      "_SimpleLitPunctualStencilReadMask",
+      "_SimpleLitPunctualStencilWriteMask",
+      "_LitDirStencilRef",
+      "_LitDirStencilReadMask",
+      "_LitDirStencilWriteMask",
+      "_SimpleLitDirStencilRef",
+      "_SimpleLitDirStencilReadMask",
+      "_SimpleLitDirStencilWriteMask",
+      "_ClearStencilRef",
+      "_ClearStencilReadMask",
+      "_ClearStencilWriteMask"
+    ]
+  },
+  {
+    "name": "LavaPost",
+    "properties": [
+      "_Color",
+      "_Color2",
+      "_Texture",
+      "_Scale",
+      "_Remap",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/LutBuilderHdr",
+    "properties": []
+  },
+  {
+    "name": "Particle_Transparent",
+    "properties": [
+      "_Texture",
+      "_Color",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/DBufferClear",
+    "properties": []
+  },
+  {
+    "name": "Hidden/TerrainEngine/Details/UniversalPipeline/Vertexlit",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/Universal Render Pipeline/XR/XRMotionVector",
+    "properties": []
+  },
+  {
+    "name": "W/Character",
+    "properties": [
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_UseSkinTone",
+      "_UseRawVertexColor",
+      "_UseTextureAlpha",
+      "_UseRawVertexColor",
+      "_Stepalphabyvertexcolor",
+      "_VertexColor",
+      "_MainTex",
+      "_MainTexMovement",
+      "_HeightMaskSmoothness",
+      "_FlipHeightMask",
+      "_SkinColor",
+      "_Tint",
+      "_HueStr",
+      "_HueShifts",
+      "_VertexGhost",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Height1",
+      "_Texture1",
+      "_UV1",
+      "_Tex1Movement",
+      "_Flip1",
+      "_Triplanar1On",
+      "_Remap1",
+      "_UseHeightMask1",
+      "_Color2",
+      "_Smooth2",
+      "_Height2",
+      "_Texture2",
+      "_UV2",
+      "_Tex2Movement",
+      "_Flip2",
+      "_Triplanar2On",
+      "_Remap2",
+      "_UseHeightMask2",
+      "_Color3",
+      "_Smooth3",
+      "_Height3",
+      "_Texture3",
+      "_UV3",
+      "_Tex3Movement",
+      "_Flip3",
+      "_Triplanar3On",
+      "_Remap3",
+      "_UseHeightMask3",
+      "_Color4",
+      "_Smooth4",
+      "_Height4",
+      "_Texture4",
+      "_UV4",
+      "_Tex4Movement",
+      "_Flip4",
+      "_PointPing",
+      "_Opacity",
+      "_StatusGlow",
+      "_StatusColor",
+      "_Triplanar4On",
+      "_Remap4",
+      "_UseHeightMask4",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Hidden/SC Post Effects/Blur",
+    "properties": []
+  },
+  {
+    "name": "TextMeshPro/Mobile/Distance Field",
+    "properties": [
+      "_FaceColor",
+      "_FaceDilate",
+      "_OutlineColor",
+      "_OutlineWidth",
+      "_OutlineSoftness",
+      "_UnderlayColor",
+      "_UnderlayOffsetX",
+      "_UnderlayOffsetY",
+      "_UnderlayDilate",
+      "_UnderlaySoftness",
+      "_WeightNormal",
+      "_WeightBold",
+      "_ShaderFlags",
+      "_ScaleRatioA",
+      "_ScaleRatioB",
+      "_ScaleRatioC",
+      "_MainTex",
+      "_TextureWidth",
+      "_TextureHeight",
+      "_GradientScale",
+      "_ScaleX",
+      "_ScaleY",
+      "_PerspectiveFilter",
+      "_Sharpness",
+      "_VertexOffsetX",
+      "_VertexOffsetY",
+      "_ClipRect",
+      "_MaskSoftnessX",
+      "_MaskSoftnessY",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_CullMode",
+      "_ColorMask"
+    ]
+  },
+  {
+    "name": "GD/FoliageGD",
+    "properties": [
+      "_DisableEdgeHilghlight",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_UVWindAmount",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_VertexWindAmount",
+      "_VertexAOAmount",
+      "_VertexOffsetMaskAmount",
+      "_Shape",
+      "_TextureInfluence",
+      "_UVWorldOffset",
+      "_UseSimpleMask",
+      "_AlphaClip",
+      "_Tint",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Height1",
+      "_Texture1",
+      "_Triplanar1",
+      "_UV1",
+      "_Remap1",
+      "_Color2",
+      "_Smooth2",
+      "_Height2",
+      "_Texture2",
+      "_Triplanar2",
+      "_UV2",
+      "_Remap2",
+      "_Color3",
+      "_Smooth3",
+      "_Height3",
+      "_Texture3",
+      "_Triplanar3",
+      "_UV3",
+      "_Flip2",
+      "_Flip1",
+      "_FlipLightOnbackFaces",
+      "_UseCloseDither",
+      "_UsePlayerSquish",
+      "_Flip3",
+      "_Remap3",
+      "_HueShiftStr",
+      "_HueShifts",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Scouts/ItemPreview",
+    "properties": [
+      "_Color0",
+      "_IGNORE_VERTEX_COLOR",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Eruption",
+    "properties": [
+      "_Opacity",
+      "_Color1",
+      "_Color2",
+      "_C_Remap",
+      "_C_Remap2",
+      "_C_Remaps",
+      "_Texture",
+      "_T_Scale",
+      "_T_Scroll",
+      "_D_Str",
+      "_D_Scale",
+      "_D_Scroll",
+      "_A_Shape",
+      "_A_Remap",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Legacy Shaders/Particles/Alpha Blended Premultiply",
+    "properties": [
+      "_MainTex",
+      "_InvFade"
+    ]
+  },
+  {
+    "name": "GD/ScreenVFX",
+    "properties": [
+      "_MainTex",
+      "_Distortiontex",
+      "_UseParticleMask",
+      "_TexScale",
+      "_DistScale",
+      "_ScrollSpeed",
+      "_DistAmount",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "GD/UIScreenMesh",
+    "properties": [
+      "_MainTex",
+      "_PullTexture",
+      "_Vingnette",
+      "_PullSmoothstep",
+      "_StreakAmount",
+      "_StretchAmount",
+      "_StreakScale",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "FallPost",
+    "properties": [
+      "_Str",
+      "_Noise",
+      "_Tiling",
+      "_Scroll",
+      "_Distort",
+      "_DTiling",
+      "_DScroll",
+      "_DStr",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Zorro/UI/FadeIn",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip",
+      "_FadeTime"
+    ]
+  },
+  {
+    "name": "Standard",
+    "properties": [
+      "_Color",
+      "_MainTex",
+      "_Cutoff",
+      "_Glossiness",
+      "_GlossMapScale",
+      "_SmoothnessTextureChannel",
+      "_Metallic",
+      "_MetallicGlossMap",
+      "_SpecularHighlights",
+      "_GlossyReflections",
+      "_BumpScale",
+      "_BumpMap",
+      "_Parallax",
+      "_ParallaxMap",
+      "_OcclusionStrength",
+      "_OcclusionMap",
+      "_EmissionColor",
+      "_EmissionMap",
+      "_DetailMask",
+      "_DetailAlbedoMap",
+      "_DetailNormalMapScale",
+      "_DetailNormalMap",
+      "_UVSec",
+      "_Mode",
+      "_SrcBlend",
+      "_DstBlend",
+      "_ZWrite"
+    ]
+  },
+  {
+    "name": "UI_DashedLine",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip",
+      "_Scale",
+      "_Skew",
+      "_Float2"
+    ]
+  },
+  {
+    "name": "NickPost/Heat",
+    "properties": [
+      "_Texture",
+      "_Edge",
+      "_Color",
+      "_TextureStrength",
+      "_EdgeAdd",
+      "_Intensity",
+      "_ScrollSpeed",
+      "_TimeScale",
+      "_MinAlpha",
+      "_MinTextureAlpha",
+      "_Invert",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "Screen_Scanline",
+    "properties": [
+      "_Cutoff",
+      "_MainTex",
+      "_ScanLineDensity",
+      "_ScanLineSpeed",
+      "_ScanLineAmount",
+      "_ScreenOn",
+      "_Smoothness",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "NickPost/Anti",
+    "properties": [
+      "_Color",
+      "_Intensity",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass"
+    ]
+  },
+  {
+    "name": "WaterSVFX",
+    "properties": [
+      "_AlphaCutoff",
+      "_EmissionColor",
+      "_Driptex",
+      "_DripSpeed",
+      "_DripAmount",
+      "_DripColorSmoothstep",
+      "_DripSmoothstep",
+      "_DripColor",
+      "_EffectAmount",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "NickPost/Curse",
+    "properties": [
+      "_Intensity",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "UI_Eye",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "NickPost/Injury",
+    "properties": [
+      "_TriplanarScale",
+      "_Color",
+      "_Texture",
+      "_Intensity",
+      "_TexStr",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass"
+    ]
+  },
+  {
+    "name": "Shader Graphs/Decal",
+    "properties": [
+      "Base_Map",
+      "Normal_Map",
+      "Normal_Blend",
+      "_DrawOrder",
+      "_DecalMeshBiasType",
+      "_DecalMeshDepthBias",
+      "_DecalMeshViewBias",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "StormFog",
+    "properties": [
+      "_Distance",
+      "_Texture",
+      "_Windd",
+      "_Alpha",
+      "_Tint",
+      "_TextureInfluence",
+      "_MixInfluenceVal",
+      "_SkyBrightnessValue",
+      "_ClampAlpha",
+      "_TimeOfDayInfluence",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "SandSlide",
+    "properties": [
+      "_AlphaCutoff",
+      "_EmissionColor",
+      "_Texture",
+      "_T_Scroll",
+      "_T_Str",
+      "_T_Scale",
+      "_Dist",
+      "_D_Scroll",
+      "_D_Scale",
+      "_D_Str",
+      "_Str",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "LightRays",
+    "properties": [
+      "_Cutoff",
+      "_3DNoise",
+      "_TextureScroll",
+      "_TextureScale3d",
+      "_TextureScale",
+      "_NoiseSmooethstep",
+      "_DepthfadeDistance",
+      "_Distortion",
+      "_DistortionScroll",
+      "_DistortionScale",
+      "_DistortionAmount",
+      "_DistanceMask",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "GD/ParticleGeneric",
+    "properties": [
+      "_AlphaCutoff",
+      "_EmissionColor",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "PeakPortal",
+    "properties": [
+      "_FakePeak",
+      "_ParallaxDist",
+      "_DistortionTex",
+      "_PortalDistortSpeed",
+      "_PortalDistortAmount",
+      "_AlphaClipValue",
+      "_EdgeGlowColor",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "GD/FogSurface",
+    "properties": [
+      "_SurfaceDepth",
+      "_EdgeGlow",
+      "_NoiseTexture",
+      "_Tex1Scale",
+      "_Tex2Scale",
+      "_TexSpeed",
+      "_Color",
+      "_FinalSmoothstep",
+      "_GlowSmoothstep",
+      "_Opacity",
+      "_DistortionAmount",
+      "_GlowColor",
+      "_UseHeightFogFade",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "GhostHands",
+    "properties": [
+      "_FresnelRemap",
+      "_Color",
+      "_Vector0",
+      "_Vector1",
+      "_NoiseSample",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "ColorParticle",
+    "properties": [
+      "_DistortTex",
+      "_HazeColor",
+      "_TextureScroll",
+      "_DepthFade",
+      "_Scale",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "W/Peak_Mirage",
+    "properties": [
+      "_Cutoff",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_BaseMetallic",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_DoMirage",
+      "_SkyboxBlend",
+      "_DisableDisplacement",
+      "_NoiseTexture",
+      "_VertexColorAmount",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "VoidFogWall",
+    "properties": [
+      "_Alpha",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "FireHaze",
+    "properties": [
+      "_Opacity",
+      "_TriplanarScale",
+      "_Inner",
+      "_Pow",
+      "_Dist",
+      "_Scroll",
+      "_DistortStr",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass"
+    ]
+  },
+  {
+    "name": "GD/DustLine",
+    "properties": [
+      "_AlphaCutoff",
+      "_EmissionColor",
+      "_DustTex",
+      "_TextureScroll",
+      "_FinalSmoothStep",
+      "_WaveSmoothStep",
+      "_waveSpeed",
+      "_waveSize",
+      "_Color",
+      "_glowamount",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "GD/Bubbles",
+    "properties": [
+      "_PopTexture",
+      "_FresnelColor",
+      "_Glow",
+      "_FresnelSmoothStep",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "FogOrb",
+    "properties": [
+      "_ENABLE",
+      "_OPEN_REMAP",
+      "_REVEAL_AMOUNT",
+      "_T",
+      "_T_Str",
+      "_T_Emiss",
+      "_T_Scale",
+      "_T_Scroll",
+      "_D_Str",
+      "_D_Scale",
+      "_D_Scroll",
+      "_N_Scale",
+      "_N_Scroll",
+      "_Fade1",
+      "_Fade2",
+      "_FadeLerp",
+      "_PADDING",
+      "_CURRENT_SIZE",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "FogPlanePeak",
+    "properties": [
+      "_DepthFade",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "Legacy Shaders/Particles/Additive",
+    "properties": [
+      "_TintColor",
+      "_MainTex",
+      "_InvFade"
+    ]
+  },
+  {
+    "name": "Legacy Shaders/Particles/Alpha Blended",
+    "properties": [
+      "_TintColor",
+      "_MainTex",
+      "_InvFade"
+    ]
+  },
+  {
+    "name": "Hidden/TextCore/Sprite",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_CullMode",
+      "_ColorMask",
+      "_ClipRect"
+    ]
+  },
+  {
+    "name": "Hidden/UIR/GaussianBlur",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Hidden/UIR/ColorEffect",
+    "properties": [
+      "_MainTex"
+    ]
+  },
+  {
+    "name": "Universal Render Pipeline/Particles/Unlit",
+    "properties": [
+      "_BaseMap",
+      "_BaseColor",
+      "_Cutoff",
+      "_BumpMap",
+      "_EmissionColor",
+      "_EmissionMap",
+      "_SoftParticlesNearFadeDistance",
+      "_SoftParticlesFarFadeDistance",
+      "_CameraNearFadeDistance",
+      "_CameraFarFadeDistance",
+      "_DistortionBlend",
+      "_DistortionStrength",
+      "_Surface",
+      "_Blend",
+      "_Cull",
+      "_AlphaClip",
+      "_BlendOp",
+      "_SrcBlend",
+      "_DstBlend",
+      "_SrcBlendAlpha",
+      "_DstBlendAlpha",
+      "_ZWrite",
+      "_AlphaToMask",
+      "_ColorMode",
+      "_BaseColorAddSubDiff",
+      "_FlipbookBlending",
+      "_SoftParticlesEnabled",
+      "_CameraFadingEnabled",
+      "_DistortionEnabled",
+      "_SoftParticleFadeParams",
+      "_CameraFadeParams",
+      "_DistortionStrengthScaled",
+      "_QueueOffset",
+      "_FlipbookMode",
+      "_Mode",
+      "_Color"
+    ]
+  },
+  {
+    "name": "UI Extensions/Particles/Alpha Blended Premultiply",
+    "properties": [
+      "_MainTex",
+      "_InvFade",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "UI Extensions/Particles/Multiply (Double)",
+    "properties": [
+      "_MainTex",
+      "_InvFade",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "Scouts/PingRing",
+    "properties": [
+      "_AlphaCutoff",
+      "_EmissionColor",
+      "_MainTex",
+      "_Glow",
+      "_Color",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "UI Extensions/Particles/~Additive-Multiply",
+    "properties": [
+      "_TintColor",
+      "_MainTex",
+      "_InvFade",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "Tornado",
+    "properties": [
+      "_Brightness",
+      "_Metalic",
+      "_Outline",
+      "_Color1",
+      "_Color2",
+      "_Brightn",
+      "_Colors",
+      "_HeightFade",
+      "_Texture",
+      "_T_Scroll",
+      "_T_Scale",
+      "_T_Twist",
+      "_Distort",
+      "_D_Scroll",
+      "_D_Scale",
+      "_D_Str",
+      "_D_Twist",
+      "_Noise",
+      "_N_Scroll",
+      "_N_Scale",
+      "_N_Str",
+      "_Clip",
+      "_Offset",
+      "_WobbleStr",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Laser",
+    "properties": [
+      "_Color",
+      "_TextureSample0",
+      "_Step",
+      "_1",
+      "_Tiling",
+      "_TexRemap",
+      "_Color2",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "BigDumbSphere",
+    "properties": [
+      "_Opacity",
+      "_Color",
+      "_CameraFade",
+      "_Blorp",
+      "_Speed",
+      "_CameraOffset",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "UI Extensions/UIAdditive",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask"
+    ]
+  },
+  {
+    "name": "W/Peak_Transparent",
+    "properties": [
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_BaseMetallic",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_VertexColorAmount",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "UI Extensions/UIScreen",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask"
+    ]
+  },
+  {
+    "name": "DarkFade",
+    "properties": [
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Shockwave",
+    "properties": [
+      "_Alpha",
+      "_Zoom_Flat",
+      "_Zoom_Fresnel",
+      "_BiasScalePower_Fresnel",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "W/Peak_glass_liquid",
+    "properties": [
+      "_WiggleScale",
+      "_WiggleSpeed",
+      "_WiggleAmount",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_NoiseTexture",
+      "_BubbleTexture",
+      "_Color",
+      "_baseColor",
+      "_EdgeColor",
+      "_TopColor",
+      "_FillLine",
+      "_Tint",
+      "_edgetightness",
+      "_BubbleScroll",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "UI Extensions/Particles/Multiply",
+    "properties": [
+      "_MainTex",
+      "_InvFade",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "FuckassAdditive",
+    "properties": [
+      "_Tex",
+      "_Color",
+      "_Fresnel",
+      "_FresnelRange",
+      "_FogDistanceOffset",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass"
+    ]
+  },
+  {
+    "name": "UI Extensions/Particles/Additive (Soft)",
+    "properties": [
+      "_MainTex",
+      "_InvFade",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "InfiniteStamSphere",
+    "properties": [
+      "_Alpha",
+      "_TopTexture0",
+      "_Power",
+      "_CameraFadeLength",
+      "_CameraFadeOffset",
+      "_DepthFade",
+      "_Color",
+      "_BorderColor",
+      "_Tiling",
+      "_Speed",
+      "_Vector0",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_ReceiveShadows",
+      "_XRMotionVectorsPass"
+    ]
+  },
+  {
+    "name": "SlideTrail",
+    "properties": [
+      "_TriplanarScale",
+      "_TextureSample0",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "TurtleShell",
+    "properties": [
+      "_Cutoff",
+      "_Color",
+      "_TextureSample0",
+      "_Remap",
+      "_Float3",
+      "_Opacity",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "UI Extensions/Particles/VertexLit Blended",
+    "properties": [
+      "_EmisColor",
+      "_MainTex",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "NickParticle",
+    "properties": [
+      "_TextureSample0",
+      "_Color",
+      "_DepthFade",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "W/Peak_Dither",
+    "properties": [
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_Dither",
+      "_VertexColorAmount",
+      "_BaseMetallic",
+      "_Clip",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "StarCloak",
+    "properties": [
+      "_Cutoff",
+      "_Stars",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_FresnelColor",
+      "_Surfacetexture",
+      "_Tint",
+      "_StarsGlow",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Universal Render Pipeline/Particles/Simple Lit",
+    "properties": [
+      "_BaseMap",
+      "_BaseColor",
+      "_Cutoff",
+      "_SpecGlossMap",
+      "_SpecColor",
+      "_Smoothness",
+      "_BumpScale",
+      "_BumpMap",
+      "_EmissionColor",
+      "_EmissionMap",
+      "_SmoothnessSource",
+      "_SpecularHighlights",
+      "_ReceiveShadows",
+      "_SoftParticlesNearFadeDistance",
+      "_SoftParticlesFarFadeDistance",
+      "_CameraNearFadeDistance",
+      "_CameraFarFadeDistance",
+      "_DistortionBlend",
+      "_DistortionStrength",
+      "_Surface",
+      "_Blend",
+      "_Cull",
+      "_AlphaClip",
+      "_BlendOp",
+      "_SrcBlend",
+      "_DstBlend",
+      "_SrcBlendAlpha",
+      "_DstBlendAlpha",
+      "_ZWrite",
+      "_AlphaToMask",
+      "_ColorMode",
+      "_BaseColorAddSubDiff",
+      "_FlipbookBlending",
+      "_SoftParticlesEnabled",
+      "_CameraFadingEnabled",
+      "_DistortionEnabled",
+      "_SoftParticleFadeParams",
+      "_CameraFadeParams",
+      "_DistortionStrengthScaled",
+      "_QueueOffset",
+      "_FlipbookMode",
+      "_Glossiness",
+      "_Mode",
+      "_Color"
+    ]
+  },
+  {
+    "name": "Universal Render Pipeline/Simple Lit",
+    "properties": [
+      "_BaseMap",
+      "_BaseColor",
+      "_Cutoff",
+      "_Smoothness",
+      "_SpecColor",
+      "_SpecGlossMap",
+      "_SmoothnessSource",
+      "_SpecularHighlights",
+      "_BumpScale",
+      "_BumpMap",
+      "_EmissionColor",
+      "_EmissionMap",
+      "_Surface",
+      "_Blend",
+      "_Cull",
+      "_AlphaClip",
+      "_SrcBlend",
+      "_DstBlend",
+      "_SrcBlendAlpha",
+      "_DstBlendAlpha",
+      "_ZWrite",
+      "_BlendModePreserveSpecular",
+      "_AlphaToMask",
+      "_AddPrecomputedVelocity",
+      "_XRMotionVectorsPass",
+      "_ReceiveShadows",
+      "_QueueOffset",
+      "_MainTex",
+      "_Color",
+      "_Shininess",
+      "_GlossinessSource",
+      "_SpecSource",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "UI Extensions/SoftMaskShader",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_AlphaMask",
+      "_CutOff",
+      "_HardBlend",
+      "_FlipAlphaMask",
+      "_NoOuterClip"
+    ]
+  },
+  {
+    "name": "UI Extensions/Particles/Blend",
+    "properties": [
+      "_MainTex",
+      "_InvFade",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "W/Peak_Petrified_Rock",
+    "properties": [
+      "_Cutoff",
+      "_VertexColorAmount",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_DebugTopSurface",
+      "_Metallic",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_FlipCavityMap",
+      "_CavityMapTightness",
+      "_SparkleAmount",
+      "_SparkleTex",
+      "_SparkleSize",
+      "_SparkleSmoothstep1",
+      "_SparkleRangeSmoothstep",
+      "_CavityMapGlowSmoothstep",
+      "_CavityMapGlowFresnelSmoothstep",
+      "_CavityMapGlow",
+      "_Petrify",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "AntiSphere",
+    "properties": [
+      "_Alpha",
+      "_TopTexture0",
+      "_SoftInverse",
+      "_Power",
+      "_CameraFadeLength",
+      "_CameraFadeOffset",
+      "_DepthFade",
+      "_BorderLight",
+      "_Tiling",
+      "_Speed",
+      "_Vector0",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AddPrecomputedVelocity",
+      "_ReceiveShadows",
+      "_XRMotionVectorsPass"
+    ]
+  },
+  {
+    "name": "W/Peak_Honey",
+    "properties": [
+      "_Cutoff",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Interactable",
+      "_INTERACTABLE",
+      "_BaseMetallic",
+      "_ViewDirBlend",
+      "_UseUV2",
+      "_BaseTexture",
+      "_BaseTexAmount",
+      "_Tint",
+      "_HueStr2",
+      "_HueStr1",
+      "_HueShifts1",
+      "_BaseColor",
+      "_BaseSmooth",
+      "_Color1",
+      "_Smooth1",
+      "_Texture1",
+      "_Triplanar1On",
+      "_TopDown1On",
+      "_UV1",
+      "_Flip1",
+      "_Mask1",
+      "_Remap1",
+      "_MoveAmount1",
+      "_Color21",
+      "_Smooth2",
+      "_Texture2",
+      "_Triplanar2On",
+      "_TopDown2On",
+      "_UV2",
+      "_Flip2",
+      "_Remap2",
+      "_MoveAmount2",
+      "_Color3",
+      "_Smooth3",
+      "_Texture3",
+      "_Triplanar3On",
+      "_TopDown3On",
+      "_UV3",
+      "_Flip3",
+      "_Remap3",
+      "_MoveAmount3",
+      "_OpacityFresnelBias",
+      "_Opacity",
+      "_VertexColorAmount",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Universal Render Pipeline/Particles/Lit",
+    "properties": [
+      "_BaseMap",
+      "_BaseColor",
+      "_Cutoff",
+      "_MetallicGlossMap",
+      "_Metallic",
+      "_Smoothness",
+      "_BumpScale",
+      "_BumpMap",
+      "_EmissionColor",
+      "_EmissionMap",
+      "_ReceiveShadows",
+      "_SoftParticlesNearFadeDistance",
+      "_SoftParticlesFarFadeDistance",
+      "_CameraNearFadeDistance",
+      "_CameraFarFadeDistance",
+      "_DistortionBlend",
+      "_DistortionStrength",
+      "_Surface",
+      "_Blend",
+      "_Cull",
+      "_AlphaClip",
+      "_BlendOp",
+      "_SrcBlend",
+      "_DstBlend",
+      "_SrcBlendAlpha",
+      "_DstBlendAlpha",
+      "_ZWrite",
+      "_BlendModePreserveSpecular",
+      "_AlphaToMask",
+      "_ColorMode",
+      "_BaseColorAddSubDiff",
+      "_FlipbookBlending",
+      "_SoftParticlesEnabled",
+      "_CameraFadingEnabled",
+      "_DistortionEnabled",
+      "_SoftParticleFadeParams",
+      "_CameraFadeParams",
+      "_DistortionStrengthScaled",
+      "_QueueOffset",
+      "_FlipbookMode",
+      "_Glossiness",
+      "_Mode",
+      "_Color"
+    ]
+  },
+  {
+    "name": "Flat",
+    "properties": [
+      "_Color",
+      "_H",
+      "_V",
+      "_S",
+      "_TriplanarScale",
+      "_Smooth",
+      "_TScale",
+      "_T",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks"
+    ]
+  },
+  {
+    "name": "UI Extensions/UILinearDodge",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask"
+    ]
+  },
+  {
+    "name": "UI Extensions/Particles/Alpha Blended",
+    "properties": [
+      "_TintColor",
+      "_MainTex",
+      "_InvFade",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "PlayerGhost",
+    "properties": [
+      "_Cutoff",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_NoiseScrollDirection",
+      "_PlayerColor",
+      "_LightingAmount",
+      "_NoiseScale",
+      "_NoiseScroll",
+      "_Opacity",
+      "_Edgefade",
+      "_CameraFadeLength",
+      "_CameraFadeOffset",
+      "_NoiseStr",
+      "_3DNoise",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "BalloonRope",
+    "properties": [
+      "_Color",
+      "_FadeOffset",
+      "_FadeLength",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "BulletTrail",
+    "properties": [
+      "_Texture",
+      "_Color",
+      "_TextureInfluence",
+      "_AlphaRemap",
+      "_TextureAlpha",
+      "_Opacity",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "UI Extensions/UI Image Crop",
+    "properties": [
+      "_MainTex",
+      "_XCrop",
+      "_YCrop"
+    ]
+  },
+  {
+    "name": "UI/Particles/Hidden",
+    "properties": []
+  },
+  {
+    "name": "Explosion",
+    "properties": [
+      "_Texture",
+      "_Brightness",
+      "_Metalic",
+      "_Outline",
+      "_TextureSmall",
+      "_Remap2",
+      "_Remap3",
+      "_Fade",
+      "_Color1",
+      "_Color2",
+      "_Color3",
+      "_Random",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "UI Extensions/UIMultiply",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask"
+    ]
+  },
+  {
+    "name": "UI Extensions/Particles/Additive",
+    "properties": [
+      "_TintColor",
+      "_MainTex",
+      "_InvFade",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask",
+      "_UseUIAlphaClip"
+    ]
+  },
+  {
+    "name": "BlowParticle",
+    "properties": [
+      "_AlphaCutoff",
+      "_EmissionColor",
+      "_Texture",
+      "_Scroll",
+      "_Dist",
+      "_ScreenDistort",
+      "_Scale",
+      "_T_Remap",
+      "_Line_Remap",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "Cloud",
+    "properties": [
+      "_Cutoff",
+      "_3DNoise",
+      "_Fresnel",
+      "_Offset",
+      "_Wobble",
+      "_SpecularPower",
+      "_AddSpecular",
+      "_NoShadowSpec",
+      "_Scale",
+      "_Wind",
+      "_Color1",
+      "_Color2",
+      "_CloudTex",
+      "_CloudTexScale",
+      "_CloudTexSmoothstep",
+      "_CloudTexN2Distortion",
+      "_CloudTexN1Distortion",
+      "_Scale2",
+      "_Wind2",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_AlphaClip"
+    ]
+  },
+  {
+    "name": "Screenspace",
+    "properties": [
+      "_AlphaCutoff",
+      "_EmissionColor",
+      "_TextureSample0",
+      "_TexScale",
+      "_ScrollSpeedX",
+      "_ScrollSpeedY",
+      "_Tint",
+      "_ColorPow",
+      "_QueueOffset",
+      "_QueueControl",
+      "unity_Lightmaps",
+      "unity_LightmapsInd",
+      "unity_ShadowMasks",
+      "_ReceiveShadows"
+    ]
+  },
+  {
+    "name": "UI Extensions/UISoftAdditive",
+    "properties": [
+      "_MainTex",
+      "_Color",
+      "_StencilComp",
+      "_Stencil",
+      "_StencilOp",
+      "_StencilWriteMask",
+      "_StencilReadMask",
+      "_ColorMask"
+    ]
+  }
+]

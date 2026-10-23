@@ -1,0 +1,127 @@
+--- 2.4.b/CharacterBackpackHandler.cs
+
++++ 3.0.0/CharacterBackpackHandler.cs
+
+@@ -108,24 +108,12 @@
+
+ 	public void StashInBackpack(Character interactor, byte backpackSlotID)
+ 	{
+ 		CharacterItems items = interactor.refs.items;
+-		if (items.currentSelectedSlot.IsNone)
+-		{
+-			Debug.LogError("Need item slot selected to stash item in backpack!");
+-			return;
+-		}
+-		ItemSlot itemSlot = interactor.player.GetItemSlot(items.currentSelectedSlot.Value);
+-		if (itemSlot == null)
+-		{
+-			Debug.LogError($"Slot ID {items.currentSelectedSlot.Value} is invalid!");
+-		}
+-		if (itemSlot.IsEmpty())
+-		{
+-			Debug.LogError($"Item slot {itemSlot.itemSlotID} is empty!");
+-			return;
+-		}
+-		photonView.RPC("RPCAddItemToCharacterBackpack", RpcTarget.All, interactor.player.GetComponent<PhotonView>(), items.currentSelectedSlot.Value, backpackSlotID);
+-		interactor.player.EmptySlot(items.currentSelectedSlot);
+-		items.EquipSlot(Optionable<byte>.None);
++		if (!items.currentSelectedSlot.IsNone && !interactor.player.GetItemSlot(items.currentSelectedSlot.Value).IsEmpty())
++		{
++			photonView.RPC("RPCAddItemToCharacterBackpack", RpcTarget.All, interactor.player.GetComponent<PhotonView>(), items.currentSelectedSlot.Value, backpackSlotID);
++			interactor.player.EmptySlot(items.currentSelectedSlot);
++			items.EquipSlot(Optionable<byte>.None);
++		}
+ 	}
+ 	public void AddFuelToJetpack(Character interactor, float addedFuel = 50f)
+ 	{
+@@ -136,30 +124,22 @@
+
+ 		CharacterItems items = interactor.refs.items;
+ 		if (items.currentSelectedSlot.IsNone)
+ 		{
+-			Debug.LogError("Need item slot selected to stash item in backpack!");
+ 			return;
+ 		}
+ 		ItemSlot itemSlot = interactor.player.GetItemSlot(items.currentSelectedSlot.Value);
+-		if (itemSlot == null)
+-		{
+-			Debug.LogError($"Failed to get a non-null item slot for {items.currentSelectedSlot.Value}");
+-			return;
+-		}
+-		if (itemSlot.IsEmpty())
+-		{
+-			Debug.LogError($"Item slot {itemSlot.itemSlotID} is empty!");
+-			return;
+-		}
+-		interactor.player.EmptySlot(items.currentSelectedSlot);
+-		if (items.currentSelectedSlot.IsSome && items.currentSelectedSlot.Value == 250)
+-		{
+-			interactor.photonView.RPC("DestroyHeldItemRpc", RpcTarget.All);
+-		}
+-		else
+-		{
+-			items.EquipSlot(Optionable<byte>.None);
+-		}
+-		photonView.RPC("RPCAddFuelToJetpack", RpcTarget.All, addedFuel);
++		if (itemSlot != null && !itemSlot.IsEmpty())
++		{
++			interactor.player.EmptySlot(items.currentSelectedSlot);
++			if (items.currentSelectedSlot.IsSome && items.currentSelectedSlot.Value == 250)
++			{
++				interactor.photonView.RPC("DestroyHeldItemRpc", RpcTarget.All);
++			}
++			else
++			{
++				items.EquipSlot(Optionable<byte>.None);
++			}
++			photonView.RPC("RPCAddFuelToJetpack", RpcTarget.All, addedFuel);
++		}
+ 	}
+ 	[PunRPC]
+ 	public void RPCAddFuelToJetpack(float addedFuel)
+@@ -171,9 +151,8 @@
+
+ 			{
+ 				value2.Value = value.Value / 100f;
+ 			}
+-			Debug.Log($"Added {addedFuel} fuel to jetpack, new fuel amount is {value.Value}");
+ 			fuelFlame.Play();
+-			fuelFlameSFX.Play(base.transform.position);
++			fuelFlameSFX.Play(transform.position);
+ 		}
+ 	}
+ 	[PunRPC]
+@@ -184,20 +163,18 @@
+
+ 			value = character.player.backpackSlot.data.RegisterNewEntry<BackpackData>(DataEntryKey.BackpackData);
+ 		}
+ 		ItemSlot itemSlot = playerView.GetComponent<Player>().GetItemSlot(inventorySlotID);
+-		if (itemSlot == null)
+-		{
+-			Debug.LogError($"Slot ID {inventorySlotID} is invalid!");
+-			return;
+-		}
+-		value.AddItem(itemSlot.prefab, itemSlot.data, backpackSlotID);
+-		if (PhotonNetwork.IsMasterClient)
+-		{
+-			activeBackpackVisuals.RefreshVisuals();
+-		}
+-		activeBackpackVisuals.RefreshPocketBehaviors(character.player);
+-		if (character.IsLocal)
+-		{
+-			character.refs.afflictions.UpdateWeight();
++		if (itemSlot != null)
++		{
++			value.AddItem(itemSlot.prefab, itemSlot.data, backpackSlotID);
++			if (PhotonNetwork.IsMasterClient)
++			{
++				activeBackpackVisuals.RefreshVisuals();
++			}
++			activeBackpackVisuals.RefreshPocketBehaviors(character.player);
++			if (character.IsLocal)
++			{
++				character.refs.afflictions.UpdateWeight();
++			}
+ 		}
+ 	}
+ 	public void LightRocket(float fuseTime)

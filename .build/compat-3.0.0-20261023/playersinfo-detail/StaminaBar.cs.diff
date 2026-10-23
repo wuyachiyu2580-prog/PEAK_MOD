@@ -1,0 +1,14 @@
+--- 2.4.b/StaminaBar.cs
+
++++ 3.0.0/StaminaBar.cs
+
+@@ -45,7 +45,7 @@
+
+ 	private DOTweenTMPAnimator animator;
+ 	private void Start()
+ 	{
+-		afflictions = base.transform.parent.GetComponentsInChildren<BarAffliction>();
++		afflictions = transform.parent.GetComponentsInChildren<BarAffliction>();
+ 		TAU = MathF.PI * 2f;
+ 		BarAffliction[] array = afflictions;
+ 		for (int i = 0; i < array.Length; i++)

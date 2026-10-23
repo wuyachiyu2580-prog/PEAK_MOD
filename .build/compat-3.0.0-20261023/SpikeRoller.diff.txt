@@ -1,0 +1,14 @@
+--- 2.6.b/Peak\SpikeRoller.cs
+
++++ 3.0.0/Peak\SpikeRoller.cs
+
+@@ -60,7 +60,7 @@
+
+ 
+ 	private void OnCollisionEnter(Collision other)
+ 	{
+-		if (!(_lastHitTime + timeout > Time.time) && CharacterRagdoll.TryGetCharacterFromCollider(other.collider, out var character))
++		if (!(_lastHitTime + timeout > Time.time) && other.collider.enabled && CharacterRagdoll.TryGetCharacterFromCollider(other.collider, out var character) && !character.statusesLocked)
+ 		{
+ 			Vector3 point = other.contacts[0].point;
+ 			Vector3 force = ComputePushVector(point, character.data.currentRagdollControll);

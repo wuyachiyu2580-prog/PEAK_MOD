@@ -1,0 +1,14 @@
+--- 2.6.b/Peak\SpikeTrap.cs
+
++++ 3.0.0/Peak\SpikeTrap.cs
+
+@@ -46,7 +46,7 @@
+
+ 
+ 	private void OnTriggerEnter(Collider other)
+ 	{
+-		if (CharacterRagdoll.TryGetCharacterFromCollider(other, out var character) && character.IsLocal && !_isAttacking)
++		if (other.enabled && CharacterRagdoll.TryGetCharacterFromCollider(other, out var character) && character.IsLocal && !_isAttacking)
+ 		{
+ 			RaycastHit hitInfo = default;
+ 			if (Physics.SphereCast(transform.position + Vector3.up, 0.5f, Vector3.down, out hitInfo, 5f, HelperFunctions.terrainMapMask) && hitInfo.collider == selfCollider)

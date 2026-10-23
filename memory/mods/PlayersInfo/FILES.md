@@ -1,5 +1,11 @@
 # PlayersInfo Files
 
+## 2026-10-23 PlayersInfo 专项复核补充
+
+补查实际开发基线 2.4.b → 3.0.0：0.2.5 暂未发现必须修改的核心读数/API 断点，不代表完整实机兼容。昵称优先读原始 Owner.NickName 是既有一致性问题，建议改用游戏处理后的 characterName；复活同步、跨平台、资源层级和多人仍待验收。terrain 中 0.1.1 需更新安装版本。本次只记录，未改源码/配置/版本/发行/安装 DLL。
+
+详见 [专项复核](COMPATIBILITY_3.0.0_2026-10-23.md)。
+
 ## 2026-09-21 发行文件准备完成
 
 当前版本 `0.2.5` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/PlayersInfo/发行/0.2.5`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。

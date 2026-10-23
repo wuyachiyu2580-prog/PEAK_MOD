@@ -1,0 +1,51 @@
+--- 2.6.b/PauseMenuMainPage.cs
+
++++ 3.0.0/PauseMenuMainPage.cs
+
+@@ -29,6 +29,12 @@
+
+ 	[SerializeField]
+ 	private Button m_inviteButton;
+ 
++	[SerializeField]
++	private GameObject m_CopyIcon;
++
++	[SerializeField]
++	private GameObject m_HiddenIcon;
++
+ 	public MenuWindow confirmWindow;
+ 
+ 	[SerializeField]
+@@ -63,6 +69,8 @@
+
+ 		m_controllsButton.onClick.AddListener(OnControlsClicked);
+ 		m_inviteButton.onClick.AddListener(InviteFriendsClicked);
+ 		m_confirmCancelButton.onClick.AddListener(ConfirmCancel);
++		m_CopyIcon.SetActive(value: true);
++		m_HiddenIcon.SetActive(value: false);
+ 		if (PhotonNetwork.OfflineMode)
+ 		{
+ 			Navigation navigation = resumeButton.navigation;
+@@ -113,16 +121,15 @@
+
+ 	{
+ 		if (!PhotonNetwork.OfflineMode)
+ 		{
++			copyRoomCodeButton.gameObject.SetActive(value: true);
++			roomCode.enabled = true;
+ 			if (m_hideRoomCodeSetting.Value == OffOnMode.ON)
+ 			{
+ 				roomCode.text = LocalizedText.GetText("COPYCODE");
+-				roomCode.enabled = true;
++				return;
+ 			}
+-			else
+-			{
+-				roomCode.text = m_roomCode;
+-				roomCode.enabled = true;
+-			}
++			roomCode.text = m_roomCode;
++			m_HiddenIcon.SetActive(value: false);
+ 		}
+ 	}
+ 

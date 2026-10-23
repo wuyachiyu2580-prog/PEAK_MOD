@@ -1,0 +1,336 @@
+--- 2.4.b/CharacterAfflictions.cs
+
++++ 3.0.0/CharacterAfflictions.cs
+
+@@ -203,14 +203,10 @@
+
+ 		int numStatusTypes = NumStatusTypes;
+ 		if (statuses.Length != numStatusTypes)
+ 		{
+-			Debug.LogError($"Can't pretty print statuses because there are {numStatusTypes} types in game but " + $"statuses array was only {statuses.Length}");
+ 			return string.Empty;
+ 		}
+ 		StaminaBar bar = GUIManager.instance.bar;
+-		if (bar.afflictions.Length != numStatusTypes)
+-		{
+-			Debug.LogWarning("Oops! Shouldn't there be the same number of statuses as there are affliction bars?");
+-		}
++		_ = bar.afflictions.Length;
+ 		Color[] array = new Color[numStatusTypes];
+ 		BarAffliction[] afflictions = bar.afflictions;
+ 		foreach (BarAffliction barAffliction in afflictions)
+@@ -413,7 +409,7 @@
+
+ 	{
+ 		isWebbed = GetCurrentStatus(STATUSTYPE.Web) > 0f;
+ 		isFlyTrapped = GetCurrentStatus(STATUSTYPE.FlyTrap) > 0f;
+-		if (!base.photonView.IsMine)
++		if (!photonView.IsMine)
+ 		{
+ 			return;
+ 		}
+@@ -447,18 +443,13 @@
+
+ 	}
+ 	public void AddAffliction(Affliction affliction, bool fromRPC = false)
+ 	{
+-		if (character.data.isCarried)
++		if (character.data.isCarried || affliction == null)
+ 		{
+ 			return;
+ 		}
+-		if (affliction == null)
+-		{
+-			Debug.LogError("Trying to add null affliction");
+-			return;
+-		}
+ 		if (affliction.worksOnBot)
+ 		{
+-			if (!base.photonView.IsMine && !fromRPC)
++			if (!photonView.IsMine && !fromRPC)
+ 			{
+ 				return;
+ 			}
+@@ -490,7 +481,6 @@
+
+ 		{
+ 			afflictionList.Remove(affliction);
+ 			affliction.OnRemoved();
+-			Debug.Log($"Removed {affliction.GetAfflictionType()} to {character.gameObject.name}");
+ 			if ((!fromRPC && character.IsLocal) & pushAfflictions)
+ 			{
+ 				PushAfflictions();
+@@ -616,7 +606,7 @@
+
+ 		}
+ 		return true;
+ 	}
+-	public bool AddStatus(STATUSTYPE statusType, float amount, bool fromRPC = false, bool playEffects = true, bool notify = true, bool ignoreInvincibility = false)
++	public bool AddStatus(STATUSTYPE statusType, float amount, bool fromRPC = false, bool playEffects = true, bool notify = true, bool ignoreInvincibility = false, bool ignoreSkeleton = false)
+ 	{
+ 		if (character.isZombie && !StatusAffectsZombie(statusType))
+ 		{
+@@ -632,7 +622,7 @@
+
+ 			{
+ 				return false;
+ 			}
+-			if (statusType == STATUSTYPE.Injury)
++			if (statusType == STATUSTYPE.Injury && !ignoreSkeleton)
+ 			{
+ 				amount *= 8f;
+ 			}
+@@ -651,7 +641,7 @@
+
+ 		}
+ 		if (!ignoreInvincibility && character.data.isInvincible && statusType != STATUSTYPE.Curse && statusType != STATUSTYPE.Petrify)
+ 		{
+-			if (base.photonView.IsMine && character.data.isInvincibleMilk)
++			if (photonView.IsMine && character.data.isInvincibleMilk)
+ 			{
+ 				Singleton<AchievementManager>.Instance.AddStatusBlockedByMilk(amount);
+ 			}
+@@ -661,7 +651,7 @@
+
+ 		{
+ 			return false;
+ 		}
+-		if (!base.photonView.IsMine && !fromRPC)
++		if (!photonView.IsMine && !fromRPC)
+ 		{
+ 			return false;
+ 		}
+@@ -856,7 +846,7 @@
+
+ 			wrap.material.DOFloat(1f, "_Clip", duration);
+ 			wrap.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), duration);
+ 			wrap.transform.parent.localScale = Vector3.one;
+-			wrap.transform.parent.DOScale(4f, duration).SetEase(Ease.OutSine).OnComplete(delegate
++			wrap.transform.parent.DOScale(4f, duration).SetEase(Ease.OutSine).OnComplete(() =>
+ 			{
+ 				wrap.gameObject.SetActive(value: false);
+ 			});
+@@ -978,6 +968,15 @@
+
+ 		case STATUSTYPE.Weight:
+ 		case STATUSTYPE.Web:
+ 			break;
++		}
++	}
++	public void ForcePushStatus(float delayInSeconds = 1f)
++	{
++		StartCoroutine(PushAfterDelay());
++		IEnumerator PushAfterDelay()
++		{
++			yield return new WaitForSeconds(delayInSeconds);
++			_pushStatuses = true;
+ 		}
+ 	}
+ 	public void PushStatuses(Photon.Realtime.Player specificPlayer = null)
+@@ -1007,8 +1006,8 @@
+
+ 	{
+ 		if (!character.photonView.IsMine)
+ 		{
+-			float[] all = DeserializeStatusArray(in data);
+-			SetAll(all);
++			float[] statuses = DeserializeStatusArray(in data);
++			SetAll(statuses);
+ 			StatusesUpdated?.Invoke(character);
+ 		}
+ 	}
+@@ -1030,7 +1029,7 @@
+
+ 	[PunRPC]
+ 	private void SyncThornsRPC_Remote(byte[] data)
+ 	{
+-		if (base.photonView.IsMine)
++		if (photonView.IsMine)
+ 		{
+ 			return;
+ 		}
+@@ -1049,8 +1048,7 @@
+
+ 	}
+ 	public void ApplyReconnectData(ReconnectData data)
+ 	{
+-		Debug.Log(character.characterName + " (self) applying data: " + Pretty.Print(data));
+-		SetAll(data.currentStatuses);
++		SetAll(data.currentStatuses, ignoreSkeleton: true);
+ 		foreach (ushort stuckThornIndex in data.thornState.stuckThornIndices)
+ 		{
+ 			AddThorn(-1, stuckThornIndex, updateWeight: false);
+@@ -1058,7 +1056,7 @@
+
+ 		UpdateWeight();
+ 		PushStatuses();
+ 	}
+-	private void SetAll(float[] statuses)
++	private void SetAll(float[] statuses, bool ignoreSkeleton = false)
+ 	{
+ 		if (statuses.Length != currentStatuses.Length)
+ 		{
+@@ -1072,7 +1070,6 @@
+
+ 			{
+ 				text = text + currentStatuses[j] + ", ";
+ 			}
+-			Debug.LogError(text);
+ 			return;
+ 		}
+ 		for (int k = 0; k < statuses.Length; k++)
+@@ -1082,7 +1079,7 @@
+
+ 				float num = statuses[k] - currentStatuses[k];
+ 				if (num > 0f)
+ 				{
+-					AddStatus((STATUSTYPE)k, num, fromRPC: true, playEffects: false);
++					AddStatus((STATUSTYPE)k, num, fromRPC: true, k == 3, notify: true, ignoreInvincibility: false, ignoreSkeleton);
+ 				}
+ 				if (num < 0f)
+ 				{
+@@ -1118,6 +1115,15 @@
+
+ 			}
+ 		}
+ 	}
++	public void ForcePushAfflictions(float delayInSeconds = 1f)
++	{
++		StartCoroutine(PushAfterDelay());
++		IEnumerator PushAfterDelay()
++		{
++			yield return new WaitForSeconds(delayInSeconds);
++			PushAfflictions();
++		}
++	}
+ 	public void PushAfflictions(Photon.Realtime.Player specificPlayer = null, int newAfflictionType = -1)
+ 	{
+ 		if (character.IsLocal)
+@@ -1236,7 +1242,7 @@
+
+ 			}
+ 			else
+ 			{
+-				base.photonView.RPC("RPC_PetrifyInstantly", RpcTarget.All, true);
++				photonView.RPC("RPC_PetrifyInstantly", RpcTarget.All, true);
+ 			}
+ 		}
+ 	}
+@@ -1378,7 +1384,6 @@
+
+ 		}
+ 		foreach (Affliction item in list)
+ 		{
+-			Debug.Log($"curing affliction: {item.GetType()}");
+ 			RemoveAffliction(item, fromRPC: false, pushAfflictions: false);
+ 		}
+ 		PushAfflictions();
+@@ -1476,7 +1481,7 @@
+
+ 	}
+ 	public void AddArrow(Vector3 position, Vector3 normal)
+ 	{
+-		if (!base.photonView.IsMine)
++		if (!photonView.IsMine)
+ 		{
+ 			return;
+ 		}
+@@ -1509,7 +1514,7 @@
+
+ 	}
+ 	public void AddThorn(Vector3 position, int type)
+ 	{
+-		if (!base.photonView.IsMine || RunSettings.GetValue(RunSettings.SETTINGTYPE.Hazard_Thorns) == 0)
++		if (!photonView.IsMine || RunSettings.GetValue(RunSettings.SETTINGTYPE.Hazard_Thorns) == 0)
+ 		{
+ 			return;
+ 		}
+@@ -1541,11 +1546,10 @@
+
+ 	}
+ 	public void AddThorn(int type = -1, ushort thornIndex = 999, bool updateWeight = true)
+ 	{
+-		if (!base.photonView.IsMine || availableThornIndices.Count == 0 || character.data.isInvincible || (character.data.isSkeleton && type == 0))
++		if (!photonView.IsMine || availableThornIndices.Count == 0 || character.data.isInvincible || (character.data.isSkeleton && type == 0))
+ 		{
+ 			return;
+ 		}
+-		Debug.Log("Add thorn at index " + thornIndex);
+ 		if (thornIndex == 999 || !availableThornIndices.Contains(thornIndex))
+ 		{
+ 			IEnumerable<ushort> enumerable;
+@@ -1560,7 +1564,7 @@
+
+ 			}
+ 			thornIndex = enumerable.RandomSelection((ushort u) => 1);
+ 		}
+-		base.photonView.RPC("RPC_EnableThorn", RpcTarget.All, (int)thornIndex);
++		photonView.RPC("RPC_EnableThorn", RpcTarget.All, (int)thornIndex);
+ 		availableThornIndices.Remove(thornIndex);
+ 		thornData.stuckThornIndices.Add(thornIndex);
+ 		if (updateWeight)
+@@ -1588,12 +1592,12 @@
+
+ 	[PunRPC]
+ 	public void RemoveThornRPC(int index, bool removedByPlayer)
+ 	{
+-		if (base.photonView.IsMine)
++		if (photonView.IsMine)
+ 		{
+ 			ThornOnMe thornOnMe = physicalThorns[index];
+ 			if (thornOnMe.stuckIn)
+ 			{
+-				base.photonView.RPC("RPC_DisableThorn", RpcTarget.All, index);
++				photonView.RPC("RPC_DisableThorn", RpcTarget.All, index);
+ 				availableThornIndices.Add((ushort)index);
+ 				thornData.stuckThornIndices.Remove((ushort)index);
+ 				thornOnMe.OnPulledOut(removedByPlayer);
+@@ -1602,7 +1606,7 @@
+
+ 		}
+ 		else
+ 		{
+-			base.photonView.RPC("RemoveThornRPC", base.photonView.Owner, index, removedByPlayer);
++			photonView.RPC("RemoveThornRPC", photonView.Owner, index, removedByPlayer);
+ 		}
+ 	}
+ 	public void RemoveRandomThornLinq(int type = 0)
+@@ -1642,7 +1646,7 @@
+
+ 	}
+ 	public void StartWhirlwind()
+ 	{
+-		base.photonView.RPC("SetWhirlwindStageRPC", RpcTarget.All, WhirlwindStage.Start);
++		photonView.RPC("SetWhirlwindStageRPC", RpcTarget.All, WhirlwindStage.Start);
+ 	}
+ 	[PunRPC]
+ 	private void SetWhirlwindStageRPC(WhirlwindStage stage)
+@@ -1661,7 +1665,7 @@
+
+ 			break;
+ 		case WhirlwindStage.Stop:
+ 			whirlwind.transform.localScale = Vector3.one;
+-			whirlwind.transform.DOScale(new Vector3(3f, 0f, 3f), 0.33f).SetEase(Ease.InBack).OnComplete(delegate
++			whirlwind.transform.DOScale(new Vector3(3f, 0f, 3f), 0.33f).SetEase(Ease.InBack).OnComplete(() =>
+ 			{
+ 				whirlwind.gameObject.SetActive(value: false);
+ 			});
+@@ -1670,7 +1674,7 @@
+
+ 	}
+ 	public void WarnStopWhirlwind()
+ 	{
+-		base.photonView.RPC("SetWhirlwindStageRPC", RpcTarget.All, WhirlwindStage.WarnBeforeStop);
++		photonView.RPC("SetWhirlwindStageRPC", RpcTarget.All, WhirlwindStage.WarnBeforeStop);
+ 	}
+ 	private void WarnStopWhirlwindRoutine()
+ 	{
+@@ -1694,6 +1698,6 @@
+
+ 	}
+ 	public void StopWhirlwind()
+ 	{
+-		base.photonView.RPC("SetWhirlwindStageRPC", RpcTarget.All, WhirlwindStage.Stop);
++		photonView.RPC("SetWhirlwindStageRPC", RpcTarget.All, WhirlwindStage.Stop);
+ 	}
+ }

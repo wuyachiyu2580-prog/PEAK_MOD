@@ -1,0 +1,180 @@
+--- 2.4.b/NetworkingUtilities.cs
+
++++ 3.0.0/NetworkingUtilities.cs
+
+@@ -4,6 +4,8 @@
+
+ using ExitGames.Client.Photon;
+ using Photon.Pun;
+ using Photon.Realtime;
++using Portningsbolaget.Photon;
++using Portningsbolaget.Platforms;
+ using Steamworks;
+ using Unity.Multiplayer.PlayMode;
+ using UnityEngine;
+@@ -14,6 +16,7 @@
+
+ {
+ 	private static readonly Regex _richText = new Regex("<[^>]*>");
+ 	public static bool EnteringRoom;
++	private const string k_UserIDKey = "UserID";
+ 	public static int MAX_PLAYERS { get; set; } = 4;
+ 	public static bool FailedToAuth { get; private set; }
+ 	public static bool ConnectingToNetwork { get; private set; }
+@@ -34,17 +37,18 @@
+
+ 	private static string GetBestUserID()
+ 	{
+ 		string text;
++		uint result;
+ 		if (!CurrentPlayer.Tags.Contains("NoSteam") && SteamAPI.IsSteamRunning() && SteamUser.BLoggedOn())
+ 		{
+ 			text = SteamUser.GetSteamID().m_SteamID.ToString();
+ 		}
+-		else if (PlayerPrefs.HasKey("UserID"))
++		else if (PlayerPrefs.HasKey("UserID") && uint.TryParse(PlayerPrefs.GetString("UserID"), out result))
+ 		{
+ 			text = PlayerPrefs.GetString("UserID");
+ 		}
+ 		else
+ 		{
+-			text = Guid.NewGuid().ToString();
++			text = ((uint)UnityEngine.Random.Range(int.MinValue, int.MaxValue)).ToString();
+ 			PlayerPrefs.SetString("UserID", text);
+ 		}
+ 		AssignUserID(text);
+@@ -86,7 +90,7 @@
+
+ 		}
+ 		return true;
+ 	}
+-	public static bool ConnectToNetwork(Action<bool> callback = null)
++	public static bool ConnectToNetwork(Action<bool> callback = null, bool explicitRetry = false)
+ 	{
+ 		if (PhotonNetwork.IsConnected)
+ 		{
+@@ -94,7 +98,37 @@
+
+ 			return false;
+ 		}
+ 		ConnectingToNetwork = true;
+-		return ConnectToPhotonNetwork();
++		PlatformManager.Platform.HasInternetConnection((bool hasInternet) =>
++		{
++			if (!hasInternet)
++			{
++				Debug.LogError("No internet connection");
++				FailedToAuth = true;
++				ConnectingToNetwork = false;
++				callback?.Invoke(obj: false);
++			}
++			else
++			{
++				PhotonUtility.Authenticate((bool success) =>
++				{
++					FailedToAuth = !success;
++					if (success)
++					{
++						if (ConnectToPhotonNetwork())
++						{
++							UserManager.RenewAuthAsync();
++						}
++					}
++					else
++					{
++						Debug.LogError("Can't connect to network");
++						ConnectingToNetwork = false;
++					}
++					callback?.Invoke(success);
++				});
++			}
++		}, explicitRetry);
++		return true;
+ 	}
+ 	private static bool ConnectToPhotonNetwork()
+ 	{
+@@ -105,7 +139,6 @@
+
+ 		PhotonNetwork.GameVersion = buildVersion.ToString();
+ 		PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = buildVersion.ToMatchmaking();
+ 		PhotonNetwork.NickName = GetUsername();
+-		PhotonNetwork.AuthValues = LoadUserID();
+ 		Debug.Log("Photon Start" + PhotonNetwork.NetworkClientState.ToString() + " using app version: " + buildVersion.ToMatchmaking());
+ 		bool result = PhotonNetwork.ConnectUsingSettings();
+ 		ConnectingToNetwork = false;
+@@ -113,31 +146,62 @@
+
+ 	}
+ 	private static void AssignUserID(string userID)
+ 	{
+-		Debug.Log("Assigning UserID " + userID);
++		Debug.Log("Assigning UserID: " + userID);
+ 		Hashtable customProperties = PhotonNetwork.LocalPlayer.CustomProperties;
++		if (customProperties.TryGetValue("UserID", out var value) && (string)value != userID)
++		{
++			Debug.LogWarning("We have an existing userID of " + (string)value + " in our property table, so the new ID (" + userID + ") will be discarded.");
++		}
+ 		if (customProperties.TryAdd("UserID", userID))
+ 		{
+ 			customProperties["UserID"] = userID;
++			if (userID == "" || userID == "0")
++			{
++				Debug.LogError("UH OHHH!! We just assigned ourselves an invalid userID! This will break all of our reconnect data and save data!");
++			}
+ 		}
+ 		PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
+ 	}
++	public static string GetUserIdPhoton(Photon.Realtime.Player player)
++	{
++		Hashtable customProperties = player.CustomProperties;
++		if (customProperties.ContainsKey("UserID"))
++		{
++			return (string)customProperties["UserID"];
++		}
++		return string.Empty;
++	}
++	public static bool HasValidUserId(this Player self)
++	{
++		string userId = self.GetUserId();
++		if (!(userId == ""))
++		{
++			return !(userId == "0");
++		}
++		return false;
++	}
+ 	public static string GetUserId(this Player self)
+ 	{
+-		CharacterData data = self.character.data;
+-		if (data.userID == 0L)
++		if (!self.character || !self.character.data)
++		{
++			return GetIDFromPhotonProperties();
++		}
++		string userID = self.character.data.userID;
++		if (userID == "" || userID == "0")
++		{
++			self.character.data.userID = GetIDFromPhotonProperties();
++		}
++		return self.character.data.userID;
++		string GetIDFromPhotonProperties()
+ 		{
+ 			Hashtable customProperties = self.photonView.Owner.CustomProperties;
+ 			if (customProperties.ContainsKey("UserID"))
+ 			{
+-				string s = (string)customProperties["UserID"];
+-				data.userID = ulong.Parse(s);
+-			}
+-			else
+-			{
+-				Debug.LogError("Could not find UserID in player CustomProperties!");
+-			}
+-		}
+-		return data.userID.ToString();
++				return (string)customProperties["UserID"];
++			}
++			Debug.LogError("Could not find UserID in player CustomProperties!");
++			return string.Empty;
++		}
+ 	}
+ 	public static int GetActorNumber(this Player self)
+ 	{

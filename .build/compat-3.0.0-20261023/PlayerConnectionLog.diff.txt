@@ -1,0 +1,87 @@
+--- 2.6.b/PlayerConnectionLog.cs
+
++++ 3.0.0/PlayerConnectionLog.cs
+
+@@ -5,6 +5,7 @@
+
+ using Peak.Network;
+ using Photon.Pun;
+ using Photon.Realtime;
++using Portningsbolaget.Photon;
+ using Portningsbolaget.Platforms;
+ using TMPro;
+ using UnityEngine;
+@@ -64,16 +65,19 @@
+
+ 			text = text.Substring(0, 32);
+ 		}
+ 		newPlayer.NickName = text;
+-		string filteredName = "";
+-		PlatformManager.Platform.FilterProfanity(newPlayer.NickName, (string result) =>
++		PhotonUtility.IsOnPlatform(newPlayer, (bool isOnPlatform) =>
+ 		{
+-			filteredName = result;
+-			string newValue = GetColorTag(userColor) + " " + filteredName + "</color>";
+-			string s = GetColorTag(joinedColor) + LocalizedText.GetText("JOINEDTHEEXPEDITION").Replace("#", newValue) + "</color>";
+-			AddMessage(s);
+-			if ((bool)sfxJoin)
++			Debug.Log($"[OnPlayerEnteredRoom/IsOnPlatform] Is on platform {isOnPlatform} for player {newPlayer.NickName} {newPlayer.IsMasterClient}");
++			if (isOnPlatform)
+ 			{
+-				sfxJoin.Play();
++				NotifyMessage(newPlayer.NickName, leave: false);
++			}
++			else
++			{
++				PlatformManager.Platform.FilterProfanity(newPlayer.NickName, (string result) =>
++				{
++					NotifyMessage(result, leave: false);
++				});
+ 			}
+ 		});
+ 	}
+@@ -84,18 +88,35 @@
+
+ 		{
+ 			return;
+ 		}
+-		string filteredName = "";
+-		PlatformManager.Platform.FilterProfanity(newPlayer.NickName, (string result) =>
++		PhotonUtility.IsOnPlatform(newPlayer, (bool isOnPlatform) =>
+ 		{
+-			filteredName = result;
+-			string newValue = GetColorTag(userColor) + " " + filteredName + "</color>";
+-			string s = GetColorTag(leftColor) + LocalizedText.GetText("LEFTTHEEXPEDITION").Replace("#", newValue) + "</color>";
+-			AddMessage(s);
+-			if ((bool)sfxLeave)
++			Debug.Log($"[OnPlayerLeftRoom/IsOnPlatform] Is on platform {isOnPlatform} for player {newPlayer.NickName} {newPlayer.IsMasterClient}");
++			if (isOnPlatform)
+ 			{
+-				sfxLeave.Play();
++				NotifyMessage(newPlayer.NickName, leave: true);
++			}
++			else
++			{
++				PlatformManager.Platform.FilterProfanity(newPlayer.NickName, (string result) =>
++				{
++					NotifyMessage(result, leave: true);
++				});
+ 			}
+ 		});
++	}
++
++	private void NotifyMessage(string filteredName, bool leave)
++	{
++		string id = (leave ? "LEFTTHEEXPEDITION" : "JOINEDTHEEXPEDITION");
++		Color c = (leave ? leftColor : joinedColor);
++		SFX_Instance sFX_Instance = (leave ? sfxLeave : sfxJoin);
++		string newValue = GetColorTag(userColor) + " " + filteredName + "</color>";
++		string s = GetColorTag(c) + LocalizedText.GetText(id).Replace("#", newValue) + "</color>";
++		AddMessage(s);
++		if ((bool)sFX_Instance)
++		{
++			sFX_Instance.Play();
++		}
+ 	}
+ 
+ 	public override void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)

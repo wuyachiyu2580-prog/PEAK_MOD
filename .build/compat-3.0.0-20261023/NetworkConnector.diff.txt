@@ -1,0 +1,130 @@
+--- 2.6.b/NetworkConnector.cs
+
++++ 3.0.0/NetworkConnector.cs
+
+@@ -5,6 +5,7 @@
+
+ using Peak.Network;
+ using Photon.Pun;
+ using Photon.Realtime;
++using Portningsbolaget;
+ using Portningsbolaget.EOSCommon;
+ using Portningsbolaget.Photon;
+ using Portningsbolaget.Platforms;
+@@ -92,23 +93,25 @@
+
+ 				keepSettingLobbyDataCoroutine = StartCoroutine(KeepSettingLobbyData());
+ 			}
+ 			IsInitialized = true;
+-		}
+-		else
+-		{
+-			IsInitialized = true;
+-			if (ReadyToHostOrJoinRoom)
+-			{
+-				HandleConnectionState(CurrentConnectionState);
+-			}
+-			else if (PhotonNetwork.OfflineMode)
+-			{
+-				NetworkingUtilities.JoinDummyRoom();
+-			}
+-			else if (!UsingEditorBootstrapping)
+-			{
+-				Debug.LogError("NetworkConnector is initialized, but it can't connect to a room! Something is wrong. Dumping Networking state.", this);
+-				PrintNetworkStates();
+-			}
++			return;
++		}
++		IsInitialized = true;
++		if (ReadyToHostOrJoinRoom)
++		{
++			HandleConnectionState(CurrentConnectionState);
++		}
++		else if (PhotonNetwork.OfflineMode)
++		{
++			NetworkingUtilities.JoinDummyRoom();
++		}
++		else if (currentState is ChangeRoomState)
++		{
++			LeaveRoom();
++		}
++		else if (!UsingEditorBootstrapping)
++		{
++			Debug.LogError("NetworkConnector is initialized, but it can't connect to a room! Something is wrong. Dumping Networking state.", this);
++			PrintNetworkStates();
+ 		}
+ 	}
+ 
+@@ -147,7 +150,7 @@
+
+ 			RoomOptions roomOptions = NetworkingUtilities.HostRoomOptions();
+ 			if (!CurrentPlayer.Tags.Contains("Player1"))
+ 			{
+-				hostState.RoomName = Utilities.CreateRandomName(PhotonNetwork.CloudRegion, PlatformUtility.CurrentPlatform);
++				hostState.RoomName = Utilities.CreateRandomName(PhotonNetwork.CloudRegion, PlatformUtility.CurrentPlatform, ModUtility.UsingMods, addNumbers: false);
+ 			}
+ 			Debug.Log("Attempting to create room with name " + hostState.RoomName + " in region " + PhotonNetwork.CloudRegion);
+ 			PhotonNetwork.CreateRoom(hostState.RoomName, roomOptions);
+@@ -167,7 +170,7 @@
+
+ 				PhotonNetwork.JoinRoom(joinSpecificRoomState.RoomName);
+ 			}
+ 		}
+-		else if (state is DisconnectingState)
++		else if (state is DisconnectingState || state is ChangeRoomState)
+ 		{
+ 			if (NetCode.Matchmaking.InLobby)
+ 			{
+@@ -325,33 +328,43 @@
+
+ 	public override void OnPlayerEnteredRoom(Photon.Realtime.Player player)
+ 	{
+ 		Debug.Log(player.NickName + " entered the room");
+-		CheckCrossPlay();
++		CheckCrossPlay(player);
+ 	}
+ 
+ 	private void HandlePlatformActivity()
+ 	{
+ 	}
+ 
+-	private void CheckCrossPlay()
++	private void CheckCrossPlay(Photon.Realtime.Player player)
+ 	{
+ 		PhotonUtility.CheckCrossPlay((bool crossplay) =>
+ 		{
+ 			if (crossplay)
+ 			{
+-				PlatformManager.Platform.CanCrossPlay((bool allowed) =>
++				PlatformUtility.PlatformFamily item = Utilities.CodeToPlatformModState(PhotonNetwork.CurrentRoom.Name[1]).Item1;
++				PlatformManager.Platform.CanCrossPlay(item, (bool allowed) =>
+ 				{
+-					bool flag = false;
+-					if (GameHandler.Instance?.SettingsHandler != null)
++					if (allowed && GameHandler.Instance?.SettingsHandler != null)
+ 					{
+-						flag = GameHandler.Instance.SettingsHandler.GetSetting<CrossPlatformSetting>().Value == OffOnMode.ON;
++						allowed = GameHandler.Instance.SettingsHandler.GetSetting<CrossPlatformSetting>().Value == OffOnMode.ON;
+ 					}
+-					if (!allowed || !flag)
++					if (!allowed)
+ 					{
+-						ShowCrossplayModal();
++						StartCoroutine(PrepareForCrossplayModal(player));
+ 					}
+ 				});
+ 			}
+ 		});
++		static IEnumerator PrepareForCrossplayModal(Photon.Realtime.Player target)
++		{
++			WaitForSeconds delay = new WaitForSeconds(0.5f);
++			Character character;
++			while (!PlayerHandler.TryGetCharacter(target.ActorNumber, out character))
++			{
++				yield return delay;
++			}
++			ShowCrossplayModal();
++		}
+ 	}
+ 
+ 	private static void ShowCrossplayModal()

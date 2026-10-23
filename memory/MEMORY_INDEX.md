@@ -1,20 +1,27 @@
 # Memory Index
 
-**2026-10-07 用户最终确认**：profile中的scanner和CN DLL是用户为暂时游玩其他内容而自行移走，明确要求不要重新复制。保留当前停用/移走状态；扫描器源码、使用说明和候选DLL保存在开发区，50项离线检查通过，实机尚未验证。此前部署记录仅为历史。
+## 2026-10-23 PlayersInfo 复核补充
 
-更新时间：2026-10-07
+[PlayersInfo 专项报告](mods/PlayersInfo/COMPATIBILITY_3.0.0_2026-10-23.md)：补查 2.4.b → 3.0.0，0.2.5 暂无确定的强制 API/核心读数适配项；新增昵称读取顺序维护建议，并保留 3.0.0 实机验收。terrain 中 0.1.1 仍需更新。仅更新审核记录，源码及部署未改。
 
-- PeakWorkshopCNScanner `0.1.0`：用户最新漏译定位工具，已独立构建/部署，50项离线检查通过，实机未验收。索引：`mods/PeakWorkshopCNScanner/README.md`、`STATUS.md`、`TODO.md`、`RECENT.md`、`DECISIONS.md`、`FILES.md`、`temp/current.md`；开发区 `README.md`、`使用说明.md`、`VALIDATION.md`。
-- 2026-10-07 14:50 当前 profile 原 PeakWorkshop 只有 `.dll.old`，未恢复启用；此前“已恢复”的条目为历史。扫描器须启用原MOD后试用，CN DLL仍2FC50B1F…AA523。
+## 2026-10-23 PEAK 3.0.0 兼容性审核
 
-- PeakWorkshopCN `0.1.0` 资源显示修订版已构建并部署：4,246 条译文，构件/材质显示与中英文搜索继续覆盖；主项目 0/0，51 项测试通过。当前 SHA-256 `2FC50B1FDBB6AC7F82A9D3EAAA7E70DADCF7EBA8B797031FAEEA1A77033AA523`。原 PeakWorkshop.dll 已恢复，重启后进行实机和性能验收，见 `mods/PeakWorkshopCN/STATUS.md`。
+当前游戏检查基线为 3.0.0，对照归档 2.6.b；12 个活动插件工程中 8 个隔离 Release 构建 0 警告/0 错误。ItemInfoCN、Lantern_ShootZombies_Night、TerrainCustomiserCN（含 Collector）需要适配；WhySoLaggy 另需更新写死 2.4.b 的测试路径。详见 [COMPATIBILITY_3.0.0_2026-10-23.md](COMPATIBILITY_3.0.0_2026-10-23.md)。本轮只审核并记录，插件源码/配置/版本/已安装 DLL/发行文件未改，未部署或启动游戏。
 
-- PeakWorkshopCN最新接续研究：`MOD开发/PeakWorkshopCN/TERMINOLOGY_PERFORMANCE_RESEARCH.md`、`research/2026-10-05-terms-performance/`（8份CSV/JSON）、`tools/Research/`。官方术语提取866键、用户确认SHORE海岸；字体字段/高频反射/缓存优化路径已核验，22个同英文差异只是语境候选。未改插件/词表/DLL、未实施优化或测实机FPS；六件套和temp已同步。
+新审核报告包含构建矩阵、失效成员、反射/RPC 检查、测试结果和各项目实机边界；优先于下方旧版本兼容结论。
 
-- PeakWorkshopCN最新全量复核：`MOD开发/PeakWorkshopCN/AUDIT_RECHECK.md`、`audit/2026-10-05-recheck/`、`tools/Recheck/`；474文件/原DLL均4,968Tr，固定2,006映射+2,197缺映射+1保留，764非固定；额外30处本地tr委托。全MOD范围含构件/材质显示与中文搜索，完整运行目录仍需采集。
-- 新日志确认初始化完成但Strip仍失败；另确认字段错配、回调来源、跳转边界、缓存、参数保护和Home键错译等R01–R15。本轮只审核，安装仍为16:58的0.1.0.0、304,128字节、26D877...836CC，原DLL未变；不把报告建议当已实现。
+## 2026-10-12 PeakWorkshopCN 与扫描器已作废
 
-- PeakWorkshopCN `0.1.0`：1,000生成规则实际907固定+93动态，配置67条说明。之前41项测试不覆盖WorkshopPatches/字体/初始化；入口 `mods/PeakWorkshopCN/README.md`，当前缺陷与修复待办看STATUS/TODO及最新复核报告。旧AUDIT.md为历史基线。
+按用户要求，PeakWorkshopCN 和 PeakWorkshopCNScanner 均已停止维护并集中到 `MOD开发/作废/`。源码、扫描证据、发行文件、8 个专属构建目录、散落审核文件及旧 memory 完整保留，1,518 个搬移或快照文件的大小与 SHA256 校验一致。
+
+- [PeakWorkshopCN 作废说明](../MOD开发/作废/PeakWorkshopCN/作废说明.md)；当前 memory 入口：`mods/PeakWorkshopCN/README.md`。
+- [PeakWorkshopCNScanner 作废说明](../MOD开发/作废/PeakWorkshopCNScanner/作废说明.md)；当前 memory 入口：`mods/PeakWorkshopCNScanner/README.md`。
+
+指定 2.0.a profile 原本已无这两个插件的 DLL/PDB；两份残留配置也已移入归档。原 PeakWorkshop 保留原状。本次未构建、部署或启用任何插件。旧漏翻、复扫、性能验收、发行及自动同步 profile 的约定停止执行，仅在用户明确恢复后重新评估。
+
+原六件套/current 与公共入口旧内容分别保存在各项目 `归档资料/memory/` 和中文补丁的 `归档资料/global-memory-before-2026-10-12/`；历史记录中的“当前”“下一步”不代表活动任务。归档不表示未完成的实机验收已通过。
+
+## 其他近期事项
 
 - 发行文案最新规则（2026-09-21）：使用英文，保留上一版格式，README 和 CHANGELOG 均明确列出本版更新；见 common/00、05。四 MOD 已纠正，仍无 ZIP。
 
@@ -45,13 +52,17 @@
 
 ## MOD 四件套（mods/）
 
-### PeakWorkshopCN（0.1.0 / 试用实现已部署）
+### PeakWorkshopCN（0.1.0 / 已作废）
 
-- `mods/PeakWorkshopCN/README.md`、`STATUS.md`：项目入口与试用覆盖/验证状态。
-- `mods/PeakWorkshopCN/TODO.md`、`RECENT.md`、`DECISIONS.md`、`FILES.md`：剩余覆盖/实机任务、实现履历、用户边界、工程与产物 hash。
-- `mods/PeakWorkshopCN/temp/current.md`：接续摘要。
-- `MOD开发/PeakWorkshopCN/README.md`、`RESEARCH.md`、`PLAN.md`、`IMPLEMENTATION.md`：开发入口、研究/计划、当前实现/动态证据/验证与遗漏；源码 `PeakWorkshopCN/`，测试 `tests/`，静态审计 `tools/Audit/`。
-- `MOD开发/PeakWorkshopCN/AUDIT.md`、`audit/2026-10-05/`：重新审核及16个CSV/JSON清单，另有 `audit/2026-10-05-revision/` 模板库存；含源码行号、IL调用、固定缺词、非固定待审、语言/显示/词表上下文候选与Boss来源。后续整改以前述审核为准。
+- 当前入口：`mods/PeakWorkshopCN/README.md`、`STATUS.md`、`TODO.md`、`RECENT.md`、`DECISIONS.md`、`FILES.md`、`temp/current.md`；仅保留作废状态与归档指针，无活动待办。
+- 归档：`MOD开发/作废/PeakWorkshopCN/`，源码、报告、发行文件、七个专属构建目录、原 memory 及 profile 配置已集中。详见 [作废说明](../MOD开发/作废/PeakWorkshopCN/作废说明.md) 与 `归档资料/归档清单-2026-10-12.json`。
+- 不再构建、部署、发行或执行旧验收计划，先前自动同步 profile 约定失效。
+
+### PeakWorkshopCNScanner（0.1.0 / 已作废）
+
+- 当前入口：`mods/PeakWorkshopCNScanner/README.md`、`STATUS.md`、`TODO.md`、`RECENT.md`、`DECISIONS.md`、`FILES.md`、`temp/current.md`；无活动扫描或复核任务。
+- 归档：`MOD开发/作废/PeakWorkshopCNScanner/`，637 条首扫及 359 条复扫原件、审核、源码、独立构建、原 memory 和配置保留。详见 [作废说明](../MOD开发/作废/PeakWorkshopCNScanner/作废说明.md) 与 `归档资料/归档清单-2026-10-12.json`。
+- 不自动启用、恢复或部署。归档不代表未完成的实机、联机和性能验收通过。
 
 ### 临时思考记忆区
 
@@ -147,6 +158,18 @@
 - `mods/OldPC/DECISIONS.md`：本地视觉边界、画质恢复和风险。
 - `mods/OldPC/FILES.md`：源码、工程和构建命令。
 
+### UprightCockroach（本地四臂 FBX 已转换接入，待实机验收）
+
+- `mods/UprightCockroach/README.md`：直立蟑螂客户端视觉替换定位和接手入口。
+- `mods/UprightCockroach/RECENT.md`：2026-10-14 模型初筛、截图反馈、触须 config 与正式模型导入待办。
+- `MOD开发/UprightCockroach/MODEL_RESEARCH_2026-10-14.md`：历史候选初筛；用户后选 Cockroach alien，再提供不同的本地 FBX。
+- `MOD开发/UprightCockroach/FBX_INSPECTION_2026-10-14.md`：本地四臂直立蟑螂 FBX 无骨架/蒙皮；用户确认去麦克风和草丛，转换资源、贴图和 Scout 绑定已完成。
+- `MOD开发/UprightCockroach/ANTENNA_CONFIG.md`：48项触须参数、热重载、坐标语义和13项配置检查；已部署 profile，游戏内未验收。
+- `mods/UprightCockroach/DECISIONS.md`：只做直立版本、纯客户端边界、骨骼与生命周期风险。
+- `mods/UprightCockroach/FILES.md`：源码工程、构建命令、输出 DLL 和调研依据。
+- `MOD开发/UprightCockroach/TEST_PLAN.md`：首次实机验收步骤和失败日志保留规则。
+- `mods/UprightCockroach/TODO.md`：模型、2.6.b 核对、MVP 和实机验收待办。
+
 ### TerrainCustomiserCN（0.1.2 已发布，对应原版 0.3.2）
 
 - `mods/TerrainCustomiserCN/README.md`：TerrainCustomiser 中文 UI 版入口、版本对应、玩家侧说明和接手要求。
@@ -240,4 +263,3 @@
 - 不要把某个 MOD 的待办写进 `common/`。
 - 不再依赖已删除的历史文件；缺失信息必须重新从源码、日志或用户反馈确认。
 - 不要在 JSON 配置里写注释；用 `_doc`（全局）/ `note`（单条）承载说明。
-

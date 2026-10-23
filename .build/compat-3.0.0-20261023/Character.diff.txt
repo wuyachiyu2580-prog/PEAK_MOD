@@ -1,0 +1,141 @@
+--- 2.6.b/Character.cs
+
++++ 3.0.0/Character.cs
+
+@@ -5,6 +5,7 @@
+
+ using Peak;
+ using Photon.Pun;
+ using Photon.Voice.Unity;
++using Portningsbolaget.Photon;
+ using Portningsbolaget.Platforms;
+ using Unity.Multiplayer.PlayMode;
+ using UnityEngine;
+@@ -54,6 +55,8 @@
+
+ 
+ 		public CharacterItems items;
+ 
++		public AnimatedMouth animatedMouth;
++
+ 		public AnimatedVariables animatedVariables;
+ 
+ 		public CharacterAfflictions afflictions;
+@@ -184,10 +187,6 @@
+
+ 	public static readonly Vector3 ScoutmasterHideySpot = new Vector3(0f, 0f, 5000f);
+ 
+ 	public Action<string, float> illegalStatusAction;
+-
+-	private bool _debugStatusLock;
+-
+-	private bool _warpStatusLock;
+ 
+ 	private List<StickPart> stickParts = new List<StickPart>();
+ 
+@@ -284,21 +283,7 @@
+
+ 
+ 	public bool infiniteStam { get; set; }
+ 
+-	public bool statusesLocked
+-	{
+-		get
+-		{
+-			if (!_debugStatusLock)
+-			{
+-				return _warpStatusLock;
+-			}
+-			return true;
+-		}
+-		set
+-		{
+-			_debugStatusLock = value;
+-		}
+-	}
++	public bool statusesLocked { get; private set; }
+ 
+ 	public event Action<Character> WarpCompleted;
+ 
+@@ -348,9 +333,20 @@
+
+ 					VoiceClientHandler.LocalPlayerAssigned(GetComponentInChildren<Recorder>());
+ 				}
+ 				gameObject.name = $"Character [{view.Owner.NickName} : {view.Owner.ActorNumber}]";
+-				PlatformManager.Platform.FilterProfanity(view.Owner.NickName, (string result) =>
++				PhotonUtility.IsOnPlatform(view.Owner, (bool isOnPlatform) =>
+ 				{
+-					characterName = result;
++					Debug.Log($"[Character/IsOnPlatform] Is on platform {isOnPlatform} for player {view.Owner.NickName} {view.IsMine}");
++					if (isOnPlatform)
++					{
++						characterName = view.Owner.NickName;
++					}
++					else
++					{
++						PlatformManager.Platform.FilterProfanity(view.Owner.NickName, (string result) =>
++						{
++							characterName = result;
++						});
++					}
+ 				});
+ 			}
+ 			else
+@@ -370,6 +366,7 @@
+
+ 			return;
+ 		}
+ 		refs.animatedVariables = GetComponentInChildren<AnimatedVariables>();
++		refs.animatedMouth = GetComponent<AnimatedMouth>();
+ 		refs.movement = GetComponent<CharacterMovement>();
+ 		refs.carriying = GetComponent<CharacterCarrying>();
+ 		refs.ragdoll = GetComponent<CharacterRagdoll>();
+@@ -1816,6 +1813,11 @@
+
+ 		refs.stats.justRevived = true;
+ 		refs.stats.Record(useOverridePosition: true, position.y);
+ 		Singleton<ReconnectHandler>.Instance.UpdateFromRevive(this, position);
++		if (IsLocal)
++		{
++			refs.afflictions.ForcePushAfflictions();
++			refs.afflictions.ForcePushStatus(2f);
++		}
+ 	}
+ 
+ 	[PunRPC]
+@@ -1876,10 +1878,7 @@
+
+ 				Debug.Log($"Waited {loopStop} frames for registration.");
+ 			}
+ 			UnStick();
+-			if (IsLocal)
+-			{
+-				_warpStatusLock = true;
+-			}
++			statusesLocked = true;
+ 			yield return waitForFixedUpdate;
+ 			refs.ragdoll.ToggleCollision(enableCollision: false);
+ 			if ((bool)data.currentItem)
+@@ -1960,10 +1959,7 @@
+
+ 			yield return waitForFixedUpdate;
+ 			refs.ragdoll.HaltBodyVelocity();
+ 			yield return waitForFixedUpdate;
+-			if (IsLocal)
+-			{
+-				_warpStatusLock = false;
+-			}
++			statusesLocked = false;
+ 			warping = false;
+ 			Debug.Log($"{characterName} finished warping to {position}", this);
+ 			WarpCompleted?.Invoke(this);
+@@ -2024,7 +2020,7 @@
+
+ 	[ConsoleCommand]
+ 	public static void LockStatuses()
+ 	{
+-		localCharacter._debugStatusLock = !localCharacter._debugStatusLock;
++		localCharacter.statusesLocked = !localCharacter.statusesLocked;
+ 	}
+ 
+ 	private void OnGetMic(float db)

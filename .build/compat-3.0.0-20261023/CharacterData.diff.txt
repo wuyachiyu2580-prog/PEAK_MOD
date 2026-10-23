@@ -1,0 +1,73 @@
+--- 2.6.b/CharacterData.cs
+
++++ 3.0.0/CharacterData.cs
+
+@@ -1,4 +1,5 @@
+
+ using System;
++using System.Collections;
+ using System.Collections.Generic;
+ using Peak.Afflictions;
+ using Photon.Pun;
+@@ -572,7 +573,10 @@
+
+ 		{
+ 			m_instances = new Dictionary<Photon.Realtime.Player, CharacterData>();
+ 		}
+-		m_instances.TryAdd(m_photonView.Owner, this);
++		if (!character.isBot)
++		{
++			m_instances.TryAdd(m_photonView.Owner, this);
++		}
+ 	}
+ 
+ 	private void OnDestroy()
+@@ -647,23 +651,30 @@
+
+ 
+ 	internal void SetBadgeStatus()
+ 	{
+-		if (!character.IsLocal)
+-		{
+-			return;
+-		}
+-		badgeStatus = new bool[GUIManager.instance.mainBadgeManager.badgeData.Length];
+-		for (int i = 0; i < badgeStatus.Length; i++)
+-		{
+-			if (GUIManager.instance.mainBadgeManager.badgeData[i] != null)
+-			{
+-				badgeStatus[i] = !GUIManager.instance.mainBadgeManager.badgeData[i].IsLocked;
+-			}
+-			else
+-			{
+-				badgeStatus[i] = false;
+-			}
+-		}
+-		photonView.RPC("SyncBadgeStatus", RpcTarget.All, badgeStatus);
++		if (character.IsLocal)
++		{
++			StartCoroutine(SetBadgeStatusRoutine());
++		}
++		IEnumerator SetBadgeStatusRoutine()
++		{
++			while (!AchievementManager.GotStats)
++			{
++				yield return null;
++			}
++			badgeStatus = new bool[GUIManager.instance.mainBadgeManager.badgeData.Length];
++			for (int i = 0; i < badgeStatus.Length; i++)
++			{
++				if (GUIManager.instance.mainBadgeManager.badgeData[i] != null)
++				{
++					badgeStatus[i] = !GUIManager.instance.mainBadgeManager.badgeData[i].IsLocked;
++				}
++				else
++				{
++					badgeStatus[i] = false;
++				}
++			}
++			photonView.RPC("SyncBadgeStatus", RpcTarget.All, badgeStatus);
++		}
+ 	}
+ 
+ 	[PunRPC]

@@ -1,0 +1,167 @@
+[
+  {
+    "type": "Affliction.cs",
+    "same": false,
+    "diff_lines": 11
+  },
+  {
+    "type": "Affliction_InfiniteStamina.cs",
+    "same": true,
+    "diff_lines": 0
+  },
+  {
+    "type": "AscentUI.cs",
+    "same": true,
+    "diff_lines": 0
+  },
+  {
+    "type": "Ascents.cs",
+    "same": false,
+    "diff_lines": 15
+  },
+  {
+    "type": "Backpack.cs",
+    "same": false,
+    "diff_lines": 130
+  },
+  {
+    "type": "BackpackData.cs",
+    "same": false,
+    "diff_lines": 31
+  },
+  {
+    "type": "BackpackSlot.cs",
+    "same": false,
+    "diff_lines": 11
+  },
+  {
+    "type": "BarAffliction.cs",
+    "same": false,
+    "diff_lines": 16
+  },
+  {
+    "type": "Campfire.cs",
+    "same": false,
+    "diff_lines": 115
+  },
+  {
+    "type": "Character.cs",
+    "same": false,
+    "diff_lines": 559
+  },
+  {
+    "type": "CharacterAfflictions.cs",
+    "same": false,
+    "diff_lines": 305
+  },
+  {
+    "type": "CharacterBackpackHandler.cs",
+    "same": false,
+    "diff_lines": 121
+  },
+  {
+    "type": "CharacterData.cs",
+    "same": false,
+    "diff_lines": 159
+  },
+  {
+    "type": "CharacterItems.cs",
+    "same": false,
+    "diff_lines": 138
+  },
+  {
+    "type": "CharacterStats.cs",
+    "same": false,
+    "diff_lines": 304
+  },
+  {
+    "type": "CharacterSyncData.cs",
+    "same": true,
+    "diff_lines": 0
+  },
+  {
+    "type": "DataEntryKey.cs",
+    "same": true,
+    "diff_lines": 0
+  },
+  {
+    "type": "FloatItemData.cs",
+    "same": true,
+    "diff_lines": 0
+  },
+  {
+    "type": "GUIManager.cs",
+    "same": false,
+    "diff_lines": 101
+  },
+  {
+    "type": "IntItemData.cs",
+    "same": true,
+    "diff_lines": 0
+  },
+  {
+    "type": "InventoryItemUI.cs",
+    "same": false,
+    "diff_lines": 28
+  },
+  {
+    "type": "Item.cs",
+    "same": false,
+    "diff_lines": 340
+  },
+  {
+    "type": "ItemCooking.cs",
+    "same": false,
+    "diff_lines": 90
+  },
+  {
+    "type": "ItemSlot.cs",
+    "same": true,
+    "diff_lines": 0
+  },
+  {
+    "type": "Jetpack.cs",
+    "same": false,
+    "diff_lines": 11
+  },
+  {
+    "type": "LocalizedText.cs",
+    "same": false,
+    "diff_lines": 29
+  },
+  {
+    "type": "NetworkingUtilities.cs",
+    "same": false,
+    "diff_lines": 171
+  },
+  {
+    "type": "OptionableIntItemData.cs",
+    "same": true,
+    "diff_lines": 0
+  },
+  {
+    "type": "Player.cs",
+    "same": false,
+    "diff_lines": 214
+  },
+  {
+    "type": "Rocketpack.cs",
+    "same": false,
+    "diff_lines": 23
+  },
+  {
+    "type": "SettingsUICell.cs",
+    "same": true,
+    "diff_lines": 0
+  },
+  {
+    "type": "StaminaBar.cs",
+    "same": false,
+    "diff_lines": 11
+  },
+  {
+    "type": "ThornOnMe.cs",
+    "same": false,
+    "diff_lines": 42
+  }
+]

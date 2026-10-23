@@ -1,0 +1,80 @@
+--- 2.6.b/Campfire.cs
+
++++ 3.0.0/Campfire.cs
+
+@@ -78,6 +78,8 @@
+
+ 
+ 	private float startRot;
+ 
++	private bool skipMoraleBoost;
++
+ 	private Vector2 startSize;
+ 
+ 	private bool fireHasStarted;
+@@ -91,6 +93,12 @@
+
+ 	public bool disableFogFakeMountain;
+ 
+ 	public bool forceLit;
++
++	public const float MORALE_BOOST_STAM = 0.25f;
++
++	public const float INJURY_HEAL = -0.2f;
++
++	public const float PETRIFY_HEAL = -0.2f;
+ 
+ 	private List<Character> _charactersInRadius = new List<Character>();
+ 
+@@ -152,6 +160,10 @@
+
+ 
+ 	private void OnDestroy()
+ 	{
++		if (name.Contains("Kiln"))
++		{
++			Debug.Log("CAMPFIRE ALERTO!!! " + name + " is getting destroyed. I hope this is because of a scene change and not a naughty script blowing me up!!", this);
++		}
+ 		PlayerHandler.CharacterRegistered = (Action<Character>)Delegate.Remove(PlayerHandler.CharacterRegistered, new Action<Character>(CheckIfSyncNeeded));
+ 	}
+ 
+@@ -176,7 +188,7 @@
+
+ 			if (!fireHasStarted)
+ 			{
+ 				Vector3 position = transform.position;
+-				if (MoraleBoost.SpawnMoraleBoost(position, moraleBoostRadius, moraleBoostBaseline, moraleBoostPerAdditionalScout))
++				if (!skipMoraleBoost && MoraleBoost.SpawnMoraleBoost(position, moraleBoostRadius, moraleBoostBaseline, moraleBoostPerAdditionalScout))
+ 				{
+ 					for (int i = 0; i < moraleBoost.Length; i++)
+ 					{
+@@ -468,6 +480,7 @@
+
+ 		smokeParticlesOff.Stop();
+ 		smokeParticlesLit.Play();
+ 		GUIManager.instance.RefreshInteractablePrompt();
++		skipMoraleBoost = !updateSegment;
+ 		if (IsMiniRunEndingCampfire())
+ 		{
+ 			if (PhotonNetwork.IsMasterClient)
+@@ -476,9 +489,16 @@
+
+ 			}
+ 			return;
+ 		}
+-		if (updateSegment && (bool)Singleton<MapHandler>.Instance)
+-		{
+-			Singleton<MapHandler>.Instance.GoToSegment(advanceToSegment);
++		if (updateSegment)
++		{
++			if ((bool)Singleton<MapHandler>.Instance)
++			{
++				Singleton<MapHandler>.Instance.GoToSegment(advanceToSegment);
++			}
++			else
++			{
++				Debug.LogWarning(name + " wants to UpdateSegment when lit but MapHandler doesn't exist.", this);
++			}
+ 		}
+ 		if (updateSegment)
+ 		{

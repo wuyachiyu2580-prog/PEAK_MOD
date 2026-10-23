@@ -1,0 +1,602 @@
+--- 2.4.b/Character.cs
+
++++ 3.0.0/Character.cs
+
+@@ -5,6 +5,7 @@
+
+ using Peak;
+ using Photon.Pun;
+ using Photon.Voice.Unity;
++using Portningsbolaget.Photon;
+ using Portningsbolaget.Platforms;
+ using Unity.Multiplayer.PlayMode;
+ using UnityEngine;
+@@ -35,6 +36,7 @@
+
+ 		public TwoBoneIKConstraint ikLeft;
+ 		public TwoBoneIKConstraint ikRight;
+ 		public CharacterItems items;
++		public AnimatedMouth animatedMouth;
+ 		public AnimatedVariables animatedVariables;
+ 		public CharacterAfflictions afflictions;
+ 		public BadgeUnlocker badgeUnlocker;
+@@ -100,6 +102,7 @@
+
+ 	private static WaitForSeconds warpWait = new WaitForSeconds(0.5f);
+ 	private static WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+ 	private Coroutine _warpRoutine;
++	public static readonly Vector3 ScoutmasterHideySpot = new Vector3(0f, 0f, 5000f);
+ 	public Action<string, float> illegalStatusAction;
+ 	private List<StickPart> stickParts = new List<StickPart>();
+ 	public bool IsPlayerControlled
+@@ -134,7 +137,7 @@
+
+ 	{
+ 		get
+ 		{
+-			if (IsPlayerControlled && PlayerHandler.TryGetCharacter(base.photonView.OwnerActorNr, out var character))
++			if (IsPlayerControlled && PlayerHandler.TryGetCharacter(photonView.OwnerActorNr, out var character))
+ 			{
+ 				return character == this;
+ 			}
+@@ -195,9 +198,9 @@
+
+ 	{
+ 		AllCharacters.Remove(this);
+ 		AllBotCharacters.Remove(this);
+-		if (base.photonView.IsMine)
+-		{
+-			PhotonNetwork.Destroy(base.photonView);
++		if (photonView.IsMine)
++		{
++			PhotonNetwork.Destroy(photonView);
+ 		}
+ 	}
+ 	private void Awake()
+@@ -221,16 +224,27 @@
+
+ 					localCharacter = this;
+ 					VoiceClientHandler.LocalPlayerAssigned(GetComponentInChildren<Recorder>());
+ 				}
+-				base.gameObject.name = $"Character [{view.Owner.NickName} : {view.Owner.ActorNumber}]";
+-				PlatformManager.Platform.FilterProfanity(view.Owner.NickName, delegate(string result)
+-				{
+-					characterName = result;
++				gameObject.name = $"Character [{view.Owner.NickName} : {view.Owner.ActorNumber}]";
++				PhotonUtility.IsOnPlatform(view.Owner, (bool isOnPlatform) =>
++				{
++					Debug.Log($"[Character/IsOnPlatform] Is on platform {isOnPlatform} for player {view.Owner.NickName} {view.IsMine}");
++					if (isOnPlatform)
++					{
++						characterName = view.Owner.NickName;
++					}
++					else
++					{
++						PlatformManager.Platform.FilterProfanity(view.Owner.NickName, (string result) =>
++						{
++							characterName = result;
++						});
++					}
+ 				});
+ 			}
+ 			else
+ 			{
+-				base.gameObject.name = "Bot";
+-				characterName = base.gameObject.name;
++				gameObject.name = "Bot";
++				characterName = gameObject.name;
+ 			}
+ 		}
+ 		InitializeRefs();
+@@ -243,6 +257,7 @@
+
+ 			return;
+ 		}
+ 		refs.animatedVariables = GetComponentInChildren<AnimatedVariables>();
++		refs.animatedMouth = GetComponent<AnimatedMouth>();
+ 		refs.movement = GetComponent<CharacterMovement>();
+ 		refs.carriying = GetComponent<CharacterCarrying>();
+ 		refs.ragdoll = GetComponent<CharacterRagdoll>();
+@@ -295,23 +310,22 @@
+
+ 	}
+ 	private void DropCarriedCharacter(bool sendRPC)
+ 	{
+-		if (!data.IsCarryingCharacter)
+-		{
+-			Debug.LogWarning("Called DropCarriedCharacter but we're not carrying anyone. Doing nothing.");
+-		}
+-		else if (sendRPC)
+-		{
+-			refs.carriying.Drop(data.carriedPlayer);
+-		}
+-		else
+-		{
+-			refs.carriying.RPCA_Drop(data.carriedPlayer.photonView);
++		if (data.IsCarryingCharacter)
++		{
++			if (sendRPC)
++			{
++				refs.carriying.Drop(data.carriedPlayer);
++			}
++			else
++			{
++				refs.carriying.RPCA_Drop(data.carriedPlayer.photonView);
++			}
+ 		}
+ 	}
+ 	internal void SetDeadAfterReconnect(Vector3 lastLivingPosition)
+ 	{
+ 		LastLivingPosition = lastLivingPosition;
+-		base.photonView.RPC("RPCA_SetDead", RpcTarget.All);
++		photonView.RPC("RPCA_SetDead", RpcTarget.All);
+ 	}
+ 	public Vector3 GetSpectatePosition()
+ 	{
+@@ -345,7 +359,7 @@
+
+ 	private void CreateHelperObjects()
+ 	{
+ 		refs.helperObjects = new GameObject("helperObjects").transform;
+-		refs.helperObjects.transform.SetParent(base.transform);
++		refs.helperObjects.transform.SetParent(transform);
+ 		refs.helperObjects.transform.localPosition = Vector3.zero;
+ 		refs.helperObjects.transform.localRotation = Quaternion.identity;
+ 		refs.animationHeadTransform = UnityEngine.Object.Instantiate(refs.helperObjects.gameObject, refs.helperObjects).transform;
+@@ -366,7 +380,7 @@
+
+ 			started = true;
+ 			refs.hip = GetBodypart(BodypartType.Hip);
+ 			refs.head = GetBodypart(BodypartType.Head);
+-			base.gameObject.name = (isBot ? "Bot Character" : $"Character [{view.Owner.NickName} : {view.Owner.ActorNumber}]");
++			gameObject.name = (isBot ? "Bot Character" : $"Character [{view.Owner.NickName} : {view.Owner.ActorNumber}]");
+ 			CharacterAfflictions afflictions = refs.afflictions;
+ 			afflictions.OnAddedIncrementalStatus = (Action<CharacterAfflictions.STATUSTYPE, float>)Delegate.Combine(afflictions.OnAddedIncrementalStatus, new Action<CharacterAfflictions.STATUSTYPE, float>(OnAddedStatus));
+ 			smoothedCamPos = GetBodypart(BodypartType.Head).transform.TransformPoint(Vector3.up * 1f);
+@@ -391,7 +405,7 @@
+
+ 		{
+ 			data.sinceDied = 0f;
+ 		}
+-		if (!base.photonView.IsMine)
++		if (!photonView.IsMine)
+ 		{
+ 			HandlePetrifyVisualsRemote();
+ 			return;
+@@ -446,7 +460,6 @@
+
+ 				passOutFailsafeTick += Time.deltaTime;
+ 				if (passOutFailsafeTick > 3f)
+ 				{
+-					Debug.Log("Passed out failsafe triggered.");
+ 					UnPassOutCalled = false;
+ 				}
+ 			}
+@@ -551,7 +564,6 @@
+
+ 	public static void Die()
+ 	{
+ 		localCharacter.refs.items.EquipSlot(Optionable<byte>.None);
+-		Debug.Log("DYING");
+ 		localCharacter.view.RPC("RPCA_Die", RpcTarget.All);
+ 	}
+ 	internal void DieInstantly()
+@@ -573,6 +585,11 @@
+
+ 	[PunRPC]
+ 	public void RPCA_SetDead()
+ 	{
++		if (!data.dead && LastLivingPosition == Vector3.zero)
++		{
++			Debug.LogWarning(name + " was killed before a single FixedUpdate happened. " + $"Setting their last known position to {Center}");
++			LastLivingPosition = Center;
++		}
+ 		data.dead = true;
+ 		data.fullyPassedOut = true;
+ 		data.deathTimer = 1f;
+@@ -621,14 +638,13 @@
+
+ 		}
+ 		else
+ 		{
+-			Debug.Log("Petrify: " + data.petrifyAmount);
+ 			((GameObject)UnityEngine.Object.Instantiate(Resources.Load("Skeleton"))).GetComponent<Skelleton>().SpawnSkelly(this);
+ 		}
+ 	}
+ 	public void SpawnStatue(bool killedByDagger = false)
+ 	{
+ 		GetBodypart(BodypartType.Hip);
+-		PhotonNetwork.Instantiate("PetrifiedScout", refs.ragdoll.bodySpawnPoint.transform.position, refs.ragdoll.bodySpawnPoint.transform.rotation, 0).GetComponent<PhotonView>().RPC("RPC_SpawnPetrifiedScout", RpcTarget.All, base.photonView.ViewID, killedByDagger);
++		PhotonNetwork.Instantiate("PetrifiedScout", refs.ragdoll.bodySpawnPoint.transform.position, refs.ragdoll.bodySpawnPoint.transform.rotation, 0).GetComponent<PhotonView>().RPC("RPC_SpawnPetrifiedScout", RpcTarget.All, photonView.ViewID, killedByDagger);
+ 	}
+ 	[ConsoleCommand]
+ 	public static void Zombify()
+@@ -641,19 +657,17 @@
+
+ 		Bodypart[] componentsInChildren = localCharacter.transform.GetComponentsInChildren<Bodypart>();
+ 		foreach (Bodypart bodypart in componentsInChildren)
+ 		{
+-			Debug.Log("Warping body part " + bodypart.partType);
+ 			bodypart.transform.position = bodypart.transform.position + Vector3.up * 50f;
+ 		}
+ 	}
+ 	[PunRPC]
+ 	public void RPCA_Zombify()
+ 	{
+-		Debug.Log(base.gameObject.name + " became a zombie");
+ 		if (!data.zombified)
+ 		{
+ 			if (PhotonNetwork.IsMasterClient)
+ 			{
+-				PhotonNetwork.Instantiate("MushroomZombie_Player", Center, base.transform.rotation, 0).GetComponent<PhotonView>().RPC("RPC_Arise", RpcTarget.All, base.photonView.ViewID);
++				PhotonNetwork.Instantiate("MushroomZombie_Player", Center, transform.rotation, 0).GetComponent<PhotonView>().RPC("RPC_Arise", RpcTarget.All, photonView.ViewID);
+ 			}
+ 			data.zombified = true;
+ 		}
+@@ -704,7 +718,7 @@
+
+ 	}
+ 	internal void EndGame()
+ 	{
+-		base.photonView.RPC("RPCEndGame", RpcTarget.All);
++		photonView.RPC("RPCEndGame", RpcTarget.All);
+ 	}
+ 	[PunRPC]
+ 	public void RPCA_SyncScoutReport(CharacterStats.SyncData reconnectData, bool wasRevived, PhotonMessageInfo msgInfo)
+@@ -714,20 +728,9 @@
+
+ 	[PunRPC]
+ 	public void RPCA_InitializeScoutReport()
+ 	{
+-		if (TryGetComponent<CharacterStats>(out var component))
+-		{
+-			if (component.IsInitialized)
+-			{
+-				Debug.LogWarning("OPE! Scout Report was already initialized. Doing nothing (it's probably broken).");
+-			}
+-			else
+-			{
+-				component.Initialize();
+-			}
+-		}
+-		else
+-		{
+-			Debug.LogError("Unable to find " + base.name + "'s stats!! Scout report will be broken.");
++		if (TryGetComponent<CharacterStats>(out var component) && !component.IsInitialized)
++		{
++			component.Initialize();
+ 		}
+ 	}
+ 	[PunRPC]
+@@ -822,7 +825,6 @@
+
+ 	}
+ 	private void UnPassOutDone()
+ 	{
+-		Debug.Log("UhPassOut");
+ 		UnPassOutAction?.Invoke();
+ 		data.fullyPassedOut = false;
+ 		data.passedOut = false;
+@@ -861,7 +863,6 @@
+
+ 		{
+ 			PassOutDone();
+ 		}
+-		Debug.Log("PASS OUT");
+ 		void PassOutDone()
+ 		{
+ 			data.fullyPassedOut = true;
+@@ -950,7 +951,7 @@
+
+ 			data.sinceGrounded = 0f;
+ 			data.outOfStaminaClimbingFor = 0f;
+ 			data.lastGroundedHeight = Center.y;
+-			if (base.photonView.IsMine)
++			if (photonView.IsMine)
+ 			{
+ 				refs.balloons.SetParachute(shouldOpen: false);
+ 			}
+@@ -962,7 +963,7 @@
+
+ 			{
+ 				data.sinceGrounded += Time.fixedDeltaTime;
+ 			}
+-			if (base.photonView.IsMine && data.sinceGrounded > refs.balloons.sinceGroundedParachuteTime && !data.isClimbingAnything)
++			if (photonView.IsMine && data.sinceGrounded > refs.balloons.sinceGroundedParachuteTime && !data.isClimbingAnything)
+ 			{
+ 				float num = refs.movement.FallTime();
+ 				if (data.hasParachute && num > refs.balloons.sinceGroundedParachuteTime)
+@@ -1012,10 +1013,6 @@
+
+ 			else
+ 			{
+ 				data.fallSeconds -= Time.fixedDeltaTime * 0.2f;
+-			}
+-			if (data.fallSeconds <= 0f)
+-			{
+-				StoppedForcedRagdolling();
+ 			}
+ 		}
+ 		if (data.fullyPassedOut)
+@@ -1147,7 +1144,7 @@
+
+ 	}
+ 	internal void CalculateWorldMovementDir()
+ 	{
+-		Vector3 vector = default(Vector3);
++		Vector3 vector = default;
+ 		vector += data.lookDirection * input.movementInput.y;
+ 		vector.y = 0f;
+ 		vector = vector.normalized;
+@@ -1452,7 +1449,7 @@
+
+ 	}
+ 	public void FeedItem(Item item)
+ 	{
+-		base.photonView.RPC("GetFedItemRPC", base.photonView.Owner, item.photonView.ViewID);
++		photonView.RPC("GetFedItemRPC", photonView.Owner, item.photonView.ViewID);
+ 	}
+ 	[PunRPC]
+ 	public void GetFedItemRPC(int itemPhotonID)
+@@ -1469,7 +1466,6 @@
+
+ 		Item item = photonView?.GetComponent<Item>();
+ 		if (!(item == null))
+ 		{
+-			Debug.Log("I just got fed a: " + item.UIData.itemName);
+ 			item.overrideHolderCharacter = this;
+ 			if (item.OnPrimaryFinishedCast != null)
+ 			{
+@@ -1555,10 +1551,7 @@
+
+ 	[PunRPC]
+ 	public void RPCA_Fall(float seconds, float shake)
+ 	{
+-		if (base.photonView.IsMine)
+-		{
+-			Debug.Log($"I fell for {seconds} seconds");
+-		}
++		_ = photonView.IsMine;
+ 		if (shake > 0f)
+ 		{
+ 			GamefeelHandler.instance.AddPerlinShake(shake, 0.4f);
+@@ -1571,7 +1564,6 @@
+
+ 	[ConsoleCommand]
+ 	public static void Revive()
+ 	{
+-		Debug.Log($"Reviving, status: {localCharacter.data.dead}, fullyPassedOut: {localCharacter.data.fullyPassedOut}");
+ 		if (localCharacter.data.dead || localCharacter.data.fullyPassedOut)
+ 		{
+ 			localCharacter.view.RPC("RPCA_ReviveAtPosition", RpcTarget.All, localCharacter.debugLastDied, true, -1);
+@@ -1620,6 +1612,11 @@
+
+ 		refs.stats.justRevived = true;
+ 		refs.stats.Record(useOverridePosition: true, position.y);
+ 		Singleton<ReconnectHandler>.Instance.UpdateFromRevive(this, position);
++		if (IsLocal)
++		{
++			refs.afflictions.ForcePushAfflictions();
++			refs.afflictions.ForcePushStatus(2f);
++		}
+ 	}
+ 	[PunRPC]
+ 	public void WarpPlayerRPC(Vector3 position, bool poof)
+@@ -1656,13 +1653,18 @@
+
+ 			StopCoroutine(_warpRoutine);
+ 			warping = false;
+ 		}
+-		Debug.Log($"Starting move {characterName} to position {position} from {Center} via MovePlayer routine");
++		if (!isBot || position != ScoutmasterHideySpot)
++		{
++			Debug.Log($"Starting move {characterName} to position {position} from {Center} via MovePlayer routine");
++		}
+ 		_warpRoutine = StartCoroutine(IMove());
+ 		IEnumerator IMove()
+ 		{
++			warping = true;
++			_lastWarpTarget = position;
+ 			if (IsPlayerControlled && !IsRegisteredToPlayer)
+ 			{
+-				Debug.Log(base.name + " hasn't been registered yet! Will need to wait until that happens before trying to Warp.");
++				Debug.Log(name + " hasn't been registered yet! Will need to wait until that happens before trying to Warp.");
+ 				int loopStop = 0;
+ 				while (loopStop++ < 30 && !IsRegisteredToPlayer)
+ 				{
+@@ -1670,7 +1672,9 @@
+
+ 				}
+ 				Debug.Log($"Waited {loopStop} frames for registration.");
+ 			}
+-			warping = true;
++			UnStick();
++			statusesLocked = true;
++			yield return waitForFixedUpdate;
+ 			refs.ragdoll.ToggleCollision(enableCollision: false);
+ 			if ((bool)data.currentItem)
+ 			{
+@@ -1680,20 +1684,23 @@
+
+ 					colliders[i].enabled = false;
+ 				}
+ 			}
+-			UnStick();
+ 			if (poof)
+ 			{
+ 				PlayPoofVFX(position);
+ 			}
+ 			yield return null;
++			yield return waitForFixedUpdate;
+ 			timeLastWarped = Time.time;
+-			_lastWarpTarget = position;
+ 			int c = 0;
+-			Debug.Log($"Warping started: moving {characterName} to position {position} from {Center} via MovePlayer routine");
++			if (!isBot)
++			{
++				Debug.Log($"Ragdoll prepared and warp started. Moving {characterName} to position {position} from {Center} via MovePlayer routine");
++			}
+ 			while (c < 10 && Vector3.Distance(position, Center) > 0.2f)
+ 			{
+ 				c++;
+ 				Vector3 vector = position - Center;
++				refs.ragdoll.HaltBodyVelocity();
+ 				refs.ragdoll.MoveAllRigsInDirection(vector);
+ 				refs.ragdoll.HaltBodyVelocity();
+ 				if ((bool)data.currentItem && (bool)data.currentItem.rig)
+@@ -1705,6 +1712,8 @@
+
+ 					}
+ 					else
+ 					{
++						rig.linearVelocity = Vector3.zero;
++						rig.angularVelocity = Vector3.zero;
+ 						rig.MovePosition(rig.transform.position + vector);
+ 						rig.linearVelocity = Vector3.zero;
+ 						rig.angularVelocity = Vector3.zero;
+@@ -1712,8 +1721,6 @@
+
+ 				}
+ 				yield return waitForFixedUpdate;
+ 			}
+-			data.sinceGrounded = 0f;
+-			Debug.Log($"It took {c} physics steps to move {characterName} to {position}");
+ 			if (Vector3.Magnitude(data.avarageVelocity) > 10f)
+ 			{
+ 				Debug.LogWarning($"Warp left the ragdoll with v={data.avarageVelocity}! " + "Going to try and await a few more frames...");
+@@ -1721,6 +1728,7 @@
+
+ 			while (Vector3.Magnitude(data.avarageVelocity) > 10f && c++ < 20)
+ 			{
+ 				Vector3 delta = position - Center;
++				refs.ragdoll.HaltBodyVelocity();
+ 				refs.ragdoll.MoveAllRigsInDirection(delta);
+ 				refs.ragdoll.HaltBodyVelocity();
+ 				yield return waitForFixedUpdate;
+@@ -1728,20 +1736,25 @@
+
+ 			yield return waitForFixedUpdate;
+ 			refs.ragdoll.ToggleCollision(enableCollision: true);
+ 			refs.ragdoll.HaltBodyVelocity();
++			yield return waitForFixedUpdate;
++			if ((bool)data.currentItem)
++			{
++				Collider[] colliders = data.currentItem.colliders;
++				for (int i = 0; i < colliders.Length; i++)
++				{
++					colliders[i].enabled = true;
++				}
++				yield return waitForFixedUpdate;
++				data.currentItem.rig.linearVelocity = Vector3.zero;
++				data.currentItem.rig.angularVelocity = Vector3.zero;
++			}
++			yield return waitForFixedUpdate;
++			data.sinceGrounded = 0f;
+ 			yield return warpWait;
+ 			yield return waitForFixedUpdate;
+-			if ((bool)data.currentItem)
+-			{
+-				Collider[] colliders = data.currentItem.colliders;
+-				for (int i = 0; i < colliders.Length; i++)
+-				{
+-					colliders[i].enabled = true;
+-				}
+-				data.currentItem.rig.linearVelocity = Vector3.zero;
+-				data.currentItem.rig.angularVelocity = Vector3.zero;
+-			}
+ 			refs.ragdoll.HaltBodyVelocity();
+ 			yield return waitForFixedUpdate;
++			statusesLocked = false;
+ 			warping = false;
+ 			Debug.Log($"{characterName} finished warping to {position}", this);
+ 			WarpCompleted?.Invoke(this);
+@@ -1791,20 +1804,17 @@
+
+ 			localCharacter.data.currentStamina = 1f;
+ 		}
+ 		localCharacter.infiniteStam = !localCharacter.infiniteStam;
+-		Debug.LogError($"Infinite Stamina: {localCharacter.infiniteStam}");
+ 	}
+ 	[ConsoleCommand]
+ 	public static void LockStatuses()
+ 	{
+ 		localCharacter.statusesLocked = !localCharacter.statusesLocked;
+-		Debug.LogError($"Statuses Locked: {localCharacter.statusesLocked}");
+ 	}
+ 	private void OnGetMic(float db)
+ 	{
+ 	}
+ 	internal void StartPassedOutOnTheBeach()
+ 	{
+-		Debug.Log("Starting passed out!");
+ 		if (!Enumerable.Contains(CurrentPlayer.ReadOnlyTags(), "SkipWakeup"))
+ 		{
+ 			data.passedOutOnTheBeach = 3f;
+@@ -1989,10 +1999,6 @@
+
+ 	{
+ 		throw new NotImplementedException();
+ 	}
+-	private void StoppedForcedRagdolling()
+-	{
+-		data.launchedByCannon = false;
+-	}
+ 	[ConsoleCommand]
+ 	public static void RagdollExorcism()
+ 	{
+@@ -2001,22 +2007,16 @@
+
+ 		{
+ 			if ((bool)allPlayerCharacter && (bool)allPlayerCharacter.refs.ragdoll)
+ 			{
+-				if (allPlayerCharacter.data.avarageVelocity.sqrMagnitude < 5f)
+-				{
+-					Debug.Log("Probably shouldn't have touched " + allPlayerCharacter.characterName + " because their average rb velocity is only " + $"{allPlayerCharacter.data.avarageVelocity.magnitude}");
+-				}
++				_ = allPlayerCharacter.data.avarageVelocity.sqrMagnitude;
++				_ = 5f;
+ 				if ((bool)allPlayerCharacter.data.currentItem && allPlayerCharacter.refs.items.currentSelectedSlot.IsSome)
+ 				{
+-					Debug.Log("Forcing " + allPlayerCharacter.characterName + " to drop their current item as we tame all the ragdolls.");
+ 					Item currentItem = allPlayerCharacter.data.currentItem;
+ 					byte value = allPlayerCharacter.refs.items.currentSelectedSlot.Value;
+ 					allPlayerCharacter.refs.items.photonView.RPC("DropItemRpc", RpcTarget.All, 0f, value, currentItem.transform.position, Vector3.zero, currentItem.transform.rotation, allPlayerCharacter.player.GetItemSlot(value).data, false);
+ 				}
+ 				FixedJoint[] componentsInChildren = allPlayerCharacter.refs.ragdoll.GetComponentsInChildren<FixedJoint>();
+-				if (componentsInChildren.Length != 0)
+-				{
+-					Debug.Log($"Found {componentsInChildren.Length} on {allPlayerCharacter.characterName} but there should be none.");
+-				}
++				_ = componentsInChildren.LongLength;
+ 				FixedJoint[] array = componentsInChildren;
+ 				for (int i = 0; i < array.Length; i++)
+ 				{
+@@ -2036,8 +2036,7 @@
+
+ 			{
+ 				yield return new WaitForFixedUpdate();
+ 			}
+-			string text = cursedCharacter.characterName;
+-			Debug.Log("Attempting to damp " + text + "'s ragdoll to death.");
++			_ = cursedCharacter.characterName;
+ 			float timeStarted = Time.realtimeSinceStartup;
+ 			CharacterRagdoll ragdoll = cursedCharacter.refs.ragdoll;
+ 			while (Time.realtimeSinceStartup - timeStarted < 3f)
+@@ -2063,12 +2062,9 @@
+
+ 	[PunRPC]
+ 	public void RPC_SetBlockedState(bool blocked)
+ 	{
+-		if (data == null && !TryGetGlobalPlayerData(out data))
+-		{
+-			Debug.LogError("Failed to get global player data for " + player.name);
+-			return;
+-		}
+-		data.isBlocked = blocked;
+-		Debug.Log((data.isBlocked ? "Blocking" : "Unblocking") + " " + base.name);
++		if (!(data == null) || TryGetGlobalPlayerData(out data))
++		{
++			data.isBlocked = blocked;
++		}
+ 	}
+ }

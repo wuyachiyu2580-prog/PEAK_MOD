@@ -1,0 +1,231 @@
+{
+  "old_count": 1149,
+  "new_count": 1155,
+  "changed": [
+    "AOE.cs",
+    "AchievementManager.cs",
+    "Action_WarpToBiome.cs",
+    "AnimatedMouth.cs",
+    "AudioLevelSlider.cs",
+    "BadgeManager.cs",
+    "BadgeUI.cs",
+    "Bodypart.cs",
+    "Campfire.cs",
+    "Character.cs",
+    "CharacterAfflictions.cs",
+    "CharacterCustomization.cs",
+    "CharacterData.cs",
+    "CharacterInput.cs",
+    "CharacterMovement.cs",
+    "CharacterRagdoll.cs",
+    "CharacterSpawner.cs",
+    "CharacterStats.cs",
+    "CharacterVoiceHandler.cs",
+    "ConnectionService.cs",
+    "CrossPlatformSetting.cs",
+    "EmoteWheel.cs",
+    "EndScreen.cs",
+    "GameBooter.cs",
+    "GameHandler.cs",
+    "InputIcon.cs",
+    "IsDisconnectingForRegionSwap.cs",
+    "ItemPhysicsSyncer.cs",
+    "JoinRoomPun.cs",
+    "LoadingScreenHandler.cs",
+    "LocalizedText.cs",
+    "MainMenu.cs",
+    "MainMenuJoinRoomPage.cs",
+    "MainMenuMainPage.cs",
+    "MainMenuPageHandler.cs",
+    "MapBaker.cs",
+    "MapDebugUI.cs",
+    "MapHandler.cs",
+    "NetworkConnector.cs",
+    "NextLevelService.cs",
+    "PauseMenuHandler.cs",
+    "PauseMenuMainPage.cs",
+    "Peak.Network\\NetworkingUtilities.cs",
+    "Peak\\HashGridSpawner.cs",
+    "Peak\\MovingSawBlade.cs",
+    "Peak\\PhotonCleanupHelper.cs",
+    "Peak\\Quicksave.cs",
+    "Peak\\ScoutmasterGhostOrbiter.cs",
+    "Peak\\SpikeRoller.cs",
+    "Peak\\SpikeTrap.cs",
+    "PlatformBootstrap.cs",
+    "Player.cs",
+    "PlayerConnectionLog.cs",
+    "PlayerEyeLook.cs",
+    "PlayerHandler.cs",
+    "Portningsbolaget\\BlockedPlayer.cs",
+    "Portningsbolaget\\BlockedPlayerUI.cs",
+    "Portningsbolaget\\BlocklistTable.cs",
+    "Portningsbolaget\\DebugHelper.cs",
+    "Portningsbolaget\\ParticlePlatformSettings.cs",
+    "Portningsbolaget\\PlayerUI.cs",
+    "Portningsbolaget\\PlaystationPremiumHandler.cs",
+    "Portningsbolaget\\ReportPlayerPopup.cs",
+    "Pretitle.cs",
+    "ReconnectData.cs",
+    "ReconnectDataDebugPage.cs",
+    "ReconnectHandler.cs",
+    "Rope.cs",
+    "SettingsHandler.cs",
+    "SettingsTABS.cs",
+    "SwingingAxe.cs",
+    "UIPlayerNames.cs",
+    "UnitySourceGeneratedAssemblyMonoScriptTypes_v1.cs",
+    "VersionString.cs",
+    "Zorro.Core.CLI\\ConsoleCommands.cs"
+  ],
+  "added": [
+    "ChangeRoomState.cs",
+    "MapBundleService.cs",
+    "Portningsbolaget\\HashGridItem.cs",
+    "Portningsbolaget\\LoggedInUserUI.cs",
+    "Portningsbolaget\\ModUtility.cs",
+    "Portningsbolaget\\PlayerUiPlatformIcon.cs"
+  ],
+  "removed": [],
+  "impact": {
+    "ItemInfoCN": {
+      "project": "MOD开发\\ItemInfoCN\\ItemInfoCN\\ItemInfoCN.csproj",
+      "sources": 6,
+      "changed_types": [
+        "AOE.cs",
+        "Action_WarpToBiome.cs",
+        "Campfire.cs",
+        "Character.cs",
+        "CharacterAfflictions.cs",
+        "Rope.cs"
+      ],
+      "removed_types": []
+    },
+    "Lantern&ShootZombies&Night": {
+      "project": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night.csproj",
+      "sources": 39,
+      "changed_types": [
+        "Campfire.cs",
+        "Character.cs",
+        "CharacterAfflictions.cs",
+        "CharacterData.cs",
+        "LocalizedText.cs",
+        "Peak.Network\\NetworkingUtilities.cs",
+        "Player.cs",
+        "PlayerConnectionLog.cs"
+      ],
+      "removed_types": []
+    },
+    "ModConfigDiagnostics": {
+      "project": "MOD开发\\ModConfigDiagnostics\\ModConfigDiagnostics\\ModConfigDiagnostics.csproj",
+      "sources": 1,
+      "changed_types": [
+        "SettingsHandler.cs"
+      ],
+      "removed_types": []
+    },
+    "PeakMapBrowser": {
+      "project": "MOD开发\\PeakMapBrowser\\PeakMapBrowser\\PeakMapBrowser.csproj",
+      "sources": 8,
+      "changed_types": [
+        "LocalizedText.cs",
+        "Player.cs"
+      ],
+      "removed_types": []
+    },
+    "PlayersInfo": {
+      "project": "MOD开发\\PlayersInfo\\PlayersInfo\\PlayersInfo.csproj",
+      "sources": 20,
+      "changed_types": [
+        "Campfire.cs",
+        "Character.cs",
+        "CharacterAfflictions.cs",
+        "CharacterData.cs",
+        "LocalizedText.cs",
+        "Player.cs"
+      ],
+      "removed_types": []
+    },
+    "StateKeeper": {
+      "project": "MOD开发\\StateKeeper\\StateKeeper\\StateKeeper.csproj",
+      "sources": 31,
+      "changed_types": [
+        "Character.cs",
+        "CharacterAfflictions.cs",
+        "CharacterStats.cs",
+        "LocalizedText.cs",
+        "PauseMenuHandler.cs",
+        "PauseMenuMainPage.cs",
+        "Player.cs",
+        "PlayerHandler.cs",
+        "Rope.cs"
+      ],
+      "removed_types": []
+    },
+    "TerrainCustomiserCN": {
+      "project": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\TerrainCustomiserCN.csproj",
+      "sources": 59,
+      "changed_types": [
+        "Bodypart.cs",
+        "Campfire.cs",
+        "Character.cs",
+        "GameHandler.cs",
+        "MainMenu.cs",
+        "MapHandler.cs",
+        "PauseMenuMainPage.cs",
+        "Player.cs",
+        "PlayerHandler.cs",
+        "Rope.cs"
+      ],
+      "removed_types": []
+    },
+    "TerrainCustomiserCNCollector": {
+      "project": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCNCollector\\TerrainCustomiserCNCollector.csproj",
+      "sources": 1,
+      "changed_types": [],
+      "removed_types": []
+    },
+    "UprightCockroach": {
+      "project": "MOD开发\\UprightCockroach\\UprightCockroach\\UprightCockroach.csproj",
+      "sources": 7,
+      "changed_types": [
+        "Character.cs"
+      ],
+      "removed_types": []
+    },
+    "WhereIsMyAmulet": {
+      "project": "MOD开发\\WhereIsMyAmulet\\WhereIsMyAmulet\\WhereIsMyAmulet.csproj",
+      "sources": 6,
+      "changed_types": [
+        "LocalizedText.cs"
+      ],
+      "removed_types": []
+    },
+    "WhereIsThing": {
+      "project": "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThing.csproj",
+      "sources": 14,
+      "changed_types": [
+        "Character.cs",
+        "LocalizedText.cs",
+        "Peak\\MovingSawBlade.cs",
+        "Peak\\SpikeRoller.cs",
+        "Peak\\SpikeTrap.cs",
+        "Player.cs",
+        "Rope.cs",
+        "SwingingAxe.cs"
+      ],
+      "removed_types": []
+    },
+    "WhySoLaggy": {
+      "project": "MOD开发\\WhySoLaggy\\WhySoLaggy\\WhySoLaggy.csproj",
+      "sources": 26,
+      "changed_types": [
+        "Campfire.cs",
+        "CharacterAfflictions.cs",
+        "LocalizedText.cs",
+        "Player.cs"
+      ],
+      "removed_types": []
+    }
+  }
+}

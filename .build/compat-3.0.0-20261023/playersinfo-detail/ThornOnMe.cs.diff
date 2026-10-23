@@ -1,0 +1,47 @@
+--- 2.4.b/ThornOnMe.cs
+
++++ 3.0.0/ThornOnMe.cs
+
+@@ -66,14 +66,14 @@
+
+ 	{
+ 		if (!character.IsLocal || visibleLocally)
+ 		{
+-			base.gameObject.SetActive(value: true);
++			gameObject.SetActive(value: true);
+ 		}
+ 		stuckIn = true;
+ 		popOutTime = Time.time + GetPopOutTime(Character.AllCharacters.Count == 1);
+ 	}
+ 	public void DisableThorn()
+ 	{
+-		base.gameObject.SetActive(value: false);
++		gameObject.SetActive(value: false);
+ 		stuckIn = false;
+ 	}
+ 	public bool IsValidToSpawn()
+@@ -98,7 +98,7 @@
+
+ 		{
+ 			return true;
+ 		}
+-		float num = Vector3.Angle(base.transform.position - MainCamera.instance.transform.position, MainCamera.instance.transform.forward);
++		float num = Vector3.Angle(transform.position - MainCamera.instance.transform.position, MainCamera.instance.transform.forward);
+ 		float num2 = ((Character.AllCharacters.Count == 1 || interactor != character) ? 15f : 0f);
+ 		if (num > 5f + num2)
+ 		{
+@@ -131,11 +131,11 @@
+
+ 	}
+ 	public Vector3 Center()
+ 	{
+-		return base.transform.position;
++		return transform.position;
+ 	}
+ 	public Transform GetTransform()
+ 	{
+-		return base.transform;
++		return transform;
+ 	}
+ 	public string GetInteractionText()
+ 	{

@@ -1,0 +1,367 @@
+--- 2.6.b/ReconnectHandler.cs
+
++++ 3.0.0/ReconnectHandler.cs
+
+@@ -7,6 +7,7 @@
+
+ using Peak.Network;
+ using Photon.Pun;
+ using Photon.Realtime;
++using Portningsbolaget.Utilities;
+ using UnityEngine;
+ using WebSocketSharp;
+ using Zorro.Core;
+@@ -17,19 +18,23 @@
+
+ 	{
+ 		internal readonly int Timestamp;
+ 
+-		internal readonly string UserID;
++		internal readonly string HashedUserID;
+ 
+ 		internal readonly ReconnectData Data;
+ 
+ 		public string ToPrettyString()
+ 		{
+-			return Pretty.Print(Data) + $"\n(Time: {Timestamp} | ID: {UserID})";
++			return Pretty.Print(Data) + $"\n(Time: {Timestamp} | HashedID: {HashedUserID})";
+ 		}
+ 
+ 		internal ReconnectDataRecord(string userId, ReconnectData data)
+ 		{
+ 			Timestamp = PhotonNetwork.ServerTimestamp;
+-			UserID = userId;
++			HashedUserID = userId;
++			if (userId.Length != 64)
++			{
++				HashedUserID = Utilities.GetSha256Hash(userId);
++			}
+ 			Data = data;
+ 		}
+ 	}
+@@ -94,6 +99,7 @@
+
+ 		{
+ 			bool flag = _observedActors.Contains(allPlayer.GetActorNumber());
+ 			bool flag2 = IsReadyForRegistration(allPlayer);
++			string sha256Hash = Utilities.GetSha256Hash(allPlayer.GetUserId());
+ 			if (!flag & flag2)
+ 			{
+ 				_timeLastRegistrationAttempt = Time.time;
+@@ -101,7 +107,7 @@
+
+ 			}
+ 			else if (flag)
+ 			{
+-				ReconnectDataRecord reconnectDataRecord = _reconnectRecords[allPlayer.GetUserId()];
++				ReconnectDataRecord reconnectDataRecord = _reconnectRecords[sha256Hash];
+ 				if (PhotonNetwork.ServerTimestamp - reconnectDataRecord.Timestamp > 2000)
+ 				{
+ 					UpdateReconnectData(allPlayer.character);
+@@ -121,36 +127,32 @@
+
+ 
+ 	private void RegisterPlayer(Player player)
+ 	{
+-		string userId = player.GetUserId();
+-		if (_reconnectRecords.TryGetValue(userId, out var value))
++		string text = player.GetUserId();
++		if (text.Length != 64)
++		{
++			text = Utilities.GetSha256Hash(text);
++		}
++		if (_reconnectRecords.TryGetValue(text, out var value))
+ 		{
+ 			Debug.Log("Already have reconnect record for " + player.name + " so no need to make a new one now:\n" + Pretty.Print(value));
+-			if ((bool)player.character && (bool)player.character.refs.stats && !player.character.refs.stats.IsInitialized && value.Data.scoutReport.Timeline.Count > 0)
+-			{
+-				Debug.Log("Scout report wasn't initialized, probably because they got their first ReconnectData entry before PlayerHandler registered them locally. Catching them up now.");
+-				CharacterStats stats = player.character.refs.stats;
+-				CharacterStats.SyncData scoutReport = value.Data.scoutReport;
+-				List<EndScreen.TimelineInfo> timeline = value.Data.scoutReport.Timeline;
+-				stats.GetCaughtUp(scoutReport, timeline[timeline.Count - 1].revived);
+-			}
+ 		}
+ 		else
+ 		{
+-			ReconnectDataRecord value2 = new ReconnectDataRecord(userId, ReconnectData.CreateFromCharacter(player.character));
++			ReconnectDataRecord value2 = new ReconnectDataRecord(text, ReconnectData.CreateFromCharacter(player.character));
+ 			if (!value2.Data.isValid)
+ 			{
+ 				Debug.LogWarning("Uh oh! Initial reconnectdata was not valid! This will cause problems if not overwritten.\n" + Pretty.Print(value2.Data));
+ 			}
+-			_reconnectRecords.Add(userId, value2);
+-			Debug.Log("Registered " + player.name + ". Most recent data: " + _reconnectRecords[userId].ToPrettyString());
+-		}
+-		if (_achievementProgress.ContainsKey(userId))
+-		{
+-			Debug.Log(player.name + " (" + userId + ") already has an achievement progress record. We do not need to create one now.");
++			_reconnectRecords.Add(text, value2);
++			Debug.Log("Registered " + player.name + ". Most recent data: " + _reconnectRecords[text].ToPrettyString());
++		}
++		if (_achievementProgress.ContainsKey(text))
++		{
++			Debug.Log(player.name + " (" + text + ") already has an achievement progress record. We do not need to create one now.");
+ 		}
+ 		else
+ 		{
+-			_achievementProgress.Add(userId, SerializableRunBasedValues.ConstructNew());
++			_achievementProgress.Add(text, SerializableRunBasedValues.ConstructNew());
+ 		}
+ 		player.character.data.CharacterStateUpdated += () =>
+ 		{
+@@ -173,12 +175,24 @@
+
+ 			Debug.LogError("Can't update " + player.name + "'s achievement progress because they don't have a valid userID!");
+ 			return;
+ 		}
+-		string userId = player.GetUserId();
+-		_achievementProgress[userId] = newValues;
++		string text = player.GetUserId();
++		if (text.Length != 64)
++		{
++			text = Utilities.GetSha256Hash(text);
++		}
++		if (!_achievementProgress.ContainsKey(text))
++		{
++			Debug.LogWarning($"We're missing {player.name}'s ({text}|#{player.GetActorNumber()}) achievement record. " + "How did that happen???");
++		}
++		_achievementProgress[text] = newValues;
+ 	}
+ 
+ 	public void PopulateReconnectRecord(string playerId, ReconnectData reconnectData, SerializableRunBasedValues achievementData)
+ 	{
++		if (playerId.Length != 64)
++		{
++			playerId = Utilities.GetSha256Hash(playerId);
++		}
+ 		_reconnectRecords.TryAdd(playerId, new ReconnectDataRecord(playerId, reconnectData));
+ 		_achievementProgress.TryAdd(playerId, achievementData);
+ 	}
+@@ -195,11 +209,15 @@
+
+ 
+ 	public void UpdateReconnectData(Character character)
+ 	{
+-		string userId = character.player.GetUserId();
+-		ReconnectDataRecord value = new ReconnectDataRecord(userId, ReconnectData.CreateFromCharacter(character));
++		string text = character.player.GetUserId();
++		if (text.Length != 64)
++		{
++			text = Utilities.GetSha256Hash(text);
++		}
++		ReconnectDataRecord value = new ReconnectDataRecord(text, ReconnectData.CreateFromCharacter(character));
+ 		if (value.Data.isValid)
+ 		{
+-			_reconnectRecords[userId] = value;
++			_reconnectRecords[text] = value;
+ 		}
+ 	}
+ 
+@@ -234,51 +252,66 @@
+
+ 		}
+ 		reconnectData.position = revivePosition;
+ 		reconnectData.isValid = true;
+-		string userId = character.player.GetUserId();
+-		_reconnectRecords[userId] = new ReconnectDataRecord(userId, reconnectData);
++		string text = character.player.GetUserId();
++		if (text.Length != 64)
++		{
++			text = Utilities.GetSha256Hash(text);
++		}
++		_reconnectRecords[text] = new ReconnectDataRecord(text, reconnectData);
+ 	}
+ 
+ 	[PunRPC]
+-	public void RefreshReconnectDataTable(string key, ReconnectData data)
+-	{
+-		if (key.IsNullOrEmpty())
+-		{
+-			Debug.LogError("Received ReconnectData with no key. Can't do anything!");
+-			return;
+-		}
+-		if (key == PhotonNetwork.LocalPlayer.UserId)
+-		{
+-			Debug.Log("Ignoring reconnect data for " + key + " because that's me (and I'll get it when my character spawns).\n" + Pretty.Print(data));
+-			return;
+-		}
+-		if (_reconnectRecords.TryGetValue(key, out var value))
+-		{
+-			Debug.LogWarning("Already have reconnect data for " + key + ": " + Pretty.Print(value.Data) + "\n Discarding new data: " + Pretty.Print(data));
+-			return;
+-		}
+-		Character character = PlayerHandler.GetPlayer(key)?.character;
++	public void RefreshReconnectDataTable(string playerId, ReconnectData data)
++	{
++		if (playerId.IsNullOrEmpty())
++		{
++			Debug.LogError("Received ReconnectData with no playerId. Can't do anything!");
++			return;
++		}
++		if (playerId.Length != 64)
++		{
++			playerId = Utilities.GetSha256Hash(playerId);
++		}
++		if (_reconnectRecords.ContainsKey(playerId))
++		{
++			Debug.LogWarning("Already have reconnect data for " + playerId + ": " + Pretty.Print(_reconnectRecords[playerId].Data) + "\n Discarding new data: " + Pretty.Print(_reconnectRecords[playerId].Data));
++			return;
++		}
++		string customPropertyUserIDIfExists = GetCustomPropertyUserIDIfExists(PhotonNetwork.LocalPlayer);
++		if (playerId == customPropertyUserIDIfExists)
++		{
++			Debug.Log("Ignoring reconnect data for " + playerId + " because that's me (and I'll get it when my character spawns).\n" + Pretty.Print(data));
++			return;
++		}
++		if (playerId == Utilities.GetSha256Hash(customPropertyUserIDIfExists))
++		{
++			Debug.Log("Ignoring reconnect data for " + playerId + " because that's me (and I'll get it when my character spawns).\n" + Pretty.Print(data));
++			return;
++		}
++		Character character = PlayerHandler.GetPlayer(playerId)?.character;
+ 		string text = character?.characterName;
+-		text = (text.IsNullOrEmpty() ? "NOT REGISTERED YET" : text);
+-		Debug.Log("ReconnectData for " + text + ": " + Pretty.Print(data) + "\nSetting for ID " + key + ".");
+-		_reconnectRecords.TryAdd(key, new ReconnectDataRecord(key, data));
++		text = (text.IsNullOrEmpty() ? "UNKNOWN" : text);
++		Debug.Log("ReconnectData for " + text + ": " + Pretty.Print(data) + "\nSetting for ID " + playerId + ".");
++		_reconnectRecords.Add(playerId, new ReconnectDataRecord(playerId, data));
+ 		if (!character)
+ 		{
+-			Debug.LogError("Player with id " + key + " doesn't have a character yet! Their scout report will break!");
++			Debug.LogError("Player with id " + playerId + " doesn't have a character yet! Their scout report will break!");
++		}
++		character?.refs.stats.GetCaughtUp(data.scoutReport, wasRevived: false);
++	}
++
++	private void PrintReconnectDataIfExists(string msgPrefix, string playerId)
++	{
++		if (playerId.Length != 64)
++		{
++			playerId = Utilities.GetSha256Hash(playerId);
++		}
++		if (_reconnectRecords.TryGetValue(playerId, out var value))
++		{
++			Debug.Log(msgPrefix + Pretty.Print(value));
+ 		}
+ 		else
+ 		{
+-			character.refs.stats.GetCaughtUp(data.scoutReport, wasRevived: false);
+-		}
+-	}
+-
+-	private void PrintReconnectDataIfExists(string msgPrefix, string id)
+-	{
+-		if (_reconnectRecords.TryGetValue(id, out var value))
+-		{
+-			Debug.Log(msgPrefix + Pretty.Print(value));
+-		}
+-		else
+-		{
+ 			Debug.Log(msgPrefix + "No reconnect record found.");
+ 		}
+ 	}
+@@ -287,18 +320,20 @@
+
+ 	{
+ 		if (!Character.localCharacter || !Character.localCharacter.inAirport)
+ 		{
+-			if (PlayerHandler.IsBanned(newPlayer.UserId))
++			string customPropertyUserIDIfExists = GetCustomPropertyUserIDIfExists(newPlayer);
++			if (PlayerHandler.IsBanned(customPropertyUserIDIfExists))
+ 			{
+ 				Debug.LogWarning("Banned player just joined room!!");
+ 			}
+-			PrintReconnectDataIfExists($"Player {newPlayer.UserId} ({newPlayer.ActorNumber}) just entered.\n", newPlayer.UserId);
++			PrintReconnectDataIfExists($"Player {customPropertyUserIDIfExists}/{Utilities.GetSha256Hash(customPropertyUserIDIfExists)} ({newPlayer.ActorNumber}) just entered.\n", customPropertyUserIDIfExists);
+ 			BroadcastMissingPlayerDataIfHost(newPlayer);
+ 		}
+ 	}
+ 
+ 	public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+ 	{
+-		PrintReconnectDataIfExists($"Player {otherPlayer.UserId} ({otherPlayer.ActorNumber}) just left.\n", otherPlayer.UserId);
++		string customPropertyUserIDIfExists = GetCustomPropertyUserIDIfExists(otherPlayer);
++		PrintReconnectDataIfExists($"Player {customPropertyUserIDIfExists}/{Utilities.GetSha256Hash(customPropertyUserIDIfExists)} ({otherPlayer.ActorNumber}) just left.\n", customPropertyUserIDIfExists);
+ 	}
+ 
+ 	private void BroadcastMissingPlayerDataIfHost(Photon.Realtime.Player newPlayer)
+@@ -307,15 +342,21 @@
+
+ 		{
+ 			return;
+ 		}
+-		string[] currentPlayerIds = (from p in PlayerHandler.GetAllPlayers()
+-			select p.GetUserId()).ToArray();
+-		string userId = PlayerHandler.GetUserId(NetCode.Session.HostId);
++		string[] currentHashedPlayerIds = (from p in PlayerHandler.GetAllPlayers()
++			select Utilities.GetSha256Hash(p.GetUserId())).ToArray();
++		string customPropertyUserIDIfExists = GetCustomPropertyUserIDIfExists(PhotonNetwork.CurrentRoom.GetPlayer(NetCode.Session.HostId));
+ 		ReconnectData reconnectData = ReconnectData.CreateFromCharacter(Character.localCharacter);
+-		photonView.RPC("RefreshReconnectDataTable", newPlayer, userId, reconnectData);
+-		foreach (var (text2, reconnectDataRecord2) in _reconnectRecords.Where((KeyValuePair<string, ReconnectDataRecord> record) => !Enumerable.Contains(currentPlayerIds, record.Key) && newPlayer.UserId != record.Key))
+-		{
+-			Debug.Log("Sending " + text2 + ": " + Pretty.Print(reconnectDataRecord2.Data));
+-			photonView.RPC("RefreshReconnectDataTable", newPlayer, text2, reconnectDataRecord2.Data);
++		photonView.RPC("RefreshReconnectDataTable", newPlayer, customPropertyUserIDIfExists, reconnectData);
++		string hashedNewPlayer;
++		string text = (hashedNewPlayer = GetCustomPropertyUserIDIfExists(newPlayer));
++		if (text.Length != 64)
++		{
++			hashedNewPlayer = Utilities.GetSha256Hash(text);
++		}
++		foreach (var (text3, reconnectDataRecord2) in _reconnectRecords.Where((KeyValuePair<string, ReconnectDataRecord> record) => !Enumerable.Contains(currentHashedPlayerIds, record.Key) && hashedNewPlayer != record.Key))
++		{
++			Debug.Log("Sending " + text3 + ": " + Pretty.Print(reconnectDataRecord2.Data));
++			photonView.RPC("RefreshReconnectDataTable", newPlayer, text3, reconnectDataRecord2.Data);
+ 		}
+ 	}
+ 
+@@ -326,6 +367,10 @@
+
+ 
+ 	public static bool TryGetReconnectData(string playerId, out ReconnectData data, out SerializableRunBasedValues achievementData)
+ 	{
++		if (playerId.Length != 64)
++		{
++			playerId = Utilities.GetSha256Hash(playerId);
++		}
+ 		bool flag = Singleton<ReconnectHandler>.Instance != null && Singleton<ReconnectHandler>.Instance._achievementProgress.ContainsKey(playerId);
+ 		data = (flag ? Singleton<ReconnectHandler>.Instance.GetReconnectData(playerId) : ReconnectData.Invalid);
+ 		achievementData = (flag ? Singleton<ReconnectHandler>.Instance._achievementProgress[playerId] : SerializableRunBasedValues.ConstructNew());
+@@ -343,6 +388,10 @@
+
+ 
+ 	public ReconnectData GetReconnectData(string playerId)
+ 	{
++		if (playerId.Length != 64)
++		{
++			playerId = Utilities.GetSha256Hash(playerId);
++		}
+ 		if (!_reconnectRecords.TryGetValue(playerId, out var value))
+ 		{
+ 			return ReconnectData.Invalid;
+@@ -350,6 +399,21 @@
+
+ 		return value.Data;
+ 	}
+ 
++	public static string GetCustomPropertyUserIDIfExists(Photon.Realtime.Player player)
++	{
++		if (player == null)
++		{
++			return string.Empty;
++		}
++		string result = player.UserId;
++		string userIdPhoton = NetworkingUtilities.GetUserIdPhoton(player);
++		if (!string.IsNullOrEmpty(userIdPhoton))
++		{
++			result = userIdPhoton;
++		}
++		return result;
++	}
++
+ 	public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+ 	{
+ 	}

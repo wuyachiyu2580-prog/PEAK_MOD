@@ -1,0 +1,14 @@
+--- 2.6.b/MainMenu.cs
+
++++ 3.0.0/MainMenu.cs
+
+@@ -16,6 +16,8 @@
+
+ 	public Transform mainGuysHolder;
+ 
+ 	public const string SceneName = "Title";
++
++	public const string BootSceneName = "Pretitle";
+ 
+ 	public Button continueButton;
+ 

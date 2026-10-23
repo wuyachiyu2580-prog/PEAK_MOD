@@ -1,0 +1,318 @@
+{
+  "reflection": [
+    {
+      "type": "CharacterData",
+      "kind": "fields",
+      "member": "isInvincible",
+      "found": true
+    },
+    {
+      "type": "ThornOnMe",
+      "kind": "fields",
+      "member": "popOutTime",
+      "found": true
+    },
+    {
+      "type": "ScoutStatue",
+      "kind": "fields",
+      "member": "hasAmulets",
+      "found": true
+    },
+    {
+      "type": "Rope",
+      "kind": "fields",
+      "member": "attachedToAnchor",
+      "found": true
+    },
+    {
+      "type": "Item",
+      "kind": "fields",
+      "member": "lastThrownCharacter",
+      "found": true
+    },
+    {
+      "type": "Spawner",
+      "kind": "methods",
+      "member": "GetSpawnPool",
+      "found": true
+    },
+    {
+      "type": "CharacterHeatEmission",
+      "kind": "fields",
+      "member": "character",
+      "found": true
+    },
+    {
+      "type": "Lantern",
+      "kind": "fields",
+      "member": "lit",
+      "found": false
+    },
+    {
+      "type": "Lantern",
+      "kind": "fields",
+      "member": "fuel",
+      "found": true
+    },
+    {
+      "type": "ZombieManager",
+      "kind": "fields",
+      "member": "zombies",
+      "found": true
+    }
+  ],
+  "watched_rpc_count": 63,
+  "game_rpc_count": 247,
+  "missing_rpc": [],
+  "source_patch_count": 68,
+  "source_patch_issues": [
+    {
+      "project": "Lantern&ShootZombies&Night",
+      "file": "MOD开发\\Lantern&ShootZombies&Night\\Lantern&ShootZombies&Night\\Patches\\LanternFuelOverridePatch.cs",
+      "line": 134,
+      "target": "Lantern.LightLanternRPC",
+      "status": "MISSING"
+    },
+    {
+      "project": "TerrainCustomiserCN",
+      "file": "MOD开发\\TerrainCustomiserCN\\TerrainCustomiserCN\\Patches\\ImGuiPatches.cs",
+      "line": 10,
+      "target": "ImGuiTextures.BuildFontAtlas",
+      "status": "external"
+    }
+  ]
+}
+[
+  {
+    "name": "ItemInfoCN",
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\terrain\\BepInEx\\plugins\\Unknown-ItemInfoCN\\ItemInfoCN.dll",
+    "missing": [
+      "AOE Mandrake::aoe",
+      "System.Collections.Generic.List`1<StatusField/StatusFieldStatus> StatusField::additionalStatuses",
+      "System.Single StatusField/StatusFieldStatus::statusAmountPerSecond",
+      "CharacterAfflictions/STATUSTYPE StatusField/StatusFieldStatus::statusType"
+    ],
+    "patch_issues": []
+  },
+  {
+    "name": "PlayersInfo",
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\terrain\\BepInEx\\plugins\\WUYACHIYU-PlayersInfo\\PlayersInfo.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "patch_issues": []
+  },
+  {
+    "name": "ItemInfoCN",
+    "file": "MOD开发\\ItemInfoCN\\发行\\1.0.0\\ItemInfoCN.dll",
+    "missing": [
+      "AOE Mandrake::aoe",
+      "System.Collections.Generic.List`1<StatusField/StatusFieldStatus> StatusField::additionalStatuses",
+      "System.Single StatusField/StatusFieldStatus::statusAmountPerSecond",
+      "CharacterAfflictions/STATUSTYPE StatusField/StatusFieldStatus::statusType"
+    ],
+    "patch_issues": []
+  },
+  {
+    "name": "Lantern_ShootZombies_Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\发行\\0.0.1\\Lantern_ShootZombies_Night.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab",
+      "System.Void Item::RequestPickup(Photon.Pun.PhotonView,Photon.Pun.PhotonMessageInfo)"
+    ],
+    "patch_issues": [
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      }
+    ]
+  },
+  {
+    "name": "Lantern_ShootZombies_Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\发行\\0.0.2\\Lantern_ShootZombies_Night.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "patch_issues": [
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      }
+    ]
+  },
+  {
+    "name": "Lantern_ShootZombies_Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\发行\\0.0.3\\Lantern_ShootZombies_Night.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "patch_issues": [
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      }
+    ]
+  },
+  {
+    "name": "Lantern_ShootZombies_Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\发行\\0.1.0\\Lantern_ShootZombies_Night.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "patch_issues": [
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      }
+    ]
+  },
+  {
+    "name": "Lantern_ShootZombies_Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\发行\\0.1.1\\Lantern_ShootZombies_Night.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "patch_issues": [
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      }
+    ]
+  },
+  {
+    "name": "Lantern_ShootZombies_Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\发行\\0.1.2\\Lantern_ShootZombies_Night.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "patch_issues": [
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      }
+    ]
+  },
+  {
+    "name": "Lantern_ShootZombies_Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\发行\\0.1.3\\Lantern_ShootZombies_Night.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "patch_issues": [
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      }
+    ]
+  },
+  {
+    "name": "Lantern_ShootZombies_Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\发行\\0.1.4\\Lantern_ShootZombies_Night.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "patch_issues": [
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      }
+    ]
+  },
+  {
+    "name": "Lantern_ShootZombies_Night",
+    "file": "MOD开发\\Lantern&ShootZombies&Night\\发行\\0.2.0\\Lantern_ShootZombies_Night.dll",
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab",
+      "System.Void Player::EmptySlot(Zorro.Core.Optionable`1<System.Byte>)"
+    ],
+    "patch_issues": [
+      {
+        "target": "Lantern.LightLanternRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::LightLanternRPCPostfix(Lantern,System.Boolean)"
+      }
+    ]
+  },
+  {
+    "name": "TerrainCustomiserCN",
+    "file": "MOD开发\\TerrainCustomiserCN\\发布\\0.1.2\\TerrainCustomiserCN.dll",
+    "missing": [
+      "LightVolume LightVolume::Instance()",
+      "UnityEngine.Vector3Int LightVolume::gridRes",
+      "System.Single LightVolume::raySpacing",
+      "UnityEngine.Vector3 LightVolume::gridOffset",
+      "UnityEngine.Texture3D LightVolume::lightMap",
+      "UnityEngine.LayerMask LightVolume::occluderMask",
+      "UnityEngine.Color LightVolume::skyColor",
+      "UnityEngine.RenderTexture LightVolume::RunBlur(UnityEngine.RenderTexture)",
+      "System.Void LightVolume::SetShaderVars()",
+      "System.Void LightVolume::SaveTex(UnityEngine.RenderTexture,System.Action)",
+      "UnityEngine.GameObject LightVolume::sceneParent",
+      "UnityEngine.Color BakedVolumeLight::color",
+      "BakedVolumeLight/LightModes BakedVolumeLight::mode",
+      "System.Single BakedVolumeLight::coneSize",
+      "System.Single BakedVolumeLight::GetRadius()",
+      "System.Single BakedVolumeLight::intensity",
+      "System.Single BakedVolumeLight::falloff",
+      "System.Single BakedVolumeLight::coneFalloff",
+      "System.Void LevelGenStep::Execute()",
+      "System.Void PropGrouper::RunAll(System.Boolean)",
+      "System.Single PropSpawner_Sphere::spawnChance",
+      "System.Collections.Generic.List`1<UnityEngine.GameObject> PropSpawner_Sphere::get_spawnedProps()",
+      "System.Void PropSpawner::SpawnDecor()"
+    ],
+    "patch_issues": [
+      {
+        "target": "UBImGui.ImGuiTextures.BuildFontAtlas",
+        "status": "type absent from Assembly-CSharp (check external dependency)",
+        "patch": "TerrainCustomiserCN.Patches.ImGuiPatches/BuildFontAtlasPatch"
+      }
+    ]
+  }
+]

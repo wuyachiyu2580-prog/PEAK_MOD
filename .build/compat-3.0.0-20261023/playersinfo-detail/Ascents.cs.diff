@@ -1,0 +1,19 @@
+--- 2.4.b/Ascents.cs
+
++++ 3.0.0/Ascents.cs
+
+@@ -1,4 +1,3 @@
+
+-using UnityEngine;
+ using Zorro.Core;
+ using Zorro.Core.CLI;
+ public static class Ascents
+@@ -19,7 +18,6 @@
+
+ 		set
+ 		{
+ 			_currentAscent = value;
+-			Debug.Log("Ascent set to " + value);
+ 		}
+ 	}
+ 	public static bool shouldSpawnZombie

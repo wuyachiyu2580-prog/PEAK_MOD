@@ -1,0 +1,14 @@
+--- 2.6.b/SwingingAxe.cs
+
++++ 3.0.0/SwingingAxe.cs
+
+@@ -127,7 +127,7 @@
+
+ 
+ 	private void OnCollisionEnter(Collision other)
+ 	{
+-		if (CharacterRagdoll.TryGetCharacterFromCollider(other.collider, out var hitCharacter))
++		if (other.collider.enabled && CharacterRagdoll.TryGetCharacterFromCollider(other.collider, out var hitCharacter) && !hitCharacter.statusesLocked)
+ 		{
+ 			BonkScout();
+ 		}

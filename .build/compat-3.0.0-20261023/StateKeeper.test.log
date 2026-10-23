@@ -1,0 +1,11 @@
+  正在确定要还原的项目…
+  已还原 C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\StateKeeper\StateKeeper.Tests\StateKeeper.Tests.csproj (用时 1.27 秒)。
+  1 个项目(共 2 个)是最新的，无法还原。
+  StateKeeper -> C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.dll
+  StateKeeper.Tests -> C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll
+C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\StateKeeper\StateKeeper.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+总共 1 个测试文件与指定模式相匹配。
+  已跳过 LatestRecordingReadOnlyReportRegression [48 ms]
+结果文件: C:\Users\Administrator\Desktop\MOD\PEAK\.build\compat-3.0.0-20261023\tests\results\StateKeeper.trx
+
+已通过! - 失败:     0，通过:    78，已跳过:     1，总计:    79，持续时间: 1 m 28 s - StateKeeper.Tests.dll (net472)

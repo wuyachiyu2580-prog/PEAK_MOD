@@ -1,0 +1,82 @@
+{
+  "checkedAt": "2026-10-14",
+  "source": "Sketchfab public model API; official preview thumbnails inspected",
+  "models": [
+    {
+      "uid": "53bc86f393034470ad462b9c45f9bacb",
+      "name": "Friendly Cockroach Character",
+      "author": "MAROUANE",
+      "viewerUrl": "https://sketchfab.com/3d-models/friendly-cockroach-character-53bc86f393034470ad462b9c45f9bacb",
+      "apiUrl": "https://api.sketchfab.com/v3/models/53bc86f393034470ad462b9c45f9bacb",
+      "description": "A free 3D character model of a cockroach is available for your use. You can download and use this 3D cockroach character model without any cost.",
+      "license": {
+        "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+        "label": "CC Attribution",
+        "fullName": "Creative Commons Attribution",
+        "requirements": "Author must be credited. Commercial use is allowed.",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "isDownloadable": true,
+      "faceCount": 10000,
+      "vertexCount": 5002,
+      "animationCount": 0,
+      "previewUrl": "https://media.sketchfab.com/models/53bc86f393034470ad462b9c45f9bacb/thumbnails/f1d3098b49154d1295152f1d0ba7add9/8d630589e24541f39d3d4b70bb680c3a.jpeg",
+      "rigVerified": false,
+      "sourceDownloaded": false
+    },
+    {
+      "uid": "e6f40a1727c34931aa7af4eab920e703",
+      "name": "Cockroach alien",
+      "author": "danielnachon",
+      "viewerUrl": "https://sketchfab.com/3d-models/cockroach-alien-e6f40a1727c34931aa7af4eab920e703",
+      "apiUrl": "https://api.sketchfab.com/v3/models/e6f40a1727c34931aa7af4eab920e703",
+      "description": "",
+      "license": {
+        "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+        "label": "CC Attribution",
+        "fullName": "Creative Commons Attribution",
+        "requirements": "Author must be credited. Commercial use is allowed.",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "slug": "by"
+      },
+      "isDownloadable": true,
+      "faceCount": 11272,
+      "vertexCount": 5711,
+      "animationCount": 0,
+      "previewUrl": "https://media.sketchfab.com/models/e6f40a1727c34931aa7af4eab920e703/thumbnails/d80a6f748bfb4acdba5644172f9cb3df/7418cf51aba54901b703aee5ee4d7a76.jpeg",
+      "rigVerified": false,
+      "sourceDownloaded": false
+    },
+    {
+      "uid": "7720b19962034d6e96ef37de034559a5",
+      "name": "Cockroach Man",
+      "author": "Charles Smith (Blitz Mobile Apps)",
+      "viewerUrl": "https://sketchfab.com/3d-models/cockroach-man-7720b19962034d6e96ef37de034559a5",
+      "apiUrl": "https://api.sketchfab.com/v3/models/7720b19962034d6e96ef37de034559a5",
+      "description": "A cockroach is still scary when it flies and it’s scariest if it looks like a man and can walk like a gangster.\n\nThis model is designed as a Cockroach but a unique one. Imagine a cockroach having an ability to walk like a man and having the same scary look that it already has. Same flying abilities and the sharp look. Brown in color and two long thread like antennae which just makes it look like a more dangerous creature.",
+      "license": {},
+      "isDownloadable": false,
+      "faceCount": 31656,
+      "vertexCount": 15856,
+      "animationCount": 1,
+      "previewUrl": "https://media.sketchfab.com/models/7720b19962034d6e96ef37de034559a5/thumbnails/6c4f1a7ec8744cadb127fb283027c9cf/1c7ffc6300c7421b96f138c83c18f731.jpeg",
+      "rigVerified": false,
+      "sourceDownloaded": false
+    }
+  ],
+  "primaryArchiveStatus": {
+    "modelUid": "53bc86f393034470ad462b9c45f9bacb",
+    "source": "https://sketchfab.com/i/models/53bc86f393034470ad462b9c45f9bacb",
+    "gltf": true,
+    "glb": true,
+    "usdz": true,
+    "originalFileName": "model",
+    "archiveSize": 1244128,
+    "downloadType": "free"
+  },
+  "downloadProbe": {
+    "url": "https://api.sketchfab.com/v3/models/e6f40a1727c34931aa7af4eab920e703/download",
+    "result": "Authentication credentials were not provided."
+  }
+}

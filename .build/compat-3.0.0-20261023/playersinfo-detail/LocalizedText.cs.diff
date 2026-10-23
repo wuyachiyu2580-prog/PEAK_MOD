@@ -1,0 +1,33 @@
+--- 2.4.b/LocalizedText.cs
+
++++ 3.0.0/LocalizedText.cs
+
+@@ -408,7 +408,7 @@
+
+ 			SystemLanguage.Korean => Language.Korean,
+ 			SystemLanguage.Russian => Language.Russian,
+ 			SystemLanguage.ChineseSimplified => Language.SimplifiedChinese,
+-			SystemLanguage.Spanish => Language.SpanishSpain,
++			SystemLanguage.Spanish => GetSpanishLanguage(),
+ 			SystemLanguage.Ukrainian => Language.Ukrainian,
+ 			SystemLanguage.ChineseTraditional => Language.TraditionalChinese,
+ 			SystemLanguage.Portuguese => Language.BRPortuguese,
+@@ -417,13 +417,16 @@
+
+ 			_ => Language.English,
+ 		};
+ 	}
++	private static Language GetSpanishLanguage()
++	{
++		return Language.SpanishSpain;
++	}
+ 	public static void SetLanguageToSystemLanguage()
+ 	{
+ 		CURRENT_LANGUAGE = GetSystemLanguage();
+ 	}
+ 	public static void SetLanguage(int languageInt)
+ 	{
+-		Debug.LogError("Setting language to" + languageInt);
+ 		if (languageInt == -1)
+ 		{
+ 			SetLanguageToSystemLanguage();

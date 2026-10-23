@@ -1,0 +1,140 @@
+--- 2.4.b/Backpack.cs
+
++++ 3.0.0/Backpack.cs
+
+@@ -28,8 +28,8 @@
+
+ 	{
+ 		if (backpackType != BackpackSlot.BackpackType.Rocketpack)
+ 		{
+-			groundMesh.gameObject.SetActive(base.itemState == ItemState.Ground);
+-			heldMesh.gameObject.SetActive(base.itemState != ItemState.Ground);
++			groundMesh.gameObject.SetActive(itemState == ItemState.Ground);
++			heldMesh.gameObject.SetActive(itemState != ItemState.Ground);
+ 		}
+ 		base.Update();
+ 	}
+@@ -50,7 +50,6 @@
+
+ 	}
+ 	public float GetFuel()
+ 	{
+-		Debug.Log("FUEL: " + GetData<FloatItemData>(DataEntryKey.Fuel).Value / 100f);
+ 		return GetData<FloatItemData>(DataEntryKey.Fuel).Value / 100f;
+ 	}
+ 	public void AddFuel(Character interactor)
+@@ -62,18 +61,11 @@
+
+ 		CharacterItems items = interactor.refs.items;
+ 		if (items.currentSelectedSlot.IsNone)
+ 		{
+-			Debug.LogError("Need item slot selected to stash item in backpack!");
+ 			return;
+ 		}
+ 		ItemSlot itemSlot = interactor.player.GetItemSlot(items.currentSelectedSlot.Value);
+-		if (itemSlot == null)
+-		{
+-			Debug.LogError($"Failed to get a non-null item slot for {items.currentSelectedSlot.Value}");
+-			return;
+-		}
+-		if (itemSlot.IsEmpty())
+-		{
+-			Debug.LogError($"Item slot {itemSlot.itemSlotID} is empty!");
++		if (itemSlot == null || itemSlot.IsEmpty())
++		{
+ 			return;
+ 		}
+ 		int num = 25;
+@@ -116,29 +108,22 @@
+
+ 		CharacterItems items = interactor.refs.items;
+ 		if (items.currentSelectedSlot.IsNone)
+ 		{
+-			Debug.LogError("Need item slot selected to stash item in backpack!");
+ 			return;
+ 		}
+ 		ItemSlot itemSlot = interactor.player.GetItemSlot(items.currentSelectedSlot.Value);
+-		if (itemSlot == null)
+-		{
+-			Debug.LogError($"Failed to get a non-null item slot for {items.currentSelectedSlot.Value}");
+-			return;
+-		}
+-		if (itemSlot.IsEmpty())
+-		{
+-			Debug.LogError($"Item slot {itemSlot.itemSlotID} is empty!");
+-			return;
+-		}
+-		view.RPC("RPCAddItemToBackpack", RpcTarget.All, interactor.player.GetComponent<PhotonView>(), items.currentSelectedSlot.Value, backpackSlotID);
+-		interactor.player.EmptySlot(items.currentSelectedSlot);
+-		if (items.currentSelectedSlot.IsSome)
+-		{
+-			interactor.photonView.RPC("DestroyHeldItemRpc", RpcTarget.All);
+-		}
+-		else
+-		{
+-			items.EquipSlot(Optionable<byte>.None);
++		if (itemSlot != null && !itemSlot.IsEmpty())
++		{
++			view.RPC("RPCAddItemToBackpack", RpcTarget.All, interactor.player.GetComponent<PhotonView>(), items.currentSelectedSlot.Value, backpackSlotID);
++			interactor.player.EmptySlot(items.currentSelectedSlot);
++			if (items.currentSelectedSlot.IsSome)
++			{
++				interactor.photonView.RPC("DestroyHeldItemRpc", RpcTarget.All);
++				interactor.refs.afflictions.UpdateWeight();
++			}
++			else
++			{
++				items.EquipSlot(Optionable<byte>.None);
++			}
+ 		}
+ 	}
+ 	[PunRPC]
+@@ -146,13 +131,11 @@
+
+ 	{
+ 		BackpackData backpackData = GetData<BackpackData>(DataEntryKey.BackpackData);
+ 		ItemSlot itemSlot = playerView.GetComponent<Player>().GetItemSlot(slotID);
+-		if (itemSlot == null)
+-		{
+-			Debug.LogError($"Can't add item because slot ID {slotID} is not valid.");
+-			return;
+-		}
+-		backpackData.AddItem(itemSlot.prefab, itemSlot.data, backpackSlotID);
+-		UpdateBackpackVisuals();
++		if (itemSlot != null)
++		{
++			backpackData.AddItem(itemSlot.prefab, itemSlot.data, backpackSlotID);
++			UpdateBackpackVisuals();
++		}
+ 	}
+ 	public void DebugBackpackData()
+ 	{
+@@ -171,7 +154,6 @@
+
+ 				text += $"     {datum.Key} : {datum.Value}\n";
+ 			}
+ 		}
+-		Debug.Log(text);
+ 	}
+ 	private void UpdateBackpackVisuals()
+ 	{
+@@ -180,7 +162,7 @@
+
+ 		{
+ 			component.RefreshVisuals();
+ 		}
+-		component.RefreshPocketBehaviors(base.holderCharacter ? base.holderCharacter.player : null);
++		component.RefreshPocketBehaviors(holderCharacter ? holderCharacter.player : null);
+ 	}
+ 	[PunRPC]
+ 	public void RPCLightRocket()
+@@ -227,7 +209,7 @@
+
+ 	protected override void Start()
+ 	{
+ 		base.Start();
+-		GetComponent<BackpackVisuals>().RefreshPocketBehaviors(base.holderCharacter ? base.holderCharacter.player : null);
++		GetComponent<BackpackVisuals>().RefreshPocketBehaviors(holderCharacter ? holderCharacter.player : null);
+ 	}
+ 	[ConsoleCommand]
+ 	public static void PrintBackpacks()

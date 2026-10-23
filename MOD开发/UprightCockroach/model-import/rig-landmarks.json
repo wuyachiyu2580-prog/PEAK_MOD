@@ -1,0 +1,24 @@
+{
+  "description": "Source FBX Z-up control-point coordinates. Artist-estimated joints, review in game. Left/right follow Scout mesh names (negative X is _L).",
+  "exclude_parts": [9, 26, 27, 28, 29],
+  "source_scale": 0.036,
+  "spine": [
+    {"point": [0, 1, 61], "bone": "Hip"},
+    {"point": [0, 1, 78], "bone": "Mid"},
+    {"point": [3, -1, 102], "bone": "Torso"},
+    {"point": [18, -14, 115], "bone": "Head"}
+  ],
+  "limbs": [
+    {"name": "Arm_L", "parts": [23], "bones": ["Arm_L", "Elbow_L", "Hand_L"], "points": [[4,-9,108],[2,-23,96],[-9,-18,111],[-21,-33,118]], "joint_index": 2, "tip": [-27,-37,121]},
+    {"name": "Arm_R", "parts": [20], "bones": ["Arm_R", "Elbow_R", "Hand_R"], "points": [[10,2,108],[9,-8,94],[21,5,103],[44,5,90]], "joint_index": 2, "tip": [47,10,90]},
+    {"name": "ExtraArm_L", "parts": [25,17], "bones": ["ExtraArm_L", "ExtraElbow_L", "ExtraHand_L"], "points": [[0,-8,97],[0,-14,80],[-17,-21,85],[-28,-35,59]], "joint_index": 2, "tip": [-34,-37,57]},
+    {"name": "ExtraArm_R", "parts": [21], "bones": ["ExtraArm_R", "ExtraElbow_R", "ExtraHand_R"], "points": [[10,4,98],[12,-6,79],[24,6,94],[30,-23,89]], "joint_index": 2, "tip": [31,-29,85]},
+    {"name": "Leg_L", "parts": [16], "bones": ["Leg_L", "Knee_L", "Foot_L"], "points": [[-9,-9,88],[0,-12,59],[-28,-30,58],[-33,-29,8]], "joint_index": 2, "tip": [-41,-31,6]},
+    {"name": "Leg_R", "parts": [10,22], "bones": ["Leg_R", "Knee_R", "Foot_R"], "points": [[10,3,89],[17,1,59],[35,17,52],[30,18,7]], "joint_index": 2, "tip": [38,22,5]}
+  ],
+  "extra_offset": [0, 0.1, -0.85],
+  "antennae": [
+    {"name": "Antenna_L", "part": 1, "points": [[12,-29,132],[4,-49,153],[-5,-54,180]]},
+    {"name": "Antenna_R", "part": 2, "points": [[31,-16,127],[52,-12,146],[64,11,167]]}
+  ]
+}

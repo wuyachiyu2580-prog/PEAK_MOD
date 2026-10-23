@@ -1,0 +1,52 @@
+[
+  {
+    "file": "PhotonUnityNetworking/Photon.Pun/PhotonNetwork.cs",
+    "both_present": true,
+    "normalized_equal": true
+  },
+  {
+    "file": "PhotonUnityNetworking/Photon.Pun/PhotonView.cs",
+    "both_present": true,
+    "normalized_equal": true
+  },
+  {
+    "file": "Assembly-CSharp/StaminaBar.cs",
+    "both_present": true,
+    "normalized_equal": true
+  },
+  {
+    "file": "Assembly-CSharp/BarAffliction.cs",
+    "both_present": true,
+    "normalized_equal": true
+  },
+  {
+    "file": "Assembly-CSharp/CustomizationRefs.cs",
+    "both_present": true,
+    "normalized_equal": true
+  },
+  {
+    "file": "Assembly-CSharp/ScoutStatue.cs",
+    "both_present": false,
+    "normalized_equal": null
+  },
+  {
+    "file": "Assembly-CSharp/Item.cs",
+    "both_present": true,
+    "normalized_equal": true
+  },
+  {
+    "file": "Assembly-CSharp/Spawner.cs",
+    "both_present": true,
+    "normalized_equal": true
+  },
+  {
+    "file": "Zorro.Settings.Runtime/Zorro.Settings.UI/EnumSettingUI.cs",
+    "both_present": true,
+    "normalized_equal": true
+  },
+  {
+    "file": "Zorro.Settings.Runtime/Zorro.Settings/SettingInputUICell.cs",
+    "both_present": true,
+    "normalized_equal": true
+  }
+]

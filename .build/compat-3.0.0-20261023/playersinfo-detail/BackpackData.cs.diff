@@ -1,0 +1,36 @@
+--- 2.4.b/BackpackData.cs
+
++++ 3.0.0/BackpackData.cs
+
+@@ -1,5 +1,4 @@
+
+ using System;
+-using UnityEngine;
+ using Zorro.Core.Serizalization;
+ [Serializable]
+ public class BackpackData : DataEntryValue
+@@ -21,7 +20,7 @@
+
+ 	}
+ 	public override void DeserializeValue(BinaryDeserializer deserializer)
+ 	{
+-		InventorySyncData inventorySyncData = default(InventorySyncData);
++		InventorySyncData inventorySyncData = default;
+ 		inventorySyncData.Deserialize(deserializer);
+ 		for (byte b = 0; b < 4; b++)
+ 		{
+@@ -40,13 +39,11 @@
+
+ 	{
+ 		if (data == null)
+ 		{
+-			Debug.Log("DATA IS NULL??");
+ 			data = new ItemInstanceData(Guid.NewGuid());
+ 			ItemInstanceDataHandler.AddInstanceData(data);
+ 		}
+ 		if (backpackSlotID < itemSlots.Length && itemSlots[backpackSlotID].IsEmpty())
+ 		{
+-			Debug.Log($"Added item: {prefab.gameObject.name} to slot {backpackSlotID}");
+ 			itemSlots[backpackSlotID].SetItem(prefab, data);
+ 		}
+ 	}

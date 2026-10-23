@@ -1,0 +1,267 @@
+--- 2.6.b/MapHandler.cs
+
++++ 3.0.0/MapHandler.cs
+
+@@ -2,11 +2,11 @@
+
+ using System.Collections;
+ using System.Collections.Generic;
+ using System.Linq;
++using System.Text;
+ using Peak;
+ using Peak.Network;
+ using Photon.Pun;
+ using Photon.Realtime;
+-using pworld.Scripts.Extensions;
+ using UnityEngine;
+ using Zorro.Core;
+ using Zorro.Core.CLI;
+@@ -433,7 +433,6 @@
+
+ 
+ 	public static void RespawnSavedBaseCampItems(Segment segment, List<int> openLuggageIds, List<SpawnedItemTracker.SpawnRecord> looseItems)
+ 	{
+-		Debug.Break();
+ 		Luggage[] baseCampLuggage = GetBaseCampLuggage(segment);
+ 		foreach (Luggage luggage in baseCampLuggage)
+ 		{
+@@ -487,6 +486,109 @@
+
+ 				}
+ 			}
+ 		}
++	}
++
++	[ConsoleCommand]
++	public static void TryFixKilnCampfire()
++	{
++		Singleton<MapHandler>.Instance.TryFixKilnCampfireImpl();
++	}
++
++	private void TryFixKilnCampfireImpl()
++	{
++		bool flag = false;
++		GameObject segmentCampfire = segments[3].segmentCampfire;
++		Campfire componentInChildren = segmentCampfire.GetComponentInChildren<Campfire>(includeInactive: true);
++		if ((bool)componentInChildren)
++		{
++			if (!componentInChildren.isActiveAndEnabled)
++			{
++				Debug.LogWarning(componentInChildren.name + " is disabled! Attempting to enable it now");
++				componentInChildren.enabled = true;
++				componentInChildren.gameObject.SetActive(value: true);
++				Transform parent = componentInChildren.transform.parent;
++				while (parent != null)
++				{
++					parent.gameObject.SetActive(value: true);
++					parent = parent.transform.parent;
++				}
++				flag = true;
++			}
++		}
++		else
++		{
++			Debug.LogWarning("Uh oh! Campfire object was fully destroyed?? Spawning a new one for you.");
++			segmentCampfire.GetComponentInChildren<PropSpawner>(includeInactive: true).ExecuteImmediately();
++			flag = true;
++		}
++		if (!flag)
++		{
++			Debug.LogWarning("Didn't find anything wrong with the campfire that we could fix!");
++		}
++	}
++
++	[ConsoleCommand]
++	public static void PrintCampfireStatuses()
++	{
++		Singleton<MapHandler>.Instance.PrintCampfireStatusesImpl();
++	}
++
++	private void PrintCampfireStatusesImpl()
++	{
++		List<Campfire> list = UnityEngine.Object.FindObjectsByType<Campfire>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).ToList();
++		StringBuilder stringBuilder = new StringBuilder();
++		stringBuilder.AppendLine("<<<<====== CAMPFIRE DATA ======>>>>");
++		MapSegment[] array = segments;
++		foreach (MapSegment mapSegment in array)
++		{
++			stringBuilder.AppendLine($"BIOME: {mapSegment.biome}");
++			if ((bool)mapSegment.segmentCampfire)
++			{
++				Campfire componentInChildren = mapSegment.segmentCampfire.GetComponentInChildren<Campfire>(includeInactive: true);
++				if ((bool)componentInChildren)
++				{
++					list.Remove(componentInChildren);
++					PhotonView component = componentInChildren.GetComponent<PhotonView>();
++					string text = ((component != null) ? $"{component.ViewID}" : "????");
++					stringBuilder.Append("[" + text + "] ");
++					string text2 = componentInChildren.name;
++					Transform parent = componentInChildren.transform.parent;
++					while (parent != null && parent != mapSegment.segmentCampfire.transform)
++					{
++						text2 = parent.name + "->" + text2;
++						parent = parent.parent;
++					}
++					if (parent == mapSegment.segmentCampfire.transform)
++					{
++						text2 = parent.name + "->" + text2;
++					}
++					stringBuilder.Append(text2);
++					if (componentInChildren.gameObject.activeInHierarchy)
++					{
++						stringBuilder.Append(" (ACTIVE)");
++					}
++					else
++					{
++						stringBuilder.Append(" (DISABLED)");
++					}
++					stringBuilder.AppendLine();
++				}
++				else
++				{
++					stringBuilder.AppendLine("UH OH!!! CAMPFIRE TRANSFORM ASSIGNED BUT NO ACTUAL CAMPFIRE EXISTS");
++				}
++			}
++			else
++			{
++				stringBuilder.AppendLine("No campfire assigned to this segment.");
++			}
++			stringBuilder.AppendLine("------==========---------");
++		}
++		if (list.Any())
++		{
++			stringBuilder.AppendLine("UNACCOUNTED FOR CAMPFIRES: " + string.Join('|', list.Select((Campfire c) => c.name)));
++		}
++		Debug.Log(stringBuilder.ToString());
+ 	}
+ 
+ 	private void Update()
+@@ -583,7 +685,14 @@
+
+ 		}
+ 		IEnumerator ShowNextSegmentCoroutine()
+ 		{
+-			Character.localCharacter.data.DestroyCheckpointFlags();
++			try
++			{
++				Character.localCharacter.data.DestroyCheckpointFlags();
++			}
++			catch (Exception exception)
++			{
++				Debug.LogException(exception);
++			}
+ 			int startSegment = currentSegment;
+ 			currentSegment++;
+ 			if (s == Segment.TheKiln && (bool)segments[currentSegment].wallPrevious)
+@@ -591,7 +700,14 @@
+
+ 				segments[currentSegment].wallPrevious.SetActive(value: true);
+ 			}
+ 			OrbFogHandler orbFogHandler = Singleton<OrbFogHandler>.Instance;
+-			yield return orbFogHandler.WaitForFogCatchUp();
++			if ((bool)orbFogHandler)
++			{
++				yield return orbFogHandler.WaitForFogCatchUp();
++			}
++			else
++			{
++				Debug.LogWarning("OrbFogHandler doesn't exist and we're trying to move to the next segment!");
++			}
+ 			yield return new WaitForSecondsRealtime(1f);
+ 			segments[startSegment].segmentParent.SetActive(value: false);
+ 			yield return null;
+@@ -654,7 +770,14 @@
+
+ 							}
+ 							if ((viewsToDestoryIfNotAlreadyWhenSwitchingSegment != null) & flag)
+ 							{
+-								PhotonNetwork.Destroy(viewsToDestoryIfNotAlreadyWhenSwitchingSegment);
++								if (viewsToDestoryIfNotAlreadyWhenSwitchingSegment.ViewID == 55 && viewsToDestoryIfNotAlreadyWhenSwitchingSegment.name.Contains("Kiln"))
++								{
++									Debug.LogWarning("Ok we just tried to blow up " + viewsToDestoryIfNotAlreadyWhenSwitchingSegment.name + " during segment cleanup. BAD MAP HANDLER!!! REFUSING");
++								}
++								else
++								{
++									PhotonNetwork.Destroy(viewsToDestoryIfNotAlreadyWhenSwitchingSegment);
++								}
+ 							}
+ 						}
+ 						catch (Exception ex)
+@@ -733,7 +856,7 @@
+
+ 		Character.localCharacter.refs.afflictions.UpdateWeight();
+ 	}
+ 
+-	public static IEnumerator GoToVoidRoutine(bool clearStatus)
++	public static IEnumerator GoToVoidRoutine()
+ 	{
+ 		float waitTime = 5f;
+ 		DeleteScoutsHonorFromLocalCharacter();
+@@ -751,28 +874,21 @@
+
+ 			yield return new WaitForSeconds(1f);
+ 			waitTime -= 3f;
+ 			Character.localCharacter.refs.ragdoll.HaltBodyVelocity(resetFallDamage: true);
+-			Vector3 offset = Vector3.forward;
+ 			if (Character.localCharacter.data.dead)
+ 			{
+-				Character.localCharacter.photonView.RPC("RPCA_ReviveAtPosition", RpcTarget.All, VoidBiome.instance.GetSpawnPosition(0) + Vector3.up, true, -1);
++				Character.localCharacter.photonView.RPC("RPCA_ReviveAtPosition", RpcTarget.All, VoidBiome.instance.GetSpawnPosition(NetCode.Session.SeatNumber) + Vector3.up + 0.5f * UnityEngine.Random.onUnitSphere, false, -1);
+ 			}
+ 			yield return null;
+ 			yield return null;
+ 			yield return null;
+ 			foreach (Character allCharacter in Character.AllCharacters)
+ 			{
+-				if (allCharacter.data.dead || allCharacter.data.fullyPassedOut)
+-				{
+-					allCharacter.photonView.RPC("RPCA_ReviveAtPosition", RpcTarget.All, Character.localCharacter.Center + Vector3.up + offset, false, -1);
+-					offset = offset.RotateAroundAxis(Vector3.up, 90f);
+-				}
+-			}
+-		}
+-		if (clearStatus)
+-		{
+-			Character.localCharacter.refs.afflictions.ClearAllAfflictions();
+-			Character.localCharacter.refs.afflictions.ClearAllStatus();
+-			Character.localCharacter.refs.afflictions.AdjustStatus(CharacterAfflictions.STATUSTYPE.Petrify, -0.2f);
++				if ((allCharacter.data.dead || allCharacter.data.fullyPassedOut) && (object)allCharacter != Character.localCharacter)
++				{
++					Vector3 spawnPosition = VoidBiome.instance.GetSpawnPosition(allCharacter.player.GetActorNumber());
++					allCharacter.photonView.RPC("RPCA_ReviveAtPosition", RpcTarget.All, spawnPosition + Vector3.up + 0.5f * UnityEngine.Random.onUnitSphere, false, -1);
++				}
++			}
+ 		}
+ 		Character.localCharacter.data.DestroyCheckpointFlags();
+ 		while (waitTime > 0f)
+@@ -962,15 +1078,22 @@
+
+ 			int num4 = 0;
+ 			foreach (Character item2 in allPlayerCharacters)
+ 			{
+-				if (playersToTeleport.Contains(item2.photonView.Owner.ActorNumber))
+-				{
+-					if (newSegment == Segment.Void)
++				if (!playersToTeleport.Contains(item2.photonView.Owner.ActorNumber))
++				{
++					continue;
++				}
++				if (newSegment == Segment.Void)
++				{
++					vector = VoidBiome.instance.GetSpawnPosition(num4);
++					if (item2.data.dead || item2.warping)
+ 					{
+-						vector = VoidBiome.instance.GetSpawnPosition(num4);
++						Debug.Log("Not warping " + item2.name + " to void because they will get revived there (which will also warp them).", item2);
++						num4++;
++						continue;
+ 					}
+-					item2.photonView.RPC("WarpPlayerRPC", RpcTarget.All, vector, false);
+-					num4++;
+-				}
++				}
++				item2.photonView.RPC("WarpPlayerRPC", RpcTarget.All, vector, false);
++				num4++;
+ 			}
+ 		}
+ 		if (sendToEveryone)

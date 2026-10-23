@@ -1,0 +1,9 @@
+{
+  "memory_files": 13,
+  "bad_links": [],
+  "bad_text": [],
+  "preserved_files": 240,
+  "source_deployment_changes": [],
+  "playersinfo_summary": "| PlayersInfo | 0.2.5 | 0 警告 / 0 错误 | 暂无确定强制断点；昵称显示建议维护，3.0.0 实机待验；旧 terrain 0.1.1 需更新 |",
+  "in_game_validation": false
+}

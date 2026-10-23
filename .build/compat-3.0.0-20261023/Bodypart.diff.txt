@@ -1,0 +1,30 @@
+--- 2.6.b/Bodypart.cs
+
++++ 3.0.0/Bodypart.cs
+
+@@ -194,11 +194,11 @@
+
+ 	{
+ 		if ((bool)character && !(this == character.refs.hip) && !(targetOffsetRelativeToHip == Vector3.zero))
+ 		{
+-			Vector3 vector = (WorldTargetPos() - WorldCenterOfMass()) * force;
+-			AddForce(vector, ForceMode.Acceleration);
++			Vector3 vector = (WorldTargetPos() - WorldCenterOfMass()) * force * rig.mass;
++			forcesToAdd += vector;
+ 			if ((bool)jointParent)
+ 			{
+-				Vector3 force2 = vector * rig.mass;
++				Vector3 force2 = vector;
+ 				force2 *= -0.5f;
+ 				jointParent.AddForce(force2, ForceMode.Force);
+ 				character.refs.hip.AddForce(force2, ForceMode.Force);
+@@ -285,7 +285,7 @@
+
+ 		{
+ 			rig.AddForce(forcesToAdd, ForceMode.Force);
+ 		}
+-		forcesToAdd *= 0f;
++		forcesToAdd = Vector3.zero;
+ 	}
+ 
+ 	internal void AddMovementForce(float movementForce)

@@ -1,0 +1,97 @@
+--- 2.4.b/ItemCooking.cs
+
++++ 3.0.0/ItemCooking.cs
+
+@@ -164,7 +164,7 @@
+
+ 	}
+ 	public void StartCookingVisuals()
+ 	{
+-		base.photonView.RPC("SyncCookingStateRPC", RpcTarget.All, NetworkedCooking.StartSmoking);
++		photonView.RPC("SyncCookingStateRPC", RpcTarget.All, NetworkedCooking.StartSmoking);
+ 	}
+ 	public void Wreck()
+ 	{
+@@ -205,7 +205,7 @@
+
+ 		Action_GiveExtraStamina action_GiveExtraStamina = GetComponent<Action_GiveExtraStamina>();
+ 		if (!action_GiveExtraStamina)
+ 		{
+-			action_GiveExtraStamina = base.gameObject.AddComponent<Action_GiveExtraStamina>();
++			action_GiveExtraStamina = gameObject.AddComponent<Action_GiveExtraStamina>();
+ 			action_GiveExtraStamina.OnConsumed = true;
+ 		}
+ 		if (totalCooked < 2)
+@@ -221,7 +221,7 @@
+
+ 			Action_ModifyStatus action_ModifyStatus = GetComponents<Action_ModifyStatus>().FirstOrDefault((Action_ModifyStatus a) => a.statusType == CharacterAfflictions.STATUSTYPE.Poison);
+ 			if (!action_ModifyStatus)
+ 			{
+-				action_ModifyStatus = base.gameObject.AddComponent<Action_ModifyStatus>();
++				action_ModifyStatus = gameObject.AddComponent<Action_ModifyStatus>();
+ 				action_ModifyStatus.OnConsumed = true;
+ 				action_ModifyStatus.statusType = CharacterAfflictions.STATUSTYPE.Poison;
+ 			}
+@@ -230,37 +230,36 @@
+
+ 	}
+ 	public void CancelCookingVisuals()
+ 	{
+-		base.photonView.RPC("SyncCookingStateRPC", RpcTarget.All, NetworkedCooking.StopSmoking);
++		photonView.RPC("SyncCookingStateRPC", RpcTarget.All, NetworkedCooking.StopSmoking);
+ 	}
+ 	public void FinishCooking()
+ 	{
+-		if (!base.photonView.AmController)
++		if (!photonView.AmController)
+ 		{
+ 			return;
+ 		}
+-		base.photonView.RPC("SyncCookingStateRPC", RpcTarget.All, NetworkedCooking.FinishCooking);
++		photonView.RPC("SyncCookingStateRPC", RpcTarget.All, NetworkedCooking.FinishCooking);
+ 		if ((bool)item.holderCharacter)
+ 		{
+ 			item.holderCharacter.player.itemsChangedAction?.Invoke(item.holderCharacter.player.itemSlots);
+ 			if ((object)item.holderCharacter.refs.items?.cookSfx != null)
+ 			{
+-				item.holderCharacter.refs.items.cookSfx.Play(base.transform.position);
+-			}
+-		}
+-		Debug.Log("Cooking Finished");
++				item.holderCharacter.refs.items.cookSfx.Play(transform.position);
++			}
++		}
+ 	}
+ 	public void Explode()
+ 	{
+-		if (base.photonView.IsMine)
+-		{
+-			base.photonView.RPC("SyncCookingStateRPC", RpcTarget.All, NetworkedCooking.Explode);
++		if (photonView.IsMine)
++		{
++			photonView.RPC("SyncCookingStateRPC", RpcTarget.All, NetworkedCooking.Explode);
+ 		}
+ 	}
+ 	private void CookingExplodeImpl()
+ 	{
+ 		if ((bool)explosionPrefab)
+ 		{
+-			Object.Instantiate(explosionPrefab, base.transform.position, base.transform.rotation);
++			Object.Instantiate(explosionPrefab, transform.position, transform.rotation);
+ 		}
+ 		if (Character.localCharacter.data.currentItem == item)
+ 		{
+@@ -268,9 +267,9 @@
+
+ 			Character.localCharacter.refs.afflictions.UpdateWeight();
+ 		}
+ 		item.ClearDataFromBackpack();
+-		if (base.photonView.IsMine)
+-		{
+-			PhotonNetwork.Destroy(base.gameObject);
++		if (photonView.IsMine)
++		{
++			PhotonNetwork.Destroy(gameObject);
+ 		}
+ 	}
+ }

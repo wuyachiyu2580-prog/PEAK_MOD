@@ -1,0 +1,171 @@
+--- 2.4.b/CharacterData.cs
+
++++ 3.0.0/CharacterData.cs
+
+@@ -1,4 +1,5 @@
+
+ using System;
++using System.Collections;
+ using System.Collections.Generic;
+ using Peak.Afflictions;
+ using Photon.Pun;
+@@ -100,7 +101,7 @@
+
+ 	public float lastAddedStatusAmount;
+ 	public bool isInFog;
+ 	public bool[] badgeStatus;
+-	public ulong userID;
++	public string userID;
+ 	public string productUserID;
+ 	private PhotonView m_photonView;
+ 	public PlatformUtility.PlatformFamily platformFamily;
+@@ -171,11 +172,7 @@
+
+ 		private set
+ 		{
+ 			_isSkeleton = value;
+-			if (character.isBot)
+-			{
+-				Debug.Log($"Skeleton flag set to {_isSkeleton} but not attempting to SetSkeleton because {character.name} is a bot.", this);
+-			}
+-			else
++			if (!character.isBot)
+ 			{
+ 				character.refs.customization.refs.SetSkeleton(_isSkeleton, character.IsLocal);
+ 			}
+@@ -241,7 +238,6 @@
+
+ 			if (_cannibalismPermitted != value)
+ 			{
+ 				_cannibalismPermitted = value;
+-				Debug.Log($"Cannibalism permitted for {character.characterName} : {value}");
+ 			}
+ 		}
+ 	}
+@@ -362,9 +358,9 @@
+
+ 	{
+ 		if (petrifyAmount != amount)
+ 		{
+-			if (base.photonView.IsMine)
+-			{
+-				base.photonView.RPC("RPC_SyncPetrify", RpcTarget.Others, amount);
++			if (photonView.IsMine)
++			{
++				photonView.RPC("RPC_SyncPetrify", RpcTarget.Others, amount);
+ 			}
+ 			if (amount > 100)
+ 			{
+@@ -414,7 +410,10 @@
+
+ 		{
+ 			m_instances = new Dictionary<Photon.Realtime.Player, CharacterData>();
+ 		}
+-		m_instances.TryAdd(m_photonView.Owner, this);
++		if (!character.isBot)
++		{
++			m_instances.TryAdd(m_photonView.Owner, this);
++		}
+ 	}
+ 	private void OnDestroy()
+ 	{
+@@ -422,13 +421,13 @@
+
+ 	}
+ 	private void Start()
+ 	{
+-		if (base.photonView.IsMine)
++		if (photonView.IsMine)
+ 		{
+ 			CannibalismSetting setting = GameHandler.Instance.SettingsHandler.GetSetting<CannibalismSetting>();
+ 			cannibalismPermitted = setting.Value == OffOnMode.ON;
+ 			if (PhotonNetwork.InRoom)
+ 			{
+-				base.photonView.RPC("RPCA_SyncCanBeCannibalized", RpcTarget.Others, cannibalismPermitted);
++				photonView.RPC("RPCA_SyncCanBeCannibalized", RpcTarget.Others, cannibalismPermitted);
+ 			}
+ 		}
+ 	}
+@@ -456,7 +455,6 @@
+
+ 	[PunRPC]
+ 	public void RPC_SyncOnJoin(bool passedOut, bool fullyPassedOut, bool dead, bool isSprinting, PhotonView currentItem, bool isJumping, bool isClimbing, bool isRopeClimbing, bool isVineClimbing, float vinePercent, float ropePercent, bool isCrouching, bool isReaching, PhotonView heldVine, PhotonView heldRope, bool[] badgeStatus, bool cannibalismPermitted, bool isSkeleton, int petrifyAmount)
+ 	{
+-		Debug.Log("OnJoin sync data received for " + character.name + ".", this);
+ 		this.passedOut = passedOut;
+ 		this.fullyPassedOut = fullyPassedOut;
+ 		this.dead = dead;
+@@ -477,37 +475,37 @@
+
+ 		character.InitializeRefs();
+ 		this.isSkeleton = isSkeleton;
+ 		SetPetrify((ushort)petrifyAmount);
+-		if (character.refs.badgeUnlocker == null)
+-		{
+-			if (!character.isBot)
+-			{
+-				Debug.LogError("Badge unlocker not found on " + character.name);
+-			}
+-		}
+-		else
++		if (!(character.refs.badgeUnlocker == null))
+ 		{
+ 			character.refs.badgeUnlocker.BadgeUnlockVisual();
+ 		}
+ 	}
+ 	internal void SetBadgeStatus()
+ 	{
+-		if (!character.IsLocal)
+-		{
+-			return;
+-		}
+-		badgeStatus = new bool[GUIManager.instance.mainBadgeManager.badgeData.Length];
+-		for (int i = 0; i < badgeStatus.Length; i++)
+-		{
+-			if (GUIManager.instance.mainBadgeManager.badgeData[i] != null)
+-			{
+-				badgeStatus[i] = !GUIManager.instance.mainBadgeManager.badgeData[i].IsLocked;
+-			}
+-			else
+-			{
+-				badgeStatus[i] = false;
+-			}
+-		}
+-		base.photonView.RPC("SyncBadgeStatus", RpcTarget.All, badgeStatus);
++		if (character.IsLocal)
++		{
++			StartCoroutine(SetBadgeStatusRoutine());
++		}
++		IEnumerator SetBadgeStatusRoutine()
++		{
++			while (!AchievementManager.GotStats)
++			{
++				yield return null;
++			}
++			badgeStatus = new bool[GUIManager.instance.mainBadgeManager.badgeData.Length];
++			for (int i = 0; i < badgeStatus.Length; i++)
++			{
++				if (GUIManager.instance.mainBadgeManager.badgeData[i] != null)
++				{
++					badgeStatus[i] = !GUIManager.instance.mainBadgeManager.badgeData[i].IsLocked;
++				}
++				else
++				{
++					badgeStatus[i] = false;
++				}
++			}
++			photonView.RPC("SyncBadgeStatus", RpcTarget.All, badgeStatus);
++		}
+ 	}
+ 	[PunRPC]
+ 	public void RPC_SyncPetrify(int amount)
+@@ -527,7 +525,7 @@
+
+ 	}
+ 	public void SetSkeleton(bool active)
+ 	{
+-		base.photonView.RPC("RPC_SyncSkeleton", RpcTarget.All, active);
++		photonView.RPC("RPC_SyncSkeleton", RpcTarget.All, active);
+ 	}
+ 	[PunRPC]
+ 	public void RPC_SyncSkeleton(bool active)

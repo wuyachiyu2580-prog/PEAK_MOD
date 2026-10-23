@@ -1,0 +1,14 @@
+--- 2.4.b/Jetpack.cs
+
++++ 3.0.0/Jetpack.cs
+
+@@ -41,7 +41,7 @@
+
+ 		jetpackParticles.Stop(withChildren: true, ParticleSystemStopBehavior.StopEmitting);
+ 		jetpackParticles2.Stop(withChildren: true, ParticleSystemStopBehavior.StopEmitting);
+ 		_active = false;
+-		jetpackLoop.DOFade(0f, 0.25f).OnComplete(delegate
++		jetpackLoop.DOFade(0f, 0.25f).OnComplete(() =>
+ 		{
+ 			if (!_active)
+ 			{

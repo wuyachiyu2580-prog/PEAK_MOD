@@ -1,0 +1,128 @@
+--- 2.4.b/Campfire.cs
+
++++ 3.0.0/Campfire.cs
+
+@@ -48,6 +48,7 @@
+
+ 	private Item currentlyCookingItem;
+ 	private Renderer mainRenderer;
+ 	private float startRot;
++	private bool skipMoraleBoost;
+ 	private Vector2 startSize;
+ 	private bool fireHasStarted;
+ 	private PhotonView view;
+@@ -55,6 +56,9 @@
+
+ 	private GloomSafeZone safeZone;
+ 	public bool disableFogFakeMountain;
+ 	public bool forceLit;
++	public const float MORALE_BOOST_STAM = 0.25f;
++	public const float INJURY_HEAL = -0.2f;
++	public const float PETRIFY_HEAL = -0.2f;
+ 	private List<Character> _charactersInRadius = new List<Character>();
+ 	public FireState state
+ 	{
+@@ -106,6 +110,10 @@
+
+ 	}
+ 	private void OnDestroy()
+ 	{
++		if (name.Contains("Kiln"))
++		{
++			Debug.Log("CAMPFIRE ALERTO!!! " + name + " is getting destroyed. I hope this is because of a scene change and not a naughty script blowing me up!!", this);
++		}
+ 		PlayerHandler.CharacterRegistered = (Action<Character>)Delegate.Remove(PlayerHandler.CharacterRegistered, new Action<Character>(CheckIfSyncNeeded));
+ 	}
+ 	private void Update()
+@@ -128,8 +136,8 @@
+
+ 			emission.rateOverTime = rateOverTime;
+ 			if (!fireHasStarted)
+ 			{
+-				Vector3 position = base.transform.position;
+-				if (MoraleBoost.SpawnMoraleBoost(position, moraleBoostRadius, moraleBoostBaseline, moraleBoostPerAdditionalScout))
++				Vector3 position = transform.position;
++				if (!skipMoraleBoost && MoraleBoost.SpawnMoraleBoost(position, moraleBoostRadius, moraleBoostBaseline, moraleBoostPerAdditionalScout))
+ 				{
+ 					for (int i = 0; i < moraleBoost.Length; i++)
+ 					{
+@@ -156,7 +164,7 @@
+
+ 		}
+ 		else if (fireHasStarted)
+ 		{
+-			Vector3 position2 = base.transform.position;
++			Vector3 position2 = transform.position;
+ 			for (int k = 0; k < extinguish.Length; k++)
+ 			{
+ 				extinguish[k].Play(position2);
+@@ -199,7 +207,7 @@
+
+ 	private void OnDrawGizmosSelected()
+ 	{
+ 		Gizmos.color = Color.yellow;
+-		Gizmos.DrawWireSphere(base.transform.position, moraleBoostRadius);
++		Gizmos.DrawWireSphere(transform.position, moraleBoostRadius);
+ 	}
+ 	public Vector3 Center()
+ 	{
+@@ -231,7 +239,7 @@
+
+ 	}
+ 	public Transform GetTransform()
+ 	{
+-		return base.transform;
++		return transform;
+ 	}
+ 	public void HoverEnter()
+ 	{
+@@ -295,7 +303,7 @@
+
+ 	public List<Character> PlayerCharactersInRadius(float radius)
+ 	{
+ 		_charactersInRadius.Clear();
+-		Vector3 position = base.transform.position;
++		Vector3 position = transform.position;
+ 		foreach (Character allPlayerCharacter in PlayerHandler.GetAllPlayerCharacters())
+ 		{
+ 			if (!allPlayerCharacter.data.dead && !(Vector3.Distance(position, allPlayerCharacter.Center) > radius))
+@@ -326,7 +334,7 @@
+
+ 		bool flag = true;
+ 		printout = "";
+ 		List<Character> list = PlayerCharactersInRadius(range);
+-		Vector3 position = base.transform.position;
++		Vector3 position = transform.position;
+ 		foreach (Character allPlayerCharacter in PlayerHandler.GetAllPlayerCharacters())
+ 		{
+ 			if (!allPlayerCharacter.data.dead && !list.Contains(allPlayerCharacter))
+@@ -395,6 +403,7 @@
+
+ 		smokeParticlesOff.Stop();
+ 		smokeParticlesLit.Play();
+ 		GUIManager.instance.RefreshInteractablePrompt();
++		skipMoraleBoost = !updateSegment;
+ 		if (IsMiniRunEndingCampfire())
+ 		{
+ 			if (PhotonNetwork.IsMasterClient)
+@@ -403,9 +412,16 @@
+
+ 			}
+ 			return;
+ 		}
+-		if (updateSegment && (bool)Singleton<MapHandler>.Instance)
+-		{
+-			Singleton<MapHandler>.Instance.GoToSegment(advanceToSegment);
++		if (updateSegment)
++		{
++			if ((bool)Singleton<MapHandler>.Instance)
++			{
++				Singleton<MapHandler>.Instance.GoToSegment(advanceToSegment);
++			}
++			else
++			{
++				Debug.LogWarning(name + " wants to UpdateSegment when lit but MapHandler doesn't exist.", this);
++			}
+ 		}
+ 		if (updateSegment)
+ 		{

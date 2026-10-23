@@ -1,0 +1,14 @@
+--- 2.6.b/Peak\MovingSawBlade.cs
+
++++ 3.0.0/Peak\MovingSawBlade.cs
+
+@@ -87,7 +87,7 @@
+
+ 
+ 	private void OnTriggerStay(Collider other)
+ 	{
+-		if (CharacterRagdoll.TryGetCharacterFromCollider(other, out var character) && !(_lastHitTime + timeout > Time.time))
++		if (other.enabled && CharacterRagdoll.TryGetCharacterFromCollider(other, out var character) && !character.statusesLocked && !(_lastHitTime + timeout > Time.time))
+ 		{
+ 			if (lastPlayedSound + timeout < Time.time)
+ 			{

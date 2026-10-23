@@ -1,0 +1,13 @@
+--- 2.6.b/ConnectionService.cs
+
++++ 3.0.0/ConnectionService.cs
+
+@@ -13,6 +13,7 @@
+
+ 		StateMachine = new ConnectionServiceStateMachine();
+ 		StateMachine.RegisterState(new DefaultConnectionState());
+ 		StateMachine.RegisterState(new JoinSpecificRoomState());
++		StateMachine.RegisterState(new ChangeRoomState());
+ 		StateMachine.RegisterState(new InRoomState());
+ 		StateMachine.RegisterState(new HostState());
+ 		StateMachine.RegisterState(new KickedState());

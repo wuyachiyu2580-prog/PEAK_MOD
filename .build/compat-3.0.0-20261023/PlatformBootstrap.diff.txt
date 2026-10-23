@@ -1,0 +1,38 @@
+--- 2.6.b/PlatformBootstrap.cs
+
++++ 3.0.0/PlatformBootstrap.cs
+
+@@ -1,11 +1,23 @@
+
++using System;
+ using System.Collections;
++using System.Collections.Generic;
+ using Portningsbolaget.Platforms;
+ using UnityEngine;
+ using UnityEngine.Events;
++using Zorro.Core.CLI;
+ 
+ public class PlatformBootstrap : MonoBehaviour
+ {
+ 	public UnityEvent onComplete;
++
++	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
++	private static void InitialiseBeforeSplashScreen()
++	{
++		List<ConsoleCommand> consoleCommands = ConsoleHandler.ScanForConsoleCommands();
++		Dictionary<Type, CLITypeParser> typeParsers = ConsoleHandler.ScanForTypeParsers();
++		CustomTypeRPCSerialization.Initialize();
++		ConsoleHandler.Initialize(consoleCommands, typeParsers);
++	}
+ 
+ 	private IEnumerator Start()
+ 	{
+@@ -17,6 +29,7 @@
+
+ 			yield return null;
+ 		}
+ 		Debug.Log($"{platform.PlatformFamily} Platform Initialised");
++		Debug.Log("Platform Bootstrap Complete");
+ 		onComplete?.Invoke();
+ 	}
+ }

@@ -1,5 +1,11 @@
 # WhereIsMyAmulet 当前状态
 
+## 2026-10-23 PEAK 3.0.0 兼容性审核
+
+1.0.4隔离Release 0/0，直接成员与ScoutStatue.hasAmulets入口仍在。
+
+完整结果：[3.0.0审核](../../COMPATIBILITY_3.0.0_2026-10-23.md)。本轮未改源码/版本或部署DLL，构建通过不代表实机兼容已验收。
+
 ## 2026-09-21 发行文件准备完成
 
 当前版本 `1.0.4` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/WhereIsMyAmulet/发行/1.0.4`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。

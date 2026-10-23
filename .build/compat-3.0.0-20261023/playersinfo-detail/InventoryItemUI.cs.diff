@@ -1,0 +1,32 @@
+--- 2.4.b/InventoryItemUI.cs
+
++++ 3.0.0/InventoryItemUI.cs
+
+@@ -194,7 +194,15 @@
+
+ 	}
+ 	public void UpdateNameText()
+ 	{
+-		string text = ((!(_itemPrefab != null) && (!isBackpack || !_hasBackpack)) ? "" : ((!(_itemPrefab != null)) ? "Backpack" : _itemPrefab.GetItemName(_itemData)));
++		string text;
++		if (!(_itemPrefab != null) && (!isBackpack || !_hasBackpack))
++		{
++			text = "";
++		}
++		else
++		{
++			text = ((!(_itemPrefab != null)) ? "Backpack" : _itemPrefab.GetItemName(_itemData));
++		}
+ 		if (nameText.text != text)
+ 		{
+ 			SetSelected();
+@@ -204,7 +212,7 @@
+
+ 	public void SetSelected()
+ 	{
+ 		Optionable<byte> currentSelectedSlot = Character.observedCharacter.refs.items.currentSelectedSlot;
+-		bool flag = currentSelectedSlot.IsSome && currentSelectedSlot.Value == base.transform.GetSiblingIndex();
++		bool flag = currentSelectedSlot.IsSome && currentSelectedSlot.Value == transform.GetSiblingIndex();
+ 		if (isTemporarySlot)
+ 		{
+ 			flag = true;

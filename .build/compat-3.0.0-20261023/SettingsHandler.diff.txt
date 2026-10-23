@@ -1,0 +1,13 @@
+--- 2.6.b/SettingsHandler.cs
+
++++ 3.0.0/SettingsHandler.cs
+
+@@ -58,6 +58,7 @@
+
+ 		AddSetting(new InvertXSetting());
+ 		AddSetting(new InvertYSetting());
+ 		AddSetting(new JumpToClimbSetting());
++		AddSetting(new CrossPlatformSetting());
+ 		AddSetting(new LobbyTypeSetting());
+ 		AddSetting(new HideRoomCodeSetting());
+ 		AddSetting(new HeadBobSetting());

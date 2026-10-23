@@ -1,0 +1,2129 @@
+[
+  {
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WUYACHIYU-PlayersInfo\\PlayersInfo.dll",
+    "name": "PlayersInfo",
+    "version": "0.2.5.0",
+    "checkedRefs": 268,
+    "missing": [],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "GUIManager.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "PlayersInfo.Patches.GUIManagerReadyPatch"
+      },
+      {
+        "target": "StaminaBar.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "PlayersInfo.Patches.LocalStaminaBarPatch"
+      }
+    ]
+  },
+  {
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WUYACHIYU-StateKeeper\\StateKeeper.dll",
+    "name": "StateKeeper",
+    "version": "0.1.0.0",
+    "checkedRefs": 309,
+    "missing": [],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "CharacterSyncer.OnDataReceived",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "StateKeeper.CharacterObservationSyncPatch"
+      },
+      {
+        "target": "Character.OnJump",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.CharacterJumpPatch"
+      },
+      {
+        "target": "GlobalEvents.TriggerSomeoneWonRun",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.GlobalEventsVictoryPatch"
+      },
+      {
+        "target": "GlobalEvents.TriggerRunEnded",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.GlobalEventsRunEndedPatch"
+      },
+      {
+        "target": "GlobalEvents.TriggerCharacterDied",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.CharacterDiedPatch"
+      },
+      {
+        "target": "GlobalEvents.TriggerCharacterPassedOut",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.CharacterPassedOutPatch"
+      },
+      {
+        "target": "Item.Interact",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemInteractPatch"
+      },
+      {
+        "target": "CharacterItems.OnPickupAccepted",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.PickupAcceptedPatch"
+      },
+      {
+        "target": "Item.StartUsePrimary",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemPrimaryStartedPatch"
+      },
+      {
+        "target": "Item.FinishCastPrimary",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemPrimaryFinishedPatch"
+      },
+      {
+        "target": "Item.FinishCastSecondary",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemSecondaryFinishedPatch"
+      },
+      {
+        "target": "Character.GetFedItemRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.FedItemObservedPatch"
+      },
+      {
+        "target": "Action_ModifyStatus.RunAction",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "StateKeeper.ModifyStatusOutcomePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.RescueHookOutcomePatch"
+      },
+      {
+        "target": "Character.RPCA_ReviveAtPosition",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ReviveObservedPatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemConsumedPatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemUsesReducedPatch"
+      },
+      {
+        "target": "Character.UseStamina",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.StaminaUsePatch"
+      },
+      {
+        "target": "PauseMenuMainPage.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.PauseMenuMainPagePatches"
+      },
+      {
+        "target": "PauseMenuMainPage.OnEnable",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.PauseMenuMainPageEnablePatches"
+      }
+    ]
+  },
+  {
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WUYACHIYU-WhereIsThing\\WhereIsThing.dll",
+    "name": "WhereIsThing",
+    "version": "0.1.2.0",
+    "checkedRefs": 300,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WUYACHIYU-WhySoLaggy\\WhySoLaggy.dll",
+    "name": "WhySoLaggy",
+    "version": "1.0.5.0",
+    "checkedRefs": 90,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\terrain\\BepInEx\\plugins\\Unknown-ItemInfoCN\\ItemInfoCN.dll",
+    "name": "ItemInfoCN",
+    "version": "1.0.0.0",
+    "checkedRefs": 129,
+    "missing": [
+      "AOE Mandrake::aoe",
+      "System.Collections.Generic.List\u00601\u003CStatusField/StatusFieldStatus\u003E StatusField::additionalStatuses",
+      "System.Single StatusField/StatusFieldStatus::statusAmountPerSecond",
+      "CharacterAfflictions/STATUSTYPE StatusField/StatusFieldStatus::statusType"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "CharacterItems.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void ItemInfoCN.Patches.ItemInfoUpdatePatch::ItemInfoDisplayUpdate(CharacterItems)"
+      },
+      {
+        "target": "CharacterItems.Equip",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void ItemInfoCN.Patches.ItemInfoEquipPatch::ItemInfoDisplayEquip(CharacterItems)"
+      },
+      {
+        "target": "ItemCooking.FinishCooking",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void ItemInfoCN.Patches.ItemInfoFinishCookingPatch::ItemInfoDisplayFinishCooking(ItemCooking)"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void ItemInfoCN.Patches.ItemInfoReduceUsesRPCPatch::ItemInfoDisplayReduceUsesRPC(Action_ReduceUses)"
+      }
+    ]
+  },
+  {
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\terrain\\BepInEx\\plugins\\WUYACHIYU-PeakMapBrowser\\PeakMapBrowser.dll",
+    "name": "PeakMapBrowser",
+    "version": "0.0.0.0",
+    "checkedRefs": 145,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\terrain\\BepInEx\\plugins\\WUYACHIYU-PlayersInfo\\PlayersInfo.dll",
+    "name": "PlayersInfo",
+    "version": "0.1.1.0",
+    "checkedRefs": 203,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "GUIManager.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "PlayersInfo.Patches.GUIManagerReadyPatch"
+      },
+      {
+        "target": "StaminaBar.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "PlayersInfo.Patches.LocalStaminaBarPatch"
+      }
+    ]
+  },
+  {
+    "file": "..\\..\\..\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\terrain\\BepInEx\\plugins\\WUYACHIYU-WhySoLaggy\\WhySoLaggy.dll",
+    "name": "WhySoLaggy",
+    "version": "1.0.3.0",
+    "checkedRefs": 76,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": "\u6D4B\u8BD5\u73AF\u5883\\BepInEx\\plugins\\PlayersInfo.dll",
+    "name": "PlayersInfo",
+    "version": "0.2.1.0",
+    "checkedRefs": 247,
+    "missing": [],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "GUIManager.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "PlayersInfo.Patches.GUIManagerReadyPatch"
+      },
+      {
+        "target": "StaminaBar.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "PlayersInfo.Patches.LocalStaminaBarPatch"
+      }
+    ]
+  },
+  {
+    "file": "\u6D4B\u8BD5\u73AF\u5883\\BepInEx\\plugins\\WhySoLaggy.dll",
+    "name": "WhySoLaggy",
+    "version": "1.0.4.0",
+    "checkedRefs": 83,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\ItemInfoCN\\\u53D1\u884C\\1.0.0\\ItemInfoCN.dll",
+    "name": "ItemInfoCN",
+    "version": "1.0.0.0",
+    "checkedRefs": 129,
+    "missing": [
+      "AOE Mandrake::aoe",
+      "System.Collections.Generic.List\u00601\u003CStatusField/StatusFieldStatus\u003E StatusField::additionalStatuses",
+      "System.Single StatusField/StatusFieldStatus::statusAmountPerSecond",
+      "CharacterAfflictions/STATUSTYPE StatusField/StatusFieldStatus::statusType"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "CharacterItems.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void ItemInfoCN.Patches.ItemInfoUpdatePatch::ItemInfoDisplayUpdate(CharacterItems)"
+      },
+      {
+        "target": "CharacterItems.Equip",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void ItemInfoCN.Patches.ItemInfoEquipPatch::ItemInfoDisplayEquip(CharacterItems)"
+      },
+      {
+        "target": "ItemCooking.FinishCooking",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void ItemInfoCN.Patches.ItemInfoFinishCookingPatch::ItemInfoDisplayFinishCooking(ItemCooking)"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void ItemInfoCN.Patches.ItemInfoReduceUsesRPCPatch::ItemInfoDisplayReduceUsesRPC(Action_ReduceUses)"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\Lantern\u0026ShootZombies\u0026Night\\\u53D1\u884C\\0.0.1\\Lantern_ShootZombies_Night.dll",
+    "name": "Lantern_ShootZombies_Night",
+    "version": "1.0.0.0",
+    "checkedRefs": 150,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab",
+      "System.Void Item::RequestPickup(Photon.Pun.PhotonView,Photon.Pun.PhotonMessageInfo)"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "Campfire.Light_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireLightRefuelPatch"
+      },
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      },
+      {
+        "target": "Luggage.Interact_CastFinished",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ChestRestorePatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceUsesRestorePatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ConsumeRestorePatch"
+      },
+      {
+        "target": "CharacterItems.DropItemRpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.DropItemRestorePatch"
+      },
+      {
+        "target": "BugleSFX.RPC_StartToot",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.BugleRestorePatch"
+      },
+      {
+        "target": "Rope.Detach_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.RopeDetachRestorePatch"
+      },
+      {
+        "target": "Lantern.Awake",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::AwakePostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.OnInstanceDataSet",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::OnInstanceDataSetPostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPrefix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPostfix(Lantern)"
+      },
+      {
+        "target": "CharacterAfflictions.AddStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceLanternWarmthPatch"
+      },
+      {
+        "target": "CharacterHeatEmission.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HeatEmissionMultiplierPatch"
+      },
+      {
+        "target": "CharacterAfflictions.SubtractStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.SubtractColdMonitorPatch"
+      },
+      {
+        "target": "StatusField.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.StatusFieldColdPatch"
+      },
+      {
+        "target": "CharacterCarrying.RPCA_StartCarry",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CarryRescueRestorePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HookRescueRestorePatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\Lantern\u0026ShootZombies\u0026Night\\\u53D1\u884C\\0.0.2\\Lantern_ShootZombies_Night.dll",
+    "name": "Lantern_ShootZombies_Night",
+    "version": "1.0.0.0",
+    "checkedRefs": 150,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "Campfire.Light_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireLightRefuelPatch"
+      },
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      },
+      {
+        "target": "Luggage.Interact_CastFinished",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ChestRestorePatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceUsesRestorePatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ConsumeRestorePatch"
+      },
+      {
+        "target": "CharacterItems.DropItemRpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.DropItemRestorePatch"
+      },
+      {
+        "target": "BugleSFX.RPC_StartToot",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.BugleRestorePatch"
+      },
+      {
+        "target": "Rope.Detach_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.RopeDetachRestorePatch"
+      },
+      {
+        "target": "Lantern.Awake",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::AwakePostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.OnInstanceDataSet",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::OnInstanceDataSetPostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPrefix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPostfix(Lantern)"
+      },
+      {
+        "target": "CharacterAfflictions.AddStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceLanternWarmthPatch"
+      },
+      {
+        "target": "CharacterHeatEmission.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HeatEmissionMultiplierPatch"
+      },
+      {
+        "target": "CharacterAfflictions.SubtractStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.SubtractColdMonitorPatch"
+      },
+      {
+        "target": "StatusField.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.StatusFieldColdPatch"
+      },
+      {
+        "target": "CharacterCarrying.RPCA_StartCarry",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CarryRescueRestorePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HookRescueRestorePatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\Lantern\u0026ShootZombies\u0026Night\\\u53D1\u884C\\0.0.3\\Lantern_ShootZombies_Night.dll",
+    "name": "Lantern_ShootZombies_Night",
+    "version": "1.0.0.0",
+    "checkedRefs": 156,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "Campfire.Light_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireLightRefuelPatch"
+      },
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      },
+      {
+        "target": "Luggage.Interact_CastFinished",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ChestRestorePatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceUsesRestorePatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ConsumeRestorePatch"
+      },
+      {
+        "target": "CharacterItems.DropItemRpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.DropItemRestorePatch"
+      },
+      {
+        "target": "BugleSFX.RPC_StartToot",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.BugleRestorePatch"
+      },
+      {
+        "target": "Rope.Detach_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.RopeDetachRestorePatch"
+      },
+      {
+        "target": "Lantern.Awake",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::AwakePostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.OnInstanceDataSet",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::OnInstanceDataSetPostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPrefix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPostfix(Lantern)"
+      },
+      {
+        "target": "CharacterAfflictions.AddStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceLanternWarmthPatch"
+      },
+      {
+        "target": "CharacterHeatEmission.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HeatEmissionMultiplierPatch"
+      },
+      {
+        "target": "CharacterAfflictions.SubtractStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.SubtractColdMonitorPatch"
+      },
+      {
+        "target": "StatusField.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.StatusFieldColdPatch"
+      },
+      {
+        "target": "CharacterCarrying.RPCA_StartCarry",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CarryRescueRestorePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HookRescueRestorePatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\Lantern\u0026ShootZombies\u0026Night\\\u53D1\u884C\\0.1.0\\Lantern_ShootZombies_Night.dll",
+    "name": "Lantern_ShootZombies_Night",
+    "version": "1.0.0.0",
+    "checkedRefs": 155,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "Campfire.Light_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireLightRefuelPatch"
+      },
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      },
+      {
+        "target": "Luggage.Interact_CastFinished",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ChestRestorePatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceUsesRestorePatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ConsumeRestorePatch"
+      },
+      {
+        "target": "CharacterItems.DropItemRpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.DropItemRestorePatch"
+      },
+      {
+        "target": "BugleSFX.RPC_StartToot",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.BugleRestorePatch"
+      },
+      {
+        "target": "Rope.Detach_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.RopeDetachRestorePatch"
+      },
+      {
+        "target": "Lantern.Awake",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::AwakePostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.OnInstanceDataSet",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::OnInstanceDataSetPostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPrefix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPostfix(Lantern)"
+      },
+      {
+        "target": "CharacterAfflictions.AddStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceLanternWarmthPatch"
+      },
+      {
+        "target": "CharacterHeatEmission.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HeatEmissionMultiplierPatch"
+      },
+      {
+        "target": "CharacterAfflictions.SubtractStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.SubtractColdMonitorPatch"
+      },
+      {
+        "target": "StatusField.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.StatusFieldColdPatch"
+      },
+      {
+        "target": "CharacterCarrying.RPCA_StartCarry",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CarryRescueRestorePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HookRescueRestorePatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\Lantern\u0026ShootZombies\u0026Night\\\u53D1\u884C\\0.1.1\\Lantern_ShootZombies_Night.dll",
+    "name": "Lantern_ShootZombies_Night",
+    "version": "1.0.0.0",
+    "checkedRefs": 163,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "Campfire.Light_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireLightRefuelPatch"
+      },
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      },
+      {
+        "target": "Luggage.Interact_CastFinished",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ChestRestorePatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceUsesRestorePatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ConsumeRestorePatch"
+      },
+      {
+        "target": "CharacterItems.DropItemRpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.DropItemRestorePatch"
+      },
+      {
+        "target": "BugleSFX.RPC_StartToot",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.BugleRestorePatch"
+      },
+      {
+        "target": "Rope.Detach_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.RopeDetachRestorePatch"
+      },
+      {
+        "target": "Lantern.Awake",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::AwakePostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.OnInstanceDataSet",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::OnInstanceDataSetPostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPrefix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPostfix(Lantern)"
+      },
+      {
+        "target": "MushroomZombie.RPC_PlaySFX",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteZombieSfxPatch"
+      },
+      {
+        "target": "Tornado.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteTornadoSfxPatch"
+      },
+      {
+        "target": "CharacterAfflictions.AddStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceLanternWarmthPatch"
+      },
+      {
+        "target": "CharacterHeatEmission.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HeatEmissionMultiplierPatch"
+      },
+      {
+        "target": "CharacterAfflictions.SubtractStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.SubtractColdMonitorPatch"
+      },
+      {
+        "target": "StatusField.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.StatusFieldColdPatch"
+      },
+      {
+        "target": "CharacterCarrying.RPCA_StartCarry",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CarryRescueRestorePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HookRescueRestorePatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\Lantern\u0026ShootZombies\u0026Night\\\u53D1\u884C\\0.1.2\\Lantern_ShootZombies_Night.dll",
+    "name": "Lantern_ShootZombies_Night",
+    "version": "1.0.0.0",
+    "checkedRefs": 200,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "Campfire.Light_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireLightRefuelPatch"
+      },
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      },
+      {
+        "target": "Luggage.Interact_CastFinished",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ChestRestorePatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceUsesRestorePatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ConsumeRestorePatch"
+      },
+      {
+        "target": "CharacterItems.DropItemRpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.DropItemRestorePatch"
+      },
+      {
+        "target": "BugleSFX.RPC_StartToot",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.BugleRestorePatch"
+      },
+      {
+        "target": "Rope.Detach_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.RopeDetachRestorePatch"
+      },
+      {
+        "target": "Lantern.Awake",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::AwakePostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.OnInstanceDataSet",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::OnInstanceDataSetPostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPrefix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPostfix(Lantern)"
+      },
+      {
+        "target": "MushroomZombie.RPC_PlaySFX",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteZombieSfxPatch"
+      },
+      {
+        "target": "Tornado.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteTornadoSfxPatch"
+      },
+      {
+        "target": "CharacterAfflictions.AddStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceLanternWarmthPatch"
+      },
+      {
+        "target": "CharacterHeatEmission.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HeatEmissionMultiplierPatch"
+      },
+      {
+        "target": "CharacterAfflictions.SubtractStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.SubtractColdMonitorPatch"
+      },
+      {
+        "target": "StatusField.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.StatusFieldColdPatch"
+      },
+      {
+        "target": "CharacterCarrying.RPCA_StartCarry",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CarryRescueRestorePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HookRescueRestorePatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\Lantern\u0026ShootZombies\u0026Night\\\u53D1\u884C\\0.1.3\\Lantern_ShootZombies_Night.dll",
+    "name": "Lantern_ShootZombies_Night",
+    "version": "1.0.0.0",
+    "checkedRefs": 208,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "Campfire.Light_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireLightRefuelPatch"
+      },
+      {
+        "target": "Campfire.Awake",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireAwakePatch"
+      },
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      },
+      {
+        "target": "Luggage.Interact_CastFinished",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ChestRestorePatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceUsesRestorePatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ConsumeRestorePatch"
+      },
+      {
+        "target": "CharacterItems.DropItemRpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.DropItemRestorePatch"
+      },
+      {
+        "target": "BugleSFX.RPC_StartToot",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.BugleRestorePatch"
+      },
+      {
+        "target": "Rope.Detach_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.RopeDetachRestorePatch"
+      },
+      {
+        "target": "Lantern.Awake",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::AwakePostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.OnInstanceDataSet",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::OnInstanceDataSetPostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPrefix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPostfix(Lantern)"
+      },
+      {
+        "target": "MushroomZombie.RPC_PlaySFX",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteZombieSfxPatch"
+      },
+      {
+        "target": "Tornado.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteTornadoSfxPatch"
+      },
+      {
+        "target": "CharacterAfflictions.AddStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceLanternWarmthPatch"
+      },
+      {
+        "target": "CharacterHeatEmission.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HeatEmissionMultiplierPatch"
+      },
+      {
+        "target": "CharacterAfflictions.SubtractStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.SubtractColdMonitorPatch"
+      },
+      {
+        "target": "StatusField.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.StatusFieldColdPatch"
+      },
+      {
+        "target": "CharacterCarrying.RPCA_StartCarry",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CarryRescueRestorePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HookRescueRestorePatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\Lantern\u0026ShootZombies\u0026Night\\\u53D1\u884C\\0.1.4\\Lantern_ShootZombies_Night.dll",
+    "name": "Lantern_ShootZombies_Night",
+    "version": "1.0.0.0",
+    "checkedRefs": 208,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "Campfire.Light_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireLightRefuelPatch"
+      },
+      {
+        "target": "Campfire.Awake",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireAwakePatch"
+      },
+      {
+        "target": "ItemCooking.FinishCookingRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CookingRestorePatch"
+      },
+      {
+        "target": "Luggage.Interact_CastFinished",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ChestRestorePatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceUsesRestorePatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ConsumeRestorePatch"
+      },
+      {
+        "target": "CharacterItems.DropItemRpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.DropItemRestorePatch"
+      },
+      {
+        "target": "BugleSFX.RPC_StartToot",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.BugleRestorePatch"
+      },
+      {
+        "target": "Rope.Detach_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.RopeDetachRestorePatch"
+      },
+      {
+        "target": "Lantern.Awake",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::AwakePostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.OnInstanceDataSet",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::OnInstanceDataSetPostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPrefix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPostfix(Lantern)"
+      },
+      {
+        "target": "MushroomZombie.RPC_PlaySFX",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteZombieSfxPatch"
+      },
+      {
+        "target": "Tornado.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteTornadoSfxPatch"
+      },
+      {
+        "target": "CharacterAfflictions.AddStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceLanternWarmthPatch"
+      },
+      {
+        "target": "CharacterHeatEmission.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HeatEmissionMultiplierPatch"
+      },
+      {
+        "target": "CharacterAfflictions.SubtractStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.SubtractColdMonitorPatch"
+      },
+      {
+        "target": "StatusField.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.StatusFieldColdPatch"
+      },
+      {
+        "target": "CharacterCarrying.RPCA_StartCarry",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CarryRescueRestorePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HookRescueRestorePatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\Lantern\u0026ShootZombies\u0026Night\\\u53D1\u884C\\0.2.0\\Lantern_ShootZombies_Night.dll",
+    "name": "Lantern_ShootZombies_Night",
+    "version": "1.0.0.0",
+    "checkedRefs": 211,
+    "missing": [
+      "System.Boolean BackpackSlot::hasBackpack",
+      "ItemInstanceData ItemSlot::data",
+      "Item ItemSlot::prefab",
+      "System.Void Player::EmptySlot(Zorro.Core.Optionable\u00601\u003CSystem.Byte\u003E)"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "BugleSFX.RPC_StartToot",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.BugleUltimatePatch"
+      },
+      {
+        "target": "Campfire.Light_Rpc",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireLightRefuelPatch"
+      },
+      {
+        "target": "Campfire.Awake",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.CampfireAwakePatch"
+      },
+      {
+        "target": "Lantern.Awake",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::AwakePostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.OnInstanceDataSet",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::OnInstanceDataSetPostfix(Lantern)"
+      },
+      {
+        "target": "Lantern.LightLanternRPC",
+        "status": "MISSING",
+        "overloads": 0,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::LightLanternRPCPostfix(Lantern,System.Boolean)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPrefix(Lantern)"
+      },
+      {
+        "target": "Lantern.UpdateFuel",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Void Lantern_ShootZombies_Night.Patches.LanternFuelOverridePatch::UpdateFuelPostfix(Lantern)"
+      },
+      {
+        "target": "MushroomZombie.RPC_PlaySFX",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteZombieSfxPatch"
+      },
+      {
+        "target": "Tornado.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.MuteTornadoSfxPatch"
+      },
+      {
+        "target": "CharacterAfflictions.AddStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.ReduceLanternWarmthPatch"
+      },
+      {
+        "target": "CharacterHeatEmission.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.HeatEmissionMultiplierPatch"
+      },
+      {
+        "target": "CharacterAfflictions.SubtractStatus",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.SubtractColdMonitorPatch"
+      },
+      {
+        "target": "StatusField.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "Lantern_ShootZombies_Night.Patches.StatusFieldColdPatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\TerrainCustomiserCN\\\u53D1\u5E03\\0.1.2\\TerrainCustomiserCN.dll",
+    "name": "TerrainCustomiserCN",
+    "version": "0.1.2.0",
+    "checkedRefs": 405,
+    "missing": [
+      "LightVolume LightVolume::Instance()",
+      "UnityEngine.Vector3Int LightVolume::gridRes",
+      "System.Single LightVolume::raySpacing",
+      "UnityEngine.Vector3 LightVolume::gridOffset",
+      "UnityEngine.Texture3D LightVolume::lightMap",
+      "UnityEngine.LayerMask LightVolume::occluderMask",
+      "UnityEngine.Color LightVolume::skyColor",
+      "UnityEngine.RenderTexture LightVolume::RunBlur(UnityEngine.RenderTexture)",
+      "System.Void LightVolume::SetShaderVars()",
+      "System.Void LightVolume::SaveTex(UnityEngine.RenderTexture,System.Action)",
+      "UnityEngine.GameObject LightVolume::sceneParent",
+      "UnityEngine.Color BakedVolumeLight::color",
+      "BakedVolumeLight/LightModes BakedVolumeLight::mode",
+      "System.Single BakedVolumeLight::coneSize",
+      "System.Single BakedVolumeLight::GetRadius()",
+      "System.Single BakedVolumeLight::intensity",
+      "System.Single BakedVolumeLight::falloff",
+      "System.Single BakedVolumeLight::coneFalloff",
+      "System.Void LevelGenStep::Execute()",
+      "System.Void PropGrouper::RunAll(System.Boolean)",
+      "System.Single PropSpawner_Sphere::spawnChance",
+      "System.Collections.Generic.List\u00601\u003CUnityEngine.GameObject\u003E PropSpawner_Sphere::get_spawnedProps()",
+      "System.Void PropSpawner::SpawnDecor()"
+    ],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "JungleVine.Awake",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Collections.Generic.IEnumerable\u00601\u003CHarmonyLib.CodeInstruction\u003E TerrainCustomiserCN.TerrainGeneration.GenerationPatches/RemoveDebugLogsPatch::Transpiler(System.Collections.Generic.IEnumerable\u00601\u003CHarmonyLib.CodeInstruction\u003E)"
+      },
+      {
+        "target": "JungleVine.PickTreePlatforms",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "System.Collections.Generic.IEnumerable\u00601\u003CHarmonyLib.CodeInstruction\u003E TerrainCustomiserCN.TerrainGeneration.GenerationPatches/RemoveDebugLogsPatch::Transpiler(System.Collections.Generic.IEnumerable\u00601\u003CHarmonyLib.CodeInstruction\u003E)"
+      },
+      {
+        "target": "SpawnConnectingBridge.CheckCondition",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "System.Collections.Generic.IEnumerable\u00601\u003CHarmonyLib.CodeInstruction\u003E TerrainCustomiserCN.TerrainGeneration.GenerationPatches/RemoveDebugLogsPatch::Transpiler(System.Collections.Generic.IEnumerable\u00601\u003CHarmonyLib.CodeInstruction\u003E)"
+      },
+      {
+        "target": "Looker.ToggleLookers",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/ToggleLookersPatch"
+      },
+      {
+        "target": "PropGrouper.RunAll",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropGrouperRunAllPatch"
+      },
+      {
+        "target": "PropSpawner_Sphere.SpawnNew",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropSpawnerSphereAddPatch"
+      },
+      {
+        "target": "PropSpawner.SpawnNew",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropSpawnerSpawnNewPatch"
+      },
+      {
+        "target": "PropSpawner.Execute",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropSpawnerExecutePatch"
+      },
+      {
+        "target": "PropSpawner_Sphere.Execute",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropSpawner_SphereExecutePatch"
+      },
+      {
+        "target": "PropSpawner_Line.Execute",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropSpawner_LineExecutePatch"
+      },
+      {
+        "target": "PropSpawner.Spawn",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropSpawnerSpawnPatch"
+      },
+      {
+        "target": "PropSpawner_Sphere.Spawn",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropSpawner_SphereSpawnPatch"
+      },
+      {
+        "target": "PropSpawner_Line.Spawn",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropSpawner_LineSpawnPatch"
+      },
+      {
+        "target": "PropSpawner_Sphere.Clear",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/PropSpawner_SphereClearPatch"
+      },
+      {
+        "target": "MapHandler.InitializeMap",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.TerrainGeneration.GenerationPatches/MapHandlerInitializeMapPatch"
+      },
+      {
+        "target": "GameUtils.OnEnable",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.AirportPatches/GameUtilsOnEnablePatch"
+      },
+      {
+        "target": "BoardingPass.Initialize",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.AirportPatches/BoardingPassInitializePatch"
+      },
+      {
+        "target": "BoardingPass.OnOpen",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.AirportPatches/BoardingPassOnOpenPatch"
+      },
+      {
+        "target": "BoardingPass.OnClose",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.AirportPatches/BoardingPassOnClosePatch"
+      },
+      {
+        "target": "AirportCheckInKiosk.BeginIslandLoadRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.AirportPatches/BeginIslandLoadRPCPatch"
+      },
+      {
+        "target": "UBImGui.ImGuiTextures.BuildFontAtlas",
+        "status": "type absent from Assembly-CSharp (check external dependency)",
+        "patch": "TerrainCustomiserCN.Patches.ImGuiPatches/BuildFontAtlasPatch"
+      },
+      {
+        "target": "GameHandler.Awake",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.NetworkPatches/GameHandlerAwakePatch"
+      },
+      {
+        "target": "GameUtils.OnPlayerLeftRoom",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.NetworkPatches/OnPlayerLeftRoomPatch"
+      },
+      {
+        "target": "MainMenu.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.SessionPatches/MainMenuStartPatch"
+      },
+      {
+        "target": "RunManager.StartRun",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.SessionPatches/RunManagerStartRunPatch"
+      },
+      {
+        "target": "PauseMenuMainPage.Quit",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.SessionPatches/PauseMenQuitPatch"
+      },
+      {
+        "target": "SteamLobbyHandler.OnLobbyEnter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "TerrainCustomiserCN.Patches.SessionPatches/OnLobbyEnterPatch"
+      }
+    ]
+  },
+  {
+    "file": "MOD\u5F00\u53D1\\TerrainCustomiserCN\\\u53D1\u5E03\\0.1.2\\TerrainCustomiserCNCollector.dll",
+    "name": "TerrainCustomiserCNCollector",
+    "version": "0.1.1.0",
+    "checkedRefs": 2,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": ".build\\compat-3.0.0-20261023\\build\\ModConfigDiagnostics\\ModConfigDiagnostics.dll",
+    "name": "ModConfigDiagnostics",
+    "version": "0.1.0.0",
+    "checkedRefs": 12,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": ".build\\compat-3.0.0-20261023\\build\\PeakMapBrowser\\PeakMapBrowser.dll",
+    "name": "PeakMapBrowser",
+    "version": "0.0.0.0",
+    "checkedRefs": 145,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": ".build\\compat-3.0.0-20261023\\build\\PlayersInfo\\PlayersInfo.dll",
+    "name": "PlayersInfo",
+    "version": "0.2.5.0",
+    "checkedRefs": 268,
+    "missing": [],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "GUIManager.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "PlayersInfo.Patches.GUIManagerReadyPatch"
+      },
+      {
+        "target": "StaminaBar.Update",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "PlayersInfo.Patches.LocalStaminaBarPatch"
+      }
+    ]
+  },
+  {
+    "file": ".build\\compat-3.0.0-20261023\\build\\StateKeeper\\StateKeeper.dll",
+    "name": "StateKeeper",
+    "version": "0.1.0.0",
+    "checkedRefs": 309,
+    "missing": [],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "CharacterSyncer.OnDataReceived",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "StateKeeper.CharacterObservationSyncPatch"
+      },
+      {
+        "target": "Character.OnJump",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.CharacterJumpPatch"
+      },
+      {
+        "target": "GlobalEvents.TriggerSomeoneWonRun",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.GlobalEventsVictoryPatch"
+      },
+      {
+        "target": "GlobalEvents.TriggerRunEnded",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.GlobalEventsRunEndedPatch"
+      },
+      {
+        "target": "GlobalEvents.TriggerCharacterDied",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.CharacterDiedPatch"
+      },
+      {
+        "target": "GlobalEvents.TriggerCharacterPassedOut",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.CharacterPassedOutPatch"
+      },
+      {
+        "target": "Item.Interact",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemInteractPatch"
+      },
+      {
+        "target": "CharacterItems.OnPickupAccepted",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.PickupAcceptedPatch"
+      },
+      {
+        "target": "Item.StartUsePrimary",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemPrimaryStartedPatch"
+      },
+      {
+        "target": "Item.FinishCastPrimary",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemPrimaryFinishedPatch"
+      },
+      {
+        "target": "Item.FinishCastSecondary",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemSecondaryFinishedPatch"
+      },
+      {
+        "target": "Character.GetFedItemRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.FedItemObservedPatch"
+      },
+      {
+        "target": "Action_ModifyStatus.RunAction",
+        "status": "found",
+        "overloads": 2,
+        "issues": [],
+        "patch": "StateKeeper.ModifyStatusOutcomePatch"
+      },
+      {
+        "target": "RescueHook.RPCA_RescueCharacter",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.RescueHookOutcomePatch"
+      },
+      {
+        "target": "Character.RPCA_ReviveAtPosition",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ReviveObservedPatch"
+      },
+      {
+        "target": "Item.Consume",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemConsumedPatch"
+      },
+      {
+        "target": "Action_ReduceUses.ReduceUsesRPC",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.ItemUsesReducedPatch"
+      },
+      {
+        "target": "Character.UseStamina",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.StaminaUsePatch"
+      },
+      {
+        "target": "PauseMenuMainPage.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.PauseMenuMainPagePatches"
+      },
+      {
+        "target": "PauseMenuMainPage.OnEnable",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "StateKeeper.PauseMenuMainPageEnablePatches"
+      }
+    ]
+  },
+  {
+    "file": ".build\\compat-3.0.0-20261023\\build\\UprightCockroach\\UprightCockroach.dll",
+    "name": "UprightCockroach",
+    "version": "0.1.0.0",
+    "checkedRefs": 120,
+    "missing": [],
+    "unavailable": [],
+    "patches": [
+      {
+        "target": "Character.Start",
+        "status": "found",
+        "overloads": 1,
+        "issues": [],
+        "patch": "UprightCockroach.CharacterPatch"
+      }
+    ]
+  },
+  {
+    "file": ".build\\compat-3.0.0-20261023\\build\\WhereIsMyAmulet\\WhereIsMyAmulet.dll",
+    "name": "WhereIsMyAmulet",
+    "version": "1.0.4.0",
+    "checkedRefs": 126,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": ".build\\compat-3.0.0-20261023\\build\\WhereIsThing\\WhereIsThing.dll",
+    "name": "WhereIsThing",
+    "version": "0.1.2.0",
+    "checkedRefs": 300,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  },
+  {
+    "file": ".build\\compat-3.0.0-20261023\\build\\WhySoLaggy\\WhySoLaggy.dll",
+    "name": "WhySoLaggy",
+    "version": "1.0.5.0",
+    "checkedRefs": 90,
+    "missing": [],
+    "unavailable": [],
+    "patches": []
+  }
+]

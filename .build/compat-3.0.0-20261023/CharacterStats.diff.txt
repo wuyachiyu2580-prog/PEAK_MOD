@@ -1,0 +1,24 @@
+--- 2.6.b/CharacterStats.cs
+
++++ 3.0.0/CharacterStats.cs
+
+@@ -173,7 +173,7 @@
+
+ 
+ 	private void Update()
+ 	{
+-		if (((Time.timeSinceLevelLoad < 3f || !IsInitialized) && Time.time - _timeAwoken < 20f) || character.warping)
++		if (((Time.timeSinceLevelLoad < 3f || !IsInitialized) && Time.time - _timeAwoken < 5f) || character.warping)
+ 		{
+ 			return;
+ 		}
+@@ -181,7 +181,7 @@
+
+ 		{
+ 			if ((bool)Singleton<MapHandler>.Instance)
+ 			{
+-				Debug.LogWarning("What da heck!! Failed to initialize 20 seconds into waking up. Something is donked.");
++				Debug.LogWarning("What da heck!! Failed to initialize 5 seconds into waking up. Something is donked.");
+ 				IsInitialized = true;
+ 				Record();
+ 			}
