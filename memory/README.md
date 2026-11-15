@@ -1,5 +1,62 @@
 # PEAK MOD Memory
 
+## 2026-11-15 开发构建已实施部署，实机验收待完成
+
+落实用户批准的准确性、RPC/日志、自动深入、诊断包/HUD和最后国际化；1.0.5-dev.20261115，版本仍1.0.5，70/70自动回归，Release零警告零错误。游戏关闭后安装2.0.a/plugins根目录单份DLL/PDB，旧版可回退，配置SHA256未改变；发行未改、未上传/提交。
+
+[实施、容量边界及验收记录](mods/WhySoLaggy/IMPLEMENTATION_Development_2026-11-14.md)。五模式实机A/B、30分钟四人、完整三语言界面验收未执行，不能记为通过。
+
+
+## 2026-11-14 WhySoLaggy 原症状反馈通过，后续优化仅调研
+
+用户确认 LOC: 0 不再出现；最新日志计时开启且原 GetDisplayName 错误为 0 次。完整语言/主客机/性能矩阵仍待验。当前 1.0.5 修复构建不变。
+
+[后续功能调研](mods/WhySoLaggy/RESEARCH_Roadmap_2026-11-14.md)：先准确性/扫描降误报，再限时取证/诊断包，后 HUD/网络；本轮未改生产源码、配置、DLL 或发行。
+
+## 2026-11-13 修复已实施并部署，实机待验
+
+用户已授权开始。计时目标规范化/去重、独立 Harmony id、主线程开关、并发统计和旧会话保护已实现，国际化说明最后更新。真实故障回归由 2/4 失败变为全部通过；最终 37/37 测试通过，Release 0 警告 0 错误。仍为 1.0.5，发行包不变。
+
+[WhySoLaggy 实施与验收](mods/WhySoLaggy/IMPLEMENTATION_ModConfig_2026-11-13.md)：已部署 2.0.a/plugins 根目录单份 DLL、旧 DLL 备份、配置未变。实机工具截图超时，完整 profile 界面验收待完成；未发行或提交。
+
+## 2026-11-13 下一步方案已调研，未实施
+
+WhySoLaggy 下一步建议已验证到隔离策略阶段：声明目标规范化/去重、独立计时开关、并发保护，最后语言及实机。见 [方案](mods/WhySoLaggy/NEXT_STEPS_ModConfig_2026-11-13.md)。仍未修改正式源码/配置/安装。
+
+## 2026-11-13 补充：旧版本同样具备触发条件
+
+WhySoLaggy LOC: 0 并非已证实的 PEAK 3.1.0 新缺陷：历史源码/依赖及独立 Harmony 实验说明旧版也有条件触发。本次 ShootZombies 继承目标与启用补丁计时组合相关。详见 [历史调查](mods/WhySoLaggy/HISTORY_ModConfig_LOC0_2026-11-13.md)。无生产代码/配置/安装变更。
+
+## 2026-11-13 ModConfig LOC: 0 已定位，未实施修复
+
+PEAK 3.1.0 实际复现：共享按键设置 GetDisplayName 的泛型方法句柄解析异常，中断列表构建并留下 LOC: 0。WhySoLaggy PatchProfiler 的 __originalMethod 注入是优先修复点；不是配置值被改成 0。8 次同类异常、补丁快照和安装 DLL IL 已核对；只完成调研，未改源码/配置/DLL，未构建部署或实机验证修复。
+
+[WhySoLaggy 专项调研](mods/WhySoLaggy/RESEARCH_ModConfig_3.1.0_2026-11-13.md)；当前基线更新为 3.1.0，不代表其他 MOD 全量审核。
+
+## 2026-10-31 已下载地图转发包已准备
+
+用户明确为已下载地图转发以避开慢速下载，已生成“自群山来”在线 r13 手动安装 ZIP（73,261,005 bytes），保留 _net 相对路径、在线版本元数据及 cache，13 个地图文件 SHA256 一致，附安装说明。详见 [调研与打包记录](RESEARCH_PeakWorkshop_0.5.0_OFFLINE_MAPS_2026-10-31.md)。未改安装、未上传/发送、未实机。
+
+## 2026-10-31 PeakWorkshop 0.5.0 离线地图包调研
+
+已分析用户提供的 PeakWorkshop 0.5.0 反编译：普通完整地图原生支持 ZIP 格式 .peakmap，启动时从 BepInEx/PeakWorkshop/maps 自动解包；单独普通 .zip 不自动安装。多人本地优先匹配 CID，远征另需地貌及包版本依赖。详见 [离线地图包调研](RESEARCH_PeakWorkshop_0.5.0_OFFLINE_MAPS_2026-10-31.md)。本轮只读分析并保存文档，未改插件/配置/地图、未打包/部署/实机，未恢复作废中文补丁。
+
+## 2026-10-29 23:32 WhereIsThing 0.1.3 发行文件已备齐
+
+WhereIsThing 发行/0.1.3 已沿用 0.1.2 格式备齐英文说明、manifest、图标与已验证 DLL。用户确认 1.0.3 为笔误。五文件及 DLL 版本/hash 校验通过；未生成 ZIP、未上传，实机验收待完成。详见 mods/WhereIsThing/FILES.md 和 temp/current.md。
+
+## 2026-10-29 23:03 部署路径纠正
+
+用户明确要求 DLL 放在 2.0.a/BepInEx/plugins 根目录。此前采用子目录不符合要求；本次检查时 profile 下已没有 WhereIsThing.dll/PDB，不推断移除原因。现已将验证过的 0.1.3.0 DLL 和 PDB 复制到 C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/，csproj 默认 OutputPath 同步恢复根目录。DLL 为 180224 bytes，SHA256 4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522，与隔离产物一致；递归复查仅一份 DLL。未改功能或配置、未重新构建/启动游戏。本条覆盖下方当前安装在子目录的历史描述。既有 71 项逻辑回归与实机待验状态不变；仅同步本地 memory。
+
+## 2026-10-29 22:07 WhereIsThing 0.1.3 已实施
+
+用户已授权实施，且要求国际化最后统一修。0.1.3/0.1.3.0 已完成植物真实身份与迁移、箱子折叠筛选/单实体标签、当前段/全图范围、国际化及窗口刷新；71 项逻辑回归通过，PEAK 3.0.1 隔离 Release 0 警告 0 错误，已部署原 profile 的 WUYACHIYU-WhereIsThing 子目录。未启动游戏，主客机/自定义地图/中文字体与布局待实机。历史发行与 ZIP 未改。 当前入口：[实施与验收](mods/WhereIsThing/IMPLEMENTATION_0.1.3_2026-10-29.md)。下方同日调研状态已被此项覆盖。
+
+## 2026-10-29 WhereIsThing 0.1.3 调研
+
+[更新前调研](mods/WhereIsThing/RESEARCH_0.1.3_2026-10-29.md)：用户要求先调研、不改代码。已定位国际化、隐藏曼德拉草真实身份、箱子分类/去重、无限距离关卡范围问题；当前仍 0.1.2，0.1.3 尚未实现。安装游戏 DLL 已异于 3.0.0 审核，资源版本标记 3.0.1，后续重新核对。只更新 memory，无构建/部署/配置/发行变更。
+
 ## 2026-10-23 PlayersInfo 复核补充
 
 [PlayersInfo 专项报告](mods/PlayersInfo/COMPATIBILITY_3.0.0_2026-10-23.md)：补查 2.4.b → 3.0.0，0.2.5 暂无确定的强制 API/核心读数适配项；新增昵称读取顺序维护建议，并保留 3.0.0 实机验收。terrain 中 0.1.1 仍需更新。仅更新审核记录，源码及部署未改。

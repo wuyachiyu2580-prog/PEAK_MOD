@@ -12,6 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="UnityEngine.InputLegacyModule"><HintPath>C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/Managed/UnityEngine.InputLegacyModule.dll</HintPath><Private>False</Private></Reference>
+  </ItemGroup>
+  <ItemGroup>
     <!-- BepInEx and Harmony Core Dependencies -->
     <Reference Include="BepInEx">
       <HintPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\core\BepInEx.dll</HintPath>

@@ -1,0 +1,726 @@
+﻿[19:18:19.845] WhySoLaggy Abuse Detection Monitor started
+[19:18:19.845] Log file: C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\WhySoLaggy_Abuse.log
+============================================================
+[19:18:33.048] [ABUSE] Photon method hooks registered (local API tracking)
+[19:18:33.057] [ABUSE] Found zombie manager: ZombieManager
+[19:18:33.058] [ABUSE] NetworkAbuseDetector initialized (observation-only mode)
+[19:18:33.058] [ABUSE] Thresholds: Instantiate=15/s, Destroy=20/s, RPC=50/s, ObjectSpike=30
+[19:18:33.059] [ABUSE] Initial counts: PhotonViews=0, Zombies=0
+[19:18:33.072] [RPC_MON] Hooked PhotonNetwork.ExecuteRpc successfully
+[19:18:33.072] [RPC_MON] RpcMonitor initialized (watched: 63, per-method buffer: 32, queue: 2048, pump batch: 32)
+[19:18:33.077] [HARMONY_SCAN] Potential conflict: System.Console.SetOut patched by 2 mods: harmony-auto-9e9624fb-501e-4281-88a4-8dbf1abfd3c2, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.077] [HARMONY_SCAN] Potential conflict: System.Reflection.Assembly.LoadFile patched by 2 mods: org.bepinex.fixes.harmonyinterop, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.077] [HARMONY_SCAN] Potential conflict: System.Reflection.Assembly.LoadFrom patched by 2 mods: org.bepinex.fixes.harmonyinterop, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.077] [HARMONY_SCAN] Potential conflict: System.Reflection.Assembly.get_Location patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, harmony-auto-afd3f452-889e-4742-9bc4-11f9c9903b50
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: System.Reflection.Assembly.get_CodeBase patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, harmony-auto-afd3f452-889e-4742-9bc4-11f9c9903b50
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: Item.RPC_SetThrownData patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI, com.CptPICHU.peak.truefinalascent
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: BasketballHoop.OnTriggerExit patched by 2 mods: CavyCrew.BingBongAI, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: Character.RPCA_PassOut patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: Character.RPCA_UnPassOut patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: Character.RPCA_Die patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: Character.RPCA_ReviveAtPosition patched by 4 mods: com.CptPICHU.peak.truefinalascent, com.local.statekeeper, com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: Mirage.fadeMirage patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: AirportPhotoboothKiosk.InteractRPC patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: BugleEventProc.ThrowBugleEvent patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: Campfire.Light_Rpc patched by 4 mods: com.CptPICHU.peak.truefinalascent, com.github.LengSword.ClimbInfoTracker, com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: Action_AskBingBong.RunAction patched by 2 mods: CavyCrew.BingBongAI, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: ItemCooking.SyncCookingStateRPC patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, CavyCrew.BingBongAI
+[19:18:33.078] [HARMONY_SCAN] Potential conflict: CharacterItems.DropItemRpc patched by 4 mods: CavyCrew.BingBongAI, com.CptPICHU.peak.truefinalascent, com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: CharacterItems.DropItemFromSlotRPC patched by 4 mods: CavyCrew.BingBongAI, com.CptPICHU.peak.truefinalascent, com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Photon.Realtime.LoadBalancingClient.OnEvent patched by 3 mods: harmony-auto-2dbc207c-cf48-49c8-bd27-297ccb017938, com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Photon.Pun.PhotonNetwork.RPC patched by 2 mods: harmony-auto-fbbf3a7e-6b1b-49fd-8dda-fac3f4660307, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Photon.Pun.PhotonNetwork.ConnectUsingSettings patched by 2 mods: harmony-auto-60aab0e0-ab74-4df4-b70a-d22d720c8a67, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Portningsbolaget.Utilities.Utilities.CodeToRegion patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, harmony-auto-90f8a6f3-41c0-44f4-a964-218f9f11b530
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: MainMenuJoinRoomPage.JoinRoomAndWaitForSpawn patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, harmony-auto-62c345c7-9702-428a-9796-d86994dc618f
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: MainMenuJoinRoomPage.Awake patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, harmony-auto-bc4d1b91-c2bb-4e6d-a1a4-e3f6aa06555d, com.github.LengSword.BetterRoomShare
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: MainMenuJoinRoomPage.OnPageEnter patched by 4 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, harmony-auto-bc4d1b91-c2bb-4e6d-a1a4-e3f6aa06555d, harmony-auto-16374458-e1f4-4a06-b015-6c42f3e4b348, com.github.LengSword.BetterRoomShare
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: MainMenuJoinRoomPage.CheckRoomCode patched by 3 mods: harmony-auto-bc4d1b91-c2bb-4e6d-a1a4-e3f6aa06555d, com.github.LengSword.BetterRoomShare, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: SteamLobbyHandler.RequestPhotonRoomID patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, harmony-auto-37b0ba12-5612-4221-9101-2c33b433a718
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: SteamLobbyHandler.HandleMessage patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, harmony-auto-b812d86f-8ebd-499d-b473-ffb9bb5e77c1, com.github.LengSword.BetterRoomShare
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Photon.Voice.Unity.VoiceConnection.ConnectUsingSettings patched by 2 mods: harmony-auto-23a4ff8a-8846-4df4-a48c-793c296339d6, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Photon.Voice.VoiceFollowClient.OnVoiceStateChanged patched by 2 mods: harmony-auto-b4fd36cf-9de9-481a-a61f-17b7b209eee9, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Photon.Voice.PUN.PunVoiceClient.ConnectVoice patched by 2 mods: harmony-auto-187b9577-6ca1-41f5-850c-95e488a36332, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Photon.Voice.VoiceFollowClient.OnOperationResponseReceived patched by 2 mods: harmony-auto-f6be8740-2796-418d-b750-0502738ef038, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Photon.Voice.VoiceFollowClient.ConnectOrJoinVoice patched by 2 mods: harmony-auto-954e4c6b-f508-4492-959e-ef89671c7b02, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Photon.Realtime.LoadBalancingClient.ReconnectAndRejoin patched by 2 mods: harmony-auto-c7cd66a2-e102-4369-848b-6e3952f7a41f, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Character.Awake patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.AiAe.betterplayerdistance, com.CptPICHU.peak.truefinalascent
+[19:18:33.079] [HARMONY_SCAN] Potential conflict: Character.OnDestroy patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.AiAe.betterplayerdistance
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: UIPlayerNames.UpdateName patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.AiAe.betterplayerdistance
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: UIPlayerNames.DisableName patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.AiAe.betterplayerdistance
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: StormVisual.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.an0n.fairStorms
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: WindChillZone.AddWindForceToCharacter patched by 3 mods: com.an0n.fairStorms, com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: WindChillZone.ApplyStatus patched by 3 mods: com.an0n.fairStorms, com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: CharacterGrabbing+<>c__DisplayClass24_0+<<KickCast>g__KickRoutine|1>d.MoveNext patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: Character.Fall patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: CharacterGrabbing.Reach patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: Campfire.Interact_CastFinished patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: ItemCooking.CookingExplodeImpl patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: AirportCheckInKiosk.BeginIslandLoadRPC patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: Character.RPCEndGame patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: EndScreen.Start patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.080] [HARMONY_SCAN] Potential conflict: CharacterAfflictions.AddSunHeat patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: CharacterAfflictions.AddStatus patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: CharacterAfflictions.SubtractStatus patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: AchievementManager.IsAchievementUnlocked patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: BadgeManager.GetBadgeData patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: LocalizedText.GetText patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: Customization.TryGetUnlockedCosmetics patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: RunSettings.get_blockingAchievements patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: PauseMenuAccoladesPage.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: BadgeUI.Init patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: BadgeManager.set_selectedBadge patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: BadgeUnlocker.SetBadges patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: EndScreen.BadgeRoutine patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: EndScreen.CosmeticUnlockRoutine patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: Peak.LevelGeneration.PointAtObject.OnLevelGenFinished patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: MapHandler.InitializeMap patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: MapHandler.get_CurrentBaseCampSpawnPoint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: MapHandler.get_LastSeenCampfireIsSafe patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: MapHandler.get_CurrentCampfire patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: MapHandler.get_CurrentScoutStatue patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: MapHandler.SpawnCampfireItems patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: MountainProgressHandler.TriggerReached patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.ClimbInfoTracker
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: MountainProgressHandler.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.081] [HARMONY_SCAN] Potential conflict: MapHandler.JumpToSegmentLogic patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.ClimbInfoTracker
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: MapHandler.get_PreviousScoutStatue patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: CharacterSpawner.get_ScoutsWereRevivedAtCurrentBaseCamp patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: MapHandler.get_BaseCampScoutStatue patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: PlayerConnectionLog.OnPlayerEnteredRoom patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: RespawnChest.SpawnItems patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: MountainProgressHandler.DisplaySegmentTitleAfterDelay patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: MapHandler.GetCurrentBiome patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: MapHandler.ForceEnablePeak patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: CharacterAfflictions.UpdateNormalStatuses patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: Peak.TowerStacker.Execute patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: Peak.TowerStacker.delete patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: Peak.ScoutStatue.SpawnGem_Master patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: DestroyBasedOnPlayerCount.Start patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: Looker.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: AmbienceManager.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: Peak.SpawnZone.Start patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: LavaRiver.Apply patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: PropSpawner.TryToSpawn patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: HeightmapMesh.Generate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: MushroomZombieSpawner.Start patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.082] [HARMONY_SCAN] Potential conflict: Scoutmaster.LookForTarget patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Scoutmaster.VerifyTarget patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: MountainProgressHandler+ProgressPoint.get_localizedTitle patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Peak.ForceHeroTextTrigger.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: DecorSpawner.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: MushroomManager.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: DesertRockSpawner.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: PropDeleter.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: PropSpawner.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: SwampMeshGen.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Peak.FogSafeZoneManager.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Peak.StatueSpawnRandomizationStep.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Peak.TowerStacker.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Peak.LevelGeneration.PhysicsSimStep.Clear patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: SwampMeshGen.Generate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: PropSpawner_Line.GetRandomPoint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: PropSpawner.GetRandomPoint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: PropSpawner_Sphere.GetRandomPoint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: PropSpawner.AllConstraintsPass patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: PSC_Embedded.CheckConstraint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: PSC_NearObject.CheckConstraint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: ArrowShooter.OnEnable patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Dynamite.TestLightWick patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Campfire.ApplyCampfireProtection patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Campfire.Extinguish_Rpc patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.083] [HARMONY_SCAN] Potential conflict: Campfire.Awake patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: Campfire.GetInteractionText patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: OrbFogHandler.Move patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: OrbFogHandler.WaitToMove patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: LavaRising.ReadyToStart patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: WindChillZone.HandleTime patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: WindChillZone.FixedUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: HotSun.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: TornadoSpawner.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: Tornado.FixedUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: Mob.Attacking patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: MushroomZombieBiteCollider.OnTriggerEnter patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: LavaRising.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: MovingLava.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: OrbFogHandler.SetFogOrigin patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: MapHandler.GoToSegment patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: LavaPost.LateUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: Peak.Island.GloomVoiceConfuser.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: Peak.ForceFogShaderHeight.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: NoParent.Start patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: GUIManager.TheFogRises patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: GUIManager.TheLavaRises patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: GUIManager.TheGloomRises patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.084] [HARMONY_SCAN] Potential conflict: GUIManager.TheGhostsRise patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.085] [HARMONY_SCAN] Potential conflict: OrbFogHandler.WaitForFogCatchUp patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.085] [HARMONY_SCAN] Potential conflict: OrbFogHandler.InitNewSphere patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.085] [HARMONY_SCAN] Potential conflict: MountainProgressHandler.InitProgressPoints patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.085] [HARMONY_SCAN] Potential conflict: CharacterSpawner.SpawnHostCharacter patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.085] [HARMONY_SCAN] Potential conflict: CharacterSpawner.RPC_NewPlayerSpawn patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.085] [HARMONY_SCAN] Potential conflict: CharacterSpawner.RPC_ReconnectingPlayerSpawn patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.085] [HARMONY_SCAN] Potential conflict: DayNightManager.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.085] [HARMONY_SCAN] Potential conflict: RockMaterialSwapper.Start patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.085] [HARMONY_SCAN] Potential conflict: CharacterStats.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: CharacterStats.Record patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: MountainProgressHandler.CheckReached patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: CharacterSpawner.SpawnMyPlayerCharacter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: EruptionSpawner.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: TrueFinalAscent.FinalAscentViewIDs.Assign patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: Spawner.TrySpawnItems patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: SingleItemSpawner.TrySpawnItems patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: TombTrigger.TriggerTomb patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: DesertRockSpawner+<Execute>d__7.MoveNext patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: JungleVine.ForceBuildVine patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: PSC_VolumeLight.CheckConstraint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: PSC_Perlin.CheckConstraint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: PSC_Perlin3D.CheckConstraint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: WaterZone.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: WaterZone.Awake patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: CharacterMovement.JumpRpc patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: CharacterClimbing.RPCA_ClimbJump patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: CharacterClimbing.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.086] [HARMONY_SCAN] Potential conflict: CharacterMovement.CheckFallDamage patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: CharacterClimbing.CheckFallDamage patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: AOE.Explode patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: Scorpion.InflictAttack patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: BreakableBridge.FixedUpdate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: Condor.Swoop patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: Glider.FixedUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: RescueHook.OnPrimaryFinishedCast patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: Character.UseStamina patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.local.statekeeper, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: Character.UpdateVariablesFixed patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: Character.AddStamina patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: CharacterMovement.GetMovementForce patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: Character.CalculateWorldMovementDir patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: CharacterMovement.GetGravityForce patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: Bodypart.Drag patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: CharacterBalloons.FixedUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.087] [HARMONY_SCAN] Potential conflict: CharacterClimbing.GetVisualClimberPos patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: CharacterClimbing.RaycastPos patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: CharacterClimbing.TryToStartWallClimb patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: CharacterRopeHandling.GetPosition patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: CharacterVineClimbing.Climbing patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: FakeItem.Interact patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: FakeItem.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: CharacterAfflictions.AddThorn patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: CollisionModifier.Collide patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: Dynamite.RPC_Explode patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: Photon.Voice.Unity.Speaker.OnAudioFrame patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: Mob.TargetValid patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.088] [HARMONY_SCAN] Potential conflict: Mob.Targeting patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: CollisionModifier+<>c__DisplayClass24_0.<Collide>g__BounceRoutine|1 patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: FootStepPlayer.PlayStep patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: SFX_PlayOneShot.PlayOneShot patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: Action_AskBingBong.Ask patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: SFX_Player.PlaySFX patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: Interaction.DoInteractableRaycasts patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.github.LengSword.RemoteAliveHelper, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: RopeShooter.WillAttach patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: VineShooter.WillAttach patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: VineShooter.OnPrimaryFinishedCast patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: RescueHook.GetHit patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: RescueHook.FixedUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: CharacterVineClimbing.FixedUpdate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: CharacterRopeHandling.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.089] [HARMONY_SCAN] Potential conflict: CharacterClimbing.GetRequestedPostition patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: Action_RaycastDart.RunAction patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: RopeTier.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: CharacterItems.RaycastClimbingSpikeStart patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: CharacterItems.WithinClimbingSpikePreviewRange patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: CharacterItems.InstantiateClimbingSpikePreview patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: Constructable.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: Constructable.CreateOrMovePreview patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: ConstructablePreview.CollisionValid patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: TrackNetworkedObject.LateUpdate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: Action_RaycastDart.RPC_DartImpact patched by 3 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: Action_Spawn.RPCSpawn patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.090] [HARMONY_SCAN] Potential conflict: Item.SetState patched by 3 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: CharacterItems.AttachItem patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: CharacterItems.GetItemPosLeft patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: CharacterItems.HoldItem patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: CharacterAnimations.ConfigureIK patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: Player.AddItem patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: Item.SetItemInstanceDataRPC patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent, com.github.Thanks.ShootZombies
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: ItemScaleSyncer.ApplyScale patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: BackpackVisuals.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: Item.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: Item.Interact patched by 4 mods: com.CptPICHU.peak.truefinalascent, com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: Item.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: GameUtils.InstantiateAndGrabRPC patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.091] [HARMONY_SCAN] Potential conflict: CharacterItems.RPC_SpawnItemInHandMaster patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: Character.RegainItems patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: BackpackOnBackVisuals.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: GUIManager.OpenBackpackWheel patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: Photon.Pun.PhotonNetwork.NetworkInstantiate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: Photon.Pun.PhotonNetwork.RegisterPhotonView patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: MagicBean.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: ShelfShroom.Break patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: CloudFungus.Break patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: Breakable.Break patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: CookingBehavior_ReplaceItem.TriggerBehaviour patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: RopeSegment.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: RopeSegment.Interact patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: JungleVine.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.092] [HARMONY_SCAN] Potential conflict: JungleVine.Interact patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: ClimbHandle.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: ClimbHandle.Interact patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: Campfire.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: Campfire.Interact patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: ScoutCannonFuse.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: ScoutCannonFuse.Interact patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: CollisionModifier.CanStand patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: BreakableBridge.OnBridgeCollision patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: Luggage.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: RespawnChest.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: Luggage.Interact_CastFinished patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: LuggageCursed.Interact_CastFinished patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: RespawnChest.Interact_CastFinished patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: CharacterGrabbing.TargetCanBeHelped patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.093] [HARMONY_SCAN] Potential conflict: CharacterInteractible.IsPrimaryInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: CharacterCarrying.StartCarry patched by 3 mods: com.CptPICHU.peak.truefinalascent, nakazora.peak.piggyback, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: CharacterClimbing.HandleClimbHandle patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: CharacterClimbing.HandlePos patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: CharacterSyncer.InterpolateRigPositions patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Lava.DoEffects patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Character.SpawnSkeletonOnDeath patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: BananaPeel.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: BananaPeel.RPCA_TriggerBanana patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: ScoutCannon.FixedUpdate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: ScoutCannon.LaunchPlayers patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: ScoutCannon.LaunchItems patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: MainCameraMovement.Spectate patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent, com.github.LengSword.RemoteAliveHelper
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: PlayerGhost.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Character.AddForce patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Beetle.TargetValid patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Beetle.InflictAttack patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: MushroomZombie.TargetIsValid patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Spider.RPCA_GrabCharacter patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Tornado.AttractCharacters patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Tornado.CapturedCharacter patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Tornado.RPCA_CaptureCharacter patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.094] [HARMONY_SCAN] Potential conflict: Character.IsStuck patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CactusBall.StickToCharacterLocal patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: FrogTongue.FixedUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: Character.AddForceToBodyPart patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: VenusFlyTrap.RPC_BitePlayer patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterInput.Sample patched by 4 mods: com.github.LengSword.RemoteAliveHelper, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent, nakazora.peak.piggyback
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: Luggage.OpenLuggageRPC patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: Skelleton.IsInteractible patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: Skelleton.IsConstantlyInteractable patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: Skelleton.Interact_CastFinished patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterItems.EquipSlot patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: Spawner.GetObjectsToSpawn patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterItems.GetItemHoldPos patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterItems.AddGravity patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterItems.AddMovementForce patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterItems.AddDrag patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterItems.AddParasolDrag patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterClimbing.CanClimb patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: Character.CheckJump patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: Character.CheckSprint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterMovement.CheckForPalJump patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: CharacterAnimations.PlayEmote patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.095] [HARMONY_SCAN] Potential conflict: Ascents.get_fallDamageMultiplier patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: CharacterAfflictions.SetStatus patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: Character.TryStickBodypart patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: Character.WarpPlayer patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.github.LengSword.ClimbInfoTracker, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: Character.RPCA_AddForceAtPosition patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: CharacterMovement.ApplyExtraDrag patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: CharacterMovement.ApplyParasolDrag patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: CharacterMovement.ApplyGlider patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: SlipperyJellyfish.Trigger patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: Character.RPCA_Fall patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: Character.RPCA_UnFall patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: CharacterMovement.SetWaterMovementModifier patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: WaterZone.UpdateCharacters patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: StickyItemComponent.StickToCharacterLocal patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: Character.HandleLife patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: CharacterSyncer.GetDataToWrite patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: CharacterSyncer.OnDataReceived patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: CharacterMovement.EvaluateGroundChecks patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: LandImpactAudio.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: FootStepPlayer.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: ShakyRock.OnCollisionEnter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.096] [HARMONY_SCAN] Potential conflict: ShakyRock.OnCollisionStay patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: ShakyIcicleIce.OnCollisionEnter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: ShakyIcicleIce.OnCollisionStay patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: TumbleWeed.OnCollisionEnter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: Bonkable.Bonk patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: WaterfallTrigger.OnTriggerStay patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: Action_RaycastDart.FireDart patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: GiantTreeAchievementZone.OnTriggerEnter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: Lava.Heat patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: Character.GetPartType patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: TickTrigger.OnTriggerEnter patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: Character.GetSpectatePosition patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: MainCameraMovement.CharacterCam patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: IsLookedAt.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: CharacterCustomization.PulseStatus patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: Peak.Afflictions.Affliction_Sunscreen.UpdateEffectNetworked patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: Peak.Afflictions.Affliction_Invincibility.UpdateEffectNetworked patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: Peak.Afflictions.Affliction_BingBongShield.UpdateEffectNetworked patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: CharacterCustomization.BecomeChicken patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: CharacterBackpackHandler.LateUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: CharacterCustomizationData.CorrectValues patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: CharacterCustomization.SetCharacterSkinColor patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: CharacterCustomization.GetSkinIndex patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.097] [HARMONY_SCAN] Potential conflict: CharacterCustomization.SetCharacterMouth patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: CharacterCustomization.GetMouthIndex patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: CharacterCustomization.SetCharacterAccessory patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: CharacterCustomization.GetAccessoryIndex patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: CharacterCustomization.get_PlayerColor patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: CharacterCustomization.OnPlayerDataChange patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: PlayerCustomizationDummy.SetPlayerColor patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: PassportButton.SetButton patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: DayNightManager.UpdateCycle patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: Peak.GloomSafeZone.CharacterProtectedFromStatus patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: Peak.GhostBall.UpdateMovement patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: LightVolume.GetTotalBounds patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: LightVolume.SetSize patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: UnityEngine.Rendering.UnifiedRayTracing.RayTracingResources.LoadFromRenderPipelineResources patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: UnityEngine.Rendering.UnifiedRayTracing.RayTracingContext.IsBackendSupported patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: UnityEngine.Rendering.UnifiedRayTracing.HardwareRayTracingAccelStruct.AddInstance patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: UnityEngine.Rendering.UnifiedRayTracing.ComputeRayTracingAccelStruct.AddInstance patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: LightVolume+<RunBake>d__41.MoveNext patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.098] [HARMONY_SCAN] Potential conflict: LightVolume.BuildLights patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: LightVolume.SamplePosition patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: LightVolume.IterateRenderers patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: SpecialDayManager.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: DayNightManager.BlendProfiles patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: AscentUI.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: BoardingPass.StartGame patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: Peak.Quicksave.SaveNow patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: GUIManager.Quicksave patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: MenuWindow.Open patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: CharacterAfflictions.AddPetrify patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: RunManager.EndGame patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.github.LengSword.ClimbInfoTracker, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: RunManager.RPC_ReceiveRunId patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.ClimbInfoTracker
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: Character.FinishZombifying patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: CharacterSpawner.KillImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: RunSettings.GetValue patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: AirportCheckInKiosk.StartGame patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: CustomOptionsWindow.OnOpen patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: CustomOptionsWindow.OpenBoardingPass patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: AirportCheckInKiosk.Awake patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: AirportCheckInKiosk.LoadIslandMaster patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: BoardingPass.UpdateAscent patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.099] [HARMONY_SCAN] Potential conflict: BoardingPass.Initialize patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: BoardingPass.IncrementAscent patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: BoardingPass.DecrementAscent patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: CharacterMovement.JetpackRPC patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: CharacterAfflictions.AddAffliction patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Character.TryCheckpoint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Action_WarpToRandomPlayer.RunAction patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Peak.WarpOnThrow.OnCollisionEnter patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Action_WarpToBiome.RunAction patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Item.FinishCastPrimary patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Item.FinishCastSecondary patched by 4 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.RemoteAliveHelper, com.local.statekeeper
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Item.Start patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent, com.github.Thanks.ShootZombies
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Photon.Realtime.LoadBalancingClient.UpdateCallbackTargets patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: MainMenuMainPage.ContinueFromQuicksaveClicked patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Peak.Network.NetworkingUtilities.HostRoomOptions patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Peak.Quicksave.LoadSavedGameScene patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: MainMenuMainPage.SetUpContinueButton patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Peak.SpawnedItemTracker.get_SpawnedItems patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: Peak.Quicksave+RunProgress.Create patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: ReconnectData.CreateFromCharacter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: ReconnectHandler.UpdateReconnectData patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.100] [HARMONY_SCAN] Potential conflict: ReconnectHandler.BroadcastMissingPlayerDataIfHost patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: Item.OnPlayerEnteredRoom patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: Spawner.OnPlayerEnteredRoom patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: ExitGames.Client.Photon.SocketUdp.ReceiveLoop patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: Portningsbolaget.ModUtility.get_UsingMods patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: MapHandler.SetSegmentOnSpawn patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: SteamLobbyHandler.SetLobbyData patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: TrackableNetworkObject.TryInitIfMaster patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: Beehive.Init patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: Tornado.TargetSelection patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: BreakableBridge.NetworkStart patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: Photon.Pun.PhotonNetwork.OnEvent patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: BoardingPass.OnClose patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: PauseMenuHandler.OnEnable patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: AudioLevelSlider.Init patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: EndScreenScoutWindow.Init patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: GUIManager.SetHeroTitle patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: LoadingScreenHandler.Load patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: LoadingScreenHandler.LoadWithoutDisablingQueue patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: MainMenu.Start patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent, com.github.LengSword.ClimbInfoTracker
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: MenuWindow.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: AmbienceAudio.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: AmbienceAudio.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.101] [HARMONY_SCAN] Potential conflict: Peak.TrickLuggage.OnEnable patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: CharacterClimbing.SampleWall patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Peak.Afflictions.Affliction_PoisonOverTime.UpdateEffect patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Peak.Afflictions.Affliction_ZombieBite.UpdateEffect patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Action_ModifyStatus.RunAction patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.local.statekeeper, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Action_RandomMushroomEffect.RunAction patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: ClimbModifierSurface.OnClimb patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: StatusTrigger.OnTriggerEnter patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Character.RPCA_Stick patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: ThornOnMe.OnPulledOut patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Spider.UpdateAttack patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: VenusFlyTrap.UpdateAttack patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Bugfix.LateUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Peak.StatusFieldBase.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Item.GetName patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent, com.github.Thanks.ShootZombies
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: CharacterRagdoll.FixedUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: PlayerHandler.GetAllPlayerCharacters patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: CharacterMovement.FixedUpdate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Condor.Scan patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: FrogTongue.LateUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Photon.Pun.PhotonNetwork.RunViewUpdate patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.102] [HARMONY_SCAN] Potential conflict: Mob.DoGroundRaycast patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: ArrowShooter.OnPhotonSerializeView patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Photon.Pun.PhotonView.FindObservables patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Photon.Pun.PhotonTransformView.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Peak.ItemOptimizationManager.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Peak.GenericOptimizer.UpdateOptimization patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Peak.Island.VoiceThief.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Peak.Island.RavenPerch.Perch patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Peak.Island.RavenPerch.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: RopeBoneVisualizer.LateUpdate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: RopeBoneVisualizer.CheckVisible patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Rope.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Peak.MovingSawBlade.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: SwingingAxe.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Mandrake.Awake patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Mandrake.RPC_Scream patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: MandrakeScreamFX.StartScreamFX patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: CharacterVoiceHandler.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: CharacterVoiceHandler.PushToTalk patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: Character.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: OrbFogHandler.WaitForReveal patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: OrbFogHandler.StartMovingRPC patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: MountainProgressHandler.SetSegmentComplete patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: MountainProgressHandler.JumpToSegment patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: MainCameraMovement.LateUpdate patched by 4 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent, nakazora.peak.piggyback, com.github.LengSword.RemoteAliveHelper
+[19:18:33.103] [HARMONY_SCAN] Potential conflict: DecorSpawner.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: MushroomManager.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: DesertRockSpawner.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: PropDeleter.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: PropSpawner.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: SwampMeshGen.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: Peak.FogSafeZoneManager.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: Peak.StatueSpawnRandomizationStep.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: Peak.TowerStacker.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: Peak.LevelGeneration.PhysicsSimStep.ExecuteImmediately patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: AchievementManager.TestTimeAchievements patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: CharacterClimbing.Climbing patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: GUIManager.SetReticle patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: Character.CanRegenStamina patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: CharacterMovement.Stand patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: Peak.PetrifiedScout.RPC_SpawnPetrifiedScout patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: MushroomZombie.Start patched by 3 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.104] [HARMONY_SCAN] Potential conflict: Mob.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: FrogTongue.CheckAllCharacters patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: VenusFlyTrap.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: Skelleton.SpawnSkelly patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: CactusBall.OnCollide patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: CactusBall.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: Dynamite.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: CharacterMovement.TryJetpack patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: CharacterAnimations.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: VoiceObscuranceFilter.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: GUIManager.RefreshInteractablePrompt patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: Interaction.TestItemsStuckToMe patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: CharacterData.SetPetrify patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: FogSphere.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: OrbFogHandler.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: StormAudio.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: Character.HandlePassedOut patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.105] [HARMONY_SCAN] Potential conflict: Scoutmaster.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: Scoutmaster+<IThrow>d__61.MoveNext patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: TriggerEvent.OnTriggerEnter patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: TriggerEvent.Trigger patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: TriggerEvent.TriggerEntered patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: EventOnItemCollision.OnCollisionEnter patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: MushroomBounceBadgeTracker.OnBouncedCharacter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: WindChillZone.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: StormVisual.LateUpdate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: WindChillZone.GetWindIntensityAtPoint patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: Spider.Start patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: Spider.OnDestroy patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: CharacterStats.FixLastEntry patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: CharacterStats.UnitsToMeters patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: EndScreen+<TimelineRoutine>d__45.MoveNext patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: EndScreen.DrawPip patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.CptPICHU.peak.truefinalascent
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: FogCutoutHandler.Update patched by 2 mods: com.CptPICHU.peak.truefinalascent, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: SteamLobbyHandler.SendRoomID patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.BetterRoomShare
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: Portningsbolaget.Utilities.Utilities.CreateRandomName patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.BetterRoomShare
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: RunManager.StartRun patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.ClimbInfoTracker, com.github.Thanks.ShootZombies
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: RunManager.SetRunIdForLobby patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.ClimbInfoTracker
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: Player.LeaveCurrentGame patched by 2 mods: com.github.LengSword.ClimbInfoTracker, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.106] [HARMONY_SCAN] Potential conflict: PlayerHandler.RegisterPlayer patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.ClimbInfoTracker
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: RunManager.RPC_SyncTime patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.ClimbInfoTracker
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: Action_WarpToBiome.RPC_Warp patched by 2 mods: com.github.LengSword.ClimbInfoTracker, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: Peak.PeakGatePortal.Interact_CastFinished patched by 2 mods: com.github.LengSword.ClimbInfoTracker, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: PauseMenuMainPage.Start patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.ClimbInfoTracker, com.local.statekeeper
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: GUIManager.Start patched by 4 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.ItemSpawnerEnhanced, Playboi.Compass, com.players.info
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: MainCameraMovement.HandleSpecSelection patched by 3 mods: nakazora.peak.piggyback, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.RemoteAliveHelper
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: CharacterData.get_canBeSpectated patched by 2 mods: com.github.LengSword.RemoteAliveHelper, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: GUIManager.UpdateSpectate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.RemoteAliveHelper
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: Interaction.LateUpdate patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.RemoteAliveHelper
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: Item.StartUseSecondary patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.RemoteAliveHelper
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: Item.CancelUseSecondary patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.LengSword.RemoteAliveHelper
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: CharacterInteractible.IsSecondaryInteractible patched by 2 mods: com.github.LengSword.RemoteAliveHelper, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: BackpackWheel.UpdateCookedAmount patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: BackpackWheel.InitWheel patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: BackpackWheelSlice.SetItemIcon patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: BackpackWheelSlice.SharedInit patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: BackpackWheelSlice.UpdateCookedAmount patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: BackpackWheelSlice.InitItemSlot patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: BackpackWheelSlice.InitStashSlot patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: SFX_Instance.Play patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: Item.StartUsePrimary patched by 3 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies, com.local.statekeeper
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: Item.OnEnable patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.107] [HARMONY_SCAN] Potential conflict: Item.Awake patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Item.OnInstanceDataRecieved patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: ItemCooking.Wreck patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Action_RaycastDart.DartImpact patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: MushroomZombie.TryLookForTarget patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: MushroomZombie.TryLunge patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: MushroomZombie.OnBitCharacter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: MushroomZombie.RPC_SyncState patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: MushroomZombie.DoLungeRecovery patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: UI_UseItemProgress.UpdateFillAmount patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: InventoryItemUI.UpdateCookedAmount patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: InventoryItemUI.UpdateNameText patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: InventoryItemUI.SetItem patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Item.OnDestroy patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Item.GetItemName patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: ItemSlot.SetItem patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Item+ItemUIData.GetIcon patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Item.ConsumeDelayed patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Item.Consume patched by 3 mods: com.github.Thanks.ShootZombies, com.local.statekeeper, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Action_ConsumeAndSpawn.RunAction patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: CharacterItems.DestroyHeldItemRpc patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Player.EmptySlot patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: Player.RPCRemoveItemFromSlot patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: MushroomZombie.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: MushroomZombie.RPC_SpawnSkelly patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: RunManager.JumpToMiniRunBiomeWhenReady patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.108] [HARMONY_SCAN] Potential conflict: RunManager.SetUpFromQuicksave patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.Components.ModSettingsMenu.OnEnable patched by 6 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.Components.ModSettingsMenu.UpdateSectionTabs patched by 6 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.Components.ModSettingsMenu.SetSection patched by 6 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.Components.ModdedTABSButton.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.BepInExDouble.GetDisplayName patched by 6 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.BepInExEnum.GetDisplayName patched by 6 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.BepInExFloat.GetDisplayName patched by 6 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.BepInExInt.GetDisplayName patched by 6 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.BepInExOffOn.GetDisplayName patched by 6 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.BepInExString.GetDisplayName patched by 6 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.SettingUI.BepInExFloat_SettingUI.Setup patched by 6 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: Zorro.Settings.UI.FloatSettingUI.GetFormattedString patched by 2 mods: com.github.Thanks.ShootZombies, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: Character.OnJump patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: GlobalEvents.TriggerSomeoneWonRun patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.109] [HARMONY_SCAN] Potential conflict: GlobalEvents.TriggerRunEnded patched by 2 mods: com.local.statekeeper, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: GlobalEvents.TriggerCharacterDied patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: GlobalEvents.TriggerCharacterPassedOut patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: CharacterItems.OnPickupAccepted patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: Character.GetFedItemRPC patched by 2 mods: com.local.statekeeper, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: RescueHook.RPCA_RescueCharacter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: Action_ReduceUses.ReduceUsesRPC patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: PauseMenuMainPage.OnEnable patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.local.statekeeper
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: StaminaBar.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting`1[[UnityEngine.KeyCode, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]].GetDisplayName patched by 5 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]].GetDisplayName patched by 5 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.Components.ModSettingsMenu.ShowSettings patched by 5 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: Zorro.Settings.UI.EnumSettingUI.RefreshText patched by 5 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.StringSettingUI.Setup patched by 5 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.SettingUI.BepInExEnum_SettingUI.Setup patched by 5 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.SettingUI.BepInExInt_SettingUI.Setup patched by 5 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.110] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.SettingUI.BepInExKeyCode_SettingUI.Setup patched by 5 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: PEAKLib.ModConfig.SettingOptions.SettingUI.BepInExKeyPath_SettingUI.Setup patched by 5 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization, com.wuyachiyu.WhySoLaggy
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterMovement.Update patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, com.mathis.flymod
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterInteractible.CanBeCarried patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nakazora.peak.piggyback
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterInteractible.IsInteractible patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nakazora.peak.piggyback
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterCarrying.Update patched by 2 mods: nakazora.peak.piggyback, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterCarrying.CarrierGone patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nakazora.peak.piggyback
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterInput.SelectSlotWasPressed patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nakazora.peak.piggyback
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterInteractible.HoverEnter patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nakazora.peak.piggyback
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterInteractible.HoverExit patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nakazora.peak.piggyback
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterInteractible.Interact patched by 2 mods: nakazora.peak.piggyback, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterInteractible.IsConstantlyInteractable patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nakazora.peak.piggyback
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterInteractible.GetInteractTime patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nakazora.peak.piggyback
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterInteractible.Interact_CastFinished patched by 2 mods: nakazora.peak.piggyback, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterCarrying.RPCA_Drop patched by 2 mods: nakazora.peak.piggyback, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterAfflictions.UpdateWeight patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nakazora.peak.piggyback
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: BackpackWheel.Update patched by 2 mods: nickklmao.easybackpack, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: GUIManager.CloseBackpackWheel patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, nickklmao.easybackpack
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: CharacterBackpackHandler.AddFuelToJetpack patched by 2 mods: nickklmao.easybackpack, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: Player.SyncInventoryRPC patched by 2 mods: nickklmao.easybackpack, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: PeakMusic.MusicPanel.OnGUI patched by 2 mods: peak.music.ui, com.wuyachiyu.WhySoLaggy.PatchProfiler
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: PeakMusic.MusicPanel.ComputeLayout patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, peak.music.ui
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: PeakMusic.WorldLyricRenderer.ApplyMaterial patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, peak.music.ui
+[19:18:33.111] [HARMONY_SCAN] Potential conflict: PeakMusic.WorldLyricRenderer.MakeText patched by 2 mods: com.wuyachiyu.WhySoLaggy.PatchProfiler, peak.music.ui
+[19:18:33.112] [HARMONY_SCAN] Scanned 668 patched methods, 644 potential conflicts. CSV -> C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\harmony_patches.csv
+[19:18:41.283] ──────────────────────────────────────────────────
+[19:18:41.283] [ABUSE] ═══ Periodic Abuse Report ═══
+[19:18:41.283] [ABUSE]   Not in room
+[19:18:41.283] [ABUSE]   Current objects: PhotonViews=0, Zombies=0
+[19:18:41.283] [ABUSE]   Photon Ping: 288 ms
+[19:18:41.283] [ABUSE]   Local totals (10s): Instantiates=0, Destroys=0, RPCs=0
+[19:18:41.283] [ABUSE]   Remote inbound totals: Instantiates=0, Destroys=0, RPCs=0
+[19:18:41.283] [ABUSE]   Combined totals: Instantiates=0, Destroys=0, RPCs=0
+[19:18:41.283] [ABUSE]   Alerts triggered: 0
+[19:18:41.283] ──────────────────────────────────────────────────
+[19:18:51.281] ──────────────────────────────────────────────────
+[19:18:51.281] [ABUSE] ═══ Periodic Abuse Report ═══
+[19:18:51.281] [ABUSE]   Not in room
+[19:18:51.281] [ABUSE]   Current objects: PhotonViews=0, Zombies=0
+[19:18:51.281] [ABUSE]   Photon Ping: 288 ms
+[19:18:51.281] [ABUSE]   Local totals (10s): Instantiates=0, Destroys=0, RPCs=0
+[19:18:51.281] [ABUSE]   Remote inbound totals: Instantiates=0, Destroys=0, RPCs=0
+[19:18:51.281] [ABUSE]   Combined totals: Instantiates=0, Destroys=0, RPCs=0
+[19:18:51.281] [ABUSE]   Alerts triggered: 0
+[19:18:51.281] ──────────────────────────────────────────────────
+[19:19:01.284] ──────────────────────────────────────────────────
+[19:19:01.284] [ABUSE] ═══ Periodic Abuse Report ═══
+[19:19:01.284] [ABUSE]   Not in room
+[19:19:01.284] [ABUSE]   Current objects: PhotonViews=0, Zombies=0
+[19:19:01.284] [ABUSE]   Photon Ping: 288 ms
+[19:19:01.284] [ABUSE]   Local totals (10s): Instantiates=0, Destroys=0, RPCs=0
+[19:19:01.284] [ABUSE]   Remote inbound totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:01.284] [ABUSE]   Combined totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:01.284] [ABUSE]   Alerts triggered: 0
+[19:19:01.284] ──────────────────────────────────────────────────
+[19:19:11.286] ──────────────────────────────────────────────────
+[19:19:11.286] [ABUSE] ═══ Periodic Abuse Report ═══
+[19:19:11.286] [ABUSE]   Not in room
+[19:19:11.286] [ABUSE]   Current objects: PhotonViews=0, Zombies=0
+[19:19:11.286] [ABUSE]   Photon Ping: 200 ms
+[19:19:11.286] [ABUSE]   Local totals (10s): Instantiates=0, Destroys=0, RPCs=0
+[19:19:11.286] [ABUSE]   Remote inbound totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:11.286] [ABUSE]   Combined totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:11.286] [ABUSE]   Alerts triggered: 0
+[19:19:11.286] ──────────────────────────────────────────────────
+[19:19:21.292] ──────────────────────────────────────────────────
+[19:19:21.292] [ABUSE] ═══ Periodic Abuse Report ═══
+[19:19:21.292] [ABUSE]   Not in room
+[19:19:21.292] [ABUSE]   Current objects: PhotonViews=0, Zombies=0
+[19:19:21.292] [ABUSE]   Photon Ping: 46 ms
+[19:19:21.292] [ABUSE]   Local totals (10s): Instantiates=0, Destroys=0, RPCs=0
+[19:19:21.292] [ABUSE]   Remote inbound totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:21.292] [ABUSE]   Combined totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:21.292] [ABUSE]   Alerts triggered: 0
+[19:19:21.292] ──────────────────────────────────────────────────
+[19:19:31.296] ──────────────────────────────────────────────────
+[19:19:31.296] [ABUSE] ═══ Periodic Abuse Report ═══
+[19:19:31.296] [ABUSE]   Not in room
+[19:19:31.296] [ABUSE]   Current objects: PhotonViews=0, Zombies=0
+[19:19:31.296] [ABUSE]   Photon Ping: 73 ms
+[19:19:31.296] [ABUSE]   Local totals (10s): Instantiates=0, Destroys=0, RPCs=0
+[19:19:31.296] [ABUSE]   Remote inbound totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:31.296] [ABUSE]   Combined totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:31.296] [ABUSE]   Alerts triggered: 0
+[19:19:31.296] ──────────────────────────────────────────────────
+[19:19:41.303] ──────────────────────────────────────────────────
+[19:19:41.304] [ABUSE] ═══ Periodic Abuse Report ═══
+[19:19:41.304] [ABUSE]   Not in room
+[19:19:41.304] [ABUSE]   Current objects: PhotonViews=0, Zombies=0
+[19:19:41.304] [ABUSE]   Photon Ping: 96 ms
+[19:19:41.304] [ABUSE]   Local totals (10s): Instantiates=0, Destroys=0, RPCs=0
+[19:19:41.304] [ABUSE]   Remote inbound totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:41.304] [ABUSE]   Combined totals: Instantiates=0, Destroys=0, RPCs=0
+[19:19:41.304] [ABUSE]   Alerts triggered: 0
+[19:19:41.304] ──────────────────────────────────────────────────
+[19:19:54.132] WhySoLaggy Abuse Detection shutting down

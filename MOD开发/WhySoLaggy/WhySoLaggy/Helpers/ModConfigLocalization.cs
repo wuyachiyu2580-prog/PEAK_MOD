@@ -25,15 +25,24 @@ namespace WhySoLaggy
 
         private static readonly LocalizedConfigEntry[] ConfigEntries =
         {
+            Entry("Capture", "AutoCapture", "Automatic Capture", "自动卡顿录制", "Automatically collect plugin timing and then verified patch targets after severe or repeated frame spikes.", "严重或连续卡顿后自动采集插件耗时，再深入有证据的补丁目标。"),
+            Entry("General", "AdaptiveTiming", "Adaptive Sampling", "自适应采样", "Manual patch timing may sample at entry; automatic detailed recording remains exact.", "手动补丁计时可在入口采样；自动详细录制保持精确。"),
+            Entry("General", "CpuGpuMetrics", "CPU/GPU Timings", "CPU/GPU 帧耗时", "Read supported CPU/GPU counters; unavailable counters stay unavailable.", "读取受支持的 CPU/GPU 指标；不可用时明确显示不可用。"),
+            Entry("RpcMonitor", "PumpBudgetMs", "RPC Frame Budget", "RPC 每帧预算", "Soft RPC detail processing budget in milliseconds; one item cannot be interrupted.", "RPC 明细处理的每帧软预算，单位毫秒；单条处理无法中断。"),
+            Entry("UI", "FontSize", "Font Size", "字体大小", "Dashboard font size.", "诊断面板字体大小。"),
+            Entry("UI", "Position", "Window Position", "窗口位置", "Saved dashboard coordinates, clamped to the screen.", "保存的诊断面板坐标，限制在屏幕内。"),
+            Entry("UI", "DashboardKey", "Dashboard Shortcut", "面板快捷键", "Toggle the dashboard outside text input and rebinding.", "在文字输入和按键绑定之外切换诊断面板。"),
+            Entry("Capture", "CaptureKey", "Record Shortcut", "录制快捷键", "Start or stop a 30-second manual capture.", "开始或停止一次 30 秒手动录制。"),
+            Entry("Capture", "MarkerKey", "Marker Shortcut", "标记快捷键", "Add a timestamped marker to the recording.", "在记录中加入带时间的标记。"),
             Entry("General", "SpikeThresholdMs", "Spike Threshold", "卡顿帧阈值", "Frame time threshold for spike detection (ms). Frames exceeding this are logged.", "卡顿检测的帧时间阈值，单位毫秒。超过阈值的帧会被记录。"),
             Entry("General", "ReportIntervalSeconds", "Report Interval", "报告间隔", "Seconds between periodic performance reports.", "性能周期报告之间的间隔秒数。"),
             Entry("General", "EnablePluginProfiling", "Enable Plugin Profiling", "启用插件性能分析", "Profile each BepInEx plugin's Update/LateUpdate/FixedUpdate callbacks. Disabled by default; turn on only when diagnosing.", "分析每个 BepInEx 插件的 Update、LateUpdate 和 FixedUpdate 回调。默认关闭，仅在诊断问题时启用。"),
-            Entry("General", "EnablePatchProfiling", "Enable Patch Profiling", "启用补丁性能分析", "Profile all Harmony-patched game methods. Disabled by default; turn on only when diagnosing.", "分析所有被 Harmony 补丁包裹的游戏方法。默认关闭，仅在诊断问题时启用。"),
+            Entry("General", "EnablePatchProfiling", "Enable Patch Profiling", "启用补丁性能分析", "Profile supported Harmony-patched methods. Changes apply on the next game update after startup initialization. Turning this off removes only timing hooks; other diagnostic and language features stay enabled. Disabled by default.", "分析支持的 Harmony 补丁方法。启动初始化完成后，开关在下一帧生效；关闭时只撤销耗时采集，不关闭其他诊断或语言功能。默认关闭。"),
             Entry("General", "TopMethodCount", "Top Method Count", "显示方法数量", "Number of top slow methods to show in reports.", "报告中显示的高耗时方法数量。"),
-            Entry("General", "MinReportMs", "Minimum Report Time", "最低报告耗时", "Ignore patched methods whose average cost is below this threshold (ms), to reduce profiler overhead.", "忽略平均耗时低于此阈值的补丁方法，单位毫秒，以降低性能分析开销。"),
+            Entry("General", "MinReportMs", "Adaptive Sampling Threshold", "自适应采样阈值", "Threshold used only in Adaptive Sampling mode; sampled frame coverage is reported explicitly.", "仅用于自适应采样模式的平均耗时阈值；明确报告采样覆盖率。"),
             Entry("General", "IgnorePluginGuids", "Ignored Plugin GUIDs", "忽略的插件 GUID", "Comma-separated plugin GUIDs to skip in PluginProfiler.", "PluginProfiler 要跳过的插件 GUID，使用逗号分隔。"),
-            Entry("General", "IgnorePatchMethods", "Ignored Patch Methods", "忽略的补丁方法", "Comma-separated full method names (Type.Method) to skip in PatchProfiler.", "PatchProfiler 要跳过的完整方法名（Type.Method），使用逗号分隔。"),
-            Entry("General", "EnableMemoryMonitor", "Enable Memory Monitor", "启用内存监控", "Sample GC allocation rate and include AllocRateKBps in FpsReport events.", "采样 GC 分配速率，并在 FpsReport 事件中记录 AllocRateKBps。"),
+            Entry("General", "IgnorePatchMethods", "Ignored Patch Methods", "忽略的补丁方法", "Comma-separated method names (Type.Method or full signatures) to skip. Applied at the next safe hook transition.", "要跳过的方法名（Type.Method 或完整签名），以逗号分隔。在下一次安全的补丁切换时生效。"),
+            Entry("General", "EnableMemoryMonitor", "Enable Memory Monitor", "启用内存监控", "Monitor Unity/managed memory, signed net changes and supported GC counters; unavailable counters are not replaced with zeros.", "监测 Unity/托管内存、有符号净变化和受支持的 GC 指标；不可用指标不补零。"),
 
             Entry("AbuseDetection", "EnableAbuseDetection", "Enable Abuse Detection", "启用滥用检测", "Enable network abuse / room bombing detection.", "启用网络滥用和炸房检测。"),
             Entry("AbuseDetection", "CheckIntervalSeconds", "Check Interval", "检测间隔", "Seconds between each abuse rate check.", "每次网络滥用速率检查之间的间隔秒数。"),
@@ -47,9 +56,9 @@ namespace WhySoLaggy
             Entry("AbuseDetection", "OwnershipRequestRateThreshold", "Ownership Request Rate Threshold", "所有权请求阈值", "Max ownership requests from one remote actor per check window before alerting.", "单个远端 Actor 在一个检测窗口内触发告警前允许的最大所有权请求数。"),
             Entry("AbuseDetection", "AlertCooldownSeconds", "Alert Cooldown", "告警冷却时间", "Seconds before the same abuse alert key can be emitted again.", "同一个滥用告警键再次输出前需要等待的秒数。"),
 
-            Entry("RpcMonitor", "EnableRpcMonitor", "Enable RPC Monitor", "启用 RPC 监控", "Track all network RPC method names and their sources. Low performance overhead (<0.5ms/s for 1000 RPCs/s).", "记录所有网络 RPC 方法名及其来源。性能开销较低（1000 RPC/秒时低于 0.5 毫秒/秒）。"),
+            Entry("RpcMonitor", "EnableRpcMonitor", "Enable RPC Monitor", "启用 RPC 监控", "Track all network RPC method names and their sources. Aggregate counts are independent of sampled detail records.", "记录所有网络 RPC 方法名及其来源。总量统计独立于采样的详细记录。"),
             Entry("RpcMonitor", "TopMethodCount", "Top RPC Method Count", "显示 RPC 方法数量", "Number of top RPC methods to show in periodic reports.", "周期报告中显示的高频 RPC 方法数量。"),
-            Entry("RpcMonitor", "WatchedRecordPerMethodCapacity", "Watched Records Per Method", "每个方法的记录容量", "Per-method ring buffer size for watched high-risk RPCs. Each watched method has its own independent buffer so high-frequency methods cannot flood out low-frequency ones.", "高风险监控 RPC 的单方法环形缓冲区大小。每个方法拥有独立缓冲区，避免高频方法挤掉低频方法的记录。"),
+            Entry("RpcMonitor", "WatchedRecordPerMethodCapacity", "Watched Records Per Method", "每个方法的记录容量", "Per-method ring buffer request; all watched methods share a 1024-record retention ceiling. Each watched method has its own independent buffer so high-frequency methods cannot flood out low-frequency ones.", "高风险监控 RPC 的单方法环形缓冲区请求容量；所有方法合计最多保留 1024 条。每个方法拥有独立缓冲区，避免高频方法挤掉低频方法的记录。"),
             Entry("RpcMonitor", "WatchedShowPerMethod", "Watched Records To Show", "每个方法显示记录数", "How many most-recent detailed records to print per watched method in each periodic report.", "每次周期报告中每个监控方法显示的最新详细记录数量。"),
             Entry("RpcMonitor", "ExtraWatchMethods", "Extra Watch Methods", "额外监控方法", "Comma-separated extra RPC method names merged into the watch list (e.g. 'MyRPC1,MyRPC2').", "要加入监控列表的额外 RPC 方法名，使用逗号分隔（例如 'MyRPC1,MyRPC2'）。"),
             Entry("RpcMonitor", "PumpBatchSize", "RPC Pump Batch Size", "RPC 每帧处理数量", "Max RPC queue items consumed per frame on main thread.", "主线程每帧最多处理的 RPC 队列项目数。"),
@@ -82,8 +91,8 @@ namespace WhySoLaggy
         public static void PatchDisplayNames(Harmony harmony)
         {
             ModConfigUiAdapter.Install(harmony, ConfigFileName, WhySoLaggyPlugin.PluginName,
-                entry => GetLocalizedConfigText(entry.Definition.Section, entry.Definition.Key, IsChinese),
-                text => GetLocalizedToken(FindCanonicalToken(text), IsChinese),
+                entry => UiText.LocalizeChinese(GetLocalizedConfigText(entry.Definition.Section, entry.Definition.Key, IsChinese)),
+                text => UiText.LocalizeChinese(GetLocalizedToken(FindCanonicalToken(text), IsChinese)),
                 message => WhySoLaggyPlugin.Log?.LogWarning(message));
         }
         public static void RefreshVisibleUi() => ModConfigUiAdapter.RefreshVisibleUi();
@@ -133,7 +142,7 @@ namespace WhySoLaggy
                 }
 
                 string description = GetLocalizedDescription(entry.Definition.Section, entry.Definition.Key, chinese);
-                SetDescription(entry, description);
+                SetDescription(entry, UiText.LocalizeChinese(description));
             }
         }
 
@@ -167,6 +176,7 @@ namespace WhySoLaggy
             {
                 if (string.Equals(normalized, Normalize(token.English), StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(normalized, Normalize(token.Chinese), StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(normalized, Normalize(UiText.Traditional(token.Chinese)), StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(normalized, Normalize(token.Key), StringComparison.OrdinalIgnoreCase))
                 {
                     return token.Key;
@@ -194,6 +204,7 @@ namespace WhySoLaggy
             List<TokenText> tokens = new List<TokenText>
             {
                 Token("WhySoLaggy", "WhySoLaggy", "为什么这么卡"),
+                Token("Capture", "Capture", "采集"),
                 Token("General", "General", "常规"),
                 Token("AbuseDetection", "Abuse Detection", "滥用检测"),
                 Token("RpcMonitor", "RPC Monitor", "RPC 监控"),

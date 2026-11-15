@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using HarmonyLib;
@@ -78,10 +79,51 @@ namespace WhySoLaggy
         private static int _hookedRules = 0;
         private static int _hookedMethods = 0;
         private static bool _inited;
+        private static bool strict;
+        private static volatile bool reloading;
+        private static Harmony activeHarmony;
+        internal static void Validate(string path)
+        {
+            if(!Enabled)return;
+            if(new FileInfo(path).Length>1024*1024)throw new InvalidDataException("Rule file exceeds 1 MiB");
+            if(!MiniJson.TryParse(File.ReadAllText(path),out var value,out var error)||!(value is Dictionary<string,object> root))throw new InvalidDataException(error??"Invalid rule object");
+            if(!MiniJson.GetBool(root,"enabled",true))return;
+            var rules=MiniJson.AsArray(root.TryGetValue("rules",out var list)?list:null);
+            if(rules==null||rules.Count>128)throw new InvalidDataException("Expected at most 128 rules");
+            foreach(var item in rules)
+            {
+                var rule=MiniJson.AsObject(item);if(rule==null)throw new InvalidDataException("Invalid rule");if(!MiniJson.GetBool(rule,"enabled",true))continue;
+                string target=MiniJson.GetString(rule,"target");RuleTargets.Resolve(target);
+                var fields=MiniJson.AsArray(rule.TryGetValue("fields",out var f)?f:null);
+                if(fields==null||fields.Count==0||fields.Count>32)throw new InvalidDataException("Expected 1-32 field expressions");
+                foreach(var field in fields)if(!(field is string text)||!string.IsNullOrEmpty(ExpressionEvaluator.Compile(text).CompileError))throw new InvalidDataException("Invalid field expression");
+            }
+        }
+        internal static bool TryReload(Harmony initial,out string error)
+        {
+            error=null;try{Validate(RulesFilePath);}catch(Exception ex){error=ex.Message;return false;}
+            var old=new Dictionary<MethodBase,List<Rule>>(_methodToRules);bool oldInited=_inited;int oldRules=_hookedRules,oldMethods=_hookedMethods;
+            var previous=activeHarmony??initial;
+            var stage=new Harmony(initial.Id+(previous.Id==initial.Id?".Staging":""));
+            reloading=true;strict=true;
+            try
+            {
+                _methodToRules.Clear();_inited=false;_hookedRules=_hookedMethods=0;
+                Initialize(stage);RuleTargets.RemoveOwner(previous);activeHarmony=stage;return true;
+            }
+            catch(Exception ex)
+            {
+                try{RuleTargets.RemoveOwner(stage);}catch{} _methodToRules.Clear();foreach(var pair in old)_methodToRules[pair.Key]=pair.Value;
+                _inited=oldInited;_hookedRules=oldRules;_hookedMethods=oldMethods;activeHarmony=previous;error=ex.Message;return false;
+            }
+            finally{strict=false;reloading=false;}
+        }
 
         public static void Initialize(Harmony harmony)
         {
             if (_inited) return;
+            if(Enabled)Validate(RulesFilePath);
+            if(!strict)activeHarmony=harmony;
             _inited = true;
             if (!Enabled || string.IsNullOrWhiteSpace(RulesFilePath))
             {
@@ -153,7 +195,7 @@ namespace WhySoLaggy
                     WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] FieldProbe rule skipped (no fields): {target}");
                     continue;
                 }
-                int dot = target.IndexOf('.');
+                int dot = target.LastIndexOf('.');
                 var rule = new Rule
                 {
                     Id = ++ruleId,
@@ -227,7 +269,7 @@ namespace WhySoLaggy
                     string typeName = t.Name;
                     foreach (var rule in parsed)
                     {
-                        if (typeName != rule.TargetTypeName) continue;
+                        if (typeName != rule.TargetTypeName && t.FullName != rule.TargetTypeName) continue;
                         // 搜所有同名重载（避免 GetMethod 多重载抛 AmbiguousMatchException）
                         MethodInfo[] all;
                         try
@@ -300,6 +342,7 @@ namespace WhySoLaggy
                 }
                 catch (Exception ex)
                 {
+                    if(strict)throw;
                     WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] FieldProbe Patch failed on {method.DeclaringType?.FullName}.{method.Name}{FormatSig(method)}: {ex.Message}");
                 }
             }
@@ -316,7 +359,7 @@ namespace WhySoLaggy
         public static void OnPrefix(MethodBase __originalMethod, object[] __args, object __instance, out object[] __state)
         {
             __state = __args != null ? (object[])__args.Clone() : null;
-            Dispatch(__originalMethod, __args, __instance, null, null, kind: 0);
+            if(!reloading)Dispatch(__originalMethod, __args, __instance, null, null, kind: 0);
         }
 
         // 纯 capture：仅在没有 Prefix 规则、但 Postfix/Finalizer 需要读参数时挂载。
@@ -329,12 +372,12 @@ namespace WhySoLaggy
         // Harmony 不会对 out/ref 参数做 box/unbox 回写。改为读 Prefix 克隆好的 __state。
         public static void OnPostfix(MethodBase __originalMethod, object __instance, object __result, object[] __state)
         {
-            Dispatch(__originalMethod, __state, __instance, __result, null, kind: 1);
+            if(!reloading)Dispatch(__originalMethod, __state, __instance, __result, null, kind: 1);
         }
 
         public static Exception OnFinalizer(MethodBase __originalMethod, object __instance, object __result, Exception __exception, object[] __state)
         {
-            Dispatch(__originalMethod, __state, __instance, __result, __exception, kind: 2);
+            if(!reloading)Dispatch(__originalMethod, __state, __instance, __result, __exception, kind: 2);
             return __exception; // 不吞异常
         }
 
@@ -384,7 +427,7 @@ namespace WhySoLaggy
                 StructuredLogger.WriteEvent(new StructuredEvent
                 {
                     Timestamp = StructuredLogger.NowStamp(),
-                    FrameNumber = UnityEngine.Time.frameCount,
+                    FrameNumber = DiagnosticContext.IsMainThread?DiagnosticContext.Frame:-1,
                     Type = EventType.MethodTrace,
                     Fields = new Dictionary<string, object>
                     {
@@ -484,6 +527,7 @@ namespace WhySoLaggy
 
         public static void Shutdown()
         {
+            try{RuleTargets.RemoveOwner(activeHarmony);}catch{}activeHarmony=null;
             _inited = false;
             _hookedRules = 0;
             _hookedMethods = 0;

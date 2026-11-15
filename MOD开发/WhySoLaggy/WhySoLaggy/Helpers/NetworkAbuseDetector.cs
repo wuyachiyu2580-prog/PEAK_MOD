@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -248,8 +248,10 @@ namespace WhySoLaggy
             // 写入滑窗（给 InstantiateTrace 关联用）：只在主机端有意义，其他端不写也不错
             if (!string.IsNullOrEmpty(methodName))
             {
+                methodName=EventCodec.Limit(methodName,256);
                 lock (_lock)
                 {
+                    if(_rpcByActorMethodTotal.Count>=64&&!_rpcByActorMethodTotal.ContainsKey(sender))sender=-1;
                     _recentClientRpcs.AddLast(new ClientRpcRecord
                     {
                         Time = Time.realtimeSinceStartup,
@@ -265,6 +267,7 @@ namespace WhySoLaggy
                         fastInner = new Dictionary<string, int>(StringComparer.Ordinal);
                         _rpcByActorMethod[sender] = fastInner;
                     }
+                    if(fastInner.Count>=256&&!fastInner.ContainsKey(methodName))methodName="[overflow]";
                     fastInner.TryGetValue(methodName, out int fastV);
                     fastInner[methodName] = fastV + 1;
 
@@ -273,6 +276,7 @@ namespace WhySoLaggy
                         slowInner = new Dictionary<string, int>(StringComparer.Ordinal);
                         _rpcByActorMethodTotal[sender] = slowInner;
                     }
+                    if(slowInner.Count>=256&&!slowInner.ContainsKey(methodName))methodName="[overflow]";
                     slowInner.TryGetValue(methodName, out int slowV);
                     slowInner[methodName] = slowV + 1;
                 }
@@ -370,7 +374,7 @@ namespace WhySoLaggy
                 StructuredLogger.WriteEvent(new StructuredEvent
                 {
                     Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                    FrameNumber = Time.frameCount,
+                    FrameNumber = DiagnosticContext.Frame,
                     Type = EventType.OwnershipChange,
                     Fields = fields,
                 });
@@ -392,6 +396,7 @@ namespace WhySoLaggy
 
             if (_checkTimer >= CheckIntervalSeconds)
             {
+                double now=DiagnosticClock.Now;_actualCheckSeconds=_previousCheck>0?now-_previousCheck:_checkTimer;_previousCheck=now;
                 CheckRates();
                 CheckObjectSpike();
                 // 1.0.3：Actor×Method 和 Ownership 抢夺的阈值告警
@@ -529,6 +534,7 @@ namespace WhySoLaggy
 
                 if (!string.IsNullOrEmpty(prefabName))
                 {
+                    prefabName=EventCodec.Limit(prefabName,256);if(_prefabTraceTaken.Count>=512&&!_prefabTraceTaken.ContainsKey(prefabName))prefabName="[overflow]";
                     if (!_prefabCount.ContainsKey(prefabName))
                         _prefabCount[prefabName] = 0;
                     _prefabCount[prefabName]++;
@@ -608,7 +614,7 @@ namespace WhySoLaggy
                 StructuredLogger.WriteEvent(new StructuredEvent
                 {
                     Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                    FrameNumber = Time.frameCount,
+                    FrameNumber = DiagnosticContext.Frame,
                     Type = EventType.InstantiateTrace,
                     Fields = fields,
                 });
@@ -709,9 +715,12 @@ namespace WhySoLaggy
                 : $" (suppressed {decision.SuppressedCount}, peak {decision.PeakValue:F1})";
         }
 
+        private static double _actualCheckSeconds=1, _previousCheck;
+        internal static double Rate(int count,double elapsed)=>count/Math.Max(.001,elapsed);
+        internal static void ResetEpoch(){if(!_initialized)return;if(_initialized){_actualCheckSeconds=Math.Max(.001,DiagnosticClock.Now-_previousCheck);CheckRates();}ResetCounters();ResetReportStats();_prefabTraceTaken.Clear();_recentClientRpcs.Clear();_lastPhotonViewCount=CountPhotonViews();_lastZombieCount=CountZombies();_previousCheck=DiagnosticClock.Now;_checkTimer=_reportTimer=0;_alertCooldown.Clear();}
         private static void CheckRates()
         {
-            float interval = CheckIntervalSeconds;
+            float interval = (float)Math.Max(.001,_actualCheckSeconds);
 
             int totalInst, totalDest, totalRpc;
             Dictionary<int, int> instByActor, rpcByActor, destByActor;
@@ -792,6 +801,8 @@ namespace WhySoLaggy
                 {
                     { "AlertType", alertType },
                     { "Rate", Math.Round((double)rate, 2) },
+                    { "ActualWindowSeconds", _actualCheckSeconds },
+                    { "DelayedDispatch", _actualCheckSeconds>CheckIntervalSeconds*1.5 },
                     { "Threshold", threshold },
                     { "SuppressedCount", cooldown.SuppressedCount },
                     { "PeakRate", Math.Round((double)cooldown.PeakValue, 2) },
@@ -806,7 +817,7 @@ namespace WhySoLaggy
                 StructuredLogger.WriteEvent(new StructuredEvent
                 {
                     Timestamp = StructuredLogger.NowStamp(),
-                    FrameNumber = Time.frameCount,
+                    FrameNumber = DiagnosticContext.Frame,
                     Type = EventType.AbuseAlert,
                     Fields = fields,
                 });
@@ -857,7 +868,7 @@ namespace WhySoLaggy
                     StructuredLogger.WriteEvent(new StructuredEvent
                     {
                         Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                        FrameNumber = Time.frameCount,
+                        FrameNumber = DiagnosticContext.Frame,
                         Type = EventType.AbuseAlert,
                         Fields = new Dictionary<string, object>
                         {
@@ -909,7 +920,7 @@ namespace WhySoLaggy
                     StructuredLogger.WriteEvent(new StructuredEvent
                     {
                         Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                        FrameNumber = Time.frameCount,
+                        FrameNumber = DiagnosticContext.Frame,
                         Type = EventType.AbuseAlert,
                         Fields = new Dictionary<string, object>
                         {
@@ -953,7 +964,7 @@ namespace WhySoLaggy
                 StructuredLogger.WriteEvent(new StructuredEvent
                 {
                     Timestamp = StructuredLogger.NowStamp(),
-                    FrameNumber = Time.frameCount,
+                    FrameNumber = DiagnosticContext.Frame,
                     Type = EventType.AbuseAlert,
                     Fields = new Dictionary<string, object>
                     {
@@ -1157,7 +1168,7 @@ namespace WhySoLaggy
                 StructuredLogger.WriteEvent(new StructuredEvent
                 {
                     Timestamp = StructuredLogger.NowStamp(),
-                    FrameNumber = Time.frameCount,
+                    FrameNumber = DiagnosticContext.Frame,
                     Type = EventType.PeriodicReport,
                     Fields = new Dictionary<string, object>
                     {
@@ -1266,7 +1277,7 @@ namespace WhySoLaggy
                 StructuredLogger.WriteEvent(new StructuredEvent
                 {
                     Timestamp = StructuredLogger.NowStamp(),
-                    FrameNumber = Time.frameCount,
+                    FrameNumber = DiagnosticContext.Frame,
                     Type = EventType.AbuseAlert,
                     Fields = fields,
                 });
@@ -1317,6 +1328,7 @@ namespace WhySoLaggy
 
         private static void IncrementActor(Dictionary<int, int> dict, int actorNumber)
         {
+            if(dict.Count>=64&&!dict.ContainsKey(actorNumber))actorNumber=-1;
             if (!dict.ContainsKey(actorNumber))
                 dict[actorNumber] = 0;
             dict[actorNumber]++;

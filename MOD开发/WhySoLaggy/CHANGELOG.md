@@ -1,5 +1,19 @@
 # Changelog
 
+## 开发构建2026-11-15（1.0.5发行包不变）
+
+- 帧/异常安全计时、实际网络窗口、有界异步日志、自动限时定向采集、匿名诊断包、四页HUD与英简繁说明。
+- 修复重载中Harmony共享回调误撤旧钩子，保留ModConfig泛型修复。
+- 70/70自动测试，隔离Release零警告零错误，已安装原2.0.a根目录；实机性能/多人稳定性/语言视觉待验。
+
+
+## Unreleased
+
+- Fixed patch profiling breaking ModConfig key-binding rows in mixed mod setups. Inherited methods are resolved to their actual declarations and profiled once.
+- Patch profiling can now be switched on and off during gameplay after initialization, without removing localization or other diagnostic hooks.
+- Protected timing statistics against background-thread updates and discarded records from stopped profiling sessions.
+- Updated configuration descriptions and regression coverage. Plugin version remains 1.0.5 until a new release is prepared.
+
 ## [1.0.5] - 2026-09-21
 
 - Updated ModConfig support for the current settings menu, section names, and dropdown labels.

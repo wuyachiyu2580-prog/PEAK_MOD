@@ -320,6 +320,7 @@ namespace WhySoLaggy
             if (v == null) return true;
             var uo = v as UnityEngine.Object;
             if (ReferenceEquals(uo, null)) return false; // 非 Unity.Object 类型，不用 Unity 重载判断
+            if(!DiagnosticContext.IsMainThread)return true;
             return uo == null;                           // Unity 重载：已 Destroy 时为 true
         }
 

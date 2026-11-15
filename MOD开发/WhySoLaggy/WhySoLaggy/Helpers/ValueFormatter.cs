@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Globalization;
 using System.Text;
@@ -33,6 +33,7 @@ namespace WhySoLaggy
             // Unity 空指针陷阱：UnityEngine.Object 可能 == null 但引用非 null
             if (v is UnityEngine.Object uo)
             {
+                if(!DiagnosticContext.IsMainThread)return "[Unity object: main thread only]";
                 if (uo == null) return "null(UE)";
                 string name;
                 try { name = uo.name; }
@@ -75,39 +76,14 @@ namespace WhySoLaggy
             return type.Name + "@" + RuntimeHashCode(v);
         }
 
+        [ThreadStatic] private static int depth;
         private static string FormatEnumerable(IEnumerable en)
         {
-            var sb = new StringBuilder(64);
-            sb.Append('[');
-            int count = 0;
-            int shown = 0;
-            IEnumerator it = null;
-            try { it = en.GetEnumerator(); }
-            catch { return "[iter_err]"; }
-            try
-            {
-                while (it.MoveNext())
-                {
-                    count++;
-                    if (shown < 3)
-                    {
-                        if (shown > 0) sb.Append(", ");
-                        string s;
-                        try { s = FormatCore(it.Current); }
-                        catch (Exception ex) { s = "err:" + ex.GetType().Name; }
-                        // 集合元素单独再截短，避免整体炸长
-                        sb.Append(Truncate(s, 32));
-                        shown++;
-                    }
-                }
-            }
-            finally
-            {
-                (it as IDisposable)?.Dispose();
-            }
-            if (count > shown) sb.Append(", ...");
-            sb.Append("] n=").Append(count.ToString(CultureInfo.InvariantCulture));
-            return sb.ToString();
+            if(depth>=3)return "[depth limit]";
+            if(!(en is IList list)||!(en is Array||en.GetType()==typeof(ArrayList)||en.GetType().IsGenericType&&en.GetType().GetGenericTypeDefinition()==typeof(System.Collections.Generic.List<>)))return "["+en.GetType().Name+": enumeration omitted]";
+            depth++;
+            try{var sb=new StringBuilder("[");int count=list.Count;for(int i=0;i<Math.Min(count,3);i++){if(i>0)sb.Append(", ");if(ReferenceEquals(list[i],en))sb.Append("[cycle]");else sb.Append(Truncate(FormatCore(list[i]),32));}if(count>3)sb.Append(", ...");return sb.Append("] n=").Append(count).ToString();}
+            finally{depth--;}
         }
 
         private static string RuntimeHashCode(object v)

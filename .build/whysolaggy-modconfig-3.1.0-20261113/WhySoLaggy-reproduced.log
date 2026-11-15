@@ -1,0 +1,339 @@
+﻿[22:17:57.695] WhySoLaggy Performance Monitor started
+[22:17:57.695] Log file: C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\WhySoLaggy.log
+============================================================
+[22:18:02.444] [WHY_LAG] Waiting 5s for all plugins to finish loading...
+[22:18:08.305] [WHY_LAG] -- PluginProfiler: scanning plugins --
+[WHY_LAG]   Hooked BetterPeakVoiceFix.Update
+[WHY_LAG]   Hooked Better Player Distance.Update
+[WHY_LAG]   Hooked Better Player Distance.LateUpdate
+[WHY_LAG]   Hooked ClimbInfoTracker.Update
+[WHY_LAG]   Hooked ItemSpawnerEnhanced.Update
+[WHY_LAG]   Hooked RemoteAliveHelper.Update
+[WHY_LAG]   Hooked ShootZombies.Update
+[WHY_LAG]   Hooked StateKeeper.Update
+[WHY_LAG]   Hooked Compass.Update
+[WHY_LAG]   Hooked PlayersInfo.Update
+[WHY_LAG]   Hooked WhereIsMyAmulet.Update
+[WHY_LAG]   Hooked WhereIsThing.Update
+[WHY_LAG]   Hooked WhereIsThing.LateUpdate
+[WHY_LAG]   Hooked Piggyback.Update
+[WHY_LAG]   Hooked EasyBackpack.Update
+[WHY_LAG] PluginProfiler: 15 methods hooked across 28 plugins
+[22:18:09.909] [WHY_LAG] -- PatchProfiler: scanning patched methods --
+[WHY_LAG]   Found 661 patched methods in total
+[WHY_LAG]   Hooked: 646 | Skipped(self-only): 15 | IgnoredByConfig: 0 | Failed: 0
+[WHY_LAG] PatchProfiler initialized (MinReportMs=0.10)
+[22:18:09.974] [WHY_LAG] === Profiling active ===
+[22:18:09.987] [WHY_LAG] !!! SPIKE 1714ms (0.6 FPS) !!! Plugins: 
+[22:18:10.967] [WHY_LAG] === FPS Report (10.0s, 2094 frames) ===
+[WHY_LAG] FPS: avg=209.4 | min=0.6 | max=424.6 | avgFrame=4.8ms
+[WHY_LAG] Spikes(>50ms): 4 | AllocRate: 1171.8 KB/s
+[22:18:15.999] [WHY_LAG] !!! SPIKE 1480ms (0.7 FPS) !!! Plugins: Better Player Distance=1.4ms | 
+[22:18:15.999] [WHY_LAG]   Methods: AmbienceManager.Update()=2.9ms x1 [com.CptPICHU.peak.truefinalascent] | DayNightManager.Update()=0.8ms x1 [com.CptPICHU.peak.truefinalascent] | 
+[22:18:16.013] [WHY_LAG] !!! SPIKE 68ms (14.8 FPS) !!! Plugins: Better Player Distance=0.6ms | 
+[22:18:18.269] ------------------------------------------------------------
+[22:18:18.271] [WHY_LAG] -- Plugin Update Time (per-frame avg) --
+[WHY_LAG]   Better Player Distance: 0.16ms/frame (total=375.6ms, calls=4682)
+[WHY_LAG]   ShootZombies: 0.00ms/frame (total=10.8ms, calls=2341)
+[WHY_LAG]   BetterPeakVoiceFix: 0.00ms/frame (total=6.9ms, calls=2341)
+[WHY_LAG]   WhereIsMyAmulet: 0.00ms/frame (total=2.4ms, calls=2341)
+[WHY_LAG]   WhereIsThing: 0.00ms/frame (total=2.3ms, calls=4682)
+[WHY_LAG]   EasyBackpack: 0.00ms/frame (total=1.1ms, calls=2340)
+[WHY_LAG]   StateKeeper: 0.00ms/frame (total=1.0ms, calls=2341)
+[WHY_LAG]   ItemSpawnerEnhanced: 0.00ms/frame (total=0.8ms, calls=2341)
+[WHY_LAG]   RemoteAliveHelper: 0.00ms/frame (total=0.6ms, calls=2341)
+[WHY_LAG]   ClimbInfoTracker: 0.00ms/frame (total=0.5ms, calls=2341)
+[WHY_LAG]   Piggyback: 0.00ms/frame (total=0.2ms, calls=2340)
+[WHY_LAG]   PlayersInfo: 0.00ms/frame (total=0.2ms, calls=2341)
+[WHY_LAG]   Compass: 0.00ms/frame (total=0.1ms, calls=2341)
+[WHY_LAG]   Total MOD overhead: 0.17ms/frame
+[22:18:18.273] [WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --
+[WHY_LAG]   ExitGames.Client.Photon.SocketUdp.ReceiveLoop(): 0.74ms x0.0 [com.CptPICHU.peak.truefinalascent] !
+[WHY_LAG]   PeakMusic.MusicPanel.OnGUI(): 0.03ms x2.0 [peak.music.ui]
+[WHY_LAG]   DayNightManager.UpdateCycle(): 0.02ms x0.3 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   DayNightManager.Update(): 0.01ms x0.3 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   AmbienceManager.Update(): 0.01ms x0.3 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   MainMenuMainPage.SetUpContinueButton(): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   MainMenu.Start(): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent, com.github.LengSword.ClimbInfoTracker]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.ConnectUsingSettings(): 0.00ms x0.0 [harmony-auto-ed9e45d9-2c97-4beb-8bf4-c6039f8a7f90]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [harmony-auto-9fd981ba-69ae-43af-bacd-eb21462d1465, com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   LocalizedText.GetText(System.String,System.Boolean): 0.00ms x0.2 [com.CptPICHU.peak.truefinalascent]
+[22:18:20.967] [WHY_LAG] === FPS Report (10.0s, 2983 frames) ===
+[WHY_LAG] FPS: avg=298.3 | min=0.7 | max=402.9 | avgFrame=3.4ms
+[WHY_LAG] Spikes(>50ms): 2 | AllocRate: 1105.5 KB/s
+[22:18:21.081] [WHY_LAG] !!! SPIKE 95ms (10.5 FPS) !!! Plugins: Better Player Distance=0.4ms | 
+[22:18:21.081] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModSettingsMenu.OnEnable()=0.9ms x1 [com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization] | 
+[22:18:21.180] [WHY_LAG] !!! SPIKE 100ms (10.0 FPS) !!! Plugins: Better Player Distance=0.4ms | 
+[22:18:21.180] [WHY_LAG]   Methods: SFX_PlayOneShot.PlayOneShot()=0.6ms x1 [com.CptPICHU.peak.truefinalascent] | SFX_Player.PlaySFX(SFX_Instance,UnityEngine.Vector3,UnityEngine.Transform,SFX_Settings,System.Single,System.Boolean)=0.6ms x2 [com.CptPICHU.peak.truefinalascent] | 
+[22:18:22.530] [WHY_LAG] !!! SPIKE 72ms (13.9 FPS) !!! Plugins: Better Player Distance=0.6ms | 
+[22:18:22.628] [WHY_LAG] !!! SPIKE 54ms (18.6 FPS) !!! Plugins: Better Player Distance=0.4ms | 
+[22:18:22.628] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.0ms x24 [com.github.Thanks.ShootZombies] | 
+[22:18:27.556] [WHY_LAG] !!! SPIKE 83ms (12.1 FPS) !!! Plugins: Better Player Distance=0.6ms | 
+[22:18:27.556] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=6.2ms x30 [com.github.Thanks.ShootZombies] | 
+[22:18:28.274] ------------------------------------------------------------
+[22:18:28.274] [WHY_LAG] -- Plugin Update Time (per-frame avg) --
+[WHY_LAG]   Better Player Distance: 0.49ms/frame (total=979.3ms, calls=4008)
+[WHY_LAG]   ShootZombies: 0.01ms/frame (total=11.2ms, calls=2004)
+[WHY_LAG]   BetterPeakVoiceFix: 0.00ms/frame (total=6.8ms, calls=2004)
+[WHY_LAG]   WhereIsMyAmulet: 0.00ms/frame (total=2.6ms, calls=2004)
+[WHY_LAG]   WhereIsThing: 0.00ms/frame (total=2.4ms, calls=4008)
+[WHY_LAG]   EasyBackpack: 0.00ms/frame (total=1.2ms, calls=2004)
+[WHY_LAG]   StateKeeper: 0.00ms/frame (total=1.0ms, calls=2004)
+[WHY_LAG]   ItemSpawnerEnhanced: 0.00ms/frame (total=0.8ms, calls=2004)
+[WHY_LAG]   RemoteAliveHelper: 0.00ms/frame (total=0.6ms, calls=2004)
+[WHY_LAG]   ClimbInfoTracker: 0.00ms/frame (total=0.6ms, calls=2004)
+[WHY_LAG]   Piggyback: 0.00ms/frame (total=0.2ms, calls=2004)
+[WHY_LAG]   PlayersInfo: 0.00ms/frame (total=0.2ms, calls=2004)
+[WHY_LAG]   Compass: 0.00ms/frame (total=0.1ms, calls=2004)
+[WHY_LAG]   Total MOD overhead: 0.50ms/frame
+[22:18:28.274] [WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModdedTABSButton.Update(): 1.76ms x8.3 [com.github.Thanks.ShootZombies] !
+[WHY_LAG]   PeakMusic.MusicPanel.OnGUI(): 0.05ms x2.0 [peak.music.ui]
+[WHY_LAG]   DayNightManager.Update(): 0.03ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   DayNightManager.UpdateCycle(): 0.02ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModSettingsMenu.SetSection(System.String): 0.01ms x0.0 [com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization]
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModSettingsMenu.UpdateSectionTabs(System.String): 0.01ms x0.0 [com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization]
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModSettingsMenu.ShowSettings(): 0.01ms x0.0 [com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization]
+[WHY_LAG]   SFX_Player.PlaySFX(SFX_Instance,UnityEngine.Vector3,UnityEngine.Transform,SFX_Settings,System.Single,System.Boolean): 0.01ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   SFX_PlayOneShot.PlayOneShot(): 0.01ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   AmbienceManager.Update(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[22:18:30.975] [WHY_LAG] === FPS Report (10.0s, 1375 frames) ===
+[WHY_LAG] FPS: avg=137.5 | min=10.0 | max=387.3 | avgFrame=7.3ms
+[WHY_LAG] Spikes(>50ms): 5 | AllocRate: 888.9 KB/s
+[22:18:32.559] [WHY_LAG] !!! SPIKE 78ms (12.8 FPS) !!! Plugins: Better Player Distance=0.5ms | 
+[22:18:32.559] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.7ms x26 [com.github.Thanks.ShootZombies] | 
+[22:18:38.269] ------------------------------------------------------------
+[22:18:38.269] [WHY_LAG] -- Plugin Update Time (per-frame avg) --
+[WHY_LAG]   Better Player Distance: 0.48ms/frame (total=1062.5ms, calls=4398)
+[WHY_LAG]   ShootZombies: 0.01ms/frame (total=12.2ms, calls=2199)
+[WHY_LAG]   BetterPeakVoiceFix: 0.00ms/frame (total=7.5ms, calls=2199)
+[WHY_LAG]   WhereIsMyAmulet: 0.00ms/frame (total=2.8ms, calls=2199)
+[WHY_LAG]   WhereIsThing: 0.00ms/frame (total=2.6ms, calls=4398)
+[WHY_LAG]   EasyBackpack: 0.00ms/frame (total=1.3ms, calls=2199)
+[WHY_LAG]   StateKeeper: 0.00ms/frame (total=1.1ms, calls=2199)
+[WHY_LAG]   ItemSpawnerEnhanced: 0.00ms/frame (total=0.9ms, calls=2199)
+[WHY_LAG]   RemoteAliveHelper: 0.00ms/frame (total=0.6ms, calls=2199)
+[WHY_LAG]   ClimbInfoTracker: 0.00ms/frame (total=0.6ms, calls=2199)
+[WHY_LAG]   Piggyback: 0.00ms/frame (total=0.3ms, calls=2199)
+[WHY_LAG]   PlayersInfo: 0.00ms/frame (total=0.2ms, calls=2199)
+[WHY_LAG]   Compass: 0.00ms/frame (total=0.1ms, calls=2199)
+[WHY_LAG]   Total MOD overhead: 0.50ms/frame
+[22:18:38.269] [WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModdedTABSButton.Update(): 1.56ms x7.4 [com.github.Thanks.ShootZombies] !
+[WHY_LAG]   PeakMusic.MusicPanel.OnGUI(): 0.05ms x2.1 [peak.music.ui]
+[WHY_LAG]   DayNightManager.Update(): 0.03ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   DayNightManager.UpdateCycle(): 0.02ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   AmbienceManager.Update(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PEAKLib.ModConfig.SettingOptions.SettingUI.BepInExEnum_SettingUI.Setup(Zorro.Settings.Setting,Zorro.Settings.ISettingHandler): 0.00ms x0.0 [com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization]
+[WHY_LAG]   MainMenuMainPage.SetUpContinueButton(): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PlayerHandler.GetAllPlayerCharacters(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   SFX_Player.PlaySFX(SFX_Instance,UnityEngine.Vector3,UnityEngine.Transform,SFX_Settings,System.Single,System.Boolean): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   SFX_PlayOneShot.PlayOneShot(): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[22:18:40.976] [WHY_LAG] === FPS Report (10.0s, 2253 frames) ===
+[WHY_LAG] FPS: avg=225.3 | min=12.8 | max=393.2 | avgFrame=4.4ms
+[WHY_LAG] Spikes(>50ms): 1 | AllocRate: 2.6 KB/s
+[22:18:41.353] [WHY_LAG] !!! SPIKE 83ms (12.0 FPS) !!! Plugins: Better Player Distance=0.4ms | 
+[22:18:41.353] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.6ms x27 [com.github.Thanks.ShootZombies] | 
+[22:18:46.565] [WHY_LAG] !!! SPIKE 78ms (12.8 FPS) !!! Plugins: Better Player Distance=0.7ms | 
+[22:18:46.565] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.6ms x27 [com.github.Thanks.ShootZombies] | 
+[22:18:48.283] ------------------------------------------------------------
+[22:18:48.283] [WHY_LAG] -- Plugin Update Time (per-frame avg) --
+[WHY_LAG]   Better Player Distance: 0.48ms/frame (total=544.9ms, calls=2286)
+[WHY_LAG]   ShootZombies: 0.01ms/frame (total=6.3ms, calls=1143)
+[WHY_LAG]   BetterPeakVoiceFix: 0.00ms/frame (total=2.9ms, calls=1143)
+[WHY_LAG]   WhereIsMyAmulet: 0.00ms/frame (total=1.7ms, calls=1143)
+[WHY_LAG]   WhereIsThing: 0.00ms/frame (total=1.3ms, calls=2286)
+[WHY_LAG]   EasyBackpack: 0.00ms/frame (total=0.7ms, calls=1143)
+[WHY_LAG]   StateKeeper: 0.00ms/frame (total=0.5ms, calls=1143)
+[WHY_LAG]   ItemSpawnerEnhanced: 0.00ms/frame (total=0.4ms, calls=1143)
+[WHY_LAG]   ClimbInfoTracker: 0.00ms/frame (total=0.3ms, calls=1143)
+[WHY_LAG]   RemoteAliveHelper: 0.00ms/frame (total=0.3ms, calls=1143)
+[WHY_LAG]   Piggyback: 0.00ms/frame (total=0.2ms, calls=1143)
+[WHY_LAG]   PlayersInfo: 0.00ms/frame (total=0.1ms, calls=1143)
+[WHY_LAG]   Compass: 0.00ms/frame (total=0.0ms, calls=1143)
+[WHY_LAG]   Total MOD overhead: 0.49ms/frame
+[22:18:48.283] [WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModdedTABSButton.Update(): 5.47ms x25.6 [com.github.Thanks.ShootZombies] !!!
+[WHY_LAG]   PeakMusic.MusicPanel.OnGUI(): 0.05ms x2.1 [peak.music.ui]
+[WHY_LAG]   DayNightManager.Update(): 0.03ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   DayNightManager.UpdateCycle(): 0.02ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModSettingsMenu.UpdateSectionTabs(System.String): 0.01ms x0.0 [com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization]
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModSettingsMenu.SetSection(System.String): 0.01ms x0.0 [com.github.Thanks.ShootZombies, com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization]
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModSettingsMenu.ShowSettings(): 0.01ms x0.0 [com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization]
+[WHY_LAG]   AmbienceManager.Update(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PEAKLib.ModConfig.SettingOptions.SettingUI.BepInExEnum_SettingUI.Setup(Zorro.Settings.Setting,Zorro.Settings.ISettingHandler): 0.00ms x0.0 [com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization]
+[WHY_LAG]   PEAKLib.ModConfig.SettingOptions.SettingUI.BepInExInt_SettingUI.Setup(Zorro.Settings.Setting,Zorro.Settings.ISettingHandler): 0.00ms x0.0 [com.players.info, com.wuyachiyu.WhereIsMyAmulet.ModConfigLocalization, com.wuyachiyu.WhereIsThing.ModConfigLocalization]
+[22:18:50.978] [WHY_LAG] === FPS Report (10.0s, 1092 frames) ===
+[WHY_LAG] FPS: avg=109.2 | min=12.0 | max=124.6 | avgFrame=9.2ms
+[WHY_LAG] Spikes(>50ms): 2 | AllocRate: 0.0 KB/s
+[22:18:51.831] [WHY_LAG] !!! SPIKE 84ms (11.9 FPS) !!! Plugins: Better Player Distance=0.5ms | 
+[22:18:51.831] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.4ms x27 [com.github.Thanks.ShootZombies] | 
+[22:18:57.127] [WHY_LAG] !!! SPIKE 78ms (12.8 FPS) !!! Plugins: Better Player Distance=0.5ms | 
+[22:18:57.127] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.5ms x27 [com.github.Thanks.ShootZombies] | 
+[22:18:58.286] ------------------------------------------------------------
+[22:18:58.286] [WHY_LAG] -- Plugin Update Time (per-frame avg) --
+[WHY_LAG]   Better Player Distance: 0.48ms/frame (total=540.8ms, calls=2234)
+[WHY_LAG]   ShootZombies: 0.01ms/frame (total=6.3ms, calls=1117)
+[WHY_LAG]   BetterPeakVoiceFix: 0.00ms/frame (total=2.9ms, calls=1117)
+[WHY_LAG]   WhereIsMyAmulet: 0.00ms/frame (total=2.0ms, calls=1117)
+[WHY_LAG]   WhereIsThing: 0.00ms/frame (total=1.4ms, calls=2234)
+[WHY_LAG]   EasyBackpack: 0.00ms/frame (total=0.8ms, calls=1117)
+[WHY_LAG]   StateKeeper: 0.00ms/frame (total=0.5ms, calls=1117)
+[WHY_LAG]   ItemSpawnerEnhanced: 0.00ms/frame (total=0.4ms, calls=1117)
+[WHY_LAG]   ClimbInfoTracker: 0.00ms/frame (total=0.3ms, calls=1117)
+[WHY_LAG]   RemoteAliveHelper: 0.00ms/frame (total=0.3ms, calls=1117)
+[WHY_LAG]   Piggyback: 0.00ms/frame (total=0.2ms, calls=1117)
+[WHY_LAG]   PlayersInfo: 0.00ms/frame (total=0.1ms, calls=1117)
+[WHY_LAG]   Compass: 0.00ms/frame (total=0.0ms, calls=1117)
+[WHY_LAG]   Total MOD overhead: 0.50ms/frame
+[22:18:58.286] [WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModdedTABSButton.Update(): 5.88ms x27.0 [com.github.Thanks.ShootZombies] !!!
+[WHY_LAG]   PeakMusic.MusicPanel.OnGUI(): 0.05ms x2.0 [peak.music.ui]
+[WHY_LAG]   DayNightManager.Update(): 0.03ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   DayNightManager.UpdateCycle(): 0.02ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   AmbienceManager.Update(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PlayerHandler.GetAllPlayerCharacters(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.RunViewUpdate(): 0.00ms x0.3 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [harmony-auto-9fd981ba-69ae-43af-bacd-eb21462d1465, com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.UpdateCallbackTargets(): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[22:19:00.980] [WHY_LAG] === FPS Report (10.0s, 1117 frames) ===
+[WHY_LAG] FPS: avg=111.7 | min=11.9 | max=123.7 | avgFrame=9.0ms
+[WHY_LAG] Spikes(>50ms): 2 | AllocRate: 0.0 KB/s
+[22:19:02.388] [WHY_LAG] !!! SPIKE 78ms (12.8 FPS) !!! Plugins: Better Player Distance=0.5ms | 
+[22:19:02.388] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.9ms x27 [com.github.Thanks.ShootZombies] | 
+[22:19:07.558] [WHY_LAG] !!! SPIKE 80ms (12.6 FPS) !!! Plugins: Better Player Distance=0.5ms | 
+[22:19:07.558] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=6.1ms x27 [com.github.Thanks.ShootZombies] | 
+[22:19:08.286] ------------------------------------------------------------
+[22:19:08.286] [WHY_LAG] -- Plugin Update Time (per-frame avg) --
+[WHY_LAG]   Better Player Distance: 0.49ms/frame (total=545.9ms, calls=2250)
+[WHY_LAG]   ShootZombies: 0.01ms/frame (total=6.4ms, calls=1125)
+[WHY_LAG]   BetterPeakVoiceFix: 0.00ms/frame (total=2.9ms, calls=1125)
+[WHY_LAG]   WhereIsMyAmulet: 0.00ms/frame (total=1.9ms, calls=1125)
+[WHY_LAG]   WhereIsThing: 0.00ms/frame (total=1.3ms, calls=2250)
+[WHY_LAG]   EasyBackpack: 0.00ms/frame (total=0.7ms, calls=1125)
+[WHY_LAG]   StateKeeper: 0.00ms/frame (total=0.5ms, calls=1125)
+[WHY_LAG]   ItemSpawnerEnhanced: 0.00ms/frame (total=0.4ms, calls=1125)
+[WHY_LAG]   ClimbInfoTracker: 0.00ms/frame (total=0.3ms, calls=1125)
+[WHY_LAG]   RemoteAliveHelper: 0.00ms/frame (total=0.3ms, calls=1125)
+[WHY_LAG]   Piggyback: 0.00ms/frame (total=0.2ms, calls=1125)
+[WHY_LAG]   PlayersInfo: 0.00ms/frame (total=0.1ms, calls=1125)
+[WHY_LAG]   Compass: 0.00ms/frame (total=0.0ms, calls=1125)
+[WHY_LAG]   Total MOD overhead: 0.50ms/frame
+[22:19:08.286] [WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModdedTABSButton.Update(): 5.76ms x27.0 [com.github.Thanks.ShootZombies] !!!
+[WHY_LAG]   PeakMusic.MusicPanel.OnGUI(): 0.05ms x2.0 [peak.music.ui]
+[WHY_LAG]   DayNightManager.Update(): 0.03ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   DayNightManager.UpdateCycle(): 0.02ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   AmbienceManager.Update(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PlayerHandler.GetAllPlayerCharacters(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.RunViewUpdate(): 0.00ms x0.3 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [harmony-auto-9fd981ba-69ae-43af-bacd-eb21462d1465, com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.UpdateCallbackTargets(): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[22:19:10.984] [WHY_LAG] === FPS Report (10.0s, 1123 frames) ===
+[WHY_LAG] FPS: avg=112.3 | min=12.6 | max=124.9 | avgFrame=8.9ms
+[WHY_LAG] Spikes(>50ms): 2 | AllocRate: 0.0 KB/s
+[22:19:12.602] [WHY_LAG] !!! SPIKE 83ms (12.1 FPS) !!! Plugins: Better Player Distance=0.6ms | 
+[22:19:12.602] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=6.4ms x27 [com.github.Thanks.ShootZombies] | 
+[22:19:17.630] [WHY_LAG] !!! SPIKE 81ms (12.4 FPS) !!! Plugins: Better Player Distance=0.4ms | 
+[22:19:17.630] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.7ms x27 [com.github.Thanks.ShootZombies] | 
+[22:19:18.287] ------------------------------------------------------------
+[22:19:18.287] [WHY_LAG] -- Plugin Update Time (per-frame avg) --
+[WHY_LAG]   Better Player Distance: 0.48ms/frame (total=543.0ms, calls=2246)
+[WHY_LAG]   ShootZombies: 0.01ms/frame (total=6.4ms, calls=1123)
+[WHY_LAG]   BetterPeakVoiceFix: 0.00ms/frame (total=2.9ms, calls=1123)
+[WHY_LAG]   WhereIsMyAmulet: 0.00ms/frame (total=1.9ms, calls=1123)
+[WHY_LAG]   WhereIsThing: 0.00ms/frame (total=1.3ms, calls=2246)
+[WHY_LAG]   EasyBackpack: 0.00ms/frame (total=0.8ms, calls=1123)
+[WHY_LAG]   StateKeeper: 0.00ms/frame (total=0.5ms, calls=1123)
+[WHY_LAG]   ItemSpawnerEnhanced: 0.00ms/frame (total=0.4ms, calls=1123)
+[WHY_LAG]   ClimbInfoTracker: 0.00ms/frame (total=0.3ms, calls=1123)
+[WHY_LAG]   RemoteAliveHelper: 0.00ms/frame (total=0.3ms, calls=1123)
+[WHY_LAG]   Piggyback: 0.00ms/frame (total=0.2ms, calls=1123)
+[WHY_LAG]   PlayersInfo: 0.00ms/frame (total=0.1ms, calls=1123)
+[WHY_LAG]   Compass: 0.00ms/frame (total=0.0ms, calls=1123)
+[WHY_LAG]   Total MOD overhead: 0.50ms/frame
+[22:19:18.287] [WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModdedTABSButton.Update(): 5.77ms x27.0 [com.github.Thanks.ShootZombies] !!!
+[WHY_LAG]   PeakMusic.MusicPanel.OnGUI(): 0.05ms x2.0 [peak.music.ui]
+[WHY_LAG]   DayNightManager.Update(): 0.03ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   DayNightManager.UpdateCycle(): 0.02ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   AmbienceManager.Update(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PlayerHandler.GetAllPlayerCharacters(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.RunViewUpdate(): 0.00ms x0.3 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [harmony-auto-9fd981ba-69ae-43af-bacd-eb21462d1465, com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.UpdateCallbackTargets(): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[22:19:20.990] [WHY_LAG] === FPS Report (10.0s, 1126 frames) ===
+[WHY_LAG] FPS: avg=112.5 | min=12.1 | max=124.9 | avgFrame=8.9ms
+[WHY_LAG] Spikes(>50ms): 2 | AllocRate: 0.0 KB/s
+[22:19:22.874] [WHY_LAG] !!! SPIKE 78ms (12.8 FPS) !!! Plugins: Better Player Distance=0.5ms | 
+[22:19:22.874] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.5ms x27 [com.github.Thanks.ShootZombies] | 
+[22:19:28.145] [WHY_LAG] !!! SPIKE 81ms (12.3 FPS) !!! Plugins: Better Player Distance=0.5ms | 
+[22:19:28.145] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.4ms x27 [com.github.Thanks.ShootZombies] | 
+[22:19:28.292] ------------------------------------------------------------
+[22:19:28.293] [WHY_LAG] -- Plugin Update Time (per-frame avg) --
+[WHY_LAG]   Better Player Distance: 0.48ms/frame (total=544.5ms, calls=2246)
+[WHY_LAG]   ShootZombies: 0.01ms/frame (total=6.3ms, calls=1123)
+[WHY_LAG]   BetterPeakVoiceFix: 0.00ms/frame (total=2.9ms, calls=1123)
+[WHY_LAG]   WhereIsMyAmulet: 0.00ms/frame (total=1.9ms, calls=1123)
+[WHY_LAG]   WhereIsThing: 0.00ms/frame (total=1.3ms, calls=2246)
+[WHY_LAG]   EasyBackpack: 0.00ms/frame (total=0.8ms, calls=1123)
+[WHY_LAG]   StateKeeper: 0.00ms/frame (total=0.5ms, calls=1123)
+[WHY_LAG]   ClimbInfoTracker: 0.00ms/frame (total=0.4ms, calls=1123)
+[WHY_LAG]   ItemSpawnerEnhanced: 0.00ms/frame (total=0.3ms, calls=1123)
+[WHY_LAG]   RemoteAliveHelper: 0.00ms/frame (total=0.3ms, calls=1123)
+[WHY_LAG]   Piggyback: 0.00ms/frame (total=0.2ms, calls=1123)
+[WHY_LAG]   PlayersInfo: 0.00ms/frame (total=0.1ms, calls=1123)
+[WHY_LAG]   Compass: 0.00ms/frame (total=0.0ms, calls=1123)
+[WHY_LAG]   Total MOD overhead: 0.50ms/frame
+[22:19:28.293] [WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModdedTABSButton.Update(): 5.83ms x27.0 [com.github.Thanks.ShootZombies] !!!
+[WHY_LAG]   PeakMusic.MusicPanel.OnGUI(): 0.05ms x2.0 [peak.music.ui]
+[WHY_LAG]   DayNightManager.Update(): 0.03ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   DayNightManager.UpdateCycle(): 0.02ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   AmbienceManager.Update(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PlayerHandler.GetAllPlayerCharacters(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.RunViewUpdate(): 0.00ms x0.3 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [harmony-auto-9fd981ba-69ae-43af-bacd-eb21462d1465, com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.UpdateCallbackTargets(): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[22:19:30.994] [WHY_LAG] === FPS Report (10.0s, 1123 frames) ===
+[WHY_LAG] FPS: avg=112.2 | min=12.3 | max=124.3 | avgFrame=8.9ms
+[WHY_LAG] Spikes(>50ms): 2 | AllocRate: 0.3 KB/s
+[22:19:33.468] [WHY_LAG] !!! SPIKE 105ms (9.5 FPS) !!! Plugins: Better Player Distance=0.7ms | 
+[22:19:33.468] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=13.1ms x27 [com.github.Thanks.ShootZombies] | 
+[22:19:38.295] ------------------------------------------------------------
+[22:19:38.295] [WHY_LAG] -- Plugin Update Time (per-frame avg) --
+[WHY_LAG]   Better Player Distance: 0.48ms/frame (total=531.6ms, calls=2226)
+[WHY_LAG]   ShootZombies: 0.01ms/frame (total=6.3ms, calls=1113)
+[WHY_LAG]   BetterPeakVoiceFix: 0.00ms/frame (total=2.9ms, calls=1113)
+[WHY_LAG]   WhereIsMyAmulet: 0.00ms/frame (total=1.8ms, calls=1113)
+[WHY_LAG]   WhereIsThing: 0.00ms/frame (total=1.3ms, calls=2226)
+[WHY_LAG]   EasyBackpack: 0.00ms/frame (total=0.7ms, calls=1113)
+[WHY_LAG]   StateKeeper: 0.00ms/frame (total=0.5ms, calls=1113)
+[WHY_LAG]   ItemSpawnerEnhanced: 0.00ms/frame (total=0.4ms, calls=1113)
+[WHY_LAG]   ClimbInfoTracker: 0.00ms/frame (total=0.3ms, calls=1113)
+[WHY_LAG]   RemoteAliveHelper: 0.00ms/frame (total=0.3ms, calls=1113)
+[WHY_LAG]   Piggyback: 0.00ms/frame (total=0.2ms, calls=1113)
+[WHY_LAG]   PlayersInfo: 0.00ms/frame (total=0.1ms, calls=1113)
+[WHY_LAG]   Compass: 0.00ms/frame (total=0.0ms, calls=1113)
+[WHY_LAG]   Total MOD overhead: 0.49ms/frame
+[22:19:38.295] [WHY_LAG] -- Top Slow Patched Methods (per-frame avg) --
+[WHY_LAG]   PEAKLib.ModConfig.Components.ModdedTABSButton.Update(): 5.82ms x27.0 [com.github.Thanks.ShootZombies] !!!
+[WHY_LAG]   PeakMusic.MusicPanel.OnGUI(): 0.05ms x2.0 [peak.music.ui]
+[WHY_LAG]   DayNightManager.Update(): 0.03ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   DayNightManager.UpdateCycle(): 0.02ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   AmbienceManager.Update(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   PlayerHandler.GetAllPlayerCharacters(): 0.00ms x1.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.RunViewUpdate(): 0.00ms x0.3 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [harmony-auto-9fd981ba-69ae-43af-bacd-eb21462d1465, com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Realtime.LoadBalancingClient.UpdateCallbackTargets(): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[WHY_LAG]   Photon.Pun.PhotonNetwork.OnEvent(ExitGames.Client.Photon.EventData): 0.00ms x0.0 [com.CptPICHU.peak.truefinalascent]
+[22:19:38.809] [WHY_LAG] !!! SPIKE 79ms (12.6 FPS) !!! Plugins: Better Player Distance=0.5ms | 
+[22:19:38.809] [WHY_LAG]   Methods: PEAKLib.ModConfig.Components.ModdedTABSButton.Update()=5.9ms x27 [com.github.Thanks.ShootZombies] | 
+[22:19:40.996] [WHY_LAG] === FPS Report (10.0s, 1085 frames) ===
+[WHY_LAG] FPS: avg=108.5 | min=9.5 | max=125.8 | avgFrame=9.2ms
+[WHY_LAG] Spikes(>50ms): 2 | AllocRate: 0.4 KB/s
+[22:19:48.233] WhySoLaggy shutting down

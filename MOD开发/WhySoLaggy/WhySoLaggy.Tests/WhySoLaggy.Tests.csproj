@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="BepInEx">
       <HintPath>c:\Users\Administrator\Desktop\MOD\PEAK\测试环境\BepInEx\core\BepInEx.dll</HintPath>
     </Reference>

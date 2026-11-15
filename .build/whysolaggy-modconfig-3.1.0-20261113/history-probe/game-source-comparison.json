@@ -1,0 +1,38 @@
+[
+  {
+    "version": "2.3.a",
+    "Assembly-CSharp/LocalizedText.cs": "1fe733d1f60322b43d9f25ef2b9d29a78ea428152121d5f494305ac60093e42d",
+    "Assembly-CSharp/SettingsUICell.cs": "b86a744f1c11f82f9da6d28e11effa89780867214fde72470da954a05b8d2820",
+    "mscorlib/System.Reflection/MethodBase.cs": "f52470be24a6397f5843d22a3f5712bc49edc41da5015b5aa3ca5ae536c3a977"
+  },
+  {
+    "version": "2.4.b",
+    "Assembly-CSharp/LocalizedText.cs": "61074bec5669fe0df594f4c51bde880f1204102e694ce0d89024f727386b9965",
+    "Assembly-CSharp/SettingsUICell.cs": "b86a744f1c11f82f9da6d28e11effa89780867214fde72470da954a05b8d2820",
+    "mscorlib/System.Reflection/MethodBase.cs": "f52470be24a6397f5843d22a3f5712bc49edc41da5015b5aa3ca5ae536c3a977"
+  },
+  {
+    "version": "2.6.b",
+    "Assembly-CSharp/LocalizedText.cs": "0339e6b7f9e9e8e89118318cfec567f2b9f758816a98279f3a13aaeed61398ac",
+    "Assembly-CSharp/SettingsUICell.cs": "b86a744f1c11f82f9da6d28e11effa89780867214fde72470da954a05b8d2820",
+    "mscorlib/System.Reflection/MethodBase.cs": "f52470be24a6397f5843d22a3f5712bc49edc41da5015b5aa3ca5ae536c3a977"
+  },
+  {
+    "version": "3.0.0",
+    "Assembly-CSharp/LocalizedText.cs": "a4be85ed5c7bc6ef31029b60c4646922ca4c7cca9d9cd2375638bdd043586ce5",
+    "Assembly-CSharp/SettingsUICell.cs": "b86a744f1c11f82f9da6d28e11effa89780867214fde72470da954a05b8d2820",
+    "mscorlib/System.Reflection/MethodBase.cs": "f52470be24a6397f5843d22a3f5712bc49edc41da5015b5aa3ca5ae536c3a977"
+  },
+  {
+    "version": "3.0.1",
+    "Assembly-CSharp/LocalizedText.cs": "a4be85ed5c7bc6ef31029b60c4646922ca4c7cca9d9cd2375638bdd043586ce5",
+    "Assembly-CSharp/SettingsUICell.cs": "b86a744f1c11f82f9da6d28e11effa89780867214fde72470da954a05b8d2820",
+    "mscorlib/System.Reflection/MethodBase.cs": "f52470be24a6397f5843d22a3f5712bc49edc41da5015b5aa3ca5ae536c3a977"
+  },
+  {
+    "version": "3.1.0",
+    "Assembly-CSharp/LocalizedText.cs": "a4be85ed5c7bc6ef31029b60c4646922ca4c7cca9d9cd2375638bdd043586ce5",
+    "Assembly-CSharp/SettingsUICell.cs": "92f55a18194e413411db01e43fc1e631cafd09a13a3a3c7f956713348003b0cd",
+    "mscorlib/System.Reflection/MethodBase.cs": "f52470be24a6397f5843d22a3f5712bc49edc41da5015b5aa3ca5ae536c3a977"
+  }
+]

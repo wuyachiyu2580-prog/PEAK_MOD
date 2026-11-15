@@ -366,20 +366,24 @@ namespace WhereIsThing
                 return;
             }
 
-            if (_selectedIds.Contains(item.itemID))
+            Item identity = ThingPickupIdentity.Resolve(item);
+            if (_selectedIds.Contains(identity.itemID))
             {
                 if ((_effectiveScopes & ThingLocationScope.Ground) != 0 && item.itemState == ItemState.Ground)
                 {
                     string key = "item:" + item.GetInstanceID();
                     AddNetworkLabel(record, key, item.transform,
-                        delegate { return ThingCatalog.GetDisplayName(item, _nameLanguage.Value); });
+                        delegate { return ThingCatalog.GetDisplayName(identity, _nameLanguage.Value); },
+                        delegate { return IsSelectedGroundItem(item, identity); });
                 }
                 else if ((_effectiveScopes & ThingLocationScope.Held) != 0 && item.itemState == ItemState.Held &&
                     ShouldShowHeldItem(item))
                 {
                     string key = "held:" + item.GetInstanceID();
                     AddNetworkLabel(record, key, item.transform,
-                        delegate { return ThingCatalog.GetDisplayName(item, _nameLanguage.Value); });
+                        delegate { return ThingCatalog.GetDisplayName(identity, _nameLanguage.Value); },
+                        delegate { return item != null && item.itemState == ItemState.Held && ShouldShowHeldItem(item) &&
+                            (_effectiveScopes & ThingLocationScope.Held) != 0 && _selectedIds.Contains(identity.itemID); });
                 }
             }
 
@@ -393,7 +397,8 @@ namespace WhereIsThing
 
             foreach (ItemSlot slot in backpackData.itemSlots)
             {
-                if (slot == null || slot.IsEmpty() || slot.prefab == null || !_selectedIds.Contains(slot.prefab.itemID))
+                if (slot == null || slot.IsEmpty() || slot.prefab == null ||
+                    !_selectedIds.Contains(ThingPickupIdentity.Resolve(slot.prefab).itemID))
                 {
                     continue;
                 }
@@ -404,16 +409,23 @@ namespace WhereIsThing
                 {
                     return ThingCatalog.GetDisplayName(contentPrefab, _nameLanguage.Value) + "\n" +
                         ThingCatalog.GetContainerSuffix(_nameLanguage.Value);
+                }, delegate
+                {
+                    return backpack != null && backpack.itemState == ItemState.Ground &&
+                        (_effectiveScopes & ThingLocationScope.Backpack) != 0 && !slot.IsEmpty() &&
+                        slot.prefab == contentPrefab && _selectedIds.Contains(ThingPickupIdentity.Resolve(contentPrefab).itemID);
                 });
             }
         }
 
-        private void AddNetworkLabel(NetworkObjectRecord record, string key, Transform target, Func<string> titleProvider)
+        private void AddNetworkLabel(NetworkObjectRecord record, string key, Transform target, Func<string> titleProvider,
+            Func<bool> additionalValidity = null)
         {
             record.DesiredLabelKeys.Add(key);
             record.LabelKeys.Add(key);
             AddLabel(key, target, titleProvider,
-                delegate { return target != null && target.gameObject != null && target.gameObject.activeInHierarchy; });
+                delegate { return target != null && target.gameObject != null && target.gameObject.activeInHierarchy &&
+                    (additionalValidity == null || additionalValidity()); });
         }
 
         private void SyncPlacedTarget(NetworkObjectRecord record, PlacedTargetRecord placed)

@@ -26,7 +26,7 @@ namespace WhereIsThing
     {
         public const string PluginGuid = "com.wuyachiyu.WhereIsThing";
         public const string PluginName = "WhereIsThing";
-        public const string PluginVersion = "0.1.2";
+        public const string PluginVersion = "0.1.3";
         private const int PresetSchemaVersion = 6;
         private const int ShareProtocolVersion = 2;
         private const string ShareModePropertyKey = "WIT.ShareMode";
@@ -112,7 +112,7 @@ namespace WhereIsThing
         private const double ClassificationRetryBudgetMilliseconds = 0.25;
         private const float NetworkDiscoveryInterval = 0.5f;
         private const float FullValidationInterval = 5f;
-        private const int SceneDiscoveryStepCount = 18;
+        private const int SceneDiscoveryStepCount = 20;
         private static readonly float[] ClassificationRetryDelays = { 0.05f, 0.15f, 0.30f, 0.50f, 1f, 2f };
 
         private sealed class NetworkObjectRecord
@@ -153,6 +153,10 @@ namespace WhereIsThing
         private ConfigEntry<ThingScanMode> _scanMode;
         private ConfigEntry<float> _displayDuration;
         private ConfigEntry<float> _maxDistance;
+        private ConfigEntry<ThingMapScope> _mapScope;
+        private readonly ThingSegmentFilter _segmentFilter = new ThingSegmentFilter();
+        private int _observedSegmentRevision;
+        private ThingMapScope _observedMapScope;
         private ConfigEntry<float> _fontSize;
         private ConfigEntry<ThingLabelFont> _labelFontChoice;
         private ConfigEntry<bool> _showOffscreen;
@@ -164,6 +168,7 @@ namespace WhereIsThing
         private ConfigEntry<string> _selectedLuggageTypesConfig;
         private ConfigEntry<string> _selectedSceneTargetTypesConfig;
         private ConfigEntry<int> _presetSchemaVersion;
+        private ConfigEntry<int> _pickupIdentityVersion;
         private ConfigEntry<string> _localPresetsConfig;
         private ConfigEntry<string> _activeLocalPresetIdConfig;
         private ConfigEntry<string> _selectedSharedPresetIdConfig;
@@ -179,13 +184,17 @@ namespace WhereIsThing
             _displayDuration = Config.Bind("General", "DisplayDurationSeconds", 8f, "Timed display duration in seconds.");
             _nameLanguage = Config.Bind("Display", "NameLanguage", ThingNameLanguage.Game, "Game language, English, or Simplified Chinese.");
             _maxDistance = Config.Bind("Display", "MaxDistance", 500f, "Maximum distance in metres. Set to 0 for unlimited.");
+            _mapScope = Config.Bind("Display", "MapScope", ThingMapScope.CurrentSegment,
+                "Current segment including its entry camp, or the whole map. Unlimited distance respects this scope.");
             _fontSize = Config.Bind("Display", "FontSize", 22f, "Distance label font size.");
             _labelFontChoice = Config.Bind("Display", "LabelFont", ThingLabelFont.GameDefault,
-                "Font used by English location labels. Chinese text may display as tofu boxes.");
+                "Font used by location labels. Chinese names use an available Chinese-capable game font when needed.");
             _showOffscreen = Config.Bind("Display", "ShowOffscreenDirection", true, "Show a direction marker for offscreen items.");
             _showOwnerNames = Config.Bind("Display", "ShowOwnerNames", true, "Show the placer name after supported labels.");
             _presetSchemaVersion = Config.Bind("Presets", "PresetSchemaVersion", 0,
                 new ConfigDescription("Preset schema version for WhereIsThing.", null, "Hidden"));
+            _pickupIdentityVersion = Config.Bind("Presets", "PickupIdentityVersion", 0,
+                new ConfigDescription("Pickup selection migration version.", null, "Hidden"));
             _localPresetsConfig = Config.Bind("Presets", "LocalPresets", string.Empty,
                 new ConfigDescription("Serialized local presets managed by WhereIsThing.", null, "Hidden"));
             _activeLocalPresetIdConfig = Config.Bind("Presets", "ActiveLocalPresetId", string.Empty,
@@ -297,6 +306,15 @@ namespace WhereIsThing
                 _nextRefresh = Time.unscaledTime + NetworkDiscoveryInterval;
             }
 
+            _segmentFilter.Refresh();
+            if (_observedSegmentRevision != _segmentFilter.Revision || _observedMapScope != _mapScope.Value)
+            {
+                _observedSegmentRevision = _segmentFilter.Revision;
+                _observedMapScope = _mapScope.Value;
+                _nextRefresh = 0f;
+                _nextSceneDiscovery = 0f;
+                _sceneDiscoveryStep = 0;
+            }
             ProcessPhotonDiscovery();
             ProcessSceneDiscovery();
 
@@ -383,18 +401,10 @@ namespace WhereIsThing
 
         private void OnGameLanguageChanged()
         {
-            if (_window != null)
-            {
-                _window.Dispose();
-                _window = null;
-            }
-            if (_pickerWindow != null)
-            {
-                _pickerWindow.Dispose();
-                _pickerWindow = null;
-            }
             FontHelper.InvalidateCache();
-            _font = null;
+            _font = FontHelper.GetChineseCapable();
+            _window?.RefreshLanguage(_font);
+            _pickerWindow?.RefreshLanguage(_font);
             _labelFont = null;
             ReleaseLabelMaterial();
             _labelFontWarningLogged = false;
@@ -413,10 +423,12 @@ namespace WhereIsThing
                 _displayDuration,
                 _nameLanguage,
                 _maxDistance,
+                _mapScope,
                 _fontSize,
                 _labelFontChoice,
                 _showOffscreen,
                 _presetSchemaVersion,
+                _pickupIdentityVersion,
                 _localPresetsConfig,
                 _activeLocalPresetIdConfig,
                 _selectedSharedPresetIdConfig,
@@ -431,6 +443,7 @@ namespace WhereIsThing
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            _segmentFilter.Reset();
             if (_window != null)
             {
                 _window.Close();
@@ -530,6 +543,7 @@ namespace WhereIsThing
 
         private void RefreshLabels()
         {
+            _segmentFilter.Refresh();
             RefreshEffectivePresetState(false);
             if (_canvas == null || (_selectedIds.Count == 0 && _selectedLuggageTypes.Count == 0 && _selectedSceneTargetTypes.Count == 0))
             {
@@ -849,9 +863,32 @@ namespace WhereIsThing
             {
                 return;
             }
+            if (!IsWithinMapScope(target, positionProvider)) return;
 
-            _labels.Add(key, new ThingLabel(key, _canvas.transform, target, titleProvider, isValid,
+            float scopeCheckAt = 0f;
+            int scopeRevision = -1;
+            ThingMapScope previousScope = _mapScope.Value;
+            bool withinScope = true;
+            Func<bool> scopedValidity = delegate
+            {
+                if (isValid != null && !isValid()) return false;
+                if (Time.unscaledTime >= scopeCheckAt || scopeRevision != _segmentFilter.Revision || previousScope != _mapScope.Value)
+                {
+                    withinScope = IsWithinMapScope(target, positionProvider);
+                    scopeCheckAt = Time.unscaledTime + 0.25f;
+                    scopeRevision = _segmentFilter.Revision;
+                    previousScope = _mapScope.Value;
+                }
+                return withinScope;
+            };
+            _labels.Add(key, new ThingLabel(key, _canvas.transform, target, titleProvider, scopedValidity,
                 positionProvider, ownerProvider, _labelFont, _labelTitleMaterial, _labelDetailMaterial, _fontSize.Value));
+        }
+
+        private bool IsWithinMapScope(Transform target, Func<Vector3> positionProvider)
+        {
+            return target != null && (_mapScope.Value == ThingMapScope.WholeMap ||
+                _segmentFilter.Includes(target, positionProvider == null ? target.position : positionProvider()));
         }
 
         private void UpdateLabelStyleIfChanged()
@@ -870,6 +907,7 @@ namespace WhereIsThing
             ReleaseLabelMaterial();
             _labelFontWarningLogged = false;
             ApplyLabelStyleToExisting(true);
+            if (_pickerWindow != null && _pickerWindow.IsOpen) _pickerWindow.RefreshLanguage(_font);
         }
 
         private bool EnsureLabelFont(bool logResolution)
@@ -881,6 +919,8 @@ namespace WhereIsThing
             }
 
             _labelFont = FontHelper.GetLabelFont(_labelFontChoice.Value);
+            if (ThingCatalog.UseChineseNames(_nameLanguage.Value) && !FontHelper.IsChineseCapable(_labelFont))
+                _labelFont = FontHelper.GetChineseCapable() ?? _labelFont;
             if (_labelFont == null)
             {
                 if (logResolution && !_labelFontWarningLogged)
@@ -963,6 +1003,7 @@ namespace WhereIsThing
             foreach (ThingLabel label in _labels.Values)
             {
                 label.ApplyStyle(_labelFont, _labelTitleMaterial, _labelDetailMaterial, _fontSize.Value);
+                label.RefreshContent();
             }
         }
 
@@ -1003,6 +1044,7 @@ namespace WhereIsThing
 
             _catalog.AddRange(loaded);
             BuildCatalogIndexes();
+            MigratePickupSelections();
             MigratePlacedSceneTargetsToItems();
             BuildBuiltInPresetCache();
             ResolveBuiltInPresetTargets();
@@ -1372,6 +1414,7 @@ namespace WhereIsThing
                 _selectedLuggageTypes.UnionWith(preset.SelectedLuggageTypes);
                 _selectedSceneTargetTypes.UnionWith(preset.SelectedSceneTargetTypes);
             }
+            NormalizePickupSelection(_selectedIds);
             _effectiveScopes = _locationScopes.Value;
             _effectiveScanMode = _scanMode.Value;
             _effectiveDisplayDuration = Mathf.Clamp(_displayDuration.Value, 2f, 60f);
@@ -1399,7 +1442,7 @@ namespace WhereIsThing
             bool usingFallbackPresets = !allowEditing && !HasUsableSessionPresets();
             _pickerWindow.Open(presets, activePresetId, allowEditing, usingFallbackPresets, _shareModeConfig.Value,
                 _locationScopes.Value, _scanMode.Value, _displayDuration.Value, _maxDistance.Value, _showOwnerNames.Value,
-                delegate(ThingPresetDefinition preset) { return ThingPresetFactory.BuildSummary(preset, _catalog); },
+                delegate(ThingPresetDefinition preset) { return ThingPresetFactory.BuildSummary(preset, _catalog, _nameLanguage.Value); },
                 allowEditing ? (Action<string>)SelectLocalPreset : SelectSharedPreset,
                 allowEditing ? (Action<string>)OpenSelectionEditor : null,
                 allowEditing ? (Action<string, string>)RenameLocalPreset : null,
@@ -1411,7 +1454,16 @@ namespace WhereIsThing
                 CycleLocalScanMode,
                 AdjustLocalDisplayDuration,
                 SetShowOwnerNames,
-                SetMaxDistance);
+                SetMaxDistance, _mapScope.Value, SetMapScope);
+        }
+
+        private void SetMapScope(ThingMapScope scope)
+        {
+            _mapScope.Value = scope;
+            PersistConfig();
+            _nextRefresh = 0f;
+            _nextSceneDiscovery = 0f;
+            OpenPresetPicker();
         }
 
         private void SelectLocalPreset(string presetId)

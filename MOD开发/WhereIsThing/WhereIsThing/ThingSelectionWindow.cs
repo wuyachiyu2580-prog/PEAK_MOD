@@ -15,7 +15,7 @@ namespace WhereIsThing
         private const float CellSpacing = 6f;
 
         private readonly Canvas _canvas;
-        private readonly TMP_FontAsset _font;
+        private TMP_FontAsset _font;
         private readonly Action<HashSet<ushort>, HashSet<ThingLuggageType>, HashSet<ThingSceneTargetType>, ThingNameLanguage> _apply;
         private readonly Action _cancel;
         private readonly GameObject _root;
@@ -37,6 +37,8 @@ namespace WhereIsThing
         private HashSet<ThingLuggageType> _workingLuggageTypes = new HashSet<ThingLuggageType>();
         private HashSet<ThingSceneTargetType> _workingSceneTargetTypes = new HashSet<ThingSceneTargetType>();
         private bool _selectedOnly;
+        private bool _advancedLuggage;
+        private readonly ThingTargetDefinition _ordinaryLuggage = ThingTargetDefinition.CreateOrdinaryLuggage();
         private bool _isOpen;
         private bool _isRebuilding;
         private float _lastListWidth = -1f;
@@ -136,6 +138,26 @@ namespace WhereIsThing
         }
 
         public bool IsOpen { get { return _isOpen; } }
+
+        public void RefreshLanguage(TMP_FontAsset font)
+        {
+            if (font != null) _font = font;
+            foreach (TextMeshProUGUI text in _root.GetComponentsInChildren<TextMeshProUGUI>(true))
+            {
+                text.font = _font;
+                string parent = text.transform.parent.name;
+                if (text.name == "Title") text.text = ThingUi.SelectionWindowTitle();
+                else if (text.name == "Subtitle") text.text = ThingUi.SelectionWindowSubtitle();
+                else if (text.name == "Placeholder") text.text = ThingUi.SearchPlaceholder();
+                else if (parent == "SelectedOnly" && text.name == "Label") text.text = ThingUi.SelectedOnly();
+                else if (parent == "SelectAll") text.text = ThingUi.SelectVisible();
+                else if (parent == "Clear") text.text = ThingUi.ClearVisible();
+                else if (parent == "Close") text.text = ThingUi.Cancel();
+                else if (parent == "Apply") text.text = ThingUi.Apply();
+            }
+            _emptyText.text = ThingUi.NoMatchingTargets();
+            RebuildRows();
+        }
 
         public void Open(IEnumerable<ThingTargetDefinition> catalog, IEnumerable<ushort> selected, IEnumerable<ThingLuggageType> selectedLuggageTypes,
             IEnumerable<ThingSceneTargetType> selectedSceneTargetTypes, ThingNameLanguage language)
@@ -315,7 +337,8 @@ namespace WhereIsThing
             _visibleDefinitions.Clear();
 
             string search = _searchInput == null ? string.Empty : (_searchInput.text ?? string.Empty).Trim();
-            List<ThingTargetDefinition> visible = _catalog
+            List<ThingTargetDefinition> displayCatalog = GetDisplayCatalog().ToList();
+            List<ThingTargetDefinition> visible = displayCatalog
                 .Where(item => _workingCategory == "All" || item.Category == _workingCategory)
                 .Where(item => !_selectedOnly || item.IsSelected(_workingSelection, _workingLuggageTypes, _workingSceneTargetTypes))
                 .Where(item => string.IsNullOrEmpty(search) || item.GetSearchText(_workingLanguage).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
@@ -333,7 +356,7 @@ namespace WhereIsThing
             _emptyText.gameObject.SetActive(visible.Count == 0);
             _languageButtonText.text = ThingUi.LanguageLabel(_workingLanguage);
             _categoryButtonText.text = ThingUi.CategoryLabel(_workingCategory, _workingLanguage);
-            _countText.text = ThingUi.SelectedCount(CountSelected(), _catalog.Count);
+            _countText.text = ThingUi.SelectedCount(CountSelected(), displayCatalog.Count);
             _lastListWidth = _viewport.rect.width;
             _isRebuilding = false;
         }
@@ -360,6 +383,13 @@ namespace WhereIsThing
             TextMeshProUGUI headerText = CreateText(header.transform, "Text", ThingCatalog.GetCategoryDisplay(category, _workingLanguage), 15f, TextAlignmentOptions.Left,
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(12f, 0f), new Vector2(-8f, 0f), false, true);
             headerText.fontStyle = FontStyles.Bold;
+            if (category == "Luggage")
+            {
+                headerText.text += "   [" + ThingUi.AdvancedLuggage(_advancedLuggage) + "]";
+                Button expand = header.AddComponent<Button>();
+                expand.targetGraphic = headerImage;
+                expand.onClick.AddListener(delegate { _advancedLuggage = !_advancedLuggage; RebuildRows(); });
+            }
 
             GameObject gridObject = CreateRect("Grid", section.transform);
             LayoutElement gridLayoutElement = gridObject.AddComponent<LayoutElement>();
@@ -416,16 +446,20 @@ namespace WhereIsThing
                 }
 
                 definition.SetSelected(_workingSelection, _workingLuggageTypes, _workingSceneTargetTypes, value);
-                if (_selectedOnly)
+                if (_selectedOnly || definition.IsLuggageGroup)
                 {
                     RebuildRows();
                     return;
                 }
 
-                _countText.text = ThingUi.SelectedCount(CountSelected(), _catalog.Count);
+                _countText.text = ThingUi.SelectedCount(CountSelected(), GetDisplayCatalog().Count());
             });
 
             string label = definition.GetDisplayName(_workingLanguage) + definition.GetVariantSuffix(_workingLanguage);
+            int selectedMembers = definition.SelectedLuggageCount(_workingLuggageTypes);
+            if (definition.IsLuggageGroup && selectedMembers > 0 && selectedMembers < definition.LuggageMemberCount)
+                label += string.Format(ThingCatalog.UseChineseNames(_workingLanguage) ? "（已选 {0}/{1}）" : " ({0}/{1} selected)",
+                    selectedMembers, definition.LuggageMemberCount);
             TextMeshProUGUI text = CreateText(cell.transform, "Name", label, 13f, TextAlignmentOptions.Left,
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(1f, 1f), new Vector2(52f, 4f), new Vector2(-8f, -4f), true, true);
             text.color = new Color(0.9f, 0.89f, 0.82f, 1f);
@@ -433,7 +467,15 @@ namespace WhereIsThing
 
         private int CountSelected()
         {
-            return _catalog.Count(definition => definition.IsSelected(_workingSelection, _workingLuggageTypes, _workingSceneTargetTypes));
+            return GetDisplayCatalog().Count(definition => definition.IsSelected(_workingSelection, _workingLuggageTypes, _workingSceneTargetTypes));
+        }
+
+        private IEnumerable<ThingTargetDefinition> GetDisplayCatalog()
+        {
+            foreach (ThingTargetDefinition definition in _catalog)
+                if (_advancedLuggage || !definition.IsLuggage || !ThingCatalog.IsOrdinaryLuggageType(definition.LuggageType))
+                    yield return definition;
+            if (!_advancedLuggage) yield return _ordinaryLuggage;
         }
 
         private TMP_InputField CreateSearch(Transform parent)

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="GameStubs.cs" />
+    <Compile Include="../WhereIsThing/ThingTypes.cs" Link="Production/ThingTypes.cs" />
+    <Compile Include="../WhereIsThing/ThingPickupIdentity.cs" Link="Production/ThingPickupIdentity.cs" />
+    <Compile Include="../WhereIsThing/ThingSegmentFilter.cs" Link="Production/ThingSegmentFilter.cs" />
+    <Compile Include="../WhereIsThing/ThingPresets.cs" Link="Production/ThingPresets.cs" />
+    <Compile Include="../WhereIsThing/Helpers/ThingUi.cs" Link="Production/ThingUi.cs" />
+    <Compile Include="../WhereIsThing/WhereIsThingPlugin.Plants.cs" Link="Production/Plants.cs" />
+    <Compile Include="../WhereIsThing/WhereIsThingPlugin.Luggage.cs" Link="Production/Luggage.cs" />
+  </ItemGroup>
+</Project>

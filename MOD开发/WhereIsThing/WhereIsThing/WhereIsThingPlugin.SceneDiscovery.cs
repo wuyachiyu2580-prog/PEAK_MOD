@@ -10,31 +10,11 @@ namespace WhereIsThing
         private void RefreshRegisteredTargets()
         {
             _scanSeenBuffer.Clear();
-            if (_selectedLuggageTypes.Count > 0)
+            if (_selectedLuggageTypes.Count > 0 || _selectedSceneTargetTypes.Contains(ThingSceneTargetType.TrapChest))
             {
                 foreach (Luggage luggage in Luggage.ALL_LUGGAGE)
                 {
-                    if (luggage == null || !luggage.gameObject.activeInHierarchy || luggage.IsOpen)
-                    {
-                        continue;
-                    }
-
-                    ThingLuggageType luggageType = ThingCatalog.GetLuggageType(luggage);
-                    if (!_selectedLuggageTypes.Contains(luggageType))
-                    {
-                        continue;
-                    }
-
-                    string key = "luggage:" + luggage.GetInstanceID();
-                    _scanSeenBuffer.Add(key);
-                    Luggage captured = luggage;
-                    AddLabel(key, captured.transform,
-                        delegate { return ThingCatalog.GetLuggageLabelName(captured, _nameLanguage.Value); },
-                        delegate
-                        {
-                            return captured != null && captured.gameObject.activeInHierarchy && !captured.IsOpen &&
-                                _selectedLuggageTypes.Contains(luggageType);
-                        }, delegate { return captured.Center(); });
+                    RefreshLuggageLabel(luggage);
                 }
             }
 
@@ -174,6 +154,12 @@ namespace WhereIsThing
                 case 17:
                     RefreshRunSettingHazards(_scanSeenBuffer);
                     break;
+                case 18:
+                    RefreshRootPlantItems();
+                    break;
+                case 19:
+                    RefreshRootPlantFakeItems();
+                    break;
             }
         }
 
@@ -220,7 +206,9 @@ namespace WhereIsThing
                     HasObjectNameInHierarchy(target, "LuggageTrick") && HasComponentInHierarchy<Luggage>(target) &&
                     HasComponentInHierarchy<Peak.TrickLuggage>(target) && HasComponentInHierarchy<SpineCheck>(target))
                 {
-                    targetType = ThingSceneTargetType.TrapChest;
+                    Luggage luggage = target.GetComponentInParent<Luggage>(true) ?? target.GetComponentInChildren<Luggage>(true);
+                    RefreshLuggageLabel(luggage);
+                    continue;
                 }
                 else
                 {

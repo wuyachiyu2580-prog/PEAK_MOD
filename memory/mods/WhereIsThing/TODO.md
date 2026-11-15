@@ -1,5 +1,21 @@
 # WhereIsThing 待办
 
+## 2026-10-29 23:32 WhereIsThing 0.1.3 发行文件已备齐
+
+发行五件套准备已完成：MOD开发/WhereIsThing/发行/0.1.3。下一步仍是植物采摘与迁移、箱子状态、跨段/自定义地图、语言字体和主客机实机验收；不得把发行文件就绪记为已实机通过或已公开发布。用户已确认 1.0.3 是笔误，当前目标 0.1.3。
+
+## 2026-10-29 23:03 部署路径纠正
+
+用户明确要求 DLL 放在 2.0.a/BepInEx/plugins 根目录。此前采用子目录不符合要求；本次检查时 profile 下已没有 WhereIsThing.dll/PDB，不推断移除原因。现已将验证过的 0.1.3.0 DLL 和 PDB 复制到 C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/，csproj 默认 OutputPath 同步恢复根目录。DLL 为 180224 bytes，SHA256 4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522，与隔离产物一致；递归复查仅一份 DLL。未改功能或配置、未重新构建/启动游戏。本条覆盖下方当前安装在子目录的历史描述。既有 71 项逻辑回归与实机待验状态不变；仅同步本地 memory。
+
+## 2026-10-29 22:07 WhereIsThing 0.1.3 已实施
+
+代码、版本、71 项逻辑回归、Release 构建和 profile 部署已完成；不再执行下方“尚未实施”的旧候选状态。下一步仅实机验收：植物采摘/旧预设迁移、箱子高级筛选/陷阱状态、无限距离跨段/携带/Nadir/自定义地图、语言/字体/窗口布局与性能。清单见 [实施记录](IMPLEMENTATION_0.1.3_2026-10-29.md)。0.1.3 发行包未准备，未发布。
+
+## 2026-10-29 0.1.3 候选任务（尚未实施）
+
+用户要求先调研、不改代码；完整证据和方案见 [更新前调研](RESEARCH_0.1.3_2026-10-29.md)。后续开发任务：同步 0.1.3 版本链；统一 Game/显式语言的名称、后缀和变体计数；按真实拾取身份区分 Mandrake_Hidden 与 MedicinalRoot 并评估必要 FakeItem 支持；整理箱子分组/实体去重/旧选择迁移；新增独立关卡范围过滤。先核对当前游戏 DLL（资源版本标记 3.0.1），再做构建与主客机实机验证。本轮不执行下方历史待办。
+
 - 发行文件准备已完成：`MOD开发/WhereIsThing/发行/0.1.2`；未生成 ZIP、未上传。待办仍以以下实机项为准。
 
 - ModConfig 源码修复及 profile 部署已完成；按 `../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md` 验收最终 DLL 的中英繁切换、下拉/DEFAULT、搜索/筛选、多 MOD 隔离、无依赖启动及销毁恢复。

@@ -1,0 +1,72 @@
+strategy=normalize order=inherited-first type=int
+initial=PASS value=Int32:A:B hits=1
+late=PASS value=Int32:A:L:B hits=2
+disable=PASS value=Int32:A:L:B
+RESULT=PASS callbackId=7 cycles=3
+processExit=0
+strategy=normalize order=inherited-first type=string
+initial=PASS value=String:A:B hits=1
+late=PASS value=String:A:L:B hits=2
+disable=PASS value=String:A:L:B
+RESULT=PASS callbackId=7 cycles=3
+processExit=0
+strategy=normalize order=declared-first type=int
+initial=PASS value=Int32:A:B hits=1
+late=PASS value=Int32:A:B:L hits=2
+disable=PASS value=Int32:A:B:L
+RESULT=PASS callbackId=7 cycles=3
+processExit=0
+strategy=normalize order=declared-first type=string
+initial=PASS value=String:A:B hits=1
+late=PASS value=String:A:B:L hits=2
+disable=PASS value=String:A:B:L
+RESULT=PASS callbackId=7 cycles=3
+processExit=0
+strategy=bound order=inherited-first type=int
+initial=PASS value=Int32:A:B hits=1
+late=PASS value=Int32:A:L:B hits=2
+disable=PASS value=Int32:A:L:B
+RESULT=PASS callbackId=7 cycles=3
+processExit=0
+strategy=bound order=inherited-first type=string
+initial=PASS value=String:A:B hits=1
+late=PASS value=String:A:L:B hits=2
+disable=PASS value=String:A:L:B
+RESULT=PASS callbackId=7 cycles=3
+processExit=0
+strategy=bound order=declared-first type=int
+initial=PASS value=Int32:A:B hits=1
+late=PASS value=Int32:A:B:L hits=2
+disable=PASS value=Int32:A:B:L
+RESULT=PASS callbackId=7 cycles=3
+processExit=0
+strategy=bound order=declared-first type=string
+initial=PASS value=String:A:B hits=1
+late=PASS value=String:A:B:L hits=2
+disable=PASS value=String:A:B:L
+RESULT=PASS callbackId=7 cycles=3
+processExit=0
+strategy=skip order=inherited-first type=int
+initial=PASS value=Int32:A:B hits=0
+late=PASS value=Int32:A:L:B hits=0
+disable=PASS value=Int32:A:L:B
+RESULT=PASS callbackId=-1 cycles=3
+processExit=0
+strategy=skip order=inherited-first type=string
+initial=PASS value=String:A:B hits=0
+late=PASS value=String:A:L:B hits=0
+disable=PASS value=String:A:L:B
+RESULT=PASS callbackId=-1 cycles=3
+processExit=0
+strategy=skip order=declared-first type=int
+initial=PASS value=Int32:A:B hits=0
+late=PASS value=Int32:A:B:L hits=0
+disable=PASS value=Int32:A:B:L
+RESULT=PASS callbackId=-1 cycles=3
+processExit=0
+strategy=skip order=declared-first type=string
+initial=PASS value=String:A:B hits=0
+late=PASS value=String:A:B:L hits=0
+disable=PASS value=String:A:B:L
+RESULT=PASS callbackId=-1 cycles=3
+processExit=0

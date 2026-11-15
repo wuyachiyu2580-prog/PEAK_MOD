@@ -1,0 +1,178 @@
+[Error  :   BepInEx] Unable to start Unity log writer
+[Message:   BepInEx] BepInEx 5.4.23.3 - PEAK (2026/9/3 20:34:04)
+[Info   :   BepInEx] Running under Unity v6000.3.15.12692100
+[Info   :   BepInEx] CLR runtime version: 4.0.30319.42000
+[Info   :   BepInEx] Supports SRE: True
+[Info   :   BepInEx] System platform: Bits64, Windows
+[Message:   BepInEx] Preloader started
+[Info   :   BepInEx] Loaded 1 patcher method from [BepInEx.Preloader 5.4.23.3]
+[Info   :   BepInEx] Loaded 1 patcher method from [0.com.github.MonoDetour.BepInEx.5 0.7.18.0]
+[Info   :   BepInEx] 2 patcher plugins loaded
+[Info   :   BepInEx] Patching [UnityEngine.CoreModule] with [BepInEx.Chainloader]
+[Message:   BepInEx] Preloader finished
+[Message:   BepInEx] Chainloader ready
+[Message:   BepInEx] Chainloader started
+[Info   :   BepInEx] 29 plugins to load
+[Info   :   BepInEx] Loading [Bing Bong AI 0.9.1]
+[Info   :Bing Bong AI] Game hooks: 14 of 14 in place.
+[Info   :Bing Bong AI] Plugin Bing Bong AI 0.9.1 is loaded! AI: configured.
+[Info   :   BepInEx] Loading [BetterPeakVoiceFix 1.1.10]
+[Info   :BetterPeakVoiceFix] [诊断] Photon AppId 快照: realtime 2be03cc8-3633-4033-a22e-7ef1c243b1fd / voice ba60e90a-af6f-4965-80cf-ff783c91c992
+[Info   :BetterPeakVoiceFix] Better Voice Fix (v1.1.10) 已加载。
+[Info   :   BepInEx] Loading [Better Player Distance 1.1.5]
+[Info   :   BepInEx] Loading [An0n Fair Storms 1.0.6]
+[Info   :   BepInEx] Loading [PEAKLib.Core 1.7.2]
+[Info   :PEAKLib.Core] Loading all bundles with extension .autoload.peakbundle from root C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins
+[Info   :PEAKLib.Core] Loading all bundles with extension .autoload_peakbundle from root C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins
+[Info   :PEAKLib.Core] Plugin PEAKLib.Core is loaded!
+[Info   :   BepInEx] Loading [PEAKLib.Items 1.6.2]
+[Info   :PEAKLib.Items] Plugin PEAKLib.Items is loaded!
+[Info   :   BepInEx] Loading [True Final Ascent 3.0.4]
+[Info   :True Final Ascent] [True Final Ascent] loaded (v3.0.4).
+[Info   :True Final Ascent] [True Final Ascent] Extras: kick on, energy combo on, Cure-All burst on.
+[Info   :True Final Ascent] [True Final Ascent] own files: C:\Users\Administrator\AppData\Local\LandCrab\PEAK\TrueFinalAscent
+[Info   :True Final Ascent] [FinalAscent] Mirroring logs: C:\Users\Administrator\AppData\Local\LandCrab\PEAK\TrueFinalAscent\Logs\2026-11-14_19-18-12 (the last 5 sessions are kept).
+[Info   :True Final Ascent] [FinalAscent] Texts: 2595 lines from 3 mod files (823 cn, 795 de, 823 en); game language en.
+[Info   :True Final Ascent] [FinalAscent] Last selection restored: seed 807315 (random), variants chosen.
+[Info   :True Final Ascent] [FinalAscent] Seal confirmed - the Final Ascent counts as done, the Rainbow is selectable.
+[Info   :True Final Ascent] [FinalAscent] Seal confirmed - the Apocalypse win counts as done, the Apocalypse color is selectable.
+[Info   :True Final Ascent] [FinalAscent] Name color loaded: Rainbow, Final Ascent cleared, Apocalypse won, Scoutmaster open, Thunderstorm open, Cherry Blossom open.
+[Info   :True Final Ascent] [FinalAscent] Cold night ends at the Mesa campfire: the threshold now counts in segments instead of progress points. Vanilla's '< 3' again means 'before the Caldera' - with ten points instead of five the same 3 used to mean 'before Alpine'.
+[Info   :True Final Ascent] [FinalAscent] Guard in front of the void on 10 Clear implementations.
+[Info   :True Final Ascent] [FinalAscent] PropSpawner.AllConstraintsPass: tokens renumbered (0xFAA6BB43) but the shape matches - Assembly-CSharp was rewritten by a patcher, the method itself is unchanged.
+[Info   :True Final Ascent] [FinalAscent] PSC_Embedded.CheckConstraint: tokens renumbered (0x4879169F) but the shape matches - Assembly-CSharp was rewritten by a patcher, the method itself is unchanged.
+[Info   :True Final Ascent] [FinalAscent] PSC_Embedded.IsEmbeddedInCollider: tokens renumbered (0xBCF1F85D) but the shape matches - Assembly-CSharp was rewritten by a patcher, the method itself is unchanged.
+[Info   :True Final Ascent] [FinalAscent] Fog pace per stage hooked in (OrbFogHandler.Move).
+[Info   :True Final Ascent] [FinalAscent] Start guard: EruptionSpawner.Update patched.
+[Info   :True Final Ascent] [FinalAscent] Start guard: EruptionSpawner.Update patched.
+[Info   :True Final Ascent] [FinalAscent] Cactus mode: hazards recognize balls - ShakyRock.OnCollisionEnter 1x, ShakyRock.OnCollisionStay 1x, ShakyIcicleIce.OnCollisionEnter 1x, ShakyIcicleIce.OnCollisionStay 1x, TumbleWeed.OnCollisionEnter 1x, Bonkable.Bonk 1x, Breakable.Break 1x, WaterfallTrigger.OnTriggerStay 1x, Action_RaycastDart.FireDart 1x, GiantTreeAchievementZone.OnTriggerEnter 1x.
+[Info   :True Final Ascent] [FinalAscent] Cold night ends at the Mesa campfire: the threshold now counts in segments instead of progress points. Vanilla's '< 3' again means 'before the Caldera' - with ten points instead of five the same 3 used to mean 'before Alpine'.
+[Warning:True Final Ascent] [FinalAscent] Ground floor: EvaluateGroundChecks has 2 matching places (expected 1) - left as vanilla; ground below y 0 stays weak.
+[Warning:True Final Ascent] [FinalAscent] Ground floor: EvaluateGroundChecks has 2 matching places (expected 1) - left as vanilla; ground below y 0 stays weak.
+[Info   :True Final Ascent] [FinalAscent] Heartbeat applied to 10 types of generation steps.
+[Info   :True Final Ascent] [FinalAscent] Physics catch-up limit: 167 ms -> 50 ms per frame.
+[Info   :True Final Ascent] [FinalAscent] GC pauses: incremental was OFF (slice 50000 us), requested 3 ms per frame - now still OFF, the build does not allow it. Mode Enabled.
+[Info   :True Final Ascent] [FinalAscent] Weather tool ready - F9 menu (host, manual mode). Apocalypse mode only.
+[Info   :   BepInEx] Loading [BetterItemInfoDisplay 0.1.5]
+[Info   :BetterItemInfoDisplay] Plugin configuration loaded.
+[Info   :BetterItemInfoDisplay] Plugin BetterItemInfoDisplay is loaded.
+[Info   :   BepInEx] Loading [BetterRoomShare 0.1.4]
+[Info   :BetterRoomShare] Plugin BetterRoomShare is loaded!
+[Info   :BetterRoomShare] Plugin Config Loaded.
+[Info   :   BepInEx] Loading [ClimbInfoTracker 0.5.1]
+[Info   :ClimbInfoTracker] Plugin ClimbInfoTracker is loaded!
+[Info   :ClimbInfoTracker] Plugin Config Loaded.
+[Info   :   BepInEx] Loading [ItemSpawnerEnhanced 1.3.0]
+[Info   :ItemSpawnerEnhanced] ItemSpawnerEnhanced 1.3.0 loaded for PEAK 2.1.a baseline.
+[Info   :   BepInEx] Loading [ItemSpawnerEnhanced Chinese Search 1.3.0]
+[Info   :ItemSpawnerEnhanced Chinese Search] ItemSpawnerEnhanced Chinese Search 1.3.0 loaded.
+[Info   :   BepInEx] Loading [RemoteAliveHelper 1.0.11]
+[Info   :RemoteAliveHelper] Plugin RemoteAliveHelper is loaded!
+[Info   :RemoteAliveHelper] Plugin Config Loaded.
+[Info   :   BepInEx] Loading [TFAStatusTracker 0.1.5]
+[Info   :TFAStatusTracker] Plugin TFAStatusTracker is loaded!
+[Info   :TFAStatusTracker] Plugin Config Loaded.
+[Info   :   BepInEx] Loading [PEAKLib.UI 1.7.2]
+[Info   :PEAKLib.UI] Plugin PEAKLib.UI is loaded!
+[Info   :   BepInEx] Loading [PEAKLib.ModConfig 1.8.2]
+[Info   :PEAKLib.ModConfig] Plugin PEAKLib.ModConfig is loaded!
+[Info   :   BepInEx] Loading [SoftDependencyFix 1.0.0]
+[Info   :SoftDependencyFix] Plugin SoftDependencyFix is loaded!
+[Info   :   BepInEx] Loading [ShootZombies 1.4.0]
+[Info   :ShootZombies] [ShootZombies] Compatibility: mod=1.4.0, game=3.1.0--logFile, game MVID=e9a4fa24-a068-4abd-8c8d-66c4b2b65471
+[Info   :ShootZombies] [ShootZombies] Compatibility contracts resolved: inventory, consumption, item lifecycle and zombie AI.
+[Warning:  HarmonyX] AccessTools.Method: Could not find method for type PEAKLib.ModConfig.Components.ModSettingsMenu and name ShowSettings and parameters (string)
+[Warning:  HarmonyX] com.github.Thanks.ShootZombies: You should only patch implemented methods/constructors to avoid issues. Patch the declared method virtual string PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting<UnityEngine.KeyCode>::GetDisplayName() instead of virtual string PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting<UnityEngine.KeyCode>::GetDisplayName().
+[Warning:  HarmonyX] com.github.Thanks.ShootZombies: You should only patch implemented methods/constructors to avoid issues. Patch the declared method virtual string PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting<string>::GetDisplayName() instead of virtual string PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting<string>::GetDisplayName().
+[Info   :ShootZombies] [ShootZombies] ModConfig float display patch target: PEAKLib.ModConfig.SettingOptions.SettingUI.BepInExFloat_SettingUI
+[Info   :   BepInEx] Loading [StateKeeper 0.1.0]
+[Info   :StateKeeper] Loaded. Data path: C:/Users/Administrator/AppData/LocalLow/LandCrab/PEAK\StateKeeper
+[Info   :   BepInEx] Loading [PeakMusic 1.4.5]
+[Info   : PeakMusic] [19:18:18.298] [一起听] 事件回调已登记（client#-2036629954 state=PeerCreated）
+[Info   : PeakMusic] [19:18:18.298] [一起听] 同步层已挂载（等待进入房间）
+[Info   : PeakMusic] [面板] 屏幕 302x193 · 分辨率系数 1.00 · 面板缩放 1.00（约 832x722 像素）
+[Info   : PeakMusic] [PeakMusic] ===== 构建 2026-11-12 / v1.4.5（19 套样式 · 无损换栈 · 下一首修复） =====
+[Info   : PeakMusic] [PeakMusic] 面板已挂载：F1 / F2 开关，输入歌名 → 搜索 → 点一行播放。
+[Info   : PeakMusic] [PeakMusic] 歌词：放歌就自动出现，世界空间 3D（左右两侧、逐字动画）。字号 84px、距离 12 格、高度 0.62、左右 40%，配色=暖白·常显
+[Info   : PeakMusic] [PeakMusic] 注意：改了 cfg 文件必须重启游戏才生效；面板左侧那几行（歌词/字号/高度/颜色）是点了立刻生效的。
+[Info   : PeakMusic] [PeakMusic] 升级迁移：歌词已自动打开（之前被 F4 关掉过）。
+[Info   : PeakMusic] [PeakMusic] 热键：面板=F1，歌词开关=F4
+[Info   :   BepInEx] Loading [Compass 1.0.0]
+[Info   :   BepInEx] Loading [PlayersInfo 0.2.5]
+[Info   :PlayersInfo] [PlayersInfo] PlayersInfo v0.2.5 loaded. Lang=en
+[Info   :   BepInEx] Loading [WhereIsMyAmulet 1.0.4]
+[Info   :   BepInEx] Loading [WhereIsThing 0.1.3]
+[Info   :WhereIsThing] WhereIsThing v0.1.3 loaded. Hold Alt and press C to manage presets; press C to scan.
+[Info   :   BepInEx] Loading [WhySoLaggy 1.0.5]
+[Info   :WhySoLaggy] [WHY_LAG] WhySoLaggy Awake
+[Info   :WhySoLaggy] [WHY_LAG] Config bound, loggers initialized
+[Info   :   BepInEx] Loading [Fly Mod 1.0.7]
+[Info   :   Fly Mod] [FlyMod] Patch Harmony applied.
+[Info   :   BepInEx] Loading [Piggyback 1.4.4]
+[Info   : Piggyback] Custom drop key binding set to: <Gamepad>/leftShoulder + <Gamepad>/rightShoulder
+[Info   : Piggyback] Plugin Piggyback loaded
+[Info   :   BepInEx] Loading [EasyBackpack 1.1.9]
+[Info   :EasyBackpack] Patched BackpackWheel.Update
+[Info   :EasyBackpack] Patched GUIManager.CloseBackpackWheel
+[Info   :EasyBackpack] Patched CharacterBackpackHandler.AddFuelToJetpack
+[Info   :EasyBackpack] Patched Player.SyncInventoryRPC
+[Info   :   BepInEx] Loading [Peak Music UI 1.4.5]
+[Info   :Peak Music UI] [UI] 歌词置顶补丁已挂上（ApplyMaterial）
+[Info   :Peak Music UI] [UI] 新界面已挂载 v1.4.5（NewPanel=True）
+[Info   :Peak Music UI] [UI] 想回退：把 BepInEx/config/peak.music.ui.cfg 里 NewPanel 改成 false，或删掉 PeakMusic.UI.dll
+[Message:   BepInEx] Chainloader startup complete
+[Info   :True Final Ascent] [FinalAscent] Larder: sound 'Au_Napberry_Pulse' loaded from the own copy - this map does not bring it.
+[Info   :True Final Ascent] [FinalAscent] Larder: sound 'Au_FlashPlant' loaded from the own copy - this map does not bring it.
+[Info   :True Final Ascent] [FinalAscent] Larder: sound 'Au_Heliloop_Exterior' loaded from the own copy - this map does not bring it.
+[Info   :True Final Ascent] [FinalAscent] Larder: sound 'Au_HeliLoop' loaded from the own copy - this map does not bring it.
+[Info   :True Final Ascent] [FinalAscent] Larder: sound 'Au_Destroy_Boulder1' loaded from the own copy - this map does not bring it.
+[Info   :True Final Ascent] [FinalAscent] Supply crate: 6 of 13 sounds ready.
+[Warning:PEAKLib.Core] PeakShaders: Could not add new shader SmokeParticle to dictionary.
+[Info   :PEAKLib.Core] Initializing NetworkPrefabs.
+[Info   :PEAKLib.Core] Replaced PhotonNetwork.PrefabPool with CustomPrefabPool.
+[Info   :PEAKLib.Core] Finished initializing NetworkPrefabs.
+[Info   : PeakMusic] [面板] 面板已就绪。热键 F1 开关；标题栏可拖动，Ctrl+滚轮或右下角拖拽缩放。
+[Info   : PeakMusic] [面板] 一起听指令订阅完成
+[Info   :WhySoLaggy] [WHY_LAG] Waiting 5s for all plugins to finish loading...
+[Info   :Bing Bong AI] Microphones: game sees [], uses '(default)'; Windows has [].
+[Info   :True Final Ascent] [FinalAscent] Steam session: Web API ticket requested (new).
+[Info   : PeakMusic] [面板] 分辨率变化 → 2560x1440 · 分辨率系数 1.33 · 面板缩放 1.33
+[Warning:  HarmonyX] AccessTools.GetTypesFromAssembly: assembly CavyCrew.BingBongAI, Version=0.9.1.0, Culture=neutral, PublicKeyToken=null => System.Reflection.ReflectionTypeLoadException: Exception of type 'System.Reflection.ReflectionTypeLoadException' was thrown.
+Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>O:<0>__OnNews' (0) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>c:<>9__9_1' (1) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+  at (wrapper managed-to-native) System.Reflection.Assembly.GetTypes(System.Reflection.Assembly,bool)
+  at System.Reflection.Assembly.GetTypes () [0x00000] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+  at HarmonyLib.AccessTools.GetTypesFromAssembly (System.Reflection.Assembly assembly) [0x0000d] in <474744d65d8e460fa08cd5fd82b5d65f>:0 
+System.TypeLoadException: Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>O:<0>__OnNews' (0) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+System.TypeLoadException: Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>c:<>9__9_1' (1) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+[Warning:  HarmonyX] AccessTools.GetTypesFromAssembly: assembly CavyCrew.BingBongAI, Version=0.9.1.0, Culture=neutral, PublicKeyToken=null => System.Reflection.ReflectionTypeLoadException: Exception of type 'System.Reflection.ReflectionTypeLoadException' was thrown.
+Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>O:<0>__OnNews' (0) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>c:<>9__9_1' (1) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+  at (wrapper managed-to-native) System.Reflection.Assembly.GetTypes(System.Reflection.Assembly,bool)
+  at System.Reflection.Assembly.GetTypes () [0x00000] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+  at HarmonyLib.AccessTools.GetTypesFromAssembly (System.Reflection.Assembly assembly) [0x0000d] in <474744d65d8e460fa08cd5fd82b5d65f>:0 
+System.TypeLoadException: Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>O:<0>__OnNews' (0) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+System.TypeLoadException: Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>c:<>9__9_1' (1) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+[Info   :Peak Music UI] [UI] 已绑定 MusicPanel：PeakMusic.MusicPanel
+[Info   :Better Player Distance] BetterPlayerDistance v1.1.5 (AIAE) 已加载 | 显示模式=Hold | 贴近显示距离=False | 兼容模式=False | TimeTheme=未安装 / Not installed
+[Info   :True Final Ascent] [FinalAscent] Steam session: ticket received (234 bytes), exchanging at /v1/auth.
+[Info   :True Final Ascent] [FinalAscent] Online: /v1/auth (532 chars).
+[Info   :True Final Ascent] [FinalAscent] Steam session: confirmed after 1.4 s, valid 24 h, renewal in 1380 min.
+[Info   :True Final Ascent] [FinalAscent] Cold night ends at the Mesa campfire: the threshold now counts in segments instead of progress points. Vanilla's '< 3' again means 'before the Caldera' - with ten points instead of five the same 3 used to mean 'before Alpine'.
+[Info   :True Final Ascent] [FinalAscent] Fog pace per stage hooked in (OrbFogHandler.Move).
+[Warning:True Final Ascent] [FinalAscent] Ground floor: EvaluateGroundChecks has 2 matching places (expected 1) - left as vanilla; ground below y 0 stays weak.
+[Info   :WhySoLaggy] [WHY_LAG] Patch profiling enabled.
+[Info   :WhySoLaggy] [WHY_LAG] FieldProbe disabled or rules file empty, skip
+[Info   :WhySoLaggy] [WHY_LAG] Profiling active!
+[Info   :True Final Ascent] [FinalAscent] Supply crate: 7 of 13 sounds ready.
+[Info   :True Final Ascent] [FinalAscent] Sky discs remembered: brightness 1.21, size 0.99, sharpness 126.1.
+[Info   :True Final Ascent] [FinalAscent] Found at the sky: 0 mesh(es) under the frame 'Earth'.
+[Info   :True Final Ascent] [FinalAscent] Sky material 'Skybox' / 'GD/Lit Clouds Sky' - properties: _cloudscale, _CloudSpeed, _CloudOffset, _CloudClip, _Cloudtex, _DistortTex, _CloudTightness, _SunPower, _SunIntensity, _SunSize, _CloudEdgeWarp, _DistortScale, _CloudDistortion, _TextureSample0, _MoonSliver.
+[Info   :True Final Ascent] [FinalAscent] Net patience raised: 9 -> 15 resends, timeout 10s -> 15s. This bridges packet loss, not a real outage - see FinalAscentNetPatience.
+[Info   : PeakMusic] [PeakMusic] 退出中——如果这条之后日志还在刷，说明有东西没清干净。
+[Info   : PeakMusic] [面板] 面板已销毁。
+[Info   : PeakMusic] [播放器] 已销毁，资源已释放。
+[Info   :PEAKLib.ModConfig] Plugin PEAKLib.ModConfig unloaded!
+[Info   :True Final Ascent] [FinalAscent] Cold night ends at the Mesa campfire: the threshold now counts in segments instead of progress points. Vanilla's '< 3' again means 'before the Caldera' - with ten points instead of five the same 3 used to mean 'before Alpine'.
+[Info   :True Final Ascent] [FinalAscent] Fog pace per stage hooked in (OrbFogHandler.Move).
+[Warning:True Final Ascent] [FinalAscent] Ground floor: EvaluateGroundChecks has 2 matching places (expected 1) - left as vanilla; ground below y 0 stays weak.

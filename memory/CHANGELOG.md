@@ -1,5 +1,68 @@
 # Memory Changelog
 
+## 2026-11-15 开发构建已实施部署，实机验收待完成
+
+落实用户批准的准确性、RPC/日志、自动深入、诊断包/HUD和最后国际化；1.0.5-dev.20261115，版本仍1.0.5，70/70自动回归，Release零警告零错误。游戏关闭后安装2.0.a/plugins根目录单份DLL/PDB，旧版可回退，配置SHA256未改变；发行未改、未上传/提交。
+
+[实施、容量边界及验收记录](mods/WhySoLaggy/IMPLEMENTATION_Development_2026-11-14.md)。五模式实机A/B、30分钟四人、完整三语言界面验收未执行，不能记为通过。
+
+
+## 2026-11-14
+
+- [新增] mods/WhySoLaggy/RESEARCH_Roadmap_2026-11-14.md：功能/优化代码与日志调研，未实施。
+- [修改/索引] WhySoLaggy 六件套/current、根 README/TODO/MEMORY_INDEX：用户确认原 LOC: 0 消失；完整语言/主客机/性能矩阵仍待验。
+- [证据] .build/whysolaggy-roadmap-20261114/ 保存最新日志及显示目标分组。生产文件未改；当前无 update_memory 实体接口，不声称外部记忆同步。
+
+## 2026-11-13 修复已实施并部署，实机待验
+
+- [新增] mods/WhySoLaggy/IMPLEMENTATION_ModConfig_2026-11-13.md：实际代码修复、37/37 自动回归、0/0 构建、单份 plugins 根目录部署、备份/hash 与实机捕获超时边界。
+- [修改/索引] WhySoLaggy 六件套/current、根 README/TODO/MEMORY_INDEX 更新为已实施，覆盖同日调研状态。正式版本仍 1.0.5，旧发行包/用户配置未改。
+
+## 2026-11-13 下一步方案已调研，未实施
+
+- [新增] mods/WhySoLaggy/NEXT_STEPS_ModConfig_2026-11-13.md：首选规范化/去重与动态回调备选，12/12 独立方案组合，安全开关、并发统计和验收矩阵。
+- [修改/索引] WhySoLaggy 六件套/current 及根入口同步未实施状态；仅新增诊断程序和 memory，源码/配置/DLL/版本未改。
+
+## 2026-11-13 补充：旧版本同样具备触发条件
+
+- [新增] mods/WhySoLaggy/HISTORY_ModConfig_LOC0_2026-11-13.md：六版游戏、六版 ModConfig、三版 WhySoLaggy DLL 与 Harmony 哈希对照，12 组隔离补丁调用。
+- [修改/索引] 六件套/current、原报告及根入口：区分旧条件已存在与旧实机是否发生，补充 ShootZombies 相关继承目标证据。未修复或部署。
+
+## 2026-11-13 ModConfig LOC: 0 已定位，未实施修复
+
+- [新增] mods/WhySoLaggy/RESEARCH_ModConfig_3.1.0_2026-11-13.md：用户实机复现 LOC: 0，8 次泛型句柄异常；核对安装 DLL、Harmony 实现及补丁快照。
+- [修改/索引] WhySoLaggy 六件套/current、根 README/TODO/MEMORY_INDEX、common/07：同步未修复状态和 3.1.0 基线。仅本地 memory 与诊断快照，无源码/配置/DLL/发行变更；无 update_memory 实体接口。
+
+## 2026-10-31 已下载地图转发包已准备
+
+- [新增/修改/索引] 按用户下载转发用途生成“自群山来”在线 r13 ZIP：保留原 _net 目录 13 文件及在线版本信息、声音、cache，附中文安装说明/文件清单；全部 SHA256 比对通过，源文件未变。同步离线调研报告与根入口。未上传或发送给他人、未改插件/配置/安装地图、未实机。
+
+## 2026-10-31 PeakWorkshop 0.5.0 离线地图包调研
+
+- [新增/索引] RESEARCH_PeakWorkshop_0.5.0_OFFLINE_MAPS_2026-10-31.md、根 README/MEMORY_INDEX：确认 0.5.0 原生 .peakmap ZIP 自动解包及本地 CID 优先，区分普通地图与远征依赖，核对 2.0.a 现有地图样本。仅更新本地 Markdown；源码、配置、地图及 DLL 未改，无压缩包、构建、部署或实机测试，作废项目不恢复。
+
+## 2026-10-29 23:32 WhereIsThing 0.1.3 发行文件已备齐
+
+- [新增/修改/索引] MOD开发/WhereIsThing/发行/0.1.3 五文件及 WhereIsThing 六件套/PLAN/current、根 README/TODO/MEMORY_INDEX：按 0.1.2 格式更新英文发行文案，复用已验证 DLL/图标，版本/hash/历史文件校验通过；用户确认 1.0.3 为笔误。未生成 ZIP、未上传、未实机；只同步本地 Markdown memory。
+
+## 2026-10-29 23:03 部署路径纠正
+
+用户明确要求 DLL 放在 2.0.a/BepInEx/plugins 根目录。此前采用子目录不符合要求；本次检查时 profile 下已没有 WhereIsThing.dll/PDB，不推断移除原因。现已将验证过的 0.1.3.0 DLL 和 PDB 复制到 C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/，csproj 默认 OutputPath 同步恢复根目录。DLL 为 180224 bytes，SHA256 4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522，与隔离产物一致；递归复查仅一份 DLL。未改功能或配置、未重新构建/启动游戏。本条覆盖下方当前安装在子目录的历史描述。既有 71 项逻辑回归与实机待验状态不变；仅同步本地 memory。
+
+## 2026-10-29 22:07 WhereIsThing 0.1.3 已实施
+
+- [新增/修改/索引] WhereIsThing 0.1.3 实施记录及六件套/PLAN/current/根入口：植物身份和迁移、箱子聚合去重、关卡范围、最后统一国际化；71 项回归通过，Release 0/0，部署 WUYACHIYU-WhereIsThing 单份 DLL，备份旧 DLL/cfg；未实机/未改发行。只保存本地 Markdown。
+
+## 2026-10-29 21:36 3.0.1 反编译核对
+
+- [基线/调研/状态/索引] 用户补齐 3.0.1 反编译，旧 3.0.0 已归档；核对 WhereIsThing 需求相关 12 类，忽略空白/整行注释后均一致，调研结论保留。同步 common/07、专项报告、STATUS、FILES、current 和索引；游戏 DLL hash E526A523…CD168 不变。仍只调研，插件版本保持 0.1.2，未改源码/工程/配置/DLL/发行，未构建部署；本地 Markdown 同步，不宣称外部 memory 服务已更新。
+
+## 2026-10-29 WhereIsThing 0.1.3 更新前调研
+
+- [校验] 开发区 Git 无差异、安装 DLL hash 不变；外部 cfg 于 21:24:38 更新，本轮未写该文件且未恢复覆盖。Game/无限距离/屏幕外箭头三项复读一致，其他变化不作未变保证。
+
+- [调研/状态/待办/索引] 新增 `mods/WhereIsThing/RESEARCH_0.1.3_2026-10-29.md`：确认 Game 后缀/变体数语言错误、官方中文表、隐藏曼德拉草真实拾取引用、箱子混合分类/双标签路径、缺少段过滤；记录当前安装位置与新游戏 DLL（资源版本标记 3.0.1）。同步六件套、PLAN/current、根入口/索引/待办。用户明确先调研；源码/配置/版本/安装 DLL/发行文件均未改，无构建部署或实机结果。只保存本地 Markdown，不宣称外部 update_memory 已同步。
+
 ## 2026-10-23 PlayersInfo 复核纠正
 
 - [审核/状态/待办/索引] 新增 PlayersInfo 专项报告，补查实际 2.4.b 基线并收窄“无需更新”表述：0.2.5 未查到强制断点；原始昵称优先是既有一致性问题，建议维护；terrain 0.1.1 需更新安装，实机待验。同步六件套/current 和根入口，总审核补充适用范围；源码、版本、配置和 DLL 不变。

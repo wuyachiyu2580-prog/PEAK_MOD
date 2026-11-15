@@ -25,6 +25,7 @@ namespace WhySoLaggy
         private static Action<string> _warn;
         private static Type _inputCell, _row, _tab;
         private static MonoBehaviour _menu;
+        internal static bool IsMenuOpen=>_menu!=null&&_menu.isActiveAndEnabled;
         private static Coroutine _refresh;
 
         internal static void Install(Harmony harmony, string fileName, string modName,

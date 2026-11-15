@@ -3,14 +3,18 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>net4.7.2</TargetFramework>
     <AssemblyName>WhereIsThing</AssemblyName>
-    <Version>0.1.2</Version>
+    <Version>0.1.3</Version>
     <LangVersion>latest</LangVersion>
     <RootNamespace>WhereIsThing</RootNamespace>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\</OutputPath>
+    <OutputPath>C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/Managed/UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>C:\SteamLibrary\steamapps\common\PEAK\PEAK_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>

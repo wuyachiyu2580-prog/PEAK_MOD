@@ -12,6 +12,23 @@ namespace WhySoLaggy.Tests
     [DoNotParallelize]
     public class ModConfigIntegrationTests
     {
+        [TestMethod]
+        public void PatchProfilingDescriptions_ExplainLiveSwitchAndDeferredIgnoreWithoutChangingKeys()
+        {
+            var config = Config("com.wuyachiyu.WhySoLaggy.cfg");
+            var toggle = config.Bind("General", "EnablePatchProfiling", true);
+            var ignore = config.Bind("General", "IgnorePatchMethods", "Example.Work");
+            for(int i=0;i<6;i++)
+            {
+                bool chinese = i % 2 == 0;
+                string description = ModConfigLocalization.GetLocalizedDescription("General", "EnablePatchProfiling", chinese);
+                StringAssert.Contains(description, chinese ? "下一帧" : "next game update");
+                StringAssert.Contains(ModConfigLocalization.GetLocalizedDescription("General", "IgnorePatchMethods", chinese), chinese ? "安全的补丁切换" : "next safe hook transition");
+                Assert.IsTrue(toggle.Value);
+                Assert.AreEqual("Example.Work", ignore.Value);
+                Assert.AreEqual("EnablePatchProfiling", toggle.Definition.Key);
+            }
+        }
         private enum Mode { Persistent, Timed }
         private interface IConfigProperty { ConfigEntryBase ConfigBase { get; } }
         private sealed class WrappedSetting : IConfigProperty

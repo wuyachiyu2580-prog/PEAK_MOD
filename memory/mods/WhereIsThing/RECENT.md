@@ -1,5 +1,21 @@
 # WhereIsThing Recent
 
+## 2026-10-29 23:32 WhereIsThing 0.1.3 发行文件已备齐
+
+按用户要求沿用 0.1.2 图片/章节/英文排版准备发行/0.1.3；README 新增本版六项更新、范围开关与 40m 回退说明，CHANGELOG 与开发版一致且保留旧历史，manifest 仅改版本。复用已验证 DLL 和旧图标；五文件及版本/hash 校验通过，旧版原样保留，未打 ZIP/上传。
+
+## 2026-10-29 23:03 部署路径纠正
+
+用户明确要求 DLL 放在 2.0.a/BepInEx/plugins 根目录。此前采用子目录不符合要求；本次检查时 profile 下已没有 WhereIsThing.dll/PDB，不推断移除原因。现已将验证过的 0.1.3.0 DLL 和 PDB 复制到 C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/，csproj 默认 OutputPath 同步恢复根目录。DLL 为 180224 bytes，SHA256 4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522，与隔离产物一致；递归复查仅一份 DLL。未改功能或配置、未重新构建/启动游戏。本条覆盖下方当前安装在子目录的历史描述。既有 71 项逻辑回归与实机待验状态不变；仅同步本地 memory。
+
+## 2026-10-29 22:07 WhereIsThing 0.1.3 已实施
+
+用户已授权实施，且要求国际化最后统一修。0.1.3/0.1.3.0 已完成植物真实身份与迁移、箱子折叠筛选/单实体标签、当前段/全图范围、国际化及窗口刷新；71 项逻辑回归通过，PEAK 3.0.1 隔离 Release 0 警告 0 错误，已部署原 profile 的 WUYACHIYU-WhereIsThing 子目录。未启动游戏，主客机/自定义地图/中文字体与布局待实机。历史发行与 ZIP 未改。 新增 Tests 回归项目以及 PickupIdentity/Plants/Luggage/SegmentFilter 文件；最后统一语言分支、新配置翻译和打开窗口刷新。
+
+## 2026-10-29 0.1.3 只读调研
+
+核对截图、源码、BetterItemInfoDisplay 0.1.5、当前配置/日志/资源和 DLL 成员。确定 Game 模式“雕像上/背包内/变体数”错误落入中文；官方表含截图物品中文。资源证明 Mandrake_Hidden 显示 Medicinal Root 但指向真实 Mandrake；现有扫描/分组未解析该引用。箱子按掉落池与特殊身份混分，陷阱存在双入口标签路径；无限距离缺段过滤。完整方案及证据：[RESEARCH_0.1.3_2026-10-29.md](RESEARCH_0.1.3_2026-10-29.md)。插件仍 0.1.2，未改代码/配置/版本/发行或部署；当前游戏 DLL 与 3.0.0 审核不同，未做全量新版本兼容验收。
+
 ## 2026-09-21 玩家名声明
 
 发行 0.1.2 README Notes 已用英文声明玩家名仅供娱乐，不作为放置者的可靠证据；中途加入可能缺少此前放置物的玩家名。准确语义为“部分目标仅显示物品名称和距离，无玩家名”，不是“仅显示玩家名”。踏板菇/弹力菇/云雾菇依赖本机观察到的唯一近期投掷记录，缺失或歧义时留空；魔豆不显示种植者。CHANGELOG 同步，仅改文档，不改 DLL、不打 ZIP。

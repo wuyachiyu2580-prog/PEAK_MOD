@@ -18,6 +18,19 @@ namespace WhereIsThing
             return IsChinese ? chinese : english;
         }
 
+        public static string MapScopeLabel(ThingMapScope scope)
+        {
+            return scope == ThingMapScope.CurrentSegment
+                ? Text("Map: Current segment + entry camp", "地图范围：当前关卡及入口营地")
+                : Text("Map: Whole map", "地图范围：整张地图");
+        }
+
+        public static string AdvancedLuggage(bool expanded)
+        {
+            return expanded ? Text("Hide region / loot filters", "收起地区／掉落池筛选")
+                : Text("Show region / loot filters", "展开地区／掉落池筛选");
+        }
+
         public static string PresetWindowTitle(bool allowEditing)
         {
             return allowEditing ? Text("WhereIsThing Presets", "WhereIsThing 预设") : Text("Shared Presets", "共享预设");
@@ -90,7 +103,7 @@ namespace WhereIsThing
 
         public static string CategoryLabel(string category, ThingNameLanguage language)
         {
-            return Text("Category: ", "分类：") + ThingCatalog.GetCategoryDisplay(category, language);
+            return (ThingCatalog.UseChineseNames(language) ? "分类：" : "Category: ") + ThingCatalog.GetCategoryDisplay(category, language);
         }
 
         public static string SelectedCount(int selectedCount, int totalCount)

@@ -102,6 +102,7 @@ namespace WhereIsThing
         private readonly List<Item> _prefabs;
         private readonly List<ushort> _itemIds;
         private readonly ThingLuggageType _luggageType;
+        private readonly ThingLuggageType[] _luggageMembers;
         private readonly ThingSceneTargetType _sceneTargetType;
 
         public ThingTargetDefinition(IEnumerable<Item> prefabs)
@@ -111,9 +112,9 @@ namespace WhereIsThing
                 .GroupBy(item => item.itemID)
                 .Select(group => group.First())
                 .ToList();
-            _itemIds = _prefabs.Select(item => item.itemID).ToList();
+            _itemIds = _prefabs.Select(item => ThingPickupIdentity.Resolve(item).itemID).Distinct().ToList();
             Kind = ThingTargetKind.ItemGroup;
-            Category = ThingCatalog.GetCategory(_prefabs.FirstOrDefault());
+            Category = ThingCatalog.GetCategory(ThingPickupIdentity.Resolve(_prefabs.FirstOrDefault()));
         }
 
         private ThingTargetDefinition(ThingLuggageType luggageType)
@@ -121,8 +122,24 @@ namespace WhereIsThing
             _prefabs = new List<Item>();
             _itemIds = new List<ushort>();
             _luggageType = luggageType;
+            _luggageMembers = new[] { luggageType };
+            Kind = ThingTargetKind.Luggage;
+            Category = luggageType == ThingLuggageType.RespawnChest ? "Landmarks" : "Luggage";
+        }
+
+        private ThingTargetDefinition(ThingLuggageType[] members)
+        {
+            _prefabs = new List<Item>();
+            _itemIds = new List<ushort>();
+            _luggageMembers = members;
             Kind = ThingTargetKind.Luggage;
             Category = "Luggage";
+        }
+
+        public static ThingTargetDefinition CreateOrdinaryLuggage()
+        {
+            return new ThingTargetDefinition(Enum.GetValues(typeof(ThingLuggageType)).Cast<ThingLuggageType>()
+                .Where(ThingCatalog.IsOrdinaryLuggageType).ToArray());
         }
 
         private ThingTargetDefinition(ThingSceneTargetType sceneTargetType, IEnumerable<Item> prefabs)
@@ -132,7 +149,7 @@ namespace WhereIsThing
                 .GroupBy(item => item.itemID)
                 .Select(group => group.First())
                 .ToList();
-            _itemIds = _prefabs.Select(item => item.itemID).ToList();
+            _itemIds = _prefabs.Select(item => ThingPickupIdentity.Resolve(item).itemID).Distinct().ToList();
             _sceneTargetType = sceneTargetType;
             Kind = ThingTargetKind.SceneTarget;
             Category = ThingCatalog.GetSceneTargetCategory(sceneTargetType);
@@ -155,8 +172,14 @@ namespace WhereIsThing
 
         public ThingTargetKind Kind { get; private set; }
         public bool IsLuggage { get { return Kind == ThingTargetKind.Luggage; } }
+        public bool IsLuggageGroup { get { return IsLuggage && _luggageMembers.Length > 1; } }
+        public int SelectedLuggageCount(HashSet<ThingLuggageType> selected)
+        {
+            return IsLuggage ? _luggageMembers.Count(selected.Contains) : 0;
+        }
+        public int LuggageMemberCount { get { return IsLuggage ? _luggageMembers.Length : 0; } }
         public bool IsSceneTarget { get { return Kind == ThingTargetKind.SceneTarget; } }
-        public Item Prefab { get { return _prefabs.FirstOrDefault(); } }
+        public Item Prefab { get { return ThingPickupIdentity.Resolve(_prefabs.FirstOrDefault()); } }
         public ushort ItemId { get { return _itemIds.Count == 0 ? ushort.MaxValue : _itemIds[0]; } }
         public IReadOnlyList<ushort> ItemIds { get { return _itemIds; } }
         public IReadOnlyList<Item> Prefabs { get { return _prefabs; } }
@@ -166,6 +189,7 @@ namespace WhereIsThing
         {
             get
             {
+                if (IsLuggageGroup) return "Ordinary luggage " + string.Join(" ", _luggageMembers.Select(type => type.ToString()).ToArray());
                 if (IsLuggage) return _luggageType.ToString();
                 if (IsSceneTarget)
                 {
@@ -179,6 +203,7 @@ namespace WhereIsThing
 
         public string GetDisplayName(ThingNameLanguage language)
         {
+            if (IsLuggageGroup) return ThingCatalog.GetOrdinaryLuggageName(language);
             if (IsLuggage) return ThingCatalog.GetLuggageDisplayName(_luggageType, language);
             if (IsSceneTarget) return ThingCatalog.GetSceneTargetDisplayName(_sceneTargetType, language);
             return ThingCatalog.GetDisplayName(Prefab, language);
@@ -196,9 +221,7 @@ namespace WhereIsThing
             {
                 return string.Empty;
             }
-            return language == ThingNameLanguage.English
-                ? string.Format(" ({0} variants)", VariantCount)
-                : string.Format(" ({0} 个变体)", VariantCount);
+            return string.Format(ThingCatalog.UseChineseNames(language) ? " ({0} 个变体)" : " ({0} variants)", VariantCount);
         }
 
         public bool IsSelected(HashSet<ushort> selectedIds, HashSet<ThingLuggageType> selectedLuggageTypes,
@@ -206,13 +229,13 @@ namespace WhereIsThing
         {
             if (IsLuggage)
             {
-                return selectedLuggageTypes.Contains(_luggageType);
+                return _luggageMembers.Any(selectedLuggageTypes.Contains);
             }
             if (IsSceneTarget)
             {
                 return selectedSceneTargetTypes.Contains(_sceneTargetType) || _itemIds.Any(selectedIds.Contains);
             }
-            return _itemIds.Any(selectedIds.Contains);
+            return _itemIds.Any(selectedIds.Contains) || _prefabs.Any(item => selectedIds.Contains(item.itemID));
         }
 
         public void SetSelected(HashSet<ushort> selectedIds, HashSet<ThingLuggageType> selectedLuggageTypes,
@@ -220,14 +243,9 @@ namespace WhereIsThing
         {
             if (IsLuggage)
             {
-                if (selected)
-                {
-                    selectedLuggageTypes.Add(_luggageType);
-                }
-                else
-                {
-                    selectedLuggageTypes.Remove(_luggageType);
-                }
+                foreach (ThingLuggageType member in _luggageMembers)
+                    if (selected) selectedLuggageTypes.Add(member);
+                    else selectedLuggageTypes.Remove(member);
                 return;
             }
 
@@ -448,6 +466,7 @@ namespace WhereIsThing
 
         public static string GetDisplayName(Item item, ThingNameLanguage language)
         {
+            item = ThingPickupIdentity.Resolve(item);
             if (item == null || item.UIData == null)
             {
                 return "Unknown item";
@@ -457,14 +476,13 @@ namespace WhereIsThing
             {
                 if (language == ThingNameLanguage.Game)
                 {
-                    return item.GetName();
+                    string gameName = item.GetName();
+                    if (IsUsableName(gameName)) return gameName;
                 }
 
-                LocalizedText.Language gameLanguage = language == ThingNameLanguage.English
-                    ? LocalizedText.Language.English
-                    : LocalizedText.Language.SimplifiedChinese;
+                LocalizedText.Language gameLanguage = ResolveNameLanguage(language);
                 string localized = LocalizedText.GetText(LocalizedText.GetNameIndex(item.UIData.itemName), gameLanguage);
-                if (!string.IsNullOrEmpty(localized) && !localized.StartsWith("LOC: ", StringComparison.OrdinalIgnoreCase))
+                if (IsUsableName(localized))
                 {
                     return localized;
                 }
@@ -483,7 +501,7 @@ namespace WhereIsThing
             {
                 switch (luggageType)
                 {
-                    case ThingLuggageType.RespawnChest: return "复活箱";
+                    case ThingLuggageType.RespawnChest: return "复活雕像";
                     case ThingLuggageType.Beach: return "海滩行李箱";
                     case ThingLuggageType.Jungle: return "丛林行李箱";
                     case ThingLuggageType.Tundra: return "苔原行李箱";
@@ -502,7 +520,7 @@ namespace WhereIsThing
 
             switch (luggageType)
             {
-                case ThingLuggageType.RespawnChest: return "Respawn Chest";
+                case ThingLuggageType.RespawnChest: return "Revival Statue";
                 case ThingLuggageType.Beach: return "Beach Luggage";
                 case ThingLuggageType.Jungle: return "Jungle Luggage";
                 case ThingLuggageType.Tundra: return "Tundra Luggage";
@@ -599,7 +617,7 @@ namespace WhereIsThing
                 if (language == ThingNameLanguage.Game)
                 {
                     string gameName = ghostFire.GetName();
-                    if (!string.IsNullOrEmpty(gameName)) name = gameName;
+                    if (IsUsableName(gameName)) name = gameName;
                 }
                 else
                 {
@@ -685,6 +703,12 @@ namespace WhereIsThing
             return ThingLuggageType.Other;
         }
 
+        public static bool IsOrdinaryLuggageType(ThingLuggageType type)
+        {
+            return type != ThingLuggageType.RespawnChest && type != ThingLuggageType.Ancient &&
+                type != ThingLuggageType.Cursed && type != ThingLuggageType.Clown;
+        }
+
         private static SpawnPool GetEffectiveLuggageSpawnPool(Luggage luggage)
         {
             if (GetSpawnPoolMethod != null)
@@ -711,19 +735,31 @@ namespace WhereIsThing
             return UseChineseNames(language) ? "行李箱" : "Luggage";
         }
 
-        private static bool UseChineseNames(ThingNameLanguage language)
+        public static LocalizedText.Language ResolveNameLanguage(ThingNameLanguage language)
         {
-            if (language == ThingNameLanguage.SimplifiedChinese)
-            {
-                return true;
-            }
-            if (language == ThingNameLanguage.English)
-            {
-                return false;
-            }
+            return language == ThingNameLanguage.Game ? LocalizedText.CURRENT_LANGUAGE :
+                language == ThingNameLanguage.English ? LocalizedText.Language.English : LocalizedText.Language.SimplifiedChinese;
+        }
 
-            return LocalizedText.CURRENT_LANGUAGE == LocalizedText.Language.SimplifiedChinese ||
-                LocalizedText.CURRENT_LANGUAGE == LocalizedText.Language.TraditionalChinese;
+        public static bool UseChineseNames(ThingNameLanguage language)
+        {
+            var resolved = ResolveNameLanguage(language);
+            return resolved == LocalizedText.Language.SimplifiedChinese || resolved == LocalizedText.Language.TraditionalChinese;
+        }
+
+        private static bool IsUsableName(string value)
+        {
+            return !string.IsNullOrWhiteSpace(value) && !value.TrimStart().StartsWith("LOC:", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string GetOrdinaryLuggageName(ThingNameLanguage language)
+        {
+            return UseChineseNames(language) ? "普通行李箱" : "Ordinary Luggage";
+        }
+
+        public static string GetActiveTrapSuffix(ThingNameLanguage language)
+        {
+            return UseChineseNames(language) ? "危险仍在生效" : "Active hazard";
         }
 
         public static string GetLuggageLabelName(Luggage luggage, ThingNameLanguage language)
@@ -737,12 +773,11 @@ namespace WhereIsThing
             {
                 if (language == ThingNameLanguage.Game)
                 {
-                    return luggage.GetName();
+                    string gameName = luggage.GetName();
+                    if (IsUsableName(gameName)) return gameName;
                 }
 
-                LocalizedText.Language gameLanguage = language == ThingNameLanguage.English
-                    ? LocalizedText.Language.English
-                    : LocalizedText.Language.SimplifiedChinese;
+                LocalizedText.Language gameLanguage = ResolveNameLanguage(language);
                 string localized = LocalizedText.GetText(luggage.displayName, gameLanguage);
                 if (!string.IsNullOrEmpty(localized) && !localized.StartsWith("LOC: ", StringComparison.OrdinalIgnoreCase))
                 {
@@ -788,7 +823,7 @@ namespace WhereIsThing
                 case ThingSceneTargetType.Geyser:
                     return "Natural Hazards";
                 case ThingSceneTargetType.TrapChest:
-                    return "Mechanical Traps";
+                    return "Luggage";
                 case ThingSceneTargetType.CheckpointFlagPlaced:
                 case ThingSceneTargetType.BounceShroomPlaced:
                 case ThingSceneTargetType.RopePlaced:
@@ -884,16 +919,17 @@ namespace WhereIsThing
 
         public static string GetContainerSuffix(ThingNameLanguage language)
         {
-            return language == ThingNameLanguage.English ? "In backpack" : "背包内";
+            return UseChineseNames(language) ? "背包内" : "In backpack";
         }
 
         public static string GetStatueSuffix(ThingNameLanguage language)
         {
-            return language == ThingNameLanguage.English ? "On statue" : "雕像上";
+            return UseChineseNames(language) ? "雕像上" : "On statue";
         }
 
         private static string GetMergeKey(Item item)
         {
+            item = ThingPickupIdentity.Resolve(item);
             string displayName = GetDisplayName(item, ThingNameLanguage.English);
             if (string.IsNullOrEmpty(displayName) || displayName.StartsWith("LOC: ", StringComparison.OrdinalIgnoreCase))
             {

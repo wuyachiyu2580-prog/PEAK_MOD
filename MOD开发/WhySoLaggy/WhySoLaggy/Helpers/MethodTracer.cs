@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 using HarmonyLib;
 
 namespace WhySoLaggy
@@ -28,10 +29,23 @@ namespace WhySoLaggy
         private static readonly long _ticksPerSecond = TimeSpan.TicksPerSecond;
         private static bool _inited;
         private static int _hooked;
+        private static Harmony activeHarmony;
+        private static volatile bool reloading;
+        internal static void Validate(string names){foreach(var name in (names??"").Split(',').Select(x=>x.Trim()).Where(x=>x.Length>0))RuleTargets.Resolve(name);}
+        internal static bool TryReload(Harmony initial,string names,out string error)
+        {
+            error=null;MethodBase[] targets;
+            try{targets=(names??"").Split(',').Select(x=>x.Trim()).Where(x=>x.Length>0).SelectMany(RuleTargets.Resolve).Distinct().ToArray();if(targets.Length>128)throw new InvalidOperationException("Maximum 128 trace methods");}catch(Exception ex){error=ex.Message;return false;}
+            var previous=activeHarmony??initial;var stage=new Harmony(initial.Id+(previous.Id==initial.Id?".Staging":""));reloading=true;
+            try{foreach(var method in targets)stage.Patch(method,prefix:new HarmonyMethod(typeof(MethodTracer),nameof(OnPrefix)){priority=Priority.First});RuleTargets.RemoveOwner(previous);activeHarmony=stage;TraceMethodNames=names;_inited=true;_hooked=targets.Length;return true;}
+            catch(Exception ex){try{RuleTargets.RemoveOwner(stage);}catch{}error=ex.Message;return false;}
+            finally{reloading=false;}
+        }
 
         public static void Initialize(Harmony harmony)
         {
             if (_inited) return;
+            activeHarmony=harmony;
             _inited = true;
 
             if (string.IsNullOrWhiteSpace(TraceMethodNames)) return;
@@ -98,7 +112,7 @@ namespace WhySoLaggy
         // Harmony Prefix 回调（参数名固定 __originalMethod 才能被 Harmony 注入）
         public static void OnPrefix(MethodBase __originalMethod)
         {
-            if (__originalMethod == null) return;
+            if (reloading || __originalMethod == null) return;
 
             string key = MethodKey.Canonical(__originalMethod);
 
@@ -116,7 +130,7 @@ namespace WhySoLaggy
                 StructuredLogger.WriteEvent(new StructuredEvent
                 {
                     Timestamp = StructuredLogger.NowStamp(),
-                    FrameNumber = UnityEngine.Time.frameCount,
+                    FrameNumber = DiagnosticContext.IsMainThread?DiagnosticContext.Frame:-1,
                     Type = EventType.MethodTrace,
                     Fields = new Dictionary<string, object>
                     {
@@ -197,6 +211,7 @@ namespace WhySoLaggy
 
         public static void Shutdown()
         {
+            try{RuleTargets.RemoveOwner(activeHarmony);}catch{}activeHarmony=null;
             _inited = false;
             _hooked = 0;
             lock (_rateLock)

@@ -1,4 +1,5 @@
-﻿using System;
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -124,6 +125,7 @@ namespace WhySoLaggy
             "StartClimbRpc",
             "StopClimbingRpc",
         };
+        private static readonly HashSet<string> BuiltInWatched=new HashSet<string>(WatchedMethods,StringComparer.Ordinal);
         private static readonly HashSet<string> _extraWatchMethods = new HashSet<string>(StringComparer.Ordinal);
 
         // ── Photon keyByteX 硬编码 ──
@@ -162,8 +164,8 @@ namespace WhySoLaggy
             public int Idx;
             public int Count;
             public int Total;
-            public MethodBuffer(int cap) { Records = new WatchedRecord[cap]; }
-            public void Reset() { Idx = 0; Count = 0; Total = 0; }
+            public MethodBuffer(int cap) { Records = new WatchedRecord[Math.Max(1,Math.Min(cap,1024/Math.Max(1,WatchedMethods.Count)))]; }
+            public void Reset() { Array.Clear(Records,0,Records.Length);Idx = 0; Count = 0; Total = 0; }
         }
 
         private static readonly Dictionary<string, MethodBuffer> _watchedByMethod =
@@ -176,15 +178,20 @@ namespace WhySoLaggy
             public int senderActor;
             public string senderName;
             public int targetVID;
-            public object[] args;    // 引用；Photon 回调完毕即同帧消费，生命周期安全
+            public object[] args; // Owned bounded snapshot; never the Photon payload.
+            public int epoch;
             public int payloadBytes;
             public bool watched;
             public long queueSequence;
             public long enqueueTicks;
             public long enqueueFrame;
-            public float enqueueRealtime;
+            public double enqueueRealtime;
         }
 
+        internal static double PumpBudgetMs=.5;
+        internal static int LastDepth=>_queue.Count;
+        internal static long TotalDropped;
+        internal static double LastQueueDelayMs;
         private static long _nextQueueSequence;
         private static long _metricsProcessed;
         private static long _metricsDropped;
@@ -224,7 +231,7 @@ namespace WhySoLaggy
         private static readonly object _metricsLock = new object();
 
         private static readonly BoundedConcurrentQueue<RpcQueueItem> _queue =
-            new BoundedConcurrentQueue<RpcQueueItem>(2048);
+            new BoundedConcurrentQueue<RpcQueueItem>(2048,x=>256+2*((x.methodName?.Length??0)+(x.senderName?.Length??0))+RpcIngress.SnapshotBytes(x.args),4*1024*1024);
 
         // 复用缓冲（主线程，无 lock）
         private static readonly StringBuilder _argsSb = new StringBuilder(48);
@@ -248,13 +255,13 @@ namespace WhySoLaggy
         /// <summary>合并 ExtraWatchMethods（逗号分隔）到 WatchedMethods。Plugin 在 Initialize 前调用。</summary>
         public static void AddExtraWatchMethods(string csv)
         {
-            foreach (string previous in _extraWatchMethods) WatchedMethods.Remove(previous);
+            foreach (string previous in _extraWatchMethods) if(!BuiltInWatched.Contains(previous))WatchedMethods.Remove(previous);
             _extraWatchMethods.Clear();
             if (string.IsNullOrWhiteSpace(csv)) return;
             foreach (var part in csv.Split(','))
             {
                 var name = part.Trim();
-                if (!string.IsNullOrEmpty(name) && !AggregateOnlyMethods.Contains(name))
+                if (!string.IsNullOrEmpty(name) && name.Length<=256 && WatchedMethods.Count<128 && !AggregateOnlyMethods.Contains(name) && !BuiltInWatched.Contains(name))
                 {
                     WatchedMethods.Add(name);
                     _extraWatchMethods.Add(name);
@@ -269,7 +276,7 @@ namespace WhySoLaggy
             {
                 PatchExecuteRpc(harmony);
                 _queue.Clear();
-                Interlocked.Exchange(ref _nextQueueSequence, 0);
+                Interlocked.Exchange(ref _nextQueueSequence, 0);windowStarted=periodStarted=DiagnosticClock.Now;lastWindow.Clear();
                 Interlocked.Exchange(ref _metricsProcessed, 0);
                 Interlocked.Exchange(ref _metricsDropped, 0);
                 lock (_metricsLock) { _metricsPeakDepth = 0; _metricsPumpMs = 0d; }
@@ -339,29 +346,33 @@ namespace WhySoLaggy
                     methodName = rpcData[K_METHOD_NAME] as string;
                 if (string.IsNullOrEmpty(methodName)) return;
 
+                methodName=EventCodec.Limit(methodName,256);
                 bool watched = !AggregateOnlyMethods.Contains(methodName) && _watchedByMethod.ContainsKey(methodName);
                 int targetVID = -1;
                 try { if (rpcData[K_VIEWID] is int iv) targetVID = iv; } catch { }
 
                 int bytes = EstimatePayloadSize(rpcData);
-                object[] args = watched ? rpcData[K_ARGS] as object[] : null;
+                bool retain=RpcIngress.Record(methodName,sender?.ActorNumber??-1,bytes,DiagnosticClock.Now);
+                if(!watched||!retain)return;
+                object[] args = RpcIngress.CopyArgs(rpcData[K_ARGS] as object[]);
 
                 var queued = new RpcQueueItem
                 {
                     methodName = methodName,
                     senderActor = sender?.ActorNumber ?? -1,
-                    senderName = sender?.NickName,
+                    senderName = EventCodec.Limit(sender?.NickName,128),
                     targetVID = targetVID,
                     args = args,
                     payloadBytes = bytes,
                     watched = watched,
                     queueSequence = Interlocked.Increment(ref _nextQueueSequence),
                     enqueueTicks = DateTime.UtcNow.Ticks,
-                    enqueueFrame = Time.frameCount,
-                    enqueueRealtime = Time.realtimeSinceStartup,
+                    enqueueFrame = DiagnosticContext.Frame,
+                    epoch = DiagnosticContext.RoomEpoch,
+                    enqueueRealtime = DiagnosticClock.Now,
                 };
                 QueueEnqueueResult enqueueResult = _queue.Enqueue(queued);
-                if (enqueueResult.Dropped) Interlocked.Increment(ref _metricsDropped);
+                if (enqueueResult.Dropped) {Interlocked.Add(ref _metricsDropped,enqueueResult.DroppedCount);Interlocked.Add(ref TotalDropped,enqueueResult.DroppedCount);}
                 lock (_metricsLock)
                 {
                     if (enqueueResult.Depth > _metricsPeakDepth) _metricsPeakDepth = enqueueResult.Depth;
@@ -381,7 +392,7 @@ namespace WhySoLaggy
             int budget = PumpBatchSize;
             long started = Stopwatch.GetTimestamp();
             int processed = 0;
-            while (budget-- > 0 && _queue.TryDequeue(out var item))
+            while (budget-- > 0 && DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-started)<PumpBudgetMs && _queue.TryDequeue(out var item))
             {
                 try { ProcessDequeued(ref item); }
                 catch (Exception ex)
@@ -393,45 +404,41 @@ namespace WhySoLaggy
             if (processed > 0) Interlocked.Add(ref _metricsProcessed, processed);
             double elapsedMs = (Stopwatch.GetTimestamp() - started) * 1000d / Stopwatch.Frequency;
             lock (_metricsLock) _metricsPumpMs += elapsedMs;
+            SelfMetrics.Add("RpcPump",elapsedMs);
         }
 
+        private static readonly Dictionary<string,int> lastWindow=new Dictionary<string,int>();
+        private static double windowStarted=DiagnosticClock.Now,lastWindowSeconds=1,periodStarted=DiagnosticClock.Now;
+        internal static void Accumulate()
+        {
+            foreach(var item in RpcIngress.Drain())
+            {
+                if(_totalByMethod.Count>=256&&!_totalByMethod.ContainsKey(item.Method))item.Method="[overflow]";
+                _windowByMethod.TryGetValue(item.Method,out int wc);_windowByMethod[item.Method]=wc+item.Count;
+                _totalByMethod.TryGetValue(item.Method,out int tc);_totalByMethod[item.Method]=tc+item.Count;
+                if(!_totalByMethodActor.TryGetValue(item.Method,out var actors))_totalByMethodActor[item.Method]=actors=new Dictionary<int,int>();
+                if(actors.Count>=64&&!actors.ContainsKey(item.Actor))item.Actor=-1;
+                actors.TryGetValue(item.Actor,out int ac);actors[item.Actor]=ac+item.Count;
+                _totalBytesByMethod.TryGetValue(item.Method,out long bytes);_totalBytesByMethod[item.Method]=bytes+item.Bytes;
+                _maxBytesByMethod.TryGetValue(item.Method,out int max);_maxBytesByMethod[item.Method]=Math.Max(max,item.MaxBytes);
+            }
+        }
         public static void Tick()
         {
-            if (!_inited) return;
-            PumpQueue();
-            _windowTimer += Time.unscaledDeltaTime;
+            if(!_inited)return;Accumulate();PumpQueue();
+            if(DiagnosticClock.Now-periodStarted>=Math.Max(1,NetworkAbuseDetector.ReportIntervalSeconds)){WritePeriodicReport();periodStarted=DiagnosticClock.Now;}
+            _windowTimer = (float)(DiagnosticClock.Now-windowStarted);
             if (_windowTimer < WindowSeconds) return;
             OnWindowEnd();
-            _windowTimer = 0f;
+            _windowTimer = 0f;windowStarted=DiagnosticClock.Now;
         }
 
         private static void ProcessDequeued(ref RpcQueueItem item)
         {
             string methodName = item.methodName;
 
-            // 累加统计
-            _windowByMethod.TryGetValue(methodName, out int wc);
-            _windowByMethod[methodName] = wc + 1;
-
-            _totalByMethod.TryGetValue(methodName, out int tc);
-            _totalByMethod[methodName] = tc + 1;
-
-            if (!_totalByMethodActor.TryGetValue(methodName, out var inner))
-            {
-                inner = new Dictionary<int, int>(4);
-                _totalByMethodActor[methodName] = inner;
-            }
-            inner.TryGetValue(item.senderActor, out int ac);
-            inner[item.senderActor] = ac + 1;
-
-            if (item.payloadBytes > 0)
-            {
-                _totalBytesByMethod.TryGetValue(methodName, out long tb);
-                _totalBytesByMethod[methodName] = tb + item.payloadBytes;
-                _maxBytesByMethod.TryGetValue(methodName, out int mb);
-                if (item.payloadBytes > mb) _maxBytesByMethod[methodName] = item.payloadBytes;
-            }
-
+            if(item.epoch!=DiagnosticContext.RoomEpoch)return;
+            LastQueueDelayMs=Math.Max(0,(DiagnosticClock.Now-item.enqueueRealtime)*1000);
             if (item.watched && _watchedByMethod.TryGetValue(methodName, out var buf))
             {
                 RecordWatched(ref item, buf);
@@ -445,7 +452,7 @@ namespace WhySoLaggy
                     StructuredLogger.WriteEvent(new StructuredEvent
                     {
                         Timestamp = StructuredLogger.NowStamp(),
-                        FrameNumber = Time.frameCount,
+                        FrameNumber = DiagnosticContext.Frame,
                         Type = EventType.RpcCall,
                         Fields = new Dictionary<string, object>
                         {
@@ -461,7 +468,7 @@ namespace WhySoLaggy
                             { "QueueSequence", item.queueSequence },
                             { "EnqueueTimestamp", StructuredLogger.StampFromUtcTicks(item.enqueueTicks) },
                             { "EnqueueFrameNumber", item.enqueueFrame },
-                            { "QueueDelayMs", Math.Round((double)Math.Max(0f, (Time.realtimeSinceStartup - item.enqueueRealtime) * 1000f), 3) },
+                            { "QueueDelayMs", Math.Round((double)Math.Max(0f, (DiagnosticClock.Now - item.enqueueRealtime) * 1000f), 3) },
                         },
                     });
                 }
@@ -475,11 +482,11 @@ namespace WhySoLaggy
 
         private static int EstimatePayloadSize(Hashtable rpcData)
         {
-            int total = 16;
+            long total = 16;
             object argsObj = rpcData[K_ARGS];
-            if (!(argsObj is object[] args)) return total;
+            if (!(argsObj is object[] args)) return (int)total;
 
-            for (int i = 0; i < args.Length; i++)
+            for (int i = 0; i < Math.Min(args.Length,64); i++)
             {
                 object a = args[i];
                 if (a == null) { total += 1; continue; }
@@ -507,24 +514,26 @@ namespace WhySoLaggy
                     case Quaternion _:
                         total += 16; break;
                     case string s:
-                        total += 2 + s.Length * 2; break;
+                        total += 2 + s.Length * 2L; break;
                     case byte[] ba:
                         total += 4 + ba.Length; break;
                     case int[] ia:
-                        total += 4 + ia.Length * 4; break;
+                        total += 4 + ia.Length * 4L; break;
                     case float[] fa:
-                        total += 4 + fa.Length * 4; break;
+                        total += 4 + fa.Length * 4L; break;
                     case Array arr:
-                        total += 4 + arr.Length * 4; break;
+                        total += 4 + arr.Length * 4L; break;
                     default:
                         total += 16; break;
                 }
             }
-            return total;
+            if(args.Length>64)Interlocked.Increment(ref RpcIngress.Truncated);
+            return (int)Math.Min(int.MaxValue,total);
         }
 
         private static void RecordWatched(ref RpcQueueItem item, MethodBuffer buf)
         {
+            long queryStart=Stopwatch.GetTimestamp();
             string targetName = null;
             string targetPath = null;
             try
@@ -544,6 +553,7 @@ namespace WhySoLaggy
             }
             catch { }
 
+            SelfMetrics.Add("ObjectQuery",DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-queryStart));
             string argSum = BuildArgsSummary(item.args);
 
             string specific = null;
@@ -557,10 +567,10 @@ namespace WhySoLaggy
                 senderActor = item.senderActor,
                 senderName = item.senderName,
                 targetViewID = item.targetVID,
-                targetName = targetName,
-                targetPath = targetPath,
-                argsSummary = argSum,
-                specificDesc = specific,
+                targetName = EventCodec.Limit(targetName??"unavailable",128),
+                targetPath = EventCodec.Limit(targetPath,256),
+                argsSummary = EventCodec.Limit(argSum,256),
+                specificDesc = EventCodec.Limit(specific,256),
                 payloadBytes = item.payloadBytes,
             };
 
@@ -829,6 +839,9 @@ namespace WhySoLaggy
 
         public static void OnWindowEnd()
         {
+            lastWindowSeconds=Math.Max(.001,DiagnosticClock.Now-windowStarted);lastWindow.Clear();
+            foreach(var p in _windowByMethod)lastWindow[p.Key]=p.Value;
+            foreach(var p in lastWindow.OrderByDescending(x=>x.Value).Take(TopMethodCount))StructuredLogger.WriteEvent(new StructuredEvent{Type=EventType.NetworkSample,FrameNumber=DiagnosticContext.Frame,Fields=new Dictionary<string,object>{{"RpcMethod",p.Key},{"Count",p.Value},{"ActualWindowSeconds",lastWindowSeconds},{"Rate",p.Value/lastWindowSeconds}}});
             QueueWindowStats stats = _queue.TakeWindowStats();
             if (stats.Dropped > 0)
             {
@@ -839,7 +852,7 @@ namespace WhySoLaggy
                     StructuredLogger.WriteEvent(new StructuredEvent
                     {
                         Timestamp = StructuredLogger.NowStamp(),
-                        FrameNumber = Time.frameCount,
+                        FrameNumber = DiagnosticContext.Frame,
                         Type = EventType.AbuseAlert,
                         Fields = new Dictionary<string, object>
                         {
@@ -926,6 +939,7 @@ namespace WhySoLaggy
             Enabled = false;
             _inited = false;
             _windowTimer = 0f;
+            RpcIngress.Reset();
             _queue.Clear();
             _totalByMethod.Clear();
             _totalByMethodActor.Clear();
@@ -996,18 +1010,12 @@ namespace WhySoLaggy
 
         /// <summary>1.0.3：Dashboard 专用 — 取当前窗口 top N watched 明细（字符串摘要）。</summary>
         public static string GetRecentWatchedSummary(int maxLines)
-        {
-            _argsSb.Clear();
-            int lines = 0;
-            foreach (var kv in _watchedByMethod)
-            {
-                if (lines >= maxLines) break;
-                var mb = kv.Value;
-                if (mb.Total == 0) continue;
-                _argsSb.Append(kv.Key).Append('=').Append(mb.Total).Append(' ');
-                lines++;
-            }
-            return _argsSb.Length == 0 ? "(none)" : _argsSb.ToString();
-        }
+        {return UiText.Get("Last window","最近窗口")+" ("+lastWindowSeconds.ToString("F2")+"s): "+string.Join("  ",lastWindow.OrderByDescending(x=>x.Value).Take(maxLines).Select(x=>x.Key+"="+x.Value+" ("+(x.Value/lastWindowSeconds).ToString("F1")+"/s)"));}
+        internal static void ApplyCapacity(){_queue.Capacity=QueueCapacity;}
+        internal static void ReconfigureWatches(string extra,int capacity)
+        {if(WatchedRecordPerMethodCapacity==capacity&&_extraWatchMethods.SetEquals((extra??"").Split(',').Select(x=>x.Trim()).Where(x=>x.Length>0)))return;
+            AddExtraWatchMethods(extra);WatchedRecordPerMethodCapacity=capacity;_watchedByMethod.Clear();foreach(var name in WatchedMethods)_watchedByMethod[name]=new MethodBuffer(capacity);}
+        internal static void ResetEpoch()
+        {if(!_inited){RpcIngress.Reset();_queue.Clear();return;}Accumulate();WritePeriodicReport();RpcIngress.Reset();_queue.Clear();lastWindow.Clear();windowStarted=DiagnosticClock.Now;_totalByMethod.Clear();_windowByMethod.Clear();_totalByMethodActor.Clear();_totalBytesByMethod.Clear();_maxBytesByMethod.Clear();foreach(var b in _watchedByMethod.Values)b.Reset();}
     }
 }

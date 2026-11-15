@@ -7,13 +7,18 @@ namespace WhySoLaggy
     {
         private readonly Queue<T> _items = new Queue<T>();
         private readonly object _lock = new object();
+        private readonly Queue<int> _sizes = new Queue<int>();
+        private readonly Func<T,int> _size;
+        private readonly long _byteCapacity;
+        private long _bytes;
+        public long Bytes { get { lock(_lock)return _bytes; } }
         private int _capacity;
         private int _peakCount;
         private long _droppedInWindow;
 
-        public BoundedConcurrentQueue(int capacity)
+        public BoundedConcurrentQueue(int capacity, Func<T,int> size = null, long byteCapacity = long.MaxValue)
         {
-            Capacity = capacity;
+            _size=size; _byteCapacity=byteCapacity; Capacity = capacity;
         }
 
         public int Capacity
@@ -27,7 +32,7 @@ namespace WhySoLaggy
                     _capacity = value;
                     while (_items.Count > _capacity)
                     {
-                        _items.Dequeue();
+                        _items.Dequeue(); _bytes-=_sizes.Dequeue();
                         _droppedInWindow++;
                     }
                     if (_items.Count > _peakCount) _peakCount = _items.Count;
@@ -44,16 +49,18 @@ namespace WhySoLaggy
         {
             lock (_lock)
             {
-                _items.Enqueue(item);
-                bool dropped = false;
-                if (_items.Count > _capacity)
+                int size=Math.Max(0,_size?.Invoke(item)??0);
+                if(size>_byteCapacity){_droppedInWindow++;return new QueueEnqueueResult(_items.Count,true,1);}
+                _items.Enqueue(item);_sizes.Enqueue(size);_bytes+=size;
+                bool dropped = false;int droppedCount=0;
+                while (_items.Count > _capacity || _bytes>_byteCapacity)
                 {
-                    _items.Dequeue();
+                    _items.Dequeue(); _bytes-=_sizes.Dequeue();
                     _droppedInWindow++;
-                    dropped = true;
+                    dropped = true; droppedCount++;
                 }
                 if (_items.Count > _peakCount) _peakCount = _items.Count;
-                return new QueueEnqueueResult(_items.Count, dropped);
+                return new QueueEnqueueResult(_items.Count, dropped,droppedCount);
             }
         }
 
@@ -66,7 +73,7 @@ namespace WhySoLaggy
                     item = default(T);
                     return false;
                 }
-                item = _items.Dequeue();
+                item = _items.Dequeue();_bytes-=_sizes.Dequeue();
                 return true;
             }
         }
@@ -86,7 +93,7 @@ namespace WhySoLaggy
         {
             lock (_lock)
             {
-                _items.Clear();
+                _items.Clear();_sizes.Clear();_bytes=0;
                 _peakCount = 0;
                 _droppedInWindow = 0;
             }
@@ -95,12 +102,13 @@ namespace WhySoLaggy
 
     internal struct QueueEnqueueResult
     {
-        public QueueEnqueueResult(int depth, bool dropped)
+        public QueueEnqueueResult(int depth, bool dropped,int droppedCount=0)
         {
             Depth = depth;
-            Dropped = dropped;
+            Dropped = dropped; DroppedCount=droppedCount;
         }
 
+        public int DroppedCount { get; }
         public int Depth { get; }
         public bool Dropped { get; }
     }

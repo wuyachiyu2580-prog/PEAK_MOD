@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +15,7 @@ namespace WhySoLaggy
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
     [BepInDependency("com.github.PEAKModding.PEAKLib.ModConfig", BepInDependency.DependencyFlags.SoftDependency)]
-    public class WhySoLaggyPlugin : BaseUnityPlugin, IOnEventCallback
+    public partial class WhySoLaggyPlugin : BaseUnityPlugin, IOnEventCallback
     {
         public const string PluginGuid = "com.wuyachiyu.WhySoLaggy";
         public const string PluginName = "WhySoLaggy";
@@ -82,9 +82,13 @@ namespace WhySoLaggy
         private float _reportTimer;
         private bool _profilingActive;
         private bool _modConfigRefreshScheduled;
+        private readonly DeferredProfilerSwitch _patchProfilerSwitch = new DeferredProfilerSwitch();
+        private bool _patchProfilerReady;
 
         void Awake()
         {
+            DiagnosticContext.MainThreadId=System.Threading.Thread.CurrentThread.ManagedThreadId;
+            DiagnosticContext.SessionId=Guid.NewGuid().ToString("N");
             Log = Logger;
             Log.LogInfo("[WHY_LAG] WhySoLaggy Awake");
 
@@ -103,7 +107,7 @@ namespace WhySoLaggy
                 "Profile each BepInEx plugin's Update/LateUpdate/FixedUpdate callbacks. Disabled by default; turn on only when diagnosing.");
 
             EnablePatchProfiling = Config.Bind("General", "EnablePatchProfiling", false,
-                "Profile all Harmony-patched game methods. Disabled by default; turn on only when diagnosing.");
+                "Profile supported Harmony-patched methods. Toggle applies on the next game update after startup initialization; disabling removes only timing hooks. Disabled by default.");
 
             TopMethodCount = Config.Bind("General", "TopMethodCount", 10,
                 new ConfigDescription(
@@ -195,14 +199,14 @@ namespace WhySoLaggy
             // ── 1.0.3 性能/过滤/日志 ──
             MinReportMs = Config.Bind("General", "MinReportMs", 0.1f,
                 new ConfigDescription(
-                    "Ignore patched methods whose average cost is below this threshold (ms), to reduce profiler overhead.",
+                    "Sample low-cost methods less often below this average time (ms); calls and frame timings remain counted. Applied when patch profiling is next enabled.",
                     new AcceptableValueRange<float>(0f, 5f)));
         
             IgnorePluginGuids = Config.Bind("General", "IgnorePluginGuids", "",
                 "Comma-separated plugin GUIDs to skip in PluginProfiler.");
         
             IgnorePatchMethods = Config.Bind("General", "IgnorePatchMethods", "",
-                "Comma-separated full method names (Type.Method) to skip in PatchProfiler.");
+                "Comma-separated method names (Type.Method or full signatures) to skip. Applied when patch profiling is next enabled or the game restarts.");
         
             VerbosityCfg = Config.Bind("Logging", "LogVerbosity", LogVerbosity.Minimal,
                 "Minimal (default) = abuse alerts + their detail lines + monitor init/error/milestones. Normal = Minimal + periodic reports (RPC top/watched, FPS, patch/plugin profiler, frame spike detail).");
@@ -307,6 +311,9 @@ namespace WhySoLaggy
             // 创建 Harmony 实例
             _harmony = new Harmony(PluginGuid);
             PatchProfiler.OwnHarmonyId = PluginGuid;
+            InitializeRuntime();
+            ModConfigLocalization.ApplyLocalizedDescriptions(GetConfigEntries());
+            _patchProfilerSwitch.Request(EnablePatchProfiling.Value);
             try
             {
                 ModConfigLocalization.PatchDisplayNames(_harmony);
@@ -347,14 +354,14 @@ namespace WhySoLaggy
             Log.LogInfo("[WHY_LAG] Waiting 5s for all plugins to finish loading...");
             LagLogger.Info("[WHY_LAG] Waiting 5s for all plugins to finish loading...");
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSecondsRealtime(5f);
 
             // 扫描插件并注入计时
             if (EnablePluginProfiling.Value)
-                PluginProfiler.Initialize(_harmony);
+                PluginProfiler.Request(true,false);
 
-            if (EnablePatchProfiling.Value)
-                PatchProfiler.Initialize(_harmony);
+            _patchProfilerReady = true;
+            ApplyRuntimeHooks();
 
             // 炸房监测初始化
             if (EnableAbuseDetection.Value)
@@ -369,7 +376,7 @@ namespace WhySoLaggy
                 NetworkAbuseDetector.OwnershipGrabRateThreshold = OwnershipGrabRateThreshold.Value;
                 NetworkAbuseDetector.OwnershipRequestRateThreshold = OwnershipRequestRateThreshold.Value;
                 NetworkAbuseDetector.AlertCooldownSeconds = AlertCooldownSeconds.Value;
-                NetworkAbuseDetector.Initialize(_harmony);
+                NetworkAbuseDetector.Initialize(abuseHarmony);
             }
 
             // RPC 监控初始化（独立开关）
@@ -383,7 +390,7 @@ namespace WhySoLaggy
                 RpcMonitor.QueueCapacity = QueueCapacity.Value;
                 RpcMonitor.WindowSeconds = AbuseCheckInterval.Value;
                 RpcMonitor.AddExtraWatchMethods(ExtraWatchMethods.Value);
-                RpcMonitor.Initialize(_harmony);
+                RpcMonitor.Initialize(rpcHarmony);
             }
             else
             {
@@ -398,7 +405,7 @@ namespace WhySoLaggy
             MethodTracer.TraceMethodNames = TraceMethodNames.Value;
             MethodTracer.TraceMaxDepth = TraceMaxDepth.Value;
             MethodTracer.TraceRateLimit = TraceRateLimit.Value;
-            try { MethodTracer.Initialize(_harmony); }
+            try { MethodTracer.Initialize(traceHarmony); }
             catch (Exception ex) { Log.LogWarning($"[WHY_LAG] MethodTracer.Initialize failed: {ex.Message}"); }
 
             // 字段探针 FieldProbe（按需）
@@ -408,9 +415,10 @@ namespace WhySoLaggy
             FieldProbe.DefaultMaxValueLen = FieldProbeDefaultMaxLen.Value;
             FieldProbe.DefaultIncludeStack = FieldProbeDefaultStack.Value;
             FieldProbe.DefaultStackMaxDepth = FieldProbeDefaultStackDepth.Value;
-            try { FieldProbe.Initialize(_harmony); }
+            try { FieldProbe.Initialize(probeHarmony); }
             catch (Exception ex) { Log.LogWarning($"[WHY_LAG] FieldProbe.Initialize failed: {ex.Message}"); }
         
+            runtimeStarted=true;System.Threading.Interlocked.Exchange(ref runtimeDirty,1);
             _profilingActive = true;
             Log.LogInfo("[WHY_LAG] Profiling active!");
             LagLogger.Info("[WHY_LAG] === Profiling active ===");
@@ -418,6 +426,12 @@ namespace WhySoLaggy
 
         void Update()
         {
+            long start=System.Diagnostics.Stopwatch.GetTimestamp();
+            try{UpdateCore();}finally{SelfMetrics.Add("MainUpdate",DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp()-start));}
+        }
+        private void UpdateCore()
+        {
+            RuntimeTick();
             StructuredLogger.Tick();
             // FPS 追踪始终运行
             FpsTracker.Tick();
@@ -435,13 +449,6 @@ namespace WhySoLaggy
             _reportFrameCount++;
             _reportTimer += Time.unscaledDeltaTime;
         
-            // 尖峰检测 → 即时日志
-            if (FpsTracker.IsSpikeFrame)
-            {
-                PluginProfiler.WriteSpikeDetail(FpsTracker.CurrentFrameMs);
-                PatchProfiler.WriteSpikeDetail();
-            }
-        
             // 定期汇总报告
             if (_reportTimer >= ReportIntervalSeconds.Value)
             {
@@ -454,20 +461,23 @@ namespace WhySoLaggy
             }
         
             // 帧末重置即时计时
-            PluginProfiler.ResetFrameTimers();
-            PatchProfiler.ResetFrameTimers();
+            // Completed frames are sealed by FrameCoordinator.
         }
         
         void OnDestroy()
         {
+            ShutdownRuntime();
+            if (EnablePatchProfiling != null) EnablePatchProfiling.SettingChanged -= OnPatchProfilingChanged;
+            _patchProfilerSwitch.Cancel();
+            _patchProfilerReady = false;
             StopAllCoroutines();
+            PatchProfiler.Shutdown();
             ModConfigLocalization.Shutdown();
             PhotonNetwork.RemoveCallbackTarget(this);
             _profilingActive = false;
             NetworkAbuseDetector.Shutdown();
             RpcMonitor.Shutdown();
             PluginProfiler.Shutdown();
-            PatchProfiler.Shutdown();
             MethodTracer.Shutdown();
             FieldProbe.Shutdown();
             FpsTracker.Reset();
@@ -484,8 +494,16 @@ namespace WhySoLaggy
             StructuredLogger.Shutdown();
         }
 
+        private void OnPatchProfilingChanged(object sender, EventArgs args)
+        {
+            _patchProfilerSwitch.Request(EnablePatchProfiling.Value);
+        }
+
+        private void ApplyPendingPatchProfiling(){ApplyRuntimeHooks();}
+
         private void OnGameLanguageChanged()
         {
+            UiText.Invalidate();
             ScheduleModConfigRefresh();
             ModConfigLocalization.RefreshVisibleUi();
         }
@@ -521,6 +539,7 @@ namespace WhySoLaggy
             {
                 SpikeThresholdMs,
                 ReportIntervalSeconds,
+                AutoCapture, AdaptiveTiming, CpuGpuMetrics, RpcPumpBudget, DashboardFont, DashboardPosition, DashboardKey, CaptureKey, MarkerKey,
                 EnablePluginProfiling,
                 EnablePatchProfiling,
                 TopMethodCount,
@@ -589,9 +608,9 @@ namespace WhySoLaggy
 
         void OnGUI()
         {
-            if (EnableAbuseDetection.Value)
-                AbuseNotificationUI.DrawGUI();
-            PerformanceDashboard.DrawGUI();
+            long start=System.Diagnostics.Stopwatch.GetTimestamp();
+            try{if(EnableAbuseDetection.Value)AbuseNotificationUI.DrawGUI();PerformanceDashboard.DrawGUI();}
+            finally{SelfMetrics.Add("Hud",DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp()-start));}
         }
     }
 }

@@ -37,7 +37,7 @@ namespace WhySoLaggy
         {
             _notifications.Add(new Notification
             {
-                Message = message,
+                Message = UiText.LocalizeChinese(message),
                 ExpireTime = Time.unscaledTime + DisplayDuration
             });
 

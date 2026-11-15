@@ -1,0 +1,40 @@
+mode=declared-only; type=ProbeKey; declaring=ProbeBase`1[System.Int32]; reflected=ProbeBase`1[System.Int32]
+RESULT=PASS value=Int32:localized timingHits=1
+processExit=0
+mode=inherited-only; type=ProbeKey; declaring=ProbeBase`1[System.Int32]; reflected=ProbeKey
+RESULT=FAIL ArgumentException: 无法解析方法 System.String GetDisplayName()，因为方法句柄 ProbeBase`1[T] 的声明类型为泛型。请显式向 GetMethodFromHandle 提供声明类型。 
+processExit=2
+mode=inherited-then-declared; type=ProbeKey; declaring=ProbeBase`1[System.Int32]; reflected=ProbeKey
+mode=inherited-then-declared; type=ProbeKey; declaring=ProbeBase`1[System.Int32]; reflected=ProbeBase`1[System.Int32]
+RESULT=FAIL ArgumentException: 无法解析方法 System.String GetDisplayName()，因为方法句柄 ProbeBase`1[T] 的声明类型为泛型。请显式向 GetMethodFromHandle 提供声明类型。 
+processExit=2
+mode=declared-then-inherited; type=ProbeKey; declaring=ProbeBase`1[System.Int32]; reflected=ProbeBase`1[System.Int32]
+mode=declared-then-inherited; type=ProbeKey; declaring=ProbeBase`1[System.Int32]; reflected=ProbeKey
+RESULT=FAIL ArgumentException: 无法解析方法 System.String GetDisplayName()，因为方法句柄 ProbeBase`1[T] 的声明类型为泛型。请显式向 GetMethodFromHandle 提供声明类型。 
+processExit=2
+mode=inherited-no-profiler; type=ProbeKey; declaring=ProbeBase`1[System.Int32]; reflected=ProbeKey
+RESULT=PASS value=Int32:localized timingHits=0
+processExit=0
+mode=inherited-normalized-profiler; type=ProbeKey; declaring=ProbeBase`1[System.Int32]; reflected=ProbeKey
+RESULT=PASS value=Int32:localized timingHits=1
+processExit=0
+mode=declared-only; type=ProbePath; declaring=ProbeBase`1[System.String]; reflected=ProbeBase`1[System.String]
+RESULT=PASS value=String:localized timingHits=1
+processExit=0
+mode=inherited-only; type=ProbePath; declaring=ProbeBase`1[System.String]; reflected=ProbePath
+RESULT=FAIL ArgumentException: 无法解析方法 System.String GetDisplayName()，因为方法句柄 ProbeBase`1[T] 的声明类型为泛型。请显式向 GetMethodFromHandle 提供声明类型。 
+processExit=2
+mode=inherited-then-declared; type=ProbePath; declaring=ProbeBase`1[System.String]; reflected=ProbePath
+mode=inherited-then-declared; type=ProbePath; declaring=ProbeBase`1[System.String]; reflected=ProbeBase`1[System.String]
+RESULT=FAIL ArgumentException: 无法解析方法 System.String GetDisplayName()，因为方法句柄 ProbeBase`1[T] 的声明类型为泛型。请显式向 GetMethodFromHandle 提供声明类型。 
+processExit=2
+mode=declared-then-inherited; type=ProbePath; declaring=ProbeBase`1[System.String]; reflected=ProbeBase`1[System.String]
+mode=declared-then-inherited; type=ProbePath; declaring=ProbeBase`1[System.String]; reflected=ProbePath
+RESULT=FAIL ArgumentException: 无法解析方法 System.String GetDisplayName()，因为方法句柄 ProbeBase`1[T] 的声明类型为泛型。请显式向 GetMethodFromHandle 提供声明类型。 
+processExit=2
+mode=inherited-no-profiler; type=ProbePath; declaring=ProbeBase`1[System.String]; reflected=ProbePath
+RESULT=PASS value=String:localized timingHits=0
+processExit=0
+mode=inherited-normalized-profiler; type=ProbePath; declaring=ProbeBase`1[System.String]; reflected=ProbePath
+RESULT=PASS value=String:localized timingHits=1
+processExit=0

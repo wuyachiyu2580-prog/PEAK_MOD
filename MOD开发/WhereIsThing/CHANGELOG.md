@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.3
+
+- Distinguish hidden mandrakes from medicinal roots before pickup, using their actual pickup identity. Terrain plants follow the Ground filter.
+- Preserve existing custom selections while correcting the untouched Survival Medical preset.
+- Group ordinary luggage behind one entry, with region and loot-pool filters available in the expandable advanced view. Revival statues appear under Landmarks.
+- Use one label per trap chest. Opened chests stop appearing unless their trap is still active.
+- Add Current Segment / Whole Map scope. The default includes the current segment and its entry camp; unlimited distance stays within that scope. Carried items follow their current position.
+- Use scene hierarchy and supporting terrain for segment detection, with runtime progress boundaries as a fallback. Unassigned objects on maps without usable boundaries are limited to the nearby 40 metres in Current Segment mode.
+- Fix mixed-language backpack/statue suffixes and variant counts. New filters and status text follow the same language rules; preset target summaries respect the name-language setting.
+- Refresh open windows and existing labels after language changes, and use an available Chinese-capable game font when required.
+
+Validated against PEAK 3.0.1 assemblies. In-game rendering, multiplayer behavior and custom-map boundaries still require playtesting.
+
 ## 0.1.2
 
 - Clarified that player-name labels are for fun only: late joins and missing placement information can leave names unavailable, while some objects only show their item name and distance.

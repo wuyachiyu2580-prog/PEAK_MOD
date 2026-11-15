@@ -1,0 +1,50 @@
+[
+  {
+    "Version": "1.6.0",
+    "Source": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\cache\\PEAKModding-ModConfig\\1.6.0\\plugins\\com.github.PEAKModding.PEAKLib.ModConfig.dll",
+    "KeyCodeBase": "Zorro.Settings.Setting",
+    "KeyCodeOwnGetDisplayName": 1,
+    "GenericBaseOwnGetDisplayName": 0,
+    "SHA256": "EB76692288456B647B753FA6B526765C76143858B56AB5B38630FAA383CBBE88"
+  },
+  {
+    "Version": "1.6.1",
+    "Source": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\cache\\PEAKModding-ModConfig\\1.6.1\\plugins\\com.github.PEAKModding.PEAKLib.ModConfig.dll",
+    "KeyCodeBase": "Zorro.Settings.Setting",
+    "KeyCodeOwnGetDisplayName": 1,
+    "GenericBaseOwnGetDisplayName": 0,
+    "SHA256": "3F39A278D7441C2DA5B2F7132609252AE464113E8170DBAF9E8FEE938C5FF1EF"
+  },
+  {
+    "Version": "1.7.0",
+    "Source": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\cache\\PEAKModding-ModConfig\\1.7.0\\plugins\\com.github.PEAKModding.PEAKLib.ModConfig.dll",
+    "KeyCodeBase": "PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting`1<UnityEngine.KeyCode>",
+    "KeyCodeOwnGetDisplayName": 0,
+    "GenericBaseOwnGetDisplayName": 1,
+    "SHA256": "6363FE99D4CD884A7D45497B25DAE041CCE32708EC9D0B9A93771584F53E552D"
+  },
+  {
+    "Version": "1.8.0",
+    "Source": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\cache\\PEAKModding-ModConfig\\1.8.0\\plugins\\com.github.PEAKModding.PEAKLib.ModConfig.dll",
+    "KeyCodeBase": "PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting`1<UnityEngine.KeyCode>",
+    "KeyCodeOwnGetDisplayName": 0,
+    "GenericBaseOwnGetDisplayName": 1,
+    "SHA256": "FAF466BE2FDED7EFBA0595C637FBF07A536325250AAAA820E797B967202DD010"
+  },
+  {
+    "Version": "1.8.1",
+    "Source": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\cache\\PEAKModding-ModConfig\\1.8.1\\plugins\\com.github.PEAKModding.PEAKLib.ModConfig.dll",
+    "KeyCodeBase": "PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting`1<UnityEngine.KeyCode>",
+    "KeyCodeOwnGetDisplayName": 0,
+    "GenericBaseOwnGetDisplayName": 1,
+    "SHA256": "6E4812BA2ED5506D309AF666D90548FB56E20A2513142A6576B42C8827B16A8E"
+  },
+  {
+    "Version": "1.8.2",
+    "Source": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\cache\\PEAKModding-ModConfig\\1.8.2\\plugins\\com.github.PEAKModding.PEAKLib.ModConfig.dll",
+    "KeyCodeBase": "PEAKLib.ModConfig.SettingOptions.BepInExInputBindingSetting`1<UnityEngine.KeyCode>",
+    "KeyCodeOwnGetDisplayName": 0,
+    "GenericBaseOwnGetDisplayName": 1,
+    "SHA256": "BF28E6EFDC0069DF7FBEB0EEA3695D50660FDE6A138BB48D33AF3B1A28375691"
+  }
+]

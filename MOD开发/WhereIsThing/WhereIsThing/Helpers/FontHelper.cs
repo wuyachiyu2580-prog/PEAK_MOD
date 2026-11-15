@@ -7,7 +7,7 @@ namespace WhereIsThing
 {
     internal static class FontHelper
     {
-        private const string ChineseSample = "物品在哪简体中文急救箱绷带药用根茎灵药菇";
+        private const string ChineseSample = "物品在哪简体中文急救箱绷带药用根茎灵药菇曼德拉草行李箱雕像关卡营地陷阱";
         private static TMP_FontAsset _cached;
 
         public static TMP_FontAsset GetChineseCapable()
@@ -176,11 +176,14 @@ namespace WhereIsThing
             System.Collections.Generic.List<TMP_FontAsset> fonts = new System.Collections.Generic.List<TMP_FontAsset>();
 
             TMP_FontAsset gameDefault = GetGameDefaultFont();
-            if (gameDefault != null)
+            if (gameDefault != null) fonts.Add(gameDefault);
+            if (FontFallbackSwapper.instance != null)
             {
-                fonts.Add(gameDefault);
+                if (FontFallbackSwapper.instance.simplifiedChineseFont != null)
+                    fonts.Add(FontFallbackSwapper.instance.simplifiedChineseFont);
+                if (FontFallbackSwapper.instance.traditionalChineseFont != null)
+                    fonts.Add(FontFallbackSwapper.instance.traditionalChineseFont);
             }
-
             TextMeshProUGUI anyText = Object.FindAnyObjectByType<TextMeshProUGUI>();
             if (anyText != null && anyText.font != null)
             {

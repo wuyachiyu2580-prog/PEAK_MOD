@@ -84,22 +84,15 @@ namespace WhySoLaggy.Tests
             Assert.AreEqual(1000d, PatchProfiler.EstimateTotalTicks(100, 10, 100), 0.001d);
             Assert.AreEqual(0d, PatchProfiler.EstimateTotalTicks(0, 0, 100), 0.001d);
 
-            PatchProfiler.Shutdown();
-            PatchProfiler.MinReportMs = float.MaxValue;
-            MethodInfo record = typeof(PatchProfiler).GetMethod("Record", BindingFlags.NonPublic | BindingFlags.Static);
-            for (int i = 0; i < 100; i++) record.Invoke(null, new object[] { "test.method", 10L });
-
-            var timings = (IDictionary)typeof(PatchProfiler)
-                .GetField("_timings", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-            object timing = timings["test.method"];
-            Assert.AreEqual(100, (int)timing.GetType().GetField("ExactCallCount").GetValue(timing));
-            Assert.IsTrue((int)timing.GetType().GetField("SampledCallCount").GetValue(timing) < 100);
-
-            var frames = (IDictionary)typeof(PatchProfiler)
-                .GetField("_frameTimers", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-            object frame = frames["test.method"];
-            Assert.AreEqual(100, (int)frame.GetType().GetField("Calls").GetValue(frame));
-            PatchProfiler.Shutdown();
+            TimingLedger.Remove("test");
+            var entry=TimingLedger.Register("test",typeof(OverloadedTarget).GetMethod(nameof(OverloadedTarget.Work),new[]{typeof(int),typeof(string)}),"test");
+            entry.Adaptive=true;entry.Threshold=double.MaxValue;
+            for(int i=0;i<100;i++){var call=TimingLedger.Enter(entry);TimingLedger.Exit(ref call,null);}
+            var sample=TimingLedger.Snapshot("test",true).Single();
+            Assert.AreEqual(100L,sample.Calls);
+            Assert.IsTrue(sample.Samples>=32 && sample.Samples<100);
+            Assert.AreEqual(0,TimingLedger.Snapshot("test",true).Count);
+            TimingLedger.Remove("test");
         }
 
         [TestMethod]
@@ -275,6 +268,7 @@ namespace WhySoLaggy.Tests
         {
             var expected = new[]
             {
+                "Capture/AutoCapture", "Capture/CaptureKey", "Capture/MarkerKey", "General/AdaptiveTiming", "General/CpuGpuMetrics", "RpcMonitor/PumpBudgetMs", "UI/FontSize", "UI/Position", "UI/DashboardKey",
                 "General/SpikeThresholdMs", "General/ReportIntervalSeconds", "General/EnablePluginProfiling",
                 "General/EnablePatchProfiling", "General/TopMethodCount", "General/MinReportMs",
                 "General/IgnorePluginGuids", "General/IgnorePatchMethods", "General/EnableMemoryMonitor",
@@ -360,9 +354,9 @@ namespace WhySoLaggy.Tests
         }
 
         [TestMethod]
-        public void WatchedRpcNames_AllExistInPeak24bPunRpcSet()
+        public void WatchedRpcNames_AllExistInCurrentPeakPunRpcSet()
         {
-            string assemblyCSharp = FindPeak24bAssemblyCSharp();
+            string assemblyCSharp = FindCurrentPeakAssemblyCSharp();
             var rpcNames = new HashSet<string>(StringComparer.Ordinal);
             var declaration = new Regex(@"^\s*(?:public|private|protected|internal)\s+(?:static\s+)?[\w\.<>\[\],]+\s+(?<name>[A-Za-z_]\w*)\s*\(");
 
@@ -383,7 +377,7 @@ namespace WhySoLaggy.Tests
             }
 
             string[] missing = RpcMonitor.WatchedMethods.Where(name => !rpcNames.Contains(name)).OrderBy(name => name).ToArray();
-            Assert.AreEqual(0, missing.Length, "Missing [PunRPC] in PEAK 2.4.b: " + string.Join(", ", missing));
+            Assert.AreEqual(0, missing.Length, "Missing [PunRPC] in " + assemblyCSharp + ": " + string.Join(", ", missing));
             foreach (string added in new[] { "OnPickupAccepted", "SetItemInstanceDataRPC", "SetKinematicRPC", "RPCA_StartGrabbing", "RPCA_GrabCharacter", "RPC_SpawnItemInHandMaster" })
                 Assert.IsTrue(RpcMonitor.WatchedMethods.Contains(added), "Expected watched RPC: " + added);
             foreach (string stale in new[] { "IncrementFriendHealingRpc", "IncrementPoisonHealedStat", "LightLanternRPC", "RPCA_AddStatusBingBing", "RPCA_ConsumeItem", "RPCA_FallWithScreenShake", "RPCA_Revive", "SetHeldItemID" })
@@ -406,19 +400,25 @@ namespace WhySoLaggy.Tests
             Assert.AreEqual(11, (int)EventType.OwnershipChange);
         }
 
-        private static string FindPeak24bAssemblyCSharp()
+        private static string FindCurrentPeakAssemblyCSharp()
         {
+            string configured = Environment.GetEnvironmentVariable("PEAK_DECOMPILED_ASSEMBLY_CSHARP");
+            if (!string.IsNullOrWhiteSpace(configured))
+            {
+                Assert.IsTrue(Directory.Exists(configured), "Configured PEAK decompilation does not exist: " + configured);
+                return configured;
+            }
             foreach (string start in new[] { Environment.CurrentDirectory, AppDomain.CurrentDomain.BaseDirectory })
             {
                 var directory = new DirectoryInfo(start);
                 while (directory != null)
                 {
-                    string candidate = Path.Combine(directory.FullName, "引用参考代码", "反编译", "2.4.b", "Assembly-CSharp");
+                    string candidate = Path.Combine(directory.FullName, "引用参考代码", "反编译", "3.1.0", "Assembly-CSharp");
                     if (Directory.Exists(candidate)) return candidate;
                     directory = directory.Parent;
                 }
             }
-            Assert.Fail("Could not locate 引用参考代码\\反编译\\2.4.b\\Assembly-CSharp.");
+            Assert.Fail("Set PEAK_DECOMPILED_ASSEMBLY_CSHARP or provide the PEAK 3.1.0 decompilation.");
             return null;
         }
 

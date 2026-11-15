@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="3bb031e0-efeb-44cd-9498-a49642459fbb" name="Administrator@DESKTOP-3PF2CMK 2026-11-13 23:13:22" runUser="DESKTOP-3PF2CMK\Administrator" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-13T23:13:22.4834113+08:00" queuing="2026-11-13T23:13:22.4834118+08:00" start="2026-11-13T23:13:20.5444339+08:00" finish="2026-11-13T23:13:22.4901022+08:00" />
+  <TestSettings name="default" id="6494fbf5-4959-48de-9b20-0571d4adbe19">
+    <Deployment runDeploymentRoot="Administrator_DESKTOP-3PF2CMK_2026-11-13_23_13_22" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d432f16b-8c45-4d3a-a606-c4e7c734d5e4" testId="5d2731fb-7868-2bc0-6627-cb382d58dc3a" testName="SharedGenericSettings_KeepTranslationsAndCountOnce (True,False)" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0066861" startTime="2026-11-13T23:13:22.2512679+08:00" endTime="2026-11-13T23:13:22.2582452+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d432f16b-8c45-4d3a-a606-c4e7c734d5e4" />
+    <UnitTestResult executionId="b0191ed8-9ec4-4911-9684-b1f84d597a90" testId="e8983e32-7980-b14c-4a34-bedc06842015" testName="SharedGenericSettings_KeepTranslationsAndCountOnce (True,True)" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0060040" startTime="2026-11-13T23:13:22.2681895+08:00" endTime="2026-11-13T23:13:22.2751971+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b0191ed8-9ec4-4911-9684-b1f84d597a90" />
+    <UnitTestResult executionId="f764dc88-33f6-49cf-845e-074bb4e0d65a" testId="4530b415-6758-6d16-f72c-bf5036719347" testName="SharedGenericSettings_KeepTranslationsAndCountOnce (False,False)" computerName="DESKTOP-3PF2CMK" duration="00:00:00.4059045" startTime="2026-11-13T23:13:21.5991896+08:00" endTime="2026-11-13T23:13:22.2432813+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f764dc88-33f6-49cf-845e-074bb4e0d65a" />
+    <UnitTestResult executionId="6df58e77-4503-41ed-933f-c3ff3074c81d" testId="6f765b77-d034-4b37-e84d-b13d8e3e6cf1" testName="SharedGenericSettings_KeepTranslationsAndCountOnce (False,True)" computerName="DESKTOP-3PF2CMK" duration="00:00:00.0091505" startTime="2026-11-13T23:13:22.2582452+08:00" endTime="2026-11-13T23:13:22.2681895+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6df58e77-4503-41ed-933f-c3ff3074c81d" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="SharedGenericSettings_KeepTranslationsAndCountOnce (True,False)" storage="c:\users\administrator\desktop\mod\peak\.build\whysolaggy-fix-20261113\tests\whysolaggy.tests.dll" id="5d2731fb-7868-2bc0-6627-cb382d58dc3a">
+      <Execution id="d432f16b-8c45-4d3a-a606-c4e7c734d5e4" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\whysolaggy-fix-20261113\tests\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.PatchProfilerIntegrationTests" name="SharedGenericSettings_KeepTranslationsAndCountOnce" />
+    </UnitTest>
+    <UnitTest name="SharedGenericSettings_KeepTranslationsAndCountOnce (False,True)" storage="c:\users\administrator\desktop\mod\peak\.build\whysolaggy-fix-20261113\tests\whysolaggy.tests.dll" id="6f765b77-d034-4b37-e84d-b13d8e3e6cf1">
+      <Execution id="6df58e77-4503-41ed-933f-c3ff3074c81d" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\whysolaggy-fix-20261113\tests\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.PatchProfilerIntegrationTests" name="SharedGenericSettings_KeepTranslationsAndCountOnce" />
+    </UnitTest>
+    <UnitTest name="SharedGenericSettings_KeepTranslationsAndCountOnce (False,False)" storage="c:\users\administrator\desktop\mod\peak\.build\whysolaggy-fix-20261113\tests\whysolaggy.tests.dll" id="4530b415-6758-6d16-f72c-bf5036719347">
+      <Execution id="f764dc88-33f6-49cf-845e-074bb4e0d65a" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\whysolaggy-fix-20261113\tests\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.PatchProfilerIntegrationTests" name="SharedGenericSettings_KeepTranslationsAndCountOnce" />
+    </UnitTest>
+    <UnitTest name="SharedGenericSettings_KeepTranslationsAndCountOnce (True,True)" storage="c:\users\administrator\desktop\mod\peak\.build\whysolaggy-fix-20261113\tests\whysolaggy.tests.dll" id="e8983e32-7980-b14c-4a34-bedc06842015">
+      <Execution id="b0191ed8-9ec4-4911-9684-b1f84d597a90" />
+      <TestMethod codeBase="C:\Users\Administrator\Desktop\MOD\PEAK\.build\whysolaggy-fix-20261113\tests\WhySoLaggy.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="WhySoLaggy.Tests.PatchProfilerIntegrationTests" name="SharedGenericSettings_KeepTranslationsAndCountOnce" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="5d2731fb-7868-2bc0-6627-cb382d58dc3a" executionId="d432f16b-8c45-4d3a-a606-c4e7c734d5e4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e8983e32-7980-b14c-4a34-bedc06842015" executionId="b0191ed8-9ec4-4911-9684-b1f84d597a90" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4530b415-6758-6d16-f72c-bf5036719347" executionId="f764dc88-33f6-49cf-845e-074bb4e0d65a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6f765b77-d034-4b37-e84d-b13d8e3e6cf1" executionId="6df58e77-4503-41ed-933f-c3ff3074c81d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

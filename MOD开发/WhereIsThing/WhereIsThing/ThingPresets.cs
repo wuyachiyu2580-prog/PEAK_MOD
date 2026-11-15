@@ -350,7 +350,8 @@ namespace WhereIsThing
             "RopeShooterAnti"
         };
 
-        public static string BuildSummary(ThingPresetDefinition preset, IEnumerable<ThingTargetDefinition> catalog)
+        public static string BuildSummary(ThingPresetDefinition preset, IEnumerable<ThingTargetDefinition> catalog,
+            ThingNameLanguage language = ThingNameLanguage.Game)
         {
             if (preset == null)
             {
@@ -362,7 +363,7 @@ namespace WhereIsThing
             {
                 List<string> names = catalog
                     .Where(definition => definition != null && definition.IsSelected(preset.SelectedItemIds, preset.SelectedLuggageTypes, preset.SelectedSceneTargetTypes))
-                    .Select(definition => definition.GetDisplayName(ThingNameLanguage.Game))
+                    .Select(definition => definition.GetDisplayName(language))
                     .Distinct()
                     .OrderBy(value => value)
                     .Take(6)
@@ -370,7 +371,7 @@ namespace WhereIsThing
 
                 if (names.Count > 0)
                 {
-                    pieces.Add(string.Join(ThingUi.IsChinese ? "、" : ", ", names.ToArray()));
+                    pieces.Add(string.Join(ThingCatalog.UseChineseNames(language) ? "、" : ", ", names.ToArray()));
                 }
             }
 

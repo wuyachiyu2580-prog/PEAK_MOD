@@ -32,7 +32,9 @@ namespace WhySoLaggy
             "QueueSequence", "EnqueueTimestamp", "EnqueueFrameNumber", "QueueDelayMs",
             "RpcQueueDepth", "RpcQueuePeak", "RpcQueueDropped", "RpcProcessedCount", "RpcPumpMs",
             "StructuredEventsWritten", "StructuredFlushMs",
-            "SuppressedCount", "PeakRate",
+            "SuppressedCount", "PeakRate", "SchemaVersion", "SessionId", "RoomEpoch", "Sequence", "MonotonicSeconds", "CaptureId", "Validity",
+            "UnityAllocatedBytes", "ManagedUsedBytes", "ManagedCapacityBytes", "MemoryNetKBps", "GcAllocatedFrameBytes", "GcAllocationStatus", "GcCollections",
+            "P95FrameMs", "P99FrameMs", "Low1Fps", "SampleCount", "SampleCoverage", "BackgroundMs", "Exceptions", "MethodId", "TimingKind", "CoveredMs", "UnattributedMs", "SceneState",
         };
 
         private static readonly object _lock = new object();
@@ -40,7 +42,7 @@ namespace WhySoLaggy
         private static readonly StringBuilder _jsonRow = new StringBuilder(512);
         private static readonly StringBuilder _csvBuffer = new StringBuilder(8192);
         private static readonly StringBuilder _jsonBuffer = new StringBuilder(8192);
-        private static readonly long FlushIntervalTicks = TimeSpan.TicksPerSecond;
+
         private static StreamWriter _csvWriter;
         private static StreamWriter _jsonlWriter;
         private static string _dir;
@@ -55,6 +57,8 @@ namespace WhySoLaggy
 
         public static void Initialize(string dir)
         {
+            DiagnosticIO.Start();
+            if(DiagnosticContext.IsMainThread&&!DiagnosticIO.IsWorker){DiagnosticIO.Enqueue(()=>Initialize(dir),256,true);return;}
             lock (_lock)
             {
                 if (_inited) return;
@@ -90,59 +94,33 @@ namespace WhySoLaggy
             }
         }
 
+        internal static event Action<StructuredEvent> EventWritten;
+        private static double nextFlush,nextDiskRetry;
+        private static int diskFailures;
+        internal static long DiskDropped;
         public static void WriteEvent(StructuredEvent evt)
         {
             if (!_inited) return;
-            lock (_lock)
-            {
-                if (_csvWriter == null || _jsonlWriter == null) return;
-                try
-                {
-                    AppendCsvRow(evt);
-                    AppendJsonlRow(evt);
-                    _eventsSinceMetrics++;
-                }
-                catch (Exception ex)
-                {
-                    WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] StructuredLogger buffer failed: {ex.Message}");
-                }
-            }
+            var frozen=EventCodec.Freeze(evt);
+            try {EventWritten?.Invoke(frozen);} catch { }
+            bool important=evt.Type==EventType.AbuseAlert||evt.Type==EventType.ExceptionSummary||evt.Type==EventType.CaptureState;
+            DiagnosticIO.Enqueue(()=>{long start=System.Diagnostics.Stopwatch.GetTimestamp();lock(_lock){AppendCsvRow(frozen);AppendJsonlRow(frozen);_eventsSinceMetrics++;if(_csvBuffer.Length+_jsonBuffer.Length>262144)FlushBuffersLocked();}SelfMetrics.Add("Serialization",DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp()-start));},EventCodec.Size(frozen),important);
         }
-
         public static void Tick()
-        {
-            if (!_inited) return;
-            lock (_lock)
-            {
-                if (DateTime.UtcNow.Ticks - _lastFlushTicks >= FlushIntervalTicks)
-                    FlushBuffersLocked();
-            }
-        }
-
+        {if(!_inited||DiagnosticClock.Now<nextFlush)return;nextFlush=DiagnosticClock.Now+1;DiagnosticIO.Enqueue(()=>{lock(_lock)FlushBuffersLocked();TextLogSink.Flush();},128,true);}
         public static void Flush()
-        {
-            if (!_inited) return;
-            lock (_lock) FlushBuffersLocked();
-        }
-
+        {if(!_inited)return;Action action=()=>{lock(_lock)FlushBuffersLocked();TextLogSink.Flush();};if(DiagnosticContext.IsMainThread)DiagnosticIO.Enqueue(action,128,true);else DiagnosticIO.Barrier(action);}
         public static void Shutdown()
         {
-            lock (_lock)
-            {
-                if (_inited) FlushBuffersLocked();
-                CloseWriters();
-                _csvBuffer.Clear();
-                _jsonBuffer.Clear();
-                _inited = false;
-                _lastFlushTicks = 0;
-                _eventsSinceMetrics = 0;
-                _lastFlushMs = 0;
-            }
+            if(!_inited)return;
+            DiagnosticIO.Enqueue(()=>{lock(_lock){FlushBuffersLocked();CloseWriters();_csvBuffer.Clear();_jsonBuffer.Clear();_inited=false;_eventsSinceMetrics=0;}TextLogSink.Close();},256,true);
+            DiagnosticIO.Stop();
         }
 
         private static void FlushBuffersLocked()
         {
-            long started = DateTime.UtcNow.Ticks;
+            if(DiagnosticClock.Now<nextDiskRetry){BoundFailedBuffer();return;}
+            long started = System.Diagnostics.Stopwatch.GetTimestamp();
             try
             {
                 RotateIfNeeded();
@@ -157,19 +135,23 @@ namespace WhySoLaggy
                     _jsonBuffer.Clear();
                 }
                 _csvWriter?.Flush();
-                _jsonlWriter?.Flush();
+                _jsonlWriter?.Flush();diskFailures=0;nextDiskRetry=0;
             }
             catch (Exception ex)
             {
-                WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] StructuredLogger flush failed: {ex.Message}");
+                diskFailures++;nextDiskRetry=DiagnosticClock.Now+Math.Min(30,Math.Pow(2,Math.Min(diskFailures,5)));
+                DiagnosticIO.Error = "Flush failed: " + ex.GetType().Name;BoundFailedBuffer();
             }
             finally
             {
                 _lastFlushTicks = DateTime.UtcNow.Ticks;
-                _lastFlushMs = Math.Max(0d, (_lastFlushTicks - started) * 1000d / TimeSpan.TicksPerSecond);
+                _lastFlushMs = DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp()-started);
+                SelfMetrics.Add("Flush",_lastFlushMs);
             }
         }
 
+        private static void BoundFailedBuffer()
+        {if(_csvBuffer.Length+_jsonBuffer.Length>262144){_csvBuffer.Clear();_jsonBuffer.Clear();DiskDropped++;}}
         private static void AppendCsvRow(StructuredEvent evt)
         {
             _csvRow.Clear();

@@ -1,0 +1,290 @@
+Mono path[0] = 'C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/Managed'
+Mono config path = 'C:/SteamLibrary/steamapps/common/PEAK/MonoBleedingEdge/etc'
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.3.15f1 (c1aa84e375f6)
+[Subsystems] Discovering subsystems at path C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/UnitySubsystems
+Forcing GfxDevice: Direct3D 11
+GfxDevice: creating device client; kGfxThreadingModeClientWorkerJobs
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 4070 SUPER (ID=0x2783)
+    Vendor:   NVIDIA
+    VRAM:     11999 MB
+    Driver:   32.0.15.6636
+[D3D12 Device Filter] Vendor Name: NVIDIA
+[D3D12 Device Filter] Device Name: NVIDIA GeForce RTX 4070 SUPER
+[D3D12 Device Filter] Driver Version: 32.0.15.6636
+[D3D12 Device Filter] Feature Level: 12.2
+[D3D12 Device Filter] Graphics Memory: 11999 MB
+[D3D12 Device Filter] Processor Count: 12
+[D3D12 Device Filter] Device Type: Discrete
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.352 seconds
+- Finished resetting the current domain, in  0.002 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+[SHA256] Input is plain '0' might be wrong here.
+[SHA256] caching input=0 | output=5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9
+[An0nPatch] An0n Fair Storms Plugin 1.0.6 Loaded!
+Shader 'W/Character_Giant': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Rock_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Character_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'GD/FoliageGD_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'GD/FoliageGD-Opaque_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Rope_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Petrified_Rock_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Peak/Grass_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Honey_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Vine_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'WavingFabric_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Standard_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Mirage_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'GD/GDGrass_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Clip_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Dither_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_GroundTransition_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Ice_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'GD/Water-GD_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Glass_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'W/Peak_Transparent_Night': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+TypeLoadException while resolving binding 'Move:<Gamepad>/leftStick[;Gamepad]' in action map 'InputSystem_Actions (UnityEngine.InputSystem.InputActionAsset):Default'
+TypeLoadException: Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>c:<>9__9_1' (1) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+  at (wrapper managed-to-native) System.RuntimeTypeHandle.type_is_assignable_from(System.Type,System.Type)
+  at System.RuntimeTypeHandle.CanCastTo (System.RuntimeType type, System.RuntimeType target) [0x00000] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+  at System.RuntimeType.IsAssignableFrom (System.Type c) [0x00020] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+  at UnityEngine.InputSystem.InputManager.RegisterCustomTypes (System.Type[] types) [0x00022] in <a4876c8349e549b49a63f896781885b0>:0 
+  at UnityEngine.InputSystem.InputManager.RegisterCustomTypes () [0x00074] in <a4876c8349e549b49a63f896781885b0>:0 
+  at UnityEngine.InputSystem.Utilities.TypeTable.TryLookupTypeRegistration (UnityEngine.InputSystem.Utilities.InternedString internedName) [0x00018] in <a4876c8349e549b49a63f896781885b0>:0 
+  at UnityEngine.InputSystem.Utilities.TypeTable.LookupTypeRegistration (System.String name) [0x00024] in <a4876c8349e549b49a63f896781885b0>:0 
+  at UnityEngine.InputSystem.InputBindingResolver.InstantiateWithParameters[TType] (UnityEngine.InputSystem.Utilities.TypeTable registrations, System.String namesAndParameters, TType[]& array, System.Int32& count, UnityEngine.InputSystem.InputActionMap actionMap, UnityEngine.InputSystem.InputBinding& binding) [0x00031] in <a4876c8349e549b49a63f896781885b0>:0 
+  at UnityEngine.InputSystem.InputBindingResolver.AddActionMap (UnityEngine.InputSystem.InputActionMap actionMap) [0x002fa] in <a4876c8349e549b49a63f896781885b0>:0 
+UnityEngine.DebugLogHandler:Internal_LogException_Injected(Exception, IntPtr)
+UnityEngine.DebugLogHandler:Internal_LogException(Exception, Object)
+UnityEngine.DebugLogHandler:LogException(Exception, Object)
+UnityEngine.Logger:LogException(Exception, Object)
+UnityEngine.Debug:LogException(Exception)
+UnityEngine.InputSystem.InputBindingResolver:AddActionMap(InputActionMap)
+UnityEngine.InputSystem.InputActionMap:ResolveBindings()
+UnityEngine.InputSystem.InputActionMap:ResolveBindingsIfNecessary()
+UnityEngine.InputSystem.InputActionMap:Enable()
+UnityEngine.InputSystem.InputActionAsset:Enable()
+UnityEngine.InputSystem.InputSystem:EnableActions()
+UnityEngine.InputSystem.InputSystem:InitializeInPlayer(IInputRuntime, InputSettings)
+UnityEngine.InputSystem.InputSystem:.cctor()
+
+Initializing Platform Utility
+Initialized Platform Utility
+<RI> Initializing input.
+Using Windows.Gaming.Input
+<RI> Input initialized.
+Initialized Type Parser for ACHIEVEMENTTYPE
+Initialized Type Parser for Item
+Initialized Type Parser for RunSettings+SETTINGTYPE
+Initialized Type Parser for System.Boolean
+Initialized Type Parser for System.Byte
+Initialized Type Parser for System.Single
+Initialized Type Parser for System.Int32
+Initialized Type Parser for Zorro.Core.CLI.ScriptPath
+Initialized Type Parser for System.UInt16
+Loaded Muted Logs: 
+Registering page: Console
+Registering page: Hotkeys
+UnloadTime: 0.756200 ms
+Odin Serializer ArchitectureInfo initialization with defaults (all unaligned read/writes disabled).
+Odin Serializer detected whitelisted runtime platform WindowsPlayer and memory read test succeeded; enabling all unaligned memory read/writes.
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: GunBody
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: BingBong
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Lid
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Ring
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Candle
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Jug
+Initializing GameHandler
+Initialized InputHandler
+[MapBundleService] Found 7 level bundles.
+[MapBundleService] Creating bundle metadata: C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels0-31.assetbundle has levels between 0 and 31
+[MapBundleService] Creating bundle metadata: C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels128-159.assetbundle has levels between 128 and 159
+[MapBundleService] Creating bundle metadata: C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels160-191.assetbundle has levels between 160 and 191
+[MapBundleService] Creating bundle metadata: C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels192-207.assetbundle has levels between 192 and 207
+[MapBundleService] Creating bundle metadata: C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels32-63.assetbundle has levels between 32 and 63
+[MapBundleService] Creating bundle metadata: C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels64-95.assetbundle has levels between 64 and 95
+[MapBundleService] Creating bundle metadata: C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels96-127.assetbundle has levels between 96 and 127
+Switched State to: DefaultConnectionState
+Registering page: Network Stats
+Registering page: Item Instance Datas
+Registering page: Reconnect Data
+Steam Lobby Handler initialized
+Failed to load setting of type FovSetting from PlayerPrefs.
+Failed to load setting of type ExtraFovSetting from PlayerPrefs.
+Failed to load setting of type FPSCapSetting from PlayerPrefs.
+Failed to load setting of type VSyncSetting from PlayerPrefs.
+Failed to load setting of type MouseSensitivitySetting from PlayerPrefs.
+Failed to load setting of type ControllerSensitivitySetting from PlayerPrefs.
+Failed to load setting of type ControllerIconSetting from PlayerPrefs.
+Failed to load setting of type InvertXSetting from PlayerPrefs.
+Failed to load setting of type InvertYSetting from PlayerPrefs.
+Failed to load setting of type ClimbInputSetting from PlayerPrefs.
+Failed to load setting of type SprintInputSetting from PlayerPrefs.
+Failed to load setting of type CrossPlatformSetting from PlayerPrefs.
+Failed to load setting of type HideRoomCodeSetting from PlayerPrefs.
+Failed to load setting of type HeadBobSetting from PlayerPrefs.
+Failed to load setting of type BugPhobiaSetting from PlayerPrefs.
+Failed to load setting of type PhotosensitiveSetting from PlayerPrefs.
+Failed to load setting of type ColorblindSetting from PlayerPrefs.
+Failed to load setting of type LookerSetting from PlayerPrefs.
+Registering page: Settings
+The referenced script on this Behaviour (Game Object 'Stone') is missing!
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Bishop_f
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: BounceShroomSpawn
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Bananna Berry
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Pawn_m
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Gem
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Cube.001
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Apple Berry
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Pine Berry
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Egg
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Cube
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Mesh_CoconutGreen Half
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: CloudFungus
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Mushroom Cluster
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: EggYolk
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Shroomberry
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Egg.002
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Balloon
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: statue.001
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Egg.001
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Mushroom_Warp
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Yuzu Berry
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Cube
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Chicken
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Rock_Round
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: HealingFungus
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: PChutePack
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Cube
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: RocketPack-Worn
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Mushroom Chubby
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Pepper Berry
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: FannyPack_Ground
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: FannyPack_Worn
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: Beehive
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: JetPack-Worn.001
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: JetPack-Ground.001
+Couldn't create a Convex Mesh from source mesh, within the maximum polygons limit (256). The partial hull will be used. Consider simplifying your mesh. Source mesh name: BasketballCol
+GameHandler initialized successfully!
+EOS SDK Initialized
+EOS Platform Interface created!
+Steam runtime manager initialized: True
+Skipping launch command check since this is handled by NetCode shim.
+Running Platform Bootstrap
+Waiting for Windows to Initialise
+Windows Platform Initialised
+Platform Bootstrap Complete
+Unloading 6 Unused Serialized files (Serialized files now loaded: 1)
+[154 - EncryptedAppTicketResponse] - k_EResultOK
+Successfully retrieved Encrypted App Ticket
+EOS auth start (steam)
+UnloadTime: 4.036200 ms
+Unable to load font face for [monoflow-regular SDF] font asset.
+Attaching mixer unifier to MainCamera
+Clearing stale Scene data!
+Got QuickSave Level Index 99, loading related asset bundle
+Has Valid Quicksave: True
+Steam auth ticket received, adding it to PhotonNetwork
+Got QuickSave Level Index 99, loading related asset bundle
+Has Valid Quicksave: True
+Sending GET Request to: https://peaklogin3.azurewebsites.net/api/VersionCheck?version=3.1
+StuffFinder is self-destructing.
+Single mixer found... we'll just set that to original and do nothing
+Photon StartPeerCreated using app version: 3.1
+[154 - EncryptedAppTicketResponse] - k_EResultOK
+Successfully retrieved Encrypted App Ticket
+EOS auth start (steam)
+Initializing NavigationContainerHandler
+Material count in the shared material list is higher than sub mesh count for the mesh. Object may be corrupted.
+Material count in the shared material list is higher than sub mesh count for the mesh. Object may be corrupted.
+Unloading 95 unused Assets to reduce memory usage. Loaded Objects now: 77137.
+Total: 52.177400 ms (FindLiveObjects: 3.832600 ms CreateObjectMapping: 1.696500 ms MarkObjects: 43.465100 ms  DeleteObjects: 3.182800 ms)
+
+[MapBundleService] C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels96-127.assetbundle Loaded!
+Got message: {"VersionOkay":true,"HoursUntilLevel":2,"MinutesUntilLevel":52,"SecondsUntilLevel":40,"LevelIndex":516,"Message":"PEAK is finally out on consoles (with crossplay!) Have fun, scouts! Let us know if anything breaks!!!","CrossplaySteam":true,"CrossplayXbox":true,"CrossplayPlayStation":true,"CrossplaySwitch":true}
+[MapBundleService] Already loaded C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels96-127.assetbundle
+Allowing Crossplay: True
+LoginAsync result: Success
+EOS auth done (0)
+Successfully got user token
+Transitioning to SettingsPage
+Hiding Blocklist
+Adding existing button General (SettingsTABSButton) to tab
+Adding existing button Controls (SettingsTABSButton) to tab
+Adding existing button Accessibility (SettingsTABSButton) to tab
+Adding existing button Graphics (SettingsTABSButton) to tab
+Adding existing button Audio (SettingsTABSButton) to tab
+Transitioning to ModSettings
+Adding existing button An0n Fair Storms (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Better Player Distance (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Better Item Info Display (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Better Peak Voice Fix (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Better Room Share (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Bing Bong AI (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Climb Info Tracker (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Compass (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Easy Backpack (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Fly Mod (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Item Spawner Enhanced (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Peak Music UI (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Peak Music (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Piggyback (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Players Info (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Remote Alive Helper (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Shoot Zombies (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button State Keeper (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button TFA Status Tracker (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button True Final Ascent (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Where Is My Amulet (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button Where Is Thing (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button General (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+Adding existing button General (PEAKLib.ModConfig.Components.ModdedTABSButton) to tab
+LoginAsync result: Success
+EOS auth done (0)
+Successfully got user token
+login succeeded when renewing auth.
+Transitioning to SettingsPage
+Transitioning to MainPage
+Got QuickSave Level Index 99, loading related asset bundle
+[MapBundleService] Already loaded C:/SteamLibrary/steamapps/common/PEAK/PEAK_Data/StreamingAssets/maps\levels96-127.assetbundle
+Has Valid Quicksave: True
+EOS Shutdown
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of GraphicsBuffer. Please use GraphicsBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+GarbageCollector disposing of ComputeBuffer. Please use ComputeBuffer.Release() or .Dispose() to manually release the buffer.
+Internal: There are remaining Allocations on the JobTempAlloc. This is a leak, and will impact performance
+To Debug, run app with -diag-job-temp-memory-leak-validation cmd line argument. This will output the callstacks of the leaked allocations.

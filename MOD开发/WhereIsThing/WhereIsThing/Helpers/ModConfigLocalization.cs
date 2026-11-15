@@ -62,10 +62,10 @@ namespace WhereIsThing
                     return key == "Enabled" || key == "ScanKey" || key == "WindowKey" ||
                         key == "ScanMode" || key == "DisplayDurationSeconds";
                 case "Display":
-                    return key == "NameLanguage" || key == "MaxDistance" || key == "FontSize" ||
+                    return key == "NameLanguage" || key == "MaxDistance" || key == "MapScope" || key == "FontSize" ||
                         key == "LabelFont" || key == "ShowOffscreenDirection" || key == "ShowOwnerNames";
                 case "Presets":
-                    return key == "PresetSchemaVersion" || key == "LocalPresets" ||
+                    return key == "PresetSchemaVersion" || key == "PickupIdentityVersion" || key == "LocalPresets" ||
                         key == "ActiveLocalPresetId" || key == "SelectedSharedPresetId" || key == "ShareMode";
                 case "Selection":
                     return key == "SelectedItemIds" || key == "SelectedLuggage" ||
@@ -97,6 +97,10 @@ namespace WhereIsThing
                 case "定时显示秒数": return "DisplayDurationSeconds";
                 case "名称语言": return "NameLanguage";
                 case "最大距离": return "MaxDistance";
+                case "地图范围": return "MapScope";
+                case "当前关卡及入口营地": return "CurrentSegment";
+                case "整张地图": return "WholeMap";
+                case "拾取类型迁移版本": return "PickupIdentityVersion";
                 case "标签字号": return "FontSize";
                 case "标签字体": return "LabelFont";
                 case "屏外方向提示": return "ShowOffscreenDirection";
@@ -185,6 +189,10 @@ namespace WhereIsThing
                 case "BuiltInOnly": return chinese ? "仅默认预设" : "Built-in Only";
                 case "PublishedPresets": return chinese ? "已发布预设" : "Published Presets";
                 case "Game": return chinese ? "跟随游戏" : "Follow Game";
+                case "MapScope": return chinese ? "地图范围" : "Map Scope";
+                case "CurrentSegment": return chinese ? "当前关卡及入口营地" : "Current Segment and Entry Camp";
+                case "WholeMap": return chinese ? "整张地图" : "Whole Map";
+                case "PickupIdentityVersion": return chinese ? "拾取类型迁移版本" : "Pickup Identity Version";
                 case "English": return "English";
                 case "SimplifiedChinese": return chinese ? "简体中文" : "Simplified Chinese";
                 case "Auto": return chinese ? "自动" : "Auto";
@@ -213,9 +221,11 @@ namespace WhereIsThing
                 case "ScanMode": return chinese ? "选择位置标签常驻显示，或在数秒后自动隐藏。" : "Keep location labels visible or hide them automatically after a few seconds.";
                 case "DisplayDurationSeconds": return chinese ? "定时模式下标签持续显示的秒数。" : "Number of seconds labels remain visible in Timed mode.";
                 case "NameLanguage": return chinese ? "物品名称跟随游戏语言，或强制使用英文/简体中文。" : "Follow the game language for item names, or force English/Simplified Chinese.";
-                case "MaxDistance": return chinese ? "显示标签的最大距离，单位米。0 表示不限制。" : "Maximum label distance in meters. Set to 0 for unlimited.";
+                case "MaxDistance": return chinese ? "所选地图范围内的最大距离，单位米。0 表示不限距离，仍遵守地图范围。" : "Maximum distance within the selected map scope. 0 is unlimited distance, not unlimited map scope.";
+                case "MapScope": return chinese ? "默认只显示当前关卡及入口营地，可切换到整张地图。自定义地图缺少有效关卡边界时，按场景归属和附近 40 米回退。" : "Show the current segment and its entry camp, or the whole map. Maps without valid boundaries use scene hierarchy and a nearby 40m fallback.";
+                case "PickupIdentityVersion": return chinese ? "内部拾取类型迁移版本，请勿手动编辑。" : "Internal pickup selection migration version. Do not edit manually.";
                 case "FontSize": return chinese ? "位置与距离标签的字号。" : "Font size used by location and distance labels.";
-                case "LabelFont": return chinese ? "选择仅用于英文位置标签的字体；中文可能显示为口口口。" : "Choose a font for English location labels only. Chinese text may display as tofu boxes.";
+                case "LabelFont": return chinese ? "选择位置标签字体；显示中文时会优先使用已有的中文字体补足缺字。" : "Choose the label font. Chinese names use an available Chinese-capable game font when needed.";
                 case "ShowOffscreenDirection": return chinese ? "目标在屏幕外时显示方向提示。" : "Show a direction indicator when a target is off-screen.";
                 case "ShowOwnerNames": return chinese ? "在支持的目标后显示放置者玩家名。" : "Show the placer name after supported labels.";
                 case "SelectedItemIds": return chinese ? "由 Alt+C 选择窗口维护的物品 ID，请勿手动编辑。" : "Item IDs managed by the Alt+C selection window. Do not edit manually.";

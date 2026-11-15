@@ -13,7 +13,7 @@ namespace WhereIsThing
         private const float MaxDistanceStep = 20f;
         private const float MaxDistanceMaximum = 500f;
         private readonly Canvas _canvas;
-        private readonly TMP_FontAsset _font;
+        private TMP_FontAsset _font;
         private readonly GameObject _root;
         private readonly GameObject _cursorWindowObject;
         private readonly MenuWindow _cursorWindow;
@@ -32,6 +32,9 @@ namespace WhereIsThing
         private readonly Toggle _ownerNamesToggle;
         private readonly Slider _maxDistanceSlider;
         private readonly TextMeshProUGUI _maxDistanceText;
+        private readonly TextMeshProUGUI _mapScopeText;
+        private ThingMapScope _mapScope;
+        private Action<ThingMapScope> _setMapScope;
         private readonly Dictionary<ThingLocationScope, Toggle> _scopeToggles = new Dictionary<ThingLocationScope, Toggle>();
         private readonly List<ThingPresetDefinition> _presets = new List<ThingPresetDefinition>();
         private GameObject _renameOverlay;
@@ -106,7 +109,7 @@ namespace WhereIsThing
             RectTransform viewport = viewportObject.GetComponent<RectTransform>();
             viewport.anchorMin = new Vector2(0f, 0f);
             viewport.anchorMax = new Vector2(1f, 1f);
-            viewport.offsetMin = new Vector2(22f, 142f);
+            viewport.offsetMin = new Vector2(22f, 180f);
             viewport.offsetMax = new Vector2(-22f, -132f);
             Image viewportImage = viewportObject.AddComponent<Image>();
             viewportImage.color = new Color(0f, 0f, 0f, 0.18f);
@@ -174,11 +177,47 @@ namespace WhereIsThing
                 0.8f, 1f, SetOwnerNamesInternal);
 
             CreateRenameDialog();
+            _mapScopeText = CreateButton(panel.transform, "MapScope", new Vector2(22f, 132f),
+                new Vector2(310f, 34f), string.Empty, delegate
+                {
+                    _setMapScope?.Invoke(_mapScope == ThingMapScope.CurrentSegment ? ThingMapScope.WholeMap : ThingMapScope.CurrentSegment);
+                });
+            RectTransform mapScopeRect = _mapScopeText.transform.parent.GetComponent<RectTransform>();
+            mapScopeRect.anchorMin = mapScopeRect.anchorMax = new Vector2(0f, 0f);
+            mapScopeRect.anchoredPosition = new Vector2(177f, 149f);
 
             _root.SetActive(false);
         }
 
         public bool IsOpen { get { return _isOpen; } }
+
+        public void RefreshLanguage(TMP_FontAsset font)
+        {
+            if (font != null) _font = font;
+            foreach (TextMeshProUGUI text in _root.GetComponentsInChildren<TextMeshProUGUI>(true))
+            {
+                text.font = _font;
+                string parent = text.transform.parent.name;
+                if (parent == "New") text.text = ThingUi.NewPreset();
+                else if (parent == "Close") text.text = ThingUi.Close();
+                else if (parent == "OwnerNames" && text.name == "Label") text.text = ThingUi.PlayerNames();
+                else if (parent == "Cancel") text.text = ThingUi.Cancel();
+                else if (parent == "Save") text.text = ThingUi.Save();
+                else if (parent == "NameInput" && text.name == "Placeholder") text.text = ThingUi.PresetNamePlaceholder();
+            }
+            _renameTitleText.text = ThingUi.RenamePresetTitle();
+            if (!string.IsNullOrEmpty(_renameErrorText.text)) _renameErrorText.text = ThingUi.PresetNameRequired();
+            foreach (var entry in _scopeToggles)
+            {
+                var label = entry.Value.GetComponentInChildren<TextMeshProUGUI>();
+                if (label == null) continue;
+                label.text = entry.Key == ThingLocationScope.Ground ? ThingUi.Ground() :
+                    entry.Key == ThingLocationScope.Held ? ThingUi.Held() :
+                    entry.Key == ThingLocationScope.Backpack ? ThingUi.Backpack() : ThingUi.Statue();
+            }
+            RebuildRows();
+            RebuildSettings();
+        }
 
         public void Open(IEnumerable<ThingPresetDefinition> presets, string activePresetId, bool allowEditing, bool usingFallbackPresets, ThingPresetShareMode shareMode,
             ThingLocationScope scopes, ThingScanMode scanMode, float displayDurationSeconds, float maxDistance, bool showOwnerNames,
@@ -186,7 +225,8 @@ namespace WhereIsThing
             Action<string, string> renamePreset, Action<string> togglePublished, Action<string> deletePreset, Action createPreset,
             Action<ThingPresetShareMode> setShareMode,
             Action<ThingLocationScope, bool> setScope, Action cycleScanMode, Action<int> adjustDisplayDuration,
-            Action<bool> setShowOwnerNames, Action<float> setMaxDistance)
+            Action<bool> setShowOwnerNames, Action<float> setMaxDistance,
+            ThingMapScope mapScope, Action<ThingMapScope> setMapScope)
         {
             _presets.Clear();
             _presets.AddRange((presets ?? Enumerable.Empty<ThingPresetDefinition>()).Where(preset => preset != null).Select(preset => preset.Clone()).ToList());
@@ -212,9 +252,14 @@ namespace WhereIsThing
             _adjustDisplayDuration = adjustDisplayDuration;
             _setShowOwnerNames = setShowOwnerNames;
             _setMaxDistance = setMaxDistance;
+            _mapScope = mapScope;
+            _setMapScope = setMapScope;
+            if (!_isOpen)
+            {
+                _previousCursorVisible = Cursor.visible;
+                _previousCursorLockState = Cursor.lockState;
+            }
             _isOpen = true;
-            _previousCursorVisible = Cursor.visible;
-            _previousCursorLockState = Cursor.lockState;
             _root.SetActive(true);
             CloseRenameDialog();
             RegisterCursorWindow();
@@ -313,6 +358,7 @@ namespace WhereIsThing
             _ownerNamesToggle.isOn = _showOwnerNames;
             _maxDistanceSlider.SetValueWithoutNotify(_maxDistance / MaxDistanceStep);
             _maxDistanceText.text = ThingUi.MaxDistanceLabel(_maxDistance);
+            _mapScopeText.text = ThingUi.MapScopeLabel(_mapScope);
 
             foreach (KeyValuePair<ThingLocationScope, Toggle> entry in _scopeToggles)
             {

@@ -1,5 +1,28 @@
 # WhereIsThing Files
 
+## 2026-10-29 23:32 WhereIsThing 0.1.3 发行文件已备齐
+
+新增 MOD开发/WhereIsThing/发行/0.1.3/：WhereIsThing.dll（180224 bytes，程序集 0.1.3.0）、icon.png、README.md、CHANGELOG.md、manifest.json。DLL SHA256：4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522，与 .build/whereisthing-0.1.3 和 2.0.a/BepInEx/plugins 根目录安装一致。验证报告 .build/whereisthing-release/verification.json；未生成 ZIP。
+
+## 2026-10-29 23:03 部署路径纠正
+
+用户明确要求 DLL 放在 2.0.a/BepInEx/plugins 根目录。此前采用子目录不符合要求；本次检查时 profile 下已没有 WhereIsThing.dll/PDB，不推断移除原因。现已将验证过的 0.1.3.0 DLL 和 PDB 复制到 C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/，csproj 默认 OutputPath 同步恢复根目录。DLL 为 180224 bytes，SHA256 4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522，与隔离产物一致；递归复查仅一份 DLL。未改功能或配置、未重新构建/启动游戏。本条覆盖下方当前安装在子目录的历史描述。既有 71 项逻辑回归与实机待验状态不变；仅同步本地 memory。
+
+## 2026-10-29 22:07 WhereIsThing 0.1.3 已实施
+
+当前源码与程序集 0.1.3 / 0.1.3.0。新增 `ThingPickupIdentity.cs`、`WhereIsThingPlugin.Plants.cs`、`WhereIsThingPlugin.Luggage.cs`、`ThingSegmentFilter.cs`、`Tests/WhereIsThing.Regression.csproj`（71 检查）。隔离构建命令：`dotnet build MOD开发/WhereIsThing/WhereIsThing/WhereIsThing.csproj -c Release -p:OutputPath=C:/Users/Administrator/Desktop/MOD/PEAK/.build/whereisthing-0.1.3/`。默认 OutputPath/安装为 profiles/2.0.a/BepInEx/plugins/WUYACHIYU-WhereIsThing/，DLL 180224 bytes，SHA256 4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522。备份 `.build/whereisthing-0.1.3/backup-20261029-220734/`。详见 [实施记录](IMPLEMENTATION_0.1.3_2026-10-29.md)。
+
+## 2026-10-29 21:36 反编译路径更新
+
+当前游戏参考：`引用参考代码/反编译/3.0.1/Assembly-CSharp/`；旧参考：`引用参考代码/反编译/作废/3.0.0/Assembly-CSharp/`。本需求涉及的 12 类对照一致，见调研报告顶部补充；仅更新文档，不改变工程引用或输出路径。
+
+## 2026-10-29 调研入口与实际路径
+
+- `RESEARCH_0.1.3_2026-10-29.md`：版本、语言、地形植物、箱子、关卡范围的证据/建议/待验矩阵。
+- 参考：`引用参考代码/反编译/BepInEx/plugins/LengSword-BetterItemInfoDisplay-0.1.5/BetterItemInfoDisplay/ItemInfoController.cs:151-181`。
+- 实际安装：`C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/WUYACHIYU-WhereIsThing/WhereIsThing.dll`，164352 bytes，SHA256 `CF1C9043F74E843032CB65F972137EA135297D690EA9E397929977AAB889BF63`；plugins 根目录当前无同名 DLL。csproj 默认仍输出根目录，后续部署必须防止重复安装。
+- 下方旧安装路径为历史。当前游戏 DLL 已异于 3.0.0 审核，详见报告基线；本轮无构建/产物更新。
+
 ## 2026-09-21 发行文件准备完成
 
 当前版本 `0.1.2` 的发行文件已按用户要求备齐（2026-09-21），目录 `MOD开发/WhereIsThing/发行/0.1.2`。包含 DLL、icon.png、README.md、CHANGELOG.md、manifest.json；未生成 ZIP、未上传。DLL 与上一轮通过构建/测试并部署的最终产物一致，完整实机验收仍待完成。
