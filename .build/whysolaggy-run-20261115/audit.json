@@ -1,0 +1,2054 @@
+{
+  "files": {
+    "whysolaggy_events_size_20261115_143336_253.jsonl": {
+      "first": "2026-11-15 14:30:48.853",
+      "last": "2026-11-15 14:33:35.244",
+      "bytes": 10460734,
+      "counts": {
+        "PluginTiming": 2187,
+        "PatchTiming": 2621,
+        "FrameSample": 12586,
+        "NetworkSample": 1178,
+        "SpikeFrame": 22,
+        "RpcCall": 857,
+        "AbuseAlert": 4,
+        "CaptureState": 1,
+        "FpsReport": 17,
+        "PeriodicReport": 5,
+        "OwnershipChange": 34,
+        "InstantiateTrace": 5,
+        "ExceptionSummary": 2
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_143726_024.jsonl": {
+      "first": "2026-11-15 14:33:35.252",
+      "last": "2026-11-15 14:37:25.022",
+      "bytes": 10469609,
+      "counts": {
+        "FrameSample": 17271,
+        "NetworkSample": 1608,
+        "RpcCall": 1143,
+        "SpikeFrame": 20,
+        "OwnershipChange": 41,
+        "FpsReport": 23,
+        "PluginTiming": 276,
+        "PatchTiming": 230,
+        "PeriodicReport": 8,
+        "AbuseAlert": 4,
+        "ExceptionSummary": 4,
+        "InstantiateTrace": 4
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_143826_367.jsonl": {
+      "first": "2026-11-15 14:37:25.029",
+      "last": "2026-11-15 14:38:26.253",
+      "bytes": 10475478,
+      "counts": {
+        "FrameSample": 4741,
+        "RpcCall": 663,
+        "NetworkSample": 526,
+        "OwnershipChange": 39,
+        "SpikeFrame": 14,
+        "FpsReport": 6,
+        "PluginTiming": 5484,
+        "PatchTiming": 6218,
+        "InstantiateTrace": 9,
+        "ExceptionSummary": 5,
+        "PeriodicReport": 2,
+        "AbuseAlert": 7,
+        "CaptureState": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_143834_864.jsonl": {
+      "first": "2026-11-15 14:38:26.253",
+      "last": "2026-11-15 14:38:34.744",
+      "bytes": 10419511,
+      "counts": {
+        "PatchTiming": 8225,
+        "FrameSample": 627,
+        "PluginTiming": 7536,
+        "RpcCall": 127,
+        "NetworkSample": 68,
+        "InstantiateTrace": 5,
+        "OwnershipChange": 7,
+        "SpikeFrame": 4,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_143842_759.jsonl": {
+      "first": "2026-11-15 14:38:34.744",
+      "last": "2026-11-15 14:38:42.672",
+      "bytes": 10425757,
+      "counts": {
+        "PatchTiming": 8427,
+        "FrameSample": 615,
+        "PluginTiming": 7392,
+        "RpcCall": 98,
+        "NetworkSample": 77,
+        "SpikeFrame": 4,
+        "InstantiateTrace": 2,
+        "OwnershipChange": 7,
+        "ExceptionSummary": 1,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_143921_879.jsonl": {
+      "first": "2026-11-15 14:38:42.678",
+      "last": "2026-11-15 14:39:20.869",
+      "bytes": 10480076,
+      "counts": {
+        "FrameSample": 3107,
+        "PatchTiming": 7383,
+        "PluginTiming": 6048,
+        "RpcCall": 415,
+        "SpikeFrame": 10,
+        "PeriodicReport": 2,
+        "NetworkSample": 329,
+        "OwnershipChange": 23,
+        "CaptureState": 1,
+        "FpsReport": 3,
+        "InstantiateTrace": 7
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_144255_439.jsonl": {
+      "first": "2026-11-15 14:39:20.876",
+      "last": "2026-11-15 14:42:54.421",
+      "bytes": 10469158,
+      "counts": {
+        "FrameSample": 17132,
+        "RpcCall": 1306,
+        "NetworkSample": 1597,
+        "SpikeFrame": 21,
+        "FpsReport": 22,
+        "PluginTiming": 264,
+        "PatchTiming": 220,
+        "InstantiateTrace": 6,
+        "OwnershipChange": 38,
+        "PeriodicReport": 7
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_144632_198.jsonl": {
+      "first": "2026-11-15 14:42:54.429",
+      "last": "2026-11-15 14:46:32.102",
+      "bytes": 10450522,
+      "counts": {
+        "FrameSample": 16619,
+        "RpcCall": 929,
+        "NetworkSample": 1342,
+        "SpikeFrame": 23,
+        "FpsReport": 21,
+        "PluginTiming": 667,
+        "PatchTiming": 712,
+        "OwnershipChange": 30,
+        "PeriodicReport": 7,
+        "InstantiateTrace": 3,
+        "ExceptionSummary": 3,
+        "AbuseAlert": 2,
+        "CaptureState": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_144640_719.jsonl": {
+      "first": "2026-11-15 14:46:32.102",
+      "last": "2026-11-15 14:46:40.620",
+      "bytes": 10443862,
+      "counts": {
+        "PluginTiming": 7154,
+        "PatchTiming": 8787,
+        "FrameSample": 595,
+        "NetworkSample": 67,
+        "SpikeFrame": 5,
+        "RpcCall": 39,
+        "FpsReport": 1,
+        "OwnershipChange": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_144649_810.jsonl": {
+      "first": "2026-11-15 14:46:40.620",
+      "last": "2026-11-15 14:46:49.666",
+      "bytes": 10466054,
+      "counts": {
+        "PluginTiming": 7236,
+        "PatchTiming": 8708,
+        "FrameSample": 602,
+        "RpcCall": 48,
+        "NetworkSample": 75,
+        "SpikeFrame": 4,
+        "OwnershipChange": 2,
+        "FpsReport": 1,
+        "PeriodicReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_144658_503.jsonl": {
+      "first": "2026-11-15 14:46:49.666",
+      "last": "2026-11-15 14:46:58.394",
+      "bytes": 10464963,
+      "counts": {
+        "PatchTiming": 8753,
+        "PluginTiming": 7082,
+        "FrameSample": 589,
+        "InstantiateTrace": 1,
+        "RpcCall": 161,
+        "OwnershipChange": 6,
+        "NetworkSample": 73,
+        "SpikeFrame": 4,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_144922_124.jsonl": {
+      "first": "2026-11-15 14:46:58.394",
+      "last": "2026-11-15 14:49:21.117",
+      "bytes": 10482956,
+      "counts": {
+        "PatchTiming": 3392,
+        "PluginTiming": 2797,
+        "FrameSample": 10981,
+        "RpcCall": 898,
+        "NetworkSample": 1031,
+        "SpikeFrame": 19,
+        "CaptureState": 1,
+        "OwnershipChange": 38,
+        "FpsReport": 14,
+        "InstantiateTrace": 3,
+        "ExceptionSummary": 2,
+        "PeriodicReport": 5
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145047_660.jsonl": {
+      "first": "2026-11-15 14:49:21.124",
+      "last": "2026-11-15 14:50:47.530",
+      "bytes": 10363020,
+      "counts": {
+        "FrameSample": 6777,
+        "RpcCall": 602,
+        "NetworkSample": 608,
+        "OwnershipChange": 47,
+        "FpsReport": 9,
+        "PluginTiming": 4476,
+        "PatchTiming": 5441,
+        "SpikeFrame": 10,
+        "PeriodicReport": 3,
+        "CaptureState": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145056_130.jsonl": {
+      "first": "2026-11-15 14:50:47.530",
+      "last": "2026-11-15 14:50:56.009",
+      "bytes": 10350318,
+      "counts": {
+        "PatchTiming": 8708,
+        "FrameSample": 592,
+        "PluginTiming": 7104,
+        "NetworkSample": 52,
+        "RpcCall": 31,
+        "SpikeFrame": 4,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145104_827.jsonl": {
+      "first": "2026-11-15 14:50:56.009",
+      "last": "2026-11-15 14:51:04.699",
+      "bytes": 10406190,
+      "counts": {
+        "PluginTiming": 7164,
+        "PatchTiming": 8740,
+        "FrameSample": 595,
+        "RpcCall": 18,
+        "NetworkSample": 55,
+        "SpikeFrame": 5,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145143_138.jsonl": {
+      "first": "2026-11-15 14:51:04.699",
+      "last": "2026-11-15 14:51:43.122",
+      "bytes": 10485501,
+      "counts": {
+        "PatchTiming": 7691,
+        "FrameSample": 2875,
+        "PluginTiming": 6276,
+        "NetworkSample": 249,
+        "SpikeFrame": 12,
+        "RpcCall": 129,
+        "CaptureState": 1,
+        "PeriodicReport": 2,
+        "FpsReport": 3,
+        "OwnershipChange": 2,
+        "ExceptionSummary": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145449_040.jsonl": {
+      "first": "2026-11-15 14:51:43.130",
+      "last": "2026-11-15 14:54:48.941",
+      "bytes": 10441908,
+      "counts": {
+        "FrameSample": 14716,
+        "NetworkSample": 1104,
+        "RpcCall": 590,
+        "FpsReport": 19,
+        "PluginTiming": 1554,
+        "PatchTiming": 1815,
+        "SpikeFrame": 17,
+        "OwnershipChange": 20,
+        "PeriodicReport": 6,
+        "InstantiateTrace": 2,
+        "ExceptionSummary": 3,
+        "CaptureState": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145457_248.jsonl": {
+      "first": "2026-11-15 14:54:48.941",
+      "last": "2026-11-15 14:54:57.033",
+      "bytes": 10354947,
+      "counts": {
+        "PluginTiming": 7122,
+        "PatchTiming": 8685,
+        "FrameSample": 592,
+        "NetworkSample": 59,
+        "SpikeFrame": 4,
+        "InstantiateTrace": 2,
+        "RpcCall": 31,
+        "OwnershipChange": 2,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145505_715.jsonl": {
+      "first": "2026-11-15 14:54:57.033",
+      "last": "2026-11-15 14:55:05.610",
+      "bytes": 10474834,
+      "counts": {
+        "PatchTiming": 8748,
+        "SpikeFrame": 5,
+        "FrameSample": 602,
+        "PluginTiming": 7236,
+        "RpcCall": 32,
+        "InstantiateTrace": 1,
+        "NetworkSample": 54,
+        "OwnershipChange": 1,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145513_879.jsonl": {
+      "first": "2026-11-15 14:55:05.620",
+      "last": "2026-11-15 14:55:13.777",
+      "bytes": 10426758,
+      "counts": {
+        "FrameSample": 596,
+        "PluginTiming": 7156,
+        "PatchTiming": 8783,
+        "RpcCall": 22,
+        "NetworkSample": 54,
+        "SpikeFrame": 4,
+        "PeriodicReport": 1,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145723_555.jsonl": {
+      "first": "2026-11-15 14:55:13.777",
+      "last": "2026-11-15 14:57:22.696",
+      "bytes": 10457273,
+      "counts": {
+        "PatchTiming": 4086,
+        "PluginTiming": 3368,
+        "FrameSample": 9787,
+        "RpcCall": 651,
+        "NetworkSample": 869,
+        "SpikeFrame": 16,
+        "CaptureState": 1,
+        "OwnershipChange": 22,
+        "FpsReport": 12,
+        "InstantiateTrace": 6,
+        "PeriodicReport": 4
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145846_232.jsonl": {
+      "first": "2026-11-15 14:57:22.703",
+      "last": "2026-11-15 14:58:46.093",
+      "bytes": 10345699,
+      "counts": {
+        "FrameSample": 6091,
+        "RpcCall": 445,
+        "NetworkSample": 606,
+        "PluginTiming": 4872,
+        "PatchTiming": 5736,
+        "FpsReport": 9,
+        "OwnershipChange": 14,
+        "SpikeFrame": 9,
+        "PeriodicReport": 3,
+        "InstantiateTrace": 3,
+        "ExceptionSummary": 1,
+        "AbuseAlert": 2,
+        "CaptureState": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145854_675.jsonl": {
+      "first": "2026-11-15 14:58:46.093",
+      "last": "2026-11-15 14:58:54.558",
+      "bytes": 10400541,
+      "counts": {
+        "PatchTiming": 8723,
+        "FrameSample": 597,
+        "PluginTiming": 7176,
+        "NetworkSample": 52,
+        "SpikeFrame": 5,
+        "OwnershipChange": 1,
+        "RpcCall": 18,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_145904_102.jsonl": {
+      "first": "2026-11-15 14:58:54.567",
+      "last": "2026-11-15 14:59:03.996",
+      "bytes": 10385155,
+      "counts": {
+        "FrameSample": 622,
+        "PluginTiming": 7472,
+        "PatchTiming": 8359,
+        "NetworkSample": 61,
+        "RpcCall": 27,
+        "SpikeFrame": 4,
+        "OwnershipChange": 1,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_150026_330.jsonl": {
+      "first": "2026-11-15 14:59:03.996",
+      "last": "2026-11-15 15:00:25.326",
+      "bytes": 10449130,
+      "counts": {
+        "PluginTiming": 4936,
+        "PatchTiming": 5958,
+        "FrameSample": 6159,
+        "InstantiateTrace": 4,
+        "RpcCall": 346,
+        "OwnershipChange": 11,
+        "ExceptionSummary": 2,
+        "NetworkSample": 495,
+        "SpikeFrame": 12,
+        "AbuseAlert": 2,
+        "CaptureState": 1,
+        "PeriodicReport": 3,
+        "FpsReport": 8
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_150231_850.jsonl": {
+      "first": "2026-11-15 15:00:25.334",
+      "last": "2026-11-15 15:02:31.765",
+      "bytes": 10398984,
+      "counts": {
+        "FrameSample": 9912,
+        "NetworkSample": 689,
+        "RpcCall": 544,
+        "SpikeFrame": 17,
+        "OwnershipChange": 40,
+        "FpsReport": 12,
+        "PluginTiming": 4172,
+        "PatchTiming": 3293,
+        "InstantiateTrace": 2,
+        "PeriodicReport": 4,
+        "CaptureState": 1,
+        "ExceptionSummary": 4
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_150238_149.jsonl": {
+      "first": "2026-11-15 15:02:31.765",
+      "last": "2026-11-15 15:02:38.062",
+      "bytes": 10473581,
+      "counts": {
+        "PluginTiming": 8919,
+        "PatchTiming": 7023,
+        "FrameSample": 742,
+        "ExceptionSummary": 6,
+        "NetworkSample": 22,
+        "RpcCall": 10,
+        "SpikeFrame": 4,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_150245_316.jsonl": {
+      "first": "2026-11-15 15:02:38.062",
+      "last": "2026-11-15 15:02:45.278",
+      "bytes": 10468092,
+      "counts": {
+        "PluginTiming": 9300,
+        "PatchTiming": 6606,
+        "FrameSample": 774,
+        "ExceptionSummary": 8,
+        "NetworkSample": 20,
+        "SpikeFrame": 5,
+        "RpcCall": 7,
+        "PeriodicReport": 1,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_150254_355.jsonl": {
+      "first": "2026-11-15 15:02:45.278",
+      "last": "2026-11-15 15:02:54.277",
+      "bytes": 10427532,
+      "counts": {
+        "PluginTiming": 9595,
+        "PatchTiming": 6211,
+        "FrameSample": 799,
+        "ExceptionSummary": 9,
+        "NetworkSample": 30,
+        "SpikeFrame": 5,
+        "RpcCall": 8,
+        "FpsReport": 1
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events_size_20261115_150350_624.jsonl": {
+      "first": "2026-11-15 15:02:54.277",
+      "last": "2026-11-15 15:03:49.621",
+      "bytes": 10426367,
+      "counts": {
+        "PluginTiming": 6018,
+        "PatchTiming": 4752,
+        "FrameSample": 6997,
+        "RpcCall": 6,
+        "ExceptionSummary": 56,
+        "NetworkSample": 84,
+        "SpikeFrame": 11,
+        "CaptureState": 1,
+        "FpsReport": 5,
+        "PeriodicReport": 2
+      },
+      "invalidLines": 0
+    },
+    "whysolaggy_events.jsonl": {
+      "first": "2026-11-15 15:03:49.626",
+      "last": "2026-11-15 15:05:20.249",
+      "bytes": 5723224,
+      "counts": {
+        "FrameSample": 10792,
+        "RpcCall": 80,
+        "NetworkSample": 185,
+        "ExceptionSummary": 20,
+        "PluginTiming": 108,
+        "PatchTiming": 90,
+        "FpsReport": 9,
+        "SpikeFrame": 14,
+        "AbuseAlert": 1,
+        "OwnershipChange": 10,
+        "SessionBoundary": 3,
+        "InstantiateTrace": 3,
+        "PeriodicReport": 2
+      },
+      "invalidLines": 0
+    }
+  },
+  "eventCount": 542211,
+  "types": {
+    "PluginTiming": 168147,
+    "PatchTiming": 183124,
+    "FrameSample": 166082,
+    "NetworkSample": 13319,
+    "SpikeFrame": 313,
+    "RpcCall": 10281,
+    "AbuseAlert": 22,
+    "CaptureState": 13,
+    "FpsReport": 207,
+    "PeriodicReport": 68,
+    "OwnershipChange": 437,
+    "InstantiateTrace": 68,
+    "ExceptionSummary": 127,
+    "SessionBoundary": 3
+  },
+  "sessions": {
+    "25a3930ab2ff4b8fb75074f77e37be8a": 542211
+  },
+  "states": {
+    "Gameplay": 147099,
+    "Unfocused": 12123,
+    "Airport": 6860
+  },
+  "frameStats": {
+    "Gameplay:avgFrameMs": {
+      "n": 147099,
+      "mean": 12.968998530241704,
+      "p50": 12.7327,
+      "p95": 18.0824,
+      "p99": 25.0473,
+      "max": 266.0134
+    },
+    "capture:avgFrameMs": {
+      "n": 13805,
+      "mean": 13.233342933719745,
+      "p50": 12.6767,
+      "p95": 19.6218,
+      "p99": 35.258,
+      "max": 195.0845
+    },
+    "Gameplay:selfMainMs": {
+      "n": 147099,
+      "mean": 0.281894320151724,
+      "p50": 0.1071,
+      "p95": 1.4953,
+      "p99": 2.3371999999999997,
+      "max": 98.03479999999999
+    },
+    "capture:selfMainMs": {
+      "n": 13805,
+      "mean": 0.7141155595798657,
+      "p50": 0.3867,
+      "p95": 1.7705,
+      "p99": 2.7767,
+      "max": 81.6009
+    },
+    "Gameplay:coveredMs": {
+      "n": 147099,
+      "mean": 0.2799882188186192,
+      "p50": 0.1989,
+      "p95": 0.5518,
+      "p99": 0.8967,
+      "max": 165.9455
+    },
+    "capture:coveredMs": {
+      "n": 13805,
+      "mean": 0.34100186888808404,
+      "p50": 0.1896,
+      "p95": 0.7397,
+      "p99": 1.1003,
+      "max": 165.9455
+    },
+    "standby:avgFrameMs": {
+      "n": 152277,
+      "mean": 12.395538559992774,
+      "p50": 12.3821,
+      "p95": 17.6799,
+      "p99": 24.5392,
+      "max": 1233.9106
+    },
+    "standby:selfMainMs": {
+      "n": 152277,
+      "mean": 0.240171923534077,
+      "p50": 0.1053,
+      "p95": 0.6855,
+      "p99": 2.311200000000001,
+      "max": 98.03479999999999
+    },
+    "standby:coveredMs": {
+      "n": 152277,
+      "mean": 0.26123086480558716,
+      "p50": 0.1901,
+      "p95": 0.4982,
+      "p99": 0.8495,
+      "max": 77.3839
+    },
+    "Unfocused:avgFrameMs": {
+      "n": 12123,
+      "mean": 8.831179625505248,
+      "p50": 7.9954,
+      "p95": 14.222,
+      "p99": 21.8046,
+      "max": 1233.9106
+    },
+    "Unfocused:selfMainMs": {
+      "n": 12123,
+      "mean": 0.2814681184525283,
+      "p50": 0.1372,
+      "p95": 0.4506,
+      "p99": 2.3569000000000004,
+      "max": 84.22939999999998
+    },
+    "Unfocused:coveredMs": {
+      "n": 12123,
+      "mean": 0.17361710797657384,
+      "p50": 0.09,
+      "p95": 0.3012,
+      "p99": 0.6427,
+      "max": 21.5645
+    },
+    "Airport:avgFrameMs": {
+      "n": 6860,
+      "mean": 8.083763717201165,
+      "p50": 8.1559,
+      "p95": 12.2362,
+      "p99": 14.3798,
+      "max": 81.1648
+    },
+    "Airport:selfMainMs": {
+      "n": 6860,
+      "mean": 0.2262995189504373,
+      "p50": 0.0956,
+      "p95": 0.48519999999999996,
+      "p99": 2.6528,
+      "max": 75.0061
+    },
+    "Airport:coveredMs": {
+      "n": 6860,
+      "mean": 0.17437842565597675,
+      "p50": 0.1128,
+      "p95": 0.3671,
+      "p99": 0.5916,
+      "max": 66.2301
+    }
+  },
+  "maxima": {
+    "writerDropped": 0.0,
+    "diskDroppedBatches": 0.0,
+    "writerQueueBytes": 108380,
+    "capturePayloadBytes": 33554432,
+    "methodRecordOmitted": 2
+  },
+  "captureStates": [
+    {
+      "timestamp": "2026-11-15 14:30:51.464",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "e4ed472b6af7475a86a46a88c2abd956",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:38:19.152",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "55aa532b5a214064a94a9ad9a4c09446",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:38:49.153",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "55aa532b5a214064a94a9ad9a4c09446",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:46:31.609",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "8d1dfc374e5b4eedb695587c3a2825e4",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:47:01.632",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "8d1dfc374e5b4eedb695587c3a2825e4",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:50:42.507",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "e94bfec3442a47e4aca99be4495db0fa",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:51:12.525",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "e94bfec3442a47e4aca99be4495db0fa",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:54:47.434",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "cd3248db2da7490987ec636b47c6a247",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:55:17.443",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "cd3248db2da7490987ec636b47c6a247",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:58:40.131",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "a1f962ecb0384ebab8102b33740bb87b",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 14:59:10.140",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "a1f962ecb0384ebab8102b33740bb87b",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 15:02:28.771",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "6d6c0571f12f43d6909304e5e495e69d",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 15:02:58.777",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "6d6c0571f12f43d6909304e5e495e69d",
+      "roomEpoch": 7
+    }
+  ],
+  "captureRows": {
+    "e4ed472b6af7475a86a46a88c2abd956": 4646,
+    "55aa532b5a214064a94a9ad9a4c09446": 59506,
+    "8d1dfc374e5b4eedb695587c3a2825e4": 57107,
+    "e94bfec3442a47e4aca99be4495db0fa": 57807,
+    "cd3248db2da7490987ec636b47c6a247": 60359,
+    "a1f962ecb0384ebab8102b33740bb87b": 55287,
+    "6d6c0571f12f43d6909304e5e495e69d": 68867
+  },
+  "boundaries": [
+    {
+      "timestamp": "2026-11-15 15:04:08.510",
+      "roomEpoch": 8
+    },
+    {
+      "timestamp": "2026-11-15 15:05:19.088",
+      "roomEpoch": 9
+    },
+    {
+      "timestamp": "2026-11-15 15:05:20.249",
+      "roomEpoch": 11
+    }
+  ],
+  "errors": [
+    [
+      [
+        "NullReferenceException",
+        "Compass.CompassTapeUI.Update () (at <32e879d7c0ef4d2dade462af00e8003b>:0)"
+      ],
+      11903
+    ],
+    [
+      [
+        "Error",
+        ""
+      ],
+      43
+    ],
+    [
+      [
+        "NullReferenceException",
+        "FrogTongue.WaterRaycast () (at <e9a4fa24a0684abd8c8d66c4b2b65471>:0)"
+      ],
+      7
+    ],
+    [
+      [
+        "NullReferenceException",
+        "Compass.CompassTapeUI.UpdatePlayerMark (System.Int32 index, UnityEngine.Vector3 headingVector, UnityEngine.Vector3 rightVector, UnityEngine.Vector3 cameraPosition) (at <32e879d7c0ef4d2dade462af00e8003b>:0)"
+      ],
+      1
+    ],
+    [
+      [
+        "NullReferenceException",
+        "(wrapper dynamic-method) GUIManager.DMD<GUIManager::Start>(GUIManager)"
+      ],
+      1
+    ]
+  ],
+  "alerts": {
+    "ActorMethodHotspot": 13,
+    "RpcFlood": 6,
+    "InstantiateFlood": 1,
+    "DestroyFlood": 2
+  },
+  "largestSpikes": [
+    {
+      "timestamp": "2026-11-15 15:04:08.553",
+      "avgFrameMs": 1233.9106,
+      "coveredMs": 15.295,
+      "unattributedMs": 1218.6155999999999,
+      "sceneState": "Unfocused",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 15:04:08.890",
+      "avgFrameMs": 337.2267,
+      "coveredMs": 21.5645,
+      "unattributedMs": 315.6622,
+      "sceneState": "Unfocused",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 14:48:30.106",
+      "avgFrameMs": 266.0134,
+      "coveredMs": 0.1307,
+      "unattributedMs": 265.8827,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 15:02:41.853",
+      "avgFrameMs": 195.0845,
+      "coveredMs": 0.1101,
+      "unattributedMs": 194.9744,
+      "sceneState": "Gameplay",
+      "captureId": "6d6c0571f12f43d6909304e5e495e69d"
+    },
+    {
+      "timestamp": "2026-11-15 14:38:20.229",
+      "avgFrameMs": 176.0699,
+      "coveredMs": 165.9455,
+      "unattributedMs": 10.12439999999998,
+      "sceneState": "Gameplay",
+      "captureId": "55aa532b5a214064a94a9ad9a4c09446"
+    },
+    {
+      "timestamp": "2026-11-15 15:04:07.155",
+      "avgFrameMs": 175.1139,
+      "coveredMs": 0.0939,
+      "unattributedMs": 175.02,
+      "sceneState": "Unfocused",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 15:02:28.769",
+      "avgFrameMs": 143.7638,
+      "coveredMs": 49.3927,
+      "unattributedMs": 94.37110000000001,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 14:46:31.607",
+      "avgFrameMs": 134.6999,
+      "coveredMs": 0.183,
+      "unattributedMs": 134.51690000000002,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 15:03:05.624",
+      "avgFrameMs": 132.8968,
+      "coveredMs": 0.0992,
+      "unattributedMs": 132.79760000000002,
+      "sceneState": "Unfocused",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 14:39:21.818",
+      "avgFrameMs": 119.3779,
+      "coveredMs": 0.38,
+      "unattributedMs": 118.9979,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 14:38:19.150",
+      "avgFrameMs": 118.8178,
+      "coveredMs": 0.2529,
+      "unattributedMs": 118.56490000000001,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 14:32:40.007",
+      "avgFrameMs": 111.5516,
+      "coveredMs": 0.1836,
+      "unattributedMs": 111.368,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    }
+  ],
+  "spikeCount": 313,
+  "fpsReports": 207,
+  "lastFpsReports": [
+    {
+      "timestamp": "2026-11-15 15:04:53.899",
+      "frameNumber": 544586,
+      "type": "FpsReport",
+      "avgFps": 119.66006943482971,
+      "minFps": 12.698283699975113,
+      "maxFps": 239.0857361449816,
+      "avgFrameMs": 8.357006683375097,
+      "spikeThresholdMs": 50,
+      "spikeCount": 1,
+      "reportDuration": 10.003336999999991,
+      "selfMainP95Ms": 0.1772,
+      "selfMainP99Ms": 2.8019000000000003,
+      "gameplaySamples": 2945,
+      "gameplayP95Ms": 12.2055,
+      "gameplayP99Ms": 13.9462,
+      "gameplayLow1Fps": 47.65936138679846,
+      "p95FrameMs": 12.4177,
+      "p99FrameMs": 14.7997,
+      "low1Fps": 42.030111920657774,
+      "longestStallMs": 78.7508,
+      "stallRuns": 1,
+      "unityAllocatedBytes": 1615072748,
+      "managedUsedBytes": 186015744,
+      "managedCapacityBytes": 811376640,
+      "memoryNetKBps": 409.3987173890237,
+      "gcAllocatedFrameBytes": null,
+      "gcAllocationStatus": "Unavailable",
+      "gcCollections": 1,
+      "rpcQueueDepth": 0,
+      "rpcQueuePeak": 3,
+      "rpcQueueDropped": 0,
+      "rpcProcessedCount": 3,
+      "rpcPumpMs": 0.1472,
+      "structuredEventsWritten": 1246,
+      "structuredFlushMs": 0.4588,
+      "selfFrameBoundaryTotalMs": 194.81509999999975,
+      "selfFrameBoundaryMaxMs": 10.2137,
+      "selfFrameBoundaryCount": 1197,
+      "selfSerializationTotalMs": 70.00070000000001,
+      "selfSerializationMaxMs": 0.3189,
+      "selfSerializationCount": 1246,
+      "selfRuntimeTotalMs": 8.091499999999993,
+      "selfRuntimeMaxMs": 0.2682,
+      "selfRuntimeCount": 1197,
+      "selfMainUpdateTotalMs": 19.11519999999998,
+      "selfMainUpdateMaxMs": 0.6047,
+      "selfMainUpdateCount": 1197,
+      "selfHudTotalMs": 2.5232000000000046,
+      "selfHudMaxMs": 0.0098,
+      "selfHudCount": 2598,
+      "selfExceptionsTotalMs": 0.12840000000000001,
+      "selfExceptionsMaxMs": 0.0196,
+      "selfExceptionsCount": 10,
+      "selfFlushTotalMs": 7.6655,
+      "selfFlushMaxMs": 0.8548,
+      "selfFlushCount": 11,
+      "selfObjectQueryTotalMs": 0.010499999999999999,
+      "selfObjectQueryMaxMs": 0.0066,
+      "selfObjectQueryCount": 3,
+      "selfRpcPumpTotalMs": 0.1472,
+      "selfRpcPumpMaxMs": 0.1472,
+      "selfRpcPumpCount": 1,
+      "schemaVersion": 2,
+      "sessionId": "25a3930ab2ff4b8fb75074f77e37be8a",
+      "roomEpoch": 8,
+      "sequence": 2261955,
+      "monotonicSeconds": 6526.825461,
+      "captureId": "",
+      "validity": "Complete"
+    },
+    {
+      "timestamp": "2026-11-15 15:05:03.904",
+      "frameNumber": 545840,
+      "type": "FpsReport",
+      "avgFps": 125.33223286169168,
+      "minFps": 12.780059018312548,
+      "maxFps": 229.24212553298796,
+      "avgFrameMs": 7.978793460925019,
+      "spikeThresholdMs": 50,
+      "spikeCount": 1,
+      "reportDuration": 10.005407,
+      "selfMainP95Ms": 0.1752,
+      "selfMainP99Ms": 2.8131999999999997,
+      "gameplaySamples": 2294,
+      "gameplayP95Ms": 12.1834,
+      "gameplayP99Ms": 14.1617,
+      "gameplayLow1Fps": 42.81806937420833,
+      "p95FrameMs": 12.4307,
+      "p99FrameMs": 15.4401,
+      "low1Fps": 40.181642170844945,
+      "longestStallMs": 78.2469,
+      "stallRuns": 1,
+      "unityAllocatedBytes": 1614268034,
+      "managedUsedBytes": 188006400,
+      "managedCapacityBytes": 811376640,
+      "memoryNetKBps": 22.009108836498097,
+      "gcAllocatedFrameBytes": null,
+      "gcAllocationStatus": "Unavailable",
+      "gcCollections": 1,
+      "rpcQueueDepth": 0,
+      "rpcQueuePeak": 3,
+      "rpcQueueDropped": 0,
+      "rpcProcessedCount": 3,
+      "rpcPumpMs": 0.1089,
+      "structuredEventsWritten": 1297,
+      "structuredFlushMs": 0.4991,
+      "selfFrameBoundaryTotalMs": 249.80870000000036,
+      "selfFrameBoundaryMaxMs": 68.9423,
+      "selfFrameBoundaryCount": 1254,
+      "selfSerializationTotalMs": 73.4022,
+      "selfSerializationMaxMs": 0.1376,
+      "selfSerializationCount": 1297,
+      "selfRuntimeTotalMs": 8.625100000000002,
+      "selfRuntimeMaxMs": 0.3735,
+      "selfRuntimeCount": 1254,
+      "selfMainUpdateTotalMs": 19.196999999999992,
+      "selfMainUpdateMaxMs": 0.3934,
+      "selfMainUpdateCount": 1254,
+      "selfHudTotalMs": 2.624600000000005,
+      "selfHudMaxMs": 0.0604,
+      "selfHudCount": 2516,
+      "selfObjectQueryTotalMs": 0.007699999999999999,
+      "selfObjectQueryMaxMs": 0.0038,
+      "selfObjectQueryCount": 3,
+      "selfRpcPumpTotalMs": 0.1089,
+      "selfRpcPumpMaxMs": 0.1089,
+      "selfRpcPumpCount": 1,
+      "selfExceptionsTotalMs": 0.13199999999999998,
+      "selfExceptionsMaxMs": 0.0338,
+      "selfExceptionsCount": 10,
+      "selfFlushTotalMs": 7.3067,
+      "selfFlushMaxMs": 0.8966,
+      "selfFlushCount": 11,
+      "schemaVersion": 2,
+      "sessionId": "25a3930ab2ff4b8fb75074f77e37be8a",
+      "roomEpoch": 8,
+      "sequence": 2263252,
+      "monotonicSeconds": 6536.830913,
+      "captureId": "",
+      "validity": "Complete"
+    },
+    {
+      "timestamp": "2026-11-15 15:05:13.907",
+      "frameNumber": 547033,
+      "type": "FpsReport",
+      "avgFps": 119.26799920313378,
+      "minFps": 12.522289675622607,
+      "maxFps": 227.3192243868064,
+      "avgFrameMs": 8.384478709136635,
+      "spikeThresholdMs": 50,
+      "spikeCount": 1,
+      "reportDuration": 10.002683100000002,
+      "selfMainP95Ms": 0.1838,
+      "selfMainP99Ms": 2.9645999999999995,
+      "gameplaySamples": 1518,
+      "gameplayP95Ms": 12.072,
+      "gameplayP99Ms": 13.4474,
+      "gameplayLow1Fps": 50.32939013046951,
+      "p95FrameMs": 12.6203,
+      "p99FrameMs": 15.9275,
+      "low1Fps": 39.24472778902204,
+      "longestStallMs": 79.8576,
+      "stallRuns": 1,
+      "unityAllocatedBytes": 1611299124,
+      "managedUsedBytes": 190889984,
+      "managedCapacityBytes": 811376640,
+      "memoryNetKBps": -4212.573406931474,
+      "gcAllocatedFrameBytes": null,
+      "gcAllocationStatus": "Unavailable",
+      "gcCollections": 1,
+      "rpcQueueDepth": 0,
+      "rpcQueuePeak": 4,
+      "rpcQueueDropped": 0,
+      "rpcProcessedCount": 4,
+      "rpcPumpMs": 0.0741,
+      "structuredEventsWritten": 1237,
+      "structuredFlushMs": 0.4212,
+      "selfFrameBoundaryTotalMs": 251.39360000000002,
+      "selfFrameBoundaryMaxMs": 70.5599,
+      "selfFrameBoundaryCount": 1193,
+      "selfSerializationTotalMs": 74.28030000000007,
+      "selfSerializationMaxMs": 0.9091,
+      "selfSerializationCount": 1237,
+      "selfRuntimeTotalMs": 8.025399999999998,
+      "selfRuntimeMaxMs": 0.3619,
+      "selfRuntimeCount": 1193,
+      "selfMainUpdateTotalMs": 18.69230000000001,
+      "selfMainUpdateMaxMs": 0.3883,
+      "selfMainUpdateCount": 1193,
+      "selfHudTotalMs": 2.6365000000000034,
+      "selfHudMaxMs": 0.0593,
+      "selfHudCount": 2406,
+      "selfExceptionsTotalMs": 0.1022,
+      "selfExceptionsMaxMs": 0.0131,
+      "selfExceptionsCount": 10,
+      "selfFlushTotalMs": 8.2881,
+      "selfFlushMaxMs": 1.1183,
+      "selfFlushCount": 12,
+      "selfObjectQueryTotalMs": 0.0040999999999999995,
+      "selfObjectQueryMaxMs": 0.0024,
+      "selfObjectQueryCount": 4,
+      "selfRpcPumpTotalMs": 0.0741,
+      "selfRpcPumpMaxMs": 0.0741,
+      "selfRpcPumpCount": 1,
+      "schemaVersion": 2,
+      "sessionId": "25a3930ab2ff4b8fb75074f77e37be8a",
+      "roomEpoch": 8,
+      "sequence": 2264489,
+      "monotonicSeconds": 6546.8335518,
+      "captureId": "",
+      "validity": "Complete"
+    }
+  ],
+  "memory": {
+    "first": [
+      {
+        "timestamp": "2026-11-15 14:30:52.325",
+        "unityAllocatedBytes": 2592870291,
+        "managedUsedBytes": 185184256,
+        "managedCapacityBytes": 811376640,
+        "gcAllocationStatus": "Unavailable",
+        "selfMainP95Ms": 1.8409,
+        "selfMainP99Ms": 2.9829999999999997,
+        "rpcQueueDropped": 0
+      },
+      {
+        "timestamp": "2026-11-15 14:31:02.327",
+        "unityAllocatedBytes": 2590799498,
+        "managedUsedBytes": 195293184,
+        "managedCapacityBytes": 811376640,
+        "gcAllocationStatus": "Unavailable",
+        "selfMainP95Ms": 1.6541000000000001,
+        "selfMainP99Ms": 2.9735,
+        "rpcQueueDropped": 0
+      },
+      {
+        "timestamp": "2026-11-15 14:31:12.337",
+        "unityAllocatedBytes": 2591841618,
+        "managedUsedBytes": 192765952,
+        "managedCapacityBytes": 811376640,
+        "gcAllocationStatus": "Unavailable",
+        "selfMainP95Ms": 1.5303999999999998,
+        "selfMainP99Ms": 2.7768000000000006,
+        "rpcQueueDropped": 0
+      }
+    ],
+    "last": [
+      {
+        "timestamp": "2026-11-15 15:04:53.899",
+        "unityAllocatedBytes": 1615072748,
+        "managedUsedBytes": 186015744,
+        "managedCapacityBytes": 811376640,
+        "gcAllocationStatus": "Unavailable",
+        "selfMainP95Ms": 0.1772,
+        "selfMainP99Ms": 2.8019000000000003,
+        "rpcQueueDropped": 0
+      },
+      {
+        "timestamp": "2026-11-15 15:05:03.904",
+        "unityAllocatedBytes": 1614268034,
+        "managedUsedBytes": 188006400,
+        "managedCapacityBytes": 811376640,
+        "gcAllocationStatus": "Unavailable",
+        "selfMainP95Ms": 0.1752,
+        "selfMainP99Ms": 2.8131999999999997,
+        "rpcQueueDropped": 0
+      },
+      {
+        "timestamp": "2026-11-15 15:05:13.907",
+        "unityAllocatedBytes": 1611299124,
+        "managedUsedBytes": 190889984,
+        "managedCapacityBytes": 811376640,
+        "gcAllocationStatus": "Unavailable",
+        "selfMainP95Ms": 0.1838,
+        "selfMainP99Ms": 2.9645999999999995,
+        "rpcQueueDropped": 0
+      }
+    ]
+  },
+  "network": {
+    "ping": {
+      "n": 2056,
+      "mean": 130.17655642023345,
+      "p50": 133,
+      "p95": 142,
+      "p99": 159,
+      "max": 207
+    },
+    "rttVariance": {
+      "n": 2056,
+      "mean": 7.245622568093385,
+      "p50": 6,
+      "p95": 16,
+      "p99": 47,
+      "max": 71
+    },
+    "incomingCommands": {
+      "n": 2056,
+      "mean": 0.016536964980544747,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "max": 26
+    },
+    "outgoingCommands": {
+      "n": 2056,
+      "mean": 0.08998054474708171,
+      "p50": 0,
+      "p95": 0,
+      "p99": 1,
+      "max": 81
+    },
+    "reliableRetransmissions": {
+      "n": 2054,
+      "mean": 0.026777020447906523,
+      "p50": 0,
+      "p95": 0,
+      "p99": 1,
+      "max": 10
+    },
+    "detailDroppedTotal": {
+      "n": 2056,
+      "mean": 0.0,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "max": 0
+    },
+    "detailSampledOut": {
+      "n": 2056,
+      "mean": 86310.69552529183,
+      "p50": 89493,
+      "p95": 89754,
+      "p99": 89754,
+      "max": 89754
+    },
+    "cpuFrameMs": {},
+    "gpuFrameMs": {}
+  },
+  "zipReports": [
+    {
+      "file": "wsl-20261115-061933-c0f8275a-anonymous.zip",
+      "bytes": 217466,
+      "uncompressed": 6715791,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.01s\n记录条数: 5139\n省略条数: 58304\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 14:19:30.629",
+      "last": "2026-11-15 14:19:33.427",
+      "rows": 5139,
+      "types": {
+        "PatchTiming": 2718,
+        "FrameSample": 183,
+        "PluginTiming": 2208,
+        "NetworkSample": 20,
+        "SpikeFrame": 2,
+        "RpcCall": 6,
+        "FpsReport": 1,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5138,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PatchTiming": {
+          "n": 2718,
+          "mean": 0.2825890411517348,
+          "p50": 0.09090909090909091,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PluginTiming": {
+          "n": 2208,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    },
+    {
+      "file": "wsl-20261115-062335-4b7a6b6b-anonymous.zip",
+      "bytes": 214737,
+      "uncompressed": 6660800,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.01s\n记录条数: 5104\n省略条数: 59790\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 14:23:33.412",
+      "last": "2026-11-15 14:23:35.982",
+      "rows": 5104,
+      "types": {
+        "PluginTiming": 2190,
+        "PatchTiming": 2697,
+        "FrameSample": 182,
+        "SpikeFrame": 2,
+        "NetworkSample": 21,
+        "RpcCall": 11,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5103,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PluginTiming": {
+          "n": 2190,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PatchTiming": {
+          "n": 2697,
+          "mean": 0.22461319667848884,
+          "p50": 0.07692307692307693,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    },
+    {
+      "file": "wsl-20261115-062752-e44bc82d-anonymous.zip",
+      "bytes": 210764,
+      "uncompressed": 6638921,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.01s\n记录条数: 5081\n省略条数: 57882\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 14:27:49.674",
+      "last": "2026-11-15 14:27:52.175",
+      "rows": 5081,
+      "types": {
+        "PatchTiming": 2693,
+        "FrameSample": 181,
+        "PluginTiming": 2184,
+        "NetworkSample": 16,
+        "RpcCall": 5,
+        "SpikeFrame": 1,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5080,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PatchTiming": {
+          "n": 2693,
+          "mean": 0.1325818993123827,
+          "p50": 0.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PluginTiming": {
+          "n": 2184,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    },
+    {
+      "file": "wsl-20261115-063051-e4ed472b-anonymous.zip",
+      "bytes": 212210,
+      "uncompressed": 6683654,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.00s\n记录条数: 5128\n省略条数: 53287\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 14:30:48.579",
+      "last": "2026-11-15 14:30:51.464",
+      "rows": 5128,
+      "types": {
+        "PatchTiming": 2707,
+        "PluginTiming": 2192,
+        "FrameSample": 182,
+        "NetworkSample": 22,
+        "SpikeFrame": 3,
+        "RpcCall": 20,
+        "AbuseAlert": 1,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5127,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PatchTiming": {
+          "n": 2707,
+          "mean": 0.10215470575085811,
+          "p50": 0.0,
+          "p95": 0.5,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PluginTiming": {
+          "n": 2192,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    },
+    {
+      "file": "wsl-20261115-063849-55aa532b-anonymous.zip",
+      "bytes": 212134,
+      "uncompressed": 6651224,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.00s\n记录条数: 5108\n省略条数: 56456\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 14:38:46.867",
+      "last": "2026-11-15 14:38:49.153",
+      "rows": 5108,
+      "types": {
+        "PatchTiming": 2684,
+        "FrameSample": 182,
+        "PluginTiming": 2184,
+        "RpcCall": 31,
+        "NetworkSample": 25,
+        "SpikeFrame": 1,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5107,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PatchTiming": {
+          "n": 2684,
+          "mean": 0.10200028175996938,
+          "p50": 0.0,
+          "p95": 0.5,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PluginTiming": {
+          "n": 2184,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    },
+    {
+      "file": "wsl-20261115-064701-8d1dfc37-anonymous.zip",
+      "bytes": 211053,
+      "uncompressed": 6668283,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.02s\n记录条数: 5113\n省略条数: 53820\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 14:46:59.011",
+      "last": "2026-11-15 14:47:01.632",
+      "rows": 5113,
+      "types": {
+        "PluginTiming": 2189,
+        "PatchTiming": 2706,
+        "FrameSample": 182,
+        "RpcCall": 18,
+        "NetworkSample": 16,
+        "SpikeFrame": 1,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5112,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PluginTiming": {
+          "n": 2189,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PatchTiming": {
+          "n": 2706,
+          "mean": 0.10111749341239384,
+          "p50": 0.0,
+          "p95": 0.5,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    },
+    {
+      "file": "wsl-20261115-065112-e94bfec3-anonymous.zip",
+      "bytes": 211397,
+      "uncompressed": 6752229,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.02s\n记录条数: 5177\n省略条数: 54620\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 14:51:09.652",
+      "last": "2026-11-15 14:51:12.525",
+      "rows": 5177,
+      "types": {
+        "PatchTiming": 2749,
+        "PluginTiming": 2211,
+        "FrameSample": 184,
+        "NetworkSample": 24,
+        "RpcCall": 7,
+        "SpikeFrame": 1,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5176,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PatchTiming": {
+          "n": 2749,
+          "mean": 0.09987174038392801,
+          "p50": 0.0,
+          "p95": 0.5,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PluginTiming": {
+          "n": 2211,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    },
+    {
+      "file": "wsl-20261115-065517-cd3248db-anonymous.zip",
+      "bytes": 206322,
+      "uncompressed": 6636250,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.01s\n记录条数: 5084\n省略条数: 57101\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 14:55:14.957",
+      "last": "2026-11-15 14:55:17.443",
+      "rows": 5084,
+      "types": {
+        "PluginTiming": 2185,
+        "PatchTiming": 2698,
+        "FrameSample": 182,
+        "NetworkSample": 15,
+        "SpikeFrame": 1,
+        "RpcCall": 2,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5083,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PluginTiming": {
+          "n": 2185,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PatchTiming": {
+          "n": 2698,
+          "mean": 0.09980364644004416,
+          "p50": 0.0,
+          "p95": 0.5,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    },
+    {
+      "file": "wsl-20261115-065910-a1f962ec-anonymous.zip",
+      "bytes": 208775,
+      "uncompressed": 6740148,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.01s\n记录条数: 5170\n省略条数: 52017\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 14:59:07.299",
+      "last": "2026-11-15 14:59:10.140",
+      "rows": 5170,
+      "types": {
+        "PatchTiming": 2732,
+        "FrameSample": 186,
+        "PluginTiming": 2232,
+        "SpikeFrame": 2,
+        "NetworkSample": 16,
+        "RpcCall": 1,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5169,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PatchTiming": {
+          "n": 2732,
+          "mean": 0.1005970953220075,
+          "p50": 0.0,
+          "p95": 0.5,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PluginTiming": {
+          "n": 2232,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    },
+    {
+      "file": "wsl-20261115-070258-6d6c0571-anonymous.zip",
+      "bytes": 206805,
+      "uncompressed": 6573152,
+      "badZipMember": null,
+      "build": "1.0.5-dev.20261115",
+      "config": {
+        "SpikeThresholdMs": 50,
+        "AutoCapture": true,
+        "PumpBudgetMs": 0.5,
+        "ManualPluginProfiling": true,
+        "ManualPatchProfiling": true,
+        "AdaptiveTiming": true,
+        "QueueCapacity": 2048
+      },
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 30.01s\n记录条数: 5046\n省略条数: 65799\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "first": "2026-11-15 15:02:56.681",
+      "last": "2026-11-15 15:02:58.777",
+      "rows": 5046,
+      "types": {
+        "FrameSample": 224,
+        "PluginTiming": 2688,
+        "PatchTiming": 2124,
+        "NetworkSample": 6,
+        "SpikeFrame": 1,
+        "ExceptionSummary": 2,
+        "CaptureState": 1
+      },
+      "phase": {
+        "": 5045,
+        "Saving": 1
+      },
+      "sampleCoverage": {
+        "PluginTiming": {
+          "n": 2688,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PatchTiming": {
+          "n": 2124,
+          "mean": 0.09920115195538919,
+          "p50": 0.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "incomplete": 0,
+      "forbiddenFields": {},
+      "entries": [
+        "summary.txt",
+        "manifest.json",
+        "events.jsonl",
+        "frames.csv",
+        "calls.csv",
+        "network.csv",
+        "exceptions.csv",
+        "harmony_patches.csv"
+      ]
+    }
+  ],
+  "logs": {
+    "LogOutput.log": {
+      "bytes": 53247,
+      "lines": 443,
+      "errors": [
+        [
+          "[Warning:  HarmonyX] AccessTools.GetTypesFromAssembly: assembly CavyCrew.BingBongAI, Version=0.9.1.0, Culture=neutral, PublicKeyToken=null => System.Reflection.ReflectionTypeLoadException: Exception of type 'System.Refle",
+          2
+        ],
+        [
+          "System.TypeLoadException: Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>O:<0>__OnNews' (0) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyTo",
+          2
+        ],
+        [
+          "System.TypeLoadException: Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>c:<>9__9_1' (1) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken",
+          2
+        ],
+        [
+          "[Error  :   BepInEx] Unable to start Unity log writer",
+          1
+        ]
+      ],
+      "getDisplayName": 0,
+      "loc0": 0,
+      "whyLagErrors": []
+    },
+    "Player.log": {
+      "bytes": 2185503,
+      "lines": 38013,
+      "errors": [
+        [
+          "NullReferenceException: Object reference not set to an instance of an object",
+          11921
+        ],
+        [
+          "Rethrow as TargetInvocationException: Exception has been thrown by the target of an invocation.",
+          2
+        ],
+        [
+          "Rethrow as AggregateException: Caught 4 exception(s) in methods called by DispatchIncomingCommands(). Rethrowing first only (see above). (Exception has been thrown by the target of an invocation.)",
+          2
+        ],
+        [
+          "TypeLoadException: Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>c:<>9__9_1' (1) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' ",
+          1
+        ],
+        [
+          "FormatException: Unrecognized Guid format.",
+          1
+        ],
+        [
+          "NullReferenceException: Object reference not set to an instance of an object.",
+          1
+        ]
+      ],
+      "getDisplayName": 0,
+      "loc0": 0,
+      "whyLagErrors": []
+    },
+    "WhySoLaggy.log": {
+      "bytes": 3616761,
+      "lines": 23287,
+      "errors": [],
+      "getDisplayName": 0,
+      "loc0": 0,
+      "whyLagErrors": [
+        "[WHY_LAG] Found: 126 | Unique: 126 | Merged: 0 | Hooked: 114 | Self-only: 12 | Ignored: 0 | Unsupported: 0 | Failed: 0",
+        "[WHY_LAG]   Total MOD overhead: 0.14ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.58ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.57ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.70ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 1.24ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.20ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.14ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.16ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.17ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.14ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.20ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.17ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.20ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.14ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.16ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.17ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.20ms/frame"
+      ]
+    }
+  },
+  "storage": {
+    ".csv": 318658429,
+    ".jsonl": 318767734,
+    ".log": 9985671
+  }
+}
