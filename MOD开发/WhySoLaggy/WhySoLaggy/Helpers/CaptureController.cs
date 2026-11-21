@@ -22,36 +22,6 @@ namespace WhySoLaggy
         {long old;do{old=Bytes;if(size<0||old+size>Limit)return false;}while(System.Threading.Interlocked.CompareExchange(ref bytes,old+size,old)!=old);return true;}
         internal static void Release(long size)=>System.Threading.Interlocked.Add(ref bytes,-size);
     }
-    internal sealed class EventRing
-    {
-        private readonly Queue<Tuple<double,StructuredEvent,int>> items=new Queue<Tuple<double,StructuredEvent,int>>();
-        internal long Bytes{get;private set;}
-        internal long Evicted{get;private set;}
-        internal readonly int Limit;
-        internal EventRing(int bytes){Limit=bytes;}
-        private void Evict(){Bytes-=items.Peek().Item3;CapturePayloadBudget.Release(items.Dequeue().Item3);Evicted++;}
-        internal void Add(StructuredEvent e,double time,double window)
-        {
-            int size=EventCodec.Size(e);if(size>Limit){Evicted++;return;}
-            while(items.Count>0&&(Bytes+size>Limit||items.Peek().Item1<time-window))Evict();
-            while(!CapturePayloadBudget.Reserve(size)){if(items.Count==0){Evicted++;return;}Evict();}
-            items.Enqueue(Tuple.Create(time,e,size));Bytes+=size;
-        }
-        internal StructuredEvent[] Snapshot()=>items.Select(x=>x.Item2).ToArray();
-        internal CaptureRecord Detach()
-        {var record=new CaptureRecord{Events=Snapshot(),Bytes=Bytes,Evicted=Evicted};items.Clear();Bytes=0;Evicted=0;return record;}
-        internal void Clear(){CapturePayloadBudget.Release(Bytes);items.Clear();Bytes=0;Evicted=0;}
-    }
-    internal sealed class CaptureRecord
-    {
-        internal string Id,Reason;
-        internal double Started,Ended;
-        internal StructuredEvent[] Events;
-        internal long Evicted,Bytes;
-        private int references=1;
-        internal void Retain()=>System.Threading.Interlocked.Increment(ref references);
-        internal void Release(){if(System.Threading.Interlocked.Decrement(ref references)==0){CapturePayloadBudget.Release(Bytes);Events=new StructuredEvent[0];}}
-    }
     internal sealed class TriggerPolicy
     {
         private readonly Queue<double> spikes=new Queue<double>();
@@ -71,7 +41,10 @@ namespace WhySoLaggy
     internal static class CaptureController
     {
         private static readonly object gate=new object();
-        private static readonly EventRing rolling=new EventRing(16*1024*1024);
+        // Begin keeps only one saved record. At most rolling + active + saved
+        // + an older in-flight export are charged: 4 + 8 + 8 + 8 MiB.
+        private static readonly EventRing rolling=new EventRing(4*1024*1024);
+        private static readonly CaptureTimingWindow timing=new CaptureTimingWindow();
         private static EventRing recording;
         private static readonly Queue<CaptureRecord> saved=new Queue<CaptureRecord>();
         private static readonly TriggerPolicy trigger=new TriggerPolicy();
@@ -79,6 +52,8 @@ namespace WhySoLaggy
         private static double started,ends,pluginStarted,budgetWindow,budgetSum;
         private static int budgetFrames,overBudgetSeconds,epoch,observationFrames;
         private static bool manual,targeted,degraded;
+        internal static long RingDrops { get { lock(gate) return (recording ?? rolling).Evicted; } }
+        internal static long LastFrameCalls, LastFrameSamples;
         internal static bool AutoEnabled=true,Paused;
         internal static bool Busy=>Phase==CapturePhase.Plugins||Phase==CapturePhase.Targeted||Phase==CapturePhase.Manual;
         internal static bool WantsPlugin=>Busy&&!degraded;
@@ -101,16 +76,39 @@ namespace WhySoLaggy
         private static string[] ReadManifest()=>Chainloader.PluginInfos.Select(x=>x.Key+" | "+x.Value.Metadata.Name+" | "+x.Value.Metadata.Version+" | "+x.Value.Instance?.GetType().Assembly.ManifestModule.ModuleVersionId).ToArray();
         private static void OnEvent(StructuredEvent e)
         {
-            lock(gate){rolling.Add(e,DiagnosticClock.Now,20);recording?.Add(e,DiagnosticClock.Now,90);}
+            lock(gate)
+            {
+                using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.RollingAdd))rolling.Add(e,DiagnosticClock.Now,20);
+                using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.RecordingAdd))recording?.Add(e,DiagnosticClock.Now,90);
+            }
         }
+        private static CaptureFrameContext frameContext;
+        private static string previousPluginState, previousPatchState;
         internal static void OnFrame(FrameRecord frame)
         {
             double now=frame.Time;
             frame.SelfMs+=SelfMetrics.TakeFrame();
             FpsTracker.Observe(frame);
-            StructuredLogger.WriteEvent(new StructuredEvent{Timestamp=StructuredLogger.NowStamp(),FrameNumber=frame.Frame,Type=EventType.FrameSample,
-                Fields=new Dictionary<string,object>{{"AvgFrameMs",frame.DurationMs},{"CoveredMs",frame.CoveredMs},{"UnattributedMs",Math.Max(0,frame.DurationMs-frame.CoveredMs)},
-                    {"SelfMainMs",frame.SelfMs},{"WriterDropped",DiagnosticIO.Dropped},{"DiskDroppedBatches",StructuredLogger.DiskDropped},{"WriterQueueBytes",DiagnosticIO.PendingBytes},{"CapturePayloadBytes",CapturePayloadBudget.Bytes},{"MethodRecordOmitted",Math.Max(0,frame.Methods.Count-30)},{"SceneState",frame.State},{"Scene",frame.Scene},{"Validity",frame.Complete?"Complete":"Incomplete"}}});
+            LastFrameCalls = LastFrameSamples = 0;
+            foreach (var method in frame.Methods) { LastFrameCalls += method.Calls; LastFrameSamples += method.Samples; }
+            var context = frameContext;
+            string validity = frame.Complete ? "Complete" : "Incomplete";
+            string pluginState = PluginProfiler.Session.Coverage, patchState = PatchProfiler.Session.Coverage;
+            if (context == null || context.Session != DiagnosticContext.SessionId || context.Capture != DiagnosticContext.CaptureId ||
+                context.Scene != frame.Scene || context.State != frame.State || context.Validity != validity || context.Epoch != frame.Epoch ||
+                pluginState != previousPluginState || patchState != previousPatchState)
+            {
+                frameContext = context = new CaptureFrameContext(DiagnosticContext.SessionId, DiagnosticContext.CaptureId, frame.Scene,
+                    frame.State, validity, frame.Epoch, pluginState + "/" + patchState);
+                previousPluginState = pluginState; previousPatchState = patchState;
+            }
+            var sample = new CaptureFrame(frame, context);
+            lock (gate)
+            {
+                using (DiagnosticPhases.Measure(DiagnosticPhases.Stage.RollingAdd)) rolling.Add(sample, now, 20);
+                using (DiagnosticPhases.Measure(DiagnosticPhases.Stage.RecordingAdd)) recording?.Add(sample, now, 90);
+            }
+            StructuredLogger.WriteFrame(sample);
             if(Busy)
             {
                 if(!PluginProfiler.Session.Busy)
@@ -119,9 +117,7 @@ namespace WhySoLaggy
                     foreach(var group in frame.Methods.Where(x=>x.Scope=="PluginProfiler"&&!string.IsNullOrEmpty(x.PluginGuid)).GroupBy(x=>x.PluginGuid))
                     {double ms=group.Sum(x=>x.Ms);candidates.TryGetValue(group.Key,out var c);candidates[group.Key]=Tuple.Create((c?.Item1??0)+ms,observationFrames,(c?.Item3??0)+(frame.DurationMs>FpsTracker.SpikeThresholdMs&&ms>=2?1:0));}
                 }
-                if(frame.Methods.Count>0)foreach(var m in frame.Methods.OrderByDescending(x=>x.Ms).Take(30))
-                    StructuredLogger.WriteEvent(new StructuredEvent{Timestamp=StructuredLogger.NowStamp(),FrameNumber=frame.Frame,Type=m.Scope=="PluginProfiler"?EventType.PluginTiming:EventType.PatchTiming,
-                        Fields=new Dictionary<string,object>{{"MethodId",m.Id},{"Name",m.Name},{"Owner",m.Owners},{"TotalMs",m.Ms},{"CallCount",m.Calls},{"SampleCount",m.Samples},{"TimingKind","frame inclusive"}}});
+                timing.Observe(frame,StructuredLogger.WriteEvent);
                 budgetSum+=frame.SelfMs;budgetFrames++;
                 if(now-budgetWindow>=1){overBudgetSeconds=budgetSum/Math.Max(1,budgetFrames)>1?overBudgetSeconds+1:0;budgetWindow=now;budgetSum=0;budgetFrames=0;}
                 if(!manual&&overBudgetSeconds>=3&&targeted){targeted=false;TargetOwners=null;ExceptionTargets=new MethodBase[0];Detail="Automatic targets removed: self-overhead budget exceeded";Phase=CapturePhase.Plugins;ApplyHooks?.Invoke(true,null,ExceptionTargets);}
@@ -148,8 +144,8 @@ namespace WhySoLaggy
             if(Busy)return;
             started=pluginStarted=budgetWindow=DiagnosticClock.Now;ends=started+30;manual=isManual;targeted=degraded=false;epoch=DiagnosticContext.RoomEpoch;
             overBudgetSeconds=budgetFrames=observationFrames=0;budgetSum=0;candidates.Clear();TargetOwners=null;ExceptionTargets=new MethodBase[0];
-            DiagnosticContext.CaptureId=Guid.NewGuid().ToString("N");
-            lock(gate){while(saved.Count>1)saved.Dequeue().Release();recording=new EventRing(16*1024*1024);foreach(var e in rolling.Snapshot())recording.Add(e,started,90);}
+            DiagnosticContext.CaptureId=Guid.NewGuid().ToString("N");timing.Reset(started);
+            lock(gate){while(saved.Count>1)saved.Dequeue().Release();recording=new EventRing(8*1024*1024);using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.PreRollCopy))rolling.CopyTo(recording,started,20);}
             Phase=manual?CapturePhase.Manual:CapturePhase.Plugins;Detail=reason+"; pre-trigger methods may not have been instrumented";
             if(!manual)trigger.Started(started);
             EmitState();ApplyHooks?.Invoke(true,null,ExceptionTargets);
@@ -157,10 +153,10 @@ namespace WhySoLaggy
         internal static void Mark(){StructuredLogger.WriteEvent(new StructuredEvent{Timestamp=StructuredLogger.NowStamp(),FrameNumber=DiagnosticContext.Frame,Type=EventType.Marker,Fields=new Dictionary<string,object>{{"Reason","User marker"}}});}
         internal static void Finish(string reason)
         {
-            if(!Busy)return;Phase=CapturePhase.Saving;Detail=reason;EmitState();CaptureRecord record;
+            if(!Busy)return;timing.Flush(StructuredLogger.WriteEvent);Phase=CapturePhase.Saving;Detail=reason;EmitState();CaptureRecord record;
             lock(gate)
             {
-                record=recording.Detach();record.Id=DiagnosticContext.CaptureId;record.Reason=reason;record.Started=started;record.Ended=DiagnosticClock.Now;
+                record=recording.Detach();record.StreamCounters=StreamCounters();record.Id=DiagnosticContext.CaptureId;record.Reason=reason;record.Started=started;record.Ended=DiagnosticClock.Now;
                 recording=null;while(saved.Count>=2)saved.Dequeue().Release();saved.Enqueue(record);
             }
             TargetOwners=null;ExceptionTargets=new MethodBase[0];ApplyHooks?.Invoke(false,null,ExceptionTargets);
@@ -168,24 +164,66 @@ namespace WhySoLaggy
             Export(record,false,false);
         }
         private static void EmitState()=>StructuredLogger.WriteEvent(new StructuredEvent{Timestamp=StructuredLogger.NowStamp(),FrameNumber=DiagnosticContext.Frame,Type=EventType.CaptureState,
-            Fields=new Dictionary<string,object>{{"Phase",Phase.ToString()},{"Reason",Detail}}});
+            Fields=new Dictionary<string,object>{{"Phase",Phase.ToString()},{"Reason",Detail},{"PluginTimingMode","Exact"},{"PatchTimingMode",PatchProfiler.Adaptive&&!Busy&&!PatchProfiler.Session.Automatic?"Adaptive":"Exact"}}});
         internal static void ExportLatest(bool complete,bool raw)
         {
             CaptureRecord record;bool temporary=false;
             lock(gate)
             {
                 if(saved.Count>0)record=saved.Last();
-                else{temporary=true;var copy=new EventRing(16*1024*1024);foreach(var e in rolling.Snapshot())copy.Add(e,DiagnosticClock.Now,20);record=copy.Detach();record.Id=Guid.NewGuid().ToString("N");record.Reason="Manual rolling export";record.Started=DiagnosticClock.Now-20;record.Ended=DiagnosticClock.Now;}
+                else{temporary=true;var copy=new EventRing(8*1024*1024);using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.PreRollCopy))rolling.CopyTo(copy,DiagnosticClock.Now,20);record=copy.Detach();record.StreamCounters=StreamCounters();record.Id=Guid.NewGuid().ToString("N");record.Reason="Manual rolling export";record.Started=DiagnosticClock.Now-20;record.Ended=DiagnosticClock.Now;}
                 Export(record,complete,raw);if(temporary)record.Release();
             }
+        }
+
+        // Snapshot cumulative counters while detaching. Later IO failures belong to a later observation.
+        private static Dictionary<string,object> StreamCounters() => new Dictionary<string,object>
+        {
+            {"Scope","Process totals at capture close"}, {"WriterJobsDropped",DiagnosticIO.Dropped},
+            {"WriterEventsDropped",DiagnosticIO.DroppedEvents},{"WriterFramesDropped",DiagnosticIO.DroppedFrames},
+            {"WriterCriticalEventsDropped",DiagnosticIO.DroppedCritical},{"WriterLossCountQuality","Exact"},
+            {"DiskDroppedBatches",System.Threading.Interlocked.Read(ref StructuredLogger.DiskDropped)},
+            {"DiskWriteFailures",System.Threading.Interlocked.Read(ref StructuredLogger.DiskWriteFailures)},
+            {"DiskEventLossCountQuality",StructuredLogger.DiskWriteFailures == 0 ? "Exact" : "Unknown"},
+            {"CaptureCallbackFailures",System.Threading.Interlocked.Read(ref StructuredLogger.CaptureCallbackFailures)},
+            {"EventFieldsTruncated",EventCodec.TruncatedFields},{"BoundaryCalls",TimingLedger.BoundaryCalls},
+            {"BoundaryExceptions",TimingLedger.BoundaryExceptions},{"RetiredUnreportedCalls",TimingLedger.RetiredCalls},
+            {"RetiredUnreportedExceptions",TimingLedger.RetiredExceptions}
+        };
+        internal static Dictionary<string,object> LossManifest(CaptureRecord record)
+        {
+            var pre=record.PreRollLoss??CaptureLossSnapshot.Unknown(record.Started-20,record.Started);
+            var active=record.RecordingLoss??CaptureLossSnapshot.Unknown(record.Started,record.Ended);
+            var quality=pre.Total.Unknown||active.Total.Unknown?"Unknown":pre.Total.Quality=="Bounded"||active.Total.Quality=="Bounded"?"Bounded":"Exact";
+            return new Dictionary<string,object>{{"SchemaVersion",1},{"PreRollStartSeconds",pre.Start},{"PreRollEndSeconds",pre.End},
+                {"LossCountQuality",quality},{"PreRoll",pre.Rows("PreRoll")},{"Recording",active.Rows("Recording")},
+                {"DroppedNetworkEvents",record.DroppedNetwork},{"StreamCounters",record.StreamCounters},
+                {"RetentionStatus",quality=="Unknown"?"Unknown":pre.Total.Upper>0||active.Total.Upper>0?"Incomplete":"Complete"},
+                {"LegacyDroppedMeaning","Recording buffer losses including copy admission; excludes inherited pre-roll losses. Network is a subset of critical."},
+                {"RecordingMeaning","Losses incurred by the destination buffer during pre-roll copy and active recording; event-time categories; no natural expiration or disk queue losses."},
+                {"BoundsMeaning","Inclusive requested pre-roll range, original event timestamps. Partial one-second buckets have bounds. Unknown upper bound is null, not zero."}};
+        }
+        internal static string LossSummary(CaptureRecord record)
+        {
+            var pre=record.PreRollLoss??CaptureLossSnapshot.Unknown(record.Started-20,record.Started);
+            var active=record.RecordingLoss??CaptureLossSnapshot.Unknown(record.Started,record.Ended);
+            Func<CaptureLossRange,string> range=r=>r.Lower+" - "+(r.Unknown?UiText.Get("unknown","未知"):r.Upper.ToString())+" ("+(r.Unknown?UiText.Get("Unknown","未知"):r.Lower==r.Upper?UiText.Get("Exact","精确"):UiText.Get("Bounded","上下界"))+")";
+            return UiText.Get("Loss count bounds; unknown is not zero.","省略条数上下界；未知不代表零。")+Environment.NewLine+
+                UiText.Get("Requested pre-roll (monotonic seconds): ","预录请求范围（单调秒）：")+pre.Start.ToString("F3")+" - "+pre.End.ToString("F3")+Environment.NewLine+
+                UiText.Get("Inherited pre-roll losses: ","继承的预录省略：")+range(pre.Total)+Environment.NewLine+
+                UiText.Get("Recording buffer losses (including copy admission): ","录制缓冲省略（含复制拒收）：")+range(active.Total)+Environment.NewLine+
+                UiText.Get("Legacy Dropped counts exclude inherited pre-roll losses. Natural expiration and disk queue drops are separate. Nested timing phases must not be summed.","旧版丢弃计数不含继承的预录省略。自然过期与磁盘队列丢失另计。嵌套计时阶段不可重复相加。");
         }
 
         private static void Export(CaptureRecord record,bool complete,bool raw)
         {
             if(System.Threading.Interlocked.CompareExchange(ref exports,1,0)!=0){ExportStatus="Export already running";return;}
             record.Retain();
+            string lossText=LossSummary(record);
             string patchMap=HarmonyScanner.LatestCsv;string[] plugins=manifest.ToArray();var settings=new Dictionary<string,object>(config);
             ExportStatus="Exporting";string durationLabel=UiText.Get("Duration","持续时间"),recordsLabel=UiText.Get("Records","记录条数"),evictedLabel=UiText.Get("Evicted","省略条数"),privacyLabel=UiText.Get("Privacy","隐私模式"),privacyValue=UiText.Get(complete?"Complete identities":"Anonymous",complete?"完整身份":"匿名"),reasonText=UiText.Runtime(record.Reason);string summaryText=UiText.Get("Coverage is partial; associated owners are not blame attribution.\nPre-trigger method timing exists only when already instrumented.","采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。");
+            string retainedLabel=UiText.Get("Retained event range (monotonic seconds)","保留事件时间范围（单调秒）"),frameRangeLabel=UiText.Get("Retained frame range (monotonic seconds)","保留帧时间范围（单调秒）"),framesLabel=UiText.Get("Retained frames","保留帧数"),dropsLabel=UiText.Get("Dropped frames / critical events / details","丢弃帧／关键事件／明细"),unavailable=UiText.Get("unavailable","不可用");
+            string timingText=UiText.Get("Method timings are window totals; spike details are subsets and must not be added again. Sampled time is observed time, not extrapolated.","方法耗时按窗口汇总；尖峰明细属于窗口汇总的一部分，不可重复相加。采样耗时未外推。");
             if(!DiagnosticIO.Enqueue(()=>
             {
                 string tmp=null;
@@ -196,14 +234,25 @@ namespace WhySoLaggy
                     tmp=path+".partial";var anonymizer=new DiagnosticAnonymizer();
                     using(var file=File.Create(tmp))using(var zip=new ZipArchive(file,ZipArchiveMode.Create))
                     {
-                        Put(zip,"summary.txt","WhySoLaggy "+DiagnosticContext.BuildId+"\n"+reasonText+"\n"+durationLabel+": "+(record.Ended-record.Started).ToString("F2")+"s\n"+recordsLabel+": "+record.Events.Length+"\n"+evictedLabel+": "+record.Evicted+"\n"+summaryText+"\n"+privacyLabel+": "+privacyValue);
-                        Put(zip,"manifest.json",EventCodec.Json(new Dictionary<string,object>{{"SchemaVersion",2},{"Build",DiagnosticContext.BuildId},{"SessionId",DiagnosticContext.SessionId},{"CaptureId",record.Id},{"Plugins",plugins},{"Config",settings},{"Omitted","Raw parameter text, field probes and unstructured messages omitted in anonymous exports"}}));
+                        double? retainedStart=record.RetainedStart,retainedEnd=record.RetainedEnd;
+                        double? frameStart=record.PackedFrames.Length==0?(double?)null:record.PackedFrames[0].Time,frameEnd=record.PackedFrames.Length==0?(double?)null:record.PackedFrames[record.PackedFrames.Length-1].Time;
+                        string retainedRange=retainedStart.HasValue?retainedStart.Value.ToString("F3")+" - "+retainedEnd.Value.ToString("F3"):unavailable;
+                        string frameRange=frameStart.HasValue?frameStart.Value.ToString("F3")+" - "+frameEnd.Value.ToString("F3"):unavailable;
+                        Put(zip,"summary.txt","WhySoLaggy "+DiagnosticContext.BuildId+"\n"+reasonText+"\n"+durationLabel+": "+(record.Ended-record.Started).ToString("F2")+"s\n"+recordsLabel+": "+record.Count+"\n"+evictedLabel+": "+record.Evicted+"\n"+retainedLabel+": "+retainedRange+"\n"+frameRangeLabel+": "+frameRange+"\n"+framesLabel+": "+record.PackedFrames.Length+"\n"+dropsLabel+": "+record.DroppedFrames+" / "+record.DroppedCritical+" / "+record.DroppedDetails+"\n"+lossText+Environment.NewLine+timingText+"\n"+summaryText+"\n"+privacyLabel+": "+privacyValue);
+                        Put(zip,"manifest.json",EventCodec.Json(new Dictionary<string,object>{{"SchemaVersion",2},{"Build",DiagnosticContext.BuildId},{"SessionId",DiagnosticContext.SessionId},{"CaptureId",record.Id},{"Plugins",plugins},{"Config",settings},
+                            {"RequestedStartSeconds",record.Started},{"RequestedEndSeconds",record.Ended},{"RetainedStartSeconds",retainedStart},{"RetainedEndSeconds",retainedEnd},
+                            {"RetainedFrameStartSeconds",frameStart},{"RetainedFrameEndSeconds",frameEnd},
+                            {"RetainedFrameCount",record.PackedFrames.Length},{"DroppedFrames",record.DroppedFrames},{"DroppedCriticalEvents",record.DroppedCritical},{"DroppedDetailEvents",record.DroppedDetails},
+                            {"LossStatistics",LossManifest(record)},
+                            {"TimingAggregation","window inclusive; spike records are subsets, never add them to window totals; sampled time is observed time, not extrapolated"},
+                            {"Omitted","Raw parameter text, field probes and unstructured messages omitted in anonymous exports"}}));
+                        Put(zip,"loss-summary.txt",lossText);
                         var entry=zip.CreateEntry("events.jsonl",CompressionLevel.Fastest);
-                        using(var writer=new StreamWriter(entry.Open(),new UTF8Encoding(false)))foreach(var e in record.Events)writer.WriteLine(EventCodec.EventJson(complete?e:anonymizer.Sanitize(e)));
+                        using(var writer=new StreamWriter(entry.Open(),new UTF8Encoding(false)))foreach(var e in record.Enumerate())writer.WriteLine(EventCodec.EventJson(complete?e:anonymizer.Sanitize(e)));
                         foreach(var kind in new[]{Tuple.Create("frames.csv",new[]{EventType.FrameSample,EventType.SpikeFrame}),Tuple.Create("calls.csv",new[]{EventType.PluginTiming,EventType.PatchTiming}),Tuple.Create("network.csv",new[]{EventType.NetworkSample,EventType.RpcCall}),Tuple.Create("exceptions.csv",new[]{EventType.ExceptionSummary})})
                         {
                             using(var writer=new StreamWriter(zip.CreateEntry(kind.Item1,CompressionLevel.Fastest).Open(),new UTF8Encoding(false)))
-                            {writer.WriteLine("Frame,Timestamp,Event,DataJson");foreach(var e in record.Events.Where(x=>kind.Item2.Contains(x.Type))){var safe=complete?e:anonymizer.Sanitize(e);writer.WriteLine(e.FrameNumber+","+Csv(e.Timestamp)+","+e.Type+","+Csv(EventCodec.Json(safe.Fields)));}}
+                            {writer.WriteLine("Frame,Timestamp,Event,DataJson");foreach(var e in record.Enumerate().Where(x=>kind.Item2.Contains(x.Type))){var safe=complete?e:anonymizer.Sanitize(e);writer.WriteLine(e.FrameNumber+","+Csv(e.Timestamp)+","+e.Type+","+Csv(EventCodec.Json(safe.Fields)));}}
                         }
                         Put(zip,"harmony_patches.csv",patchMap);
                         if(raw&&complete)
@@ -230,7 +279,7 @@ namespace WhySoLaggy
             using(var source=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite))using(var dest=zip.CreateEntry(name,CompressionLevel.Fastest).Open())
             {source.Position=Math.Max(0,source.Length-2*1024*1024);source.CopyTo(dest);}
         }
-        internal static void Shutdown(){if(Busy)Finish("Shutdown");StructuredLogger.EventWritten-=OnEvent;lock(gate){rolling.Clear();recording?.Clear();recording=null;while(saved.Count>0)saved.Dequeue().Release();}}
+        internal static void Shutdown(){if(Busy)Finish("Shutdown");StructuredLogger.EventWritten-=OnEvent;lock(gate){rolling.Clear();recording?.Clear();recording=null;while(saved.Count>0)saved.Dequeue().Release();timing.Reset(0);}}
     }
 
     internal sealed class DiagnosticAnonymizer
@@ -239,7 +288,7 @@ namespace WhySoLaggy
         private string Alias(string kind,string key)
         {key=kind+":"+key;if(!aliases.TryGetValue(key,out string alias))aliases[key]=alias=kind+"-"+(aliases.Count+1);return alias;}
         private static readonly HashSet<string> Symbols=new HashSet<string>{"MethodId","Owner","PluginGuid","RpcMethod","ExceptionKind","TargetMethod"};
-        private static readonly HashSet<string> SafeStrings=new HashSet<string>{"SessionId","CaptureId","Validity","SceneState","Phase","GcAllocationStatus","CpuGpuStatus","TimingKind"};
+        private static readonly HashSet<string> SafeStrings=new HashSet<string>{"SessionId","CaptureId","Validity","SceneState","Phase","GcAllocationStatus","CpuGpuStatus","TimingKind","PluginTimingMode","PatchTimingMode","HookCoverage","SamplingMode","StreamStatus"};
         internal static string SafeStack(string source)
         {
             return string.Join("\n",(source??"").Split(new[]{'\r','\n'},StringSplitOptions.RemoveEmptyEntries).Take(6).Select(line=>

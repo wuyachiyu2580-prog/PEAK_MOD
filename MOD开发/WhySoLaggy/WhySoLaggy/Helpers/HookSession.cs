@@ -26,6 +26,7 @@ namespace WhySoLaggy
         internal bool Automatic, Faulted;
         internal bool Active => installed.Values.Any(x => x.Active);
         internal bool Busy => pending.Count != 0 || removing.Count != 0;
+        internal string Coverage => Busy ? "Transition" : Faulted ? "Partial" : Count == 0 ? "Off" : "Active";
         internal string Owner => harmony?.Id;
         internal int Count => installed.Count;
         internal double LastOperationMs;
@@ -73,7 +74,7 @@ namespace WhySoLaggy
                     }
                     catch(Exception ex)
                     {
-                        if(Automatic)Faulted=true;
+                        Faulted=true;
                         if(entry!=null)entry.Active=false;
                         try { harmony.Unpatch(target.Method,HarmonyPatchType.All,harmony.Id); installed.Remove(target.Method); Lookup.TryRemove(target.Method,out _);TimingLedger.Remove(scope,target.Method); }
                         catch { Faulted=true; }
@@ -82,6 +83,7 @@ namespace WhySoLaggy
                 }
                 LastOperationMs=DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-start);
                 SelfMetrics.Add("HookInstall",LastOperationMs);
+                HarmonyPatchSnapshot.Invalidate();
                 Revision++;operations++;
                 if(Automatic && LastOperationMs>20) { pending.Clear(); Faulted=true; Warn("Automatic expansion stopped: single hook operation exceeded 20 ms"); break; }
             }
@@ -92,6 +94,7 @@ namespace WhySoLaggy
             foreach(var e in installed.Values) {e.Active=false;System.Threading.Interlocked.Increment(ref e.Generation);}
             foreach(var method in installed.Keys.ToArray())
                 try {harmony.Unpatch(method,HarmonyPatchType.All,harmony.Id);installed.Remove(method);Lookup.TryRemove(method,out _);} catch{Faulted=true;}
+            HarmonyPatchSnapshot.Invalidate();
             if(installed.Count==0){TimingLedger.Remove(scope);Lookup.Clear();Faulted=false;harmony=null;return true;}
             return false;
         }
@@ -106,17 +109,18 @@ namespace WhySoLaggy
     internal static class SelfMetrics
     {
         private static readonly object gate=new object();
-        private static readonly Dictionary<string,Tuple<double,double,long>> values=new Dictionary<string,Tuple<double,double,long>>();
+        private sealed class Metric { internal double Total, Max; internal long Count; }
+        private static readonly Dictionary<string,Metric> values=new Dictionary<string,Metric>();
         private static double frameMs;
         internal static void Add(string name,double ms,bool countFrame=true)
         {
-            lock(gate){values.TryGetValue(name,out var v);values[name]=Tuple.Create((v?.Item1??0)+ms,Math.Max(v?.Item2??0,ms),(v?.Item3??0)+1);}
+            lock(gate){if(!values.TryGetValue(name,out var v))values[name]=v=new Metric();v.Total+=ms;v.Max=Math.Max(v.Max,ms);v.Count++;}
             if(countFrame && DiagnosticContext.IsMainThread && (name=="MainUpdate"||name=="FrameBoundary"||name=="Hud"))frameMs+=ms;
         }
         internal static double TakeFrame(){double v=frameMs;frameMs=0;return v;}
         internal static Dictionary<string,object> Snapshot(bool reset=false)
         {
-            lock(gate){var result=new Dictionary<string,object>();foreach(var p in values){result[p.Key+"TotalMs"]=p.Value.Item1;result[p.Key+"MaxMs"]=p.Value.Item2;result[p.Key+"Count"]=p.Value.Item3;}if(reset)values.Clear();return result;}
+            lock(gate){var result=new Dictionary<string,object>();foreach(var p in values){result[p.Key+"TotalMs"]=p.Value.Total;result[p.Key+"MaxMs"]=p.Value.Max;result[p.Key+"Count"]=p.Value.Count;}if(reset)values.Clear();return result;}
         }
     }
 }

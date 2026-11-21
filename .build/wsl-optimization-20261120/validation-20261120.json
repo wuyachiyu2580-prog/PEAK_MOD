@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-20",
+  "profile": "2.0.a",
+  "tests": {
+    "passed": 107,
+    "failed": 0
+  },
+  "build": {
+    "configuration": "Release",
+    "output": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\bin\\Release\\WhySoLaggy.dll",
+    "sha256": "3050B617F58A0C4F49FDB882F4F3097D3F8F795B045B3DFFCE387C363169904C"
+  },
+  "deployment": {
+    "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WUYACHIYU-WhySoLaggy\\WhySoLaggy.dll",
+    "sha256": "3050B617F58A0C4F49FDB882F4F3097D3F8F795B045B3DFFCE387C363169904C",
+    "matches": true
+  },
+  "runtime": {
+    "log": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\LogOutput.log",
+    "loaded": true,
+    "latestCapture": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\WhySoLaggy\\diagnostics\\wsl-20261120-130055-2535d5f7-anonymous.zip",
+    "captureBytes": 1328599,
+    "captureModified": "2026-11-20T21:00:58.5515040+08:00",
+    "captureSchema": 2,
+    "retainedFrames": 6100,
+    "lossQuality": "Exact",
+    "droppedFrames": 0,
+    "droppedCriticalEvents": 0,
+    "droppedDetailEvents": 0,
+    "networkTrendFieldsPresent": true,
+    "automaticTimingMode": "Exact",
+    "hookCoverage": "Active/Active"
+  }
+}

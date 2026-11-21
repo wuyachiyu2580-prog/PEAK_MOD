@@ -1,0 +1,178 @@
+{
+  "variant": "network_partition",
+  "elapsedSeconds": 9.8508624,
+  "peakPayloadBytes": 7796384,
+  "remainingPayloadBytes": 0,
+  "captures": [
+    {
+      "file": "wsl-20261117-121512-2a6cb7fa-anonymous.zip",
+      "frames": 4833,
+      "DroppedFrames": 0,
+      "DroppedCritical": 0,
+      "DroppedDetails": 0,
+      "preMissing": 368,
+      "actualDifferenceMissing": 115,
+      "actualDifferenceExtra": 26,
+      "missing": {
+        "RpcCall": 344,
+        "OwnershipChange": 1,
+        "PluginTiming": 13,
+        "PatchTiming": 10
+      },
+      "preTriggerMissing": {
+        "RpcCall": 344,
+        "OwnershipChange": 1,
+        "PluginTiming": 13,
+        "PatchTiming": 10
+      },
+      "recordingMissing": {},
+      "payload": 4950682
+    },
+    {
+      "file": "wsl-20261117-122438-7debe76a-anonymous.zip",
+      "frames": 5126,
+      "DroppedFrames": 0,
+      "DroppedCritical": 0,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {},
+      "preTriggerMissing": {},
+      "recordingMissing": {},
+      "payload": 3287568
+    },
+    {
+      "file": "wsl-20261117-122812-4fc4f59b-anonymous.zip",
+      "frames": 4843,
+      "DroppedFrames": 0,
+      "DroppedCritical": 41,
+      "DroppedDetails": 64,
+      "preMissing": 0,
+      "actualDifferenceMissing": 64,
+      "actualDifferenceExtra": 44,
+      "missing": {
+        "NetworkSample": 41,
+        "RpcCall": 40,
+        "PluginTiming": 13,
+        "PatchTiming": 10,
+        "OwnershipChange": 1
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 41,
+        "RpcCall": 40,
+        "PluginTiming": 13,
+        "PatchTiming": 10,
+        "OwnershipChange": 1
+      },
+      "recordingMissing": {},
+      "payload": 5271114
+    },
+    {
+      "file": "wsl-20261117-125600-8180d011-anonymous.zip",
+      "frames": 5499,
+      "DroppedFrames": 0,
+      "DroppedCritical": 90,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 44,
+      "missing": {
+        "NetworkSample": 90
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 90
+      },
+      "recordingMissing": {},
+      "payload": 4342360
+    },
+    {
+      "file": "wsl-20261117-125851-3f18dc8b-anonymous.zip",
+      "frames": 4151,
+      "DroppedFrames": 0,
+      "DroppedCritical": 0,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 6,
+      "missing": {},
+      "preTriggerMissing": {},
+      "recordingMissing": {},
+      "payload": 2808526
+    },
+    {
+      "file": "wsl-20261117-130610-d9857df0-anonymous.zip",
+      "frames": 4799,
+      "DroppedFrames": 0,
+      "DroppedCritical": 1,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 35,
+      "missing": {
+        "NetworkSample": 1
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 1
+      },
+      "recordingMissing": {},
+      "payload": 3786250
+    },
+    {
+      "file": "wsl-20261117-130851-7a2e4d13-anonymous.zip",
+      "frames": 4422,
+      "DroppedFrames": 0,
+      "DroppedCritical": 0,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 1,
+      "missing": {},
+      "preTriggerMissing": {},
+      "recordingMissing": {},
+      "payload": 2916680
+    },
+    {
+      "file": "wsl-20261117-131541-12981a67-anonymous.zip",
+      "frames": 4360,
+      "DroppedFrames": 0,
+      "DroppedCritical": 0,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 23,
+      "missing": {},
+      "preTriggerMissing": {},
+      "recordingMissing": {},
+      "payload": 2999842
+    },
+    {
+      "file": "wsl-20261117-132617-82e41e62-anonymous.zip",
+      "frames": 8593,
+      "DroppedFrames": 0,
+      "DroppedCritical": 0,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 19,
+      "missing": {},
+      "preTriggerMissing": {},
+      "recordingMissing": {},
+      "payload": 3916516
+    },
+    {
+      "file": "wsl-20261117-133315-a23578bd-anonymous.zip",
+      "frames": 7025,
+      "DroppedFrames": 0,
+      "DroppedCritical": 0,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {},
+      "preTriggerMissing": {},
+      "recordingMissing": {},
+      "payload": 2543386
+    }
+  ]
+}

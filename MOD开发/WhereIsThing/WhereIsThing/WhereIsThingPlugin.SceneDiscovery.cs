@@ -9,7 +9,6 @@ namespace WhereIsThing
     {
         private void RefreshRegisteredTargets()
         {
-            _scanSeenBuffer.Clear();
             if (_selectedLuggageTypes.Count > 0 || _selectedSceneTargetTypes.Contains(ThingSceneTargetType.TrapChest))
             {
                 foreach (Luggage luggage in Luggage.ALL_LUGGAGE)
@@ -33,7 +32,7 @@ namespace WhereIsThing
 
                         MushroomZombie captured = zombie;
                         Character zombieCharacter = captured.GetComponent<Character>();
-                        AddSceneLabel(_scanSeenBuffer, ThingSceneTargetType.MushroomZombie, captured,
+                        AddSceneLabel(ThingSceneTargetType.MushroomZombie, captured,
                             delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.MushroomZombie, _nameLanguage.Value); },
                             delegate
                             {
@@ -45,7 +44,7 @@ namespace WhereIsThing
                 }
             }
 
-            RefreshMobLabels(_scanSeenBuffer);
+            RefreshMobLabels();
 
             if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.GhostBall))
             {
@@ -54,7 +53,7 @@ namespace WhereIsThing
                 if (ghostBall != null && ghostBall.gameObject.activeInHierarchy)
                 {
                     Peak.GhostBall captured = ghostBall;
-                    AddSceneLabel(_scanSeenBuffer, ThingSceneTargetType.GhostBall, captured,
+                    AddSceneLabel(ThingSceneTargetType.GhostBall, captured,
                         delegate { return ThingCatalog.GetSceneTargetDisplayName(ThingSceneTargetType.GhostBall, _nameLanguage.Value); },
                         delegate
                         {
@@ -72,14 +71,20 @@ namespace WhereIsThing
                 return;
             }
 
-            _scanSeenBuffer.Clear();
+            if (_sceneDiscoveryStep == 0 &&
+                ((_effectiveScopes & ThingLocationScope.Statue) == 0 || _selectedIds.Count == 0))
+            {
+                _sceneDiscoveryStep++;
+                return;
+            }
+            using(_phaseProfiler.Measure(6+_sceneDiscoveryStep))
             switch (_sceneDiscoveryStep++)
             {
                 case 0:
-                    RefreshAmuletStatueLabels(_scanSeenBuffer);
+                    RefreshAmuletStatueLabels();
                     break;
                 case 1:
-                    RefreshActiveSceneTargets<TumbleWeed>(_scanSeenBuffer, ThingSceneTargetType.TumbleWeed);
+                    RefreshActiveSceneTargets<TumbleWeed>(ThingSceneTargetType.TumbleWeed);
                     break;
                 case 2:
                     if (_selectedSceneTargetTypes.Contains(ThingSceneTargetType.GloomBellTower))
@@ -91,7 +96,7 @@ namespace WhereIsThing
                                 continue;
                             }
                             GhostFire captured = ghostFire;
-                            AddSceneLabel(_scanSeenBuffer, ThingSceneTargetType.GloomBellTower, captured,
+                            AddSceneLabel(ThingSceneTargetType.GloomBellTower, captured,
                                 delegate { return ThingCatalog.GetGloomBellTowerLabelName(captured, _nameLanguage.Value); },
                                 delegate
                                 {
@@ -102,57 +107,57 @@ namespace WhereIsThing
                     }
                     break;
                 case 3:
-                    RefreshActiveSceneTargets<Spider>(_scanSeenBuffer, ThingSceneTargetType.Spider);
+                    RefreshActiveSceneTargets<Spider>(ThingSceneTargetType.Spider);
                     break;
                 case 4:
-                    RefreshActiveSceneTargets<BeeSwarm>(_scanSeenBuffer, ThingSceneTargetType.BeeSwarm);
+                    RefreshActiveSceneTargets<BeeSwarm>(ThingSceneTargetType.BeeSwarm);
                     break;
                 case 5:
-                    RefreshActiveSceneTargets<Scoutmaster>(_scanSeenBuffer, ThingSceneTargetType.Scoutmaster);
+                    RefreshActiveSceneTargets<Scoutmaster>(ThingSceneTargetType.Scoutmaster);
                     break;
                 case 6:
-                    RefreshActiveSceneTargets<Peak.SpikeTrap>(_scanSeenBuffer, ThingSceneTargetType.SpikeTrap);
+                    RefreshActiveSceneTargets<Peak.SpikeTrap>(ThingSceneTargetType.SpikeTrap);
                     break;
                 case 7:
-                    RefreshActiveSceneTargets<Antlion>(_scanSeenBuffer, ThingSceneTargetType.Antlion);
+                    RefreshActiveSceneTargets<Antlion>(ThingSceneTargetType.Antlion);
                     break;
                 case 8:
-                    RefreshActiveSceneTargets<VenusFlyTrap>(_scanSeenBuffer, ThingSceneTargetType.VenusFlyTrap);
+                    RefreshActiveSceneTargets<VenusFlyTrap>(ThingSceneTargetType.VenusFlyTrap);
                     break;
                 case 9:
-                    RefreshActiveSceneTargets<Tornado>(_scanSeenBuffer, ThingSceneTargetType.Tornado);
+                    RefreshActiveSceneTargets<Tornado>(ThingSceneTargetType.Tornado);
                     break;
                 case 10:
-                    RefreshActiveSceneTargets<OrbThatMakesYouSleepy>(_scanSeenBuffer, ThingSceneTargetType.NapberryHypnoOrb);
+                    RefreshNapberryPlants();
                     break;
                 case 11:
-                    RefreshActiveSceneTargets<ArrowShooter>(_scanSeenBuffer, ThingSceneTargetType.ArrowShooter);
+                    RefreshActiveSceneTargets<ArrowShooter>(ThingSceneTargetType.ArrowShooter);
                     break;
                 case 12:
-                    RefreshActiveSceneTargets<Peak.MovingSawBlade>(_scanSeenBuffer, ThingSceneTargetType.MovingSawBlade);
+                    RefreshActiveSceneTargets<Peak.MovingSawBlade>(ThingSceneTargetType.MovingSawBlade);
                     break;
                 case 13:
-                    RefreshActiveSceneTargets<Peak.SpikeRoller>(_scanSeenBuffer, ThingSceneTargetType.SpikeRoller);
+                    RefreshActiveSceneTargets<Peak.SpikeRoller>(ThingSceneTargetType.SpikeRoller);
                     break;
                 case 14:
-                    RefreshActiveSceneTargets<SwingingAxe>(_scanSeenBuffer, ThingSceneTargetType.SwingingAxe);
+                    RefreshActiveSceneTargets<SwingingAxe>(ThingSceneTargetType.SwingingAxe);
                     break;
                 case 15:
-                    RefreshActiveSceneTargets<SlipperyJellyfish>(_scanSeenBuffer, ThingSceneTargetType.SlipperyJellyfish,
+                    RefreshActiveSceneTargets<SlipperyJellyfish>(ThingSceneTargetType.SlipperyJellyfish,
                         delegate(SlipperyJellyfish target)
                         {
                             return HasRunSetting(target, RunSettings.SETTINGTYPE.Hazard_Jellyfish);
                         });
                     break;
                 case 16:
-                    RefreshActiveSceneTargets<WindAffectedStatusEmitter>(_scanSeenBuffer, ThingSceneTargetType.SporeCloud,
+                    RefreshActiveSceneTargets<WindAffectedStatusEmitter>(ThingSceneTargetType.SporeCloud,
                         delegate(WindAffectedStatusEmitter target)
                         {
                             return HasRunSetting(target, RunSettings.SETTINGTYPE.Hazard_SporeClouds);
                         });
                     break;
                 case 17:
-                    RefreshRunSettingHazards(_scanSeenBuffer);
+                    RefreshRunSettingHazards();
                     break;
                 case 18:
                     RefreshRootPlantItems();
@@ -163,7 +168,7 @@ namespace WhereIsThing
             }
         }
 
-        private void RefreshRunSettingHazards(HashSet<string> seen)
+        private void RefreshRunSettingHazards()
         {
             bool scanUrch = _selectedSceneTargetTypes.Contains(ThingSceneTargetType.Urch);
             bool scanExploding = _selectedSceneTargetTypes.Contains(ThingSceneTargetType.ExplodingMushroom);
@@ -218,7 +223,7 @@ namespace WhereIsThing
                 DisableBasedOnRunSettings captured = target;
                 ThingSceneTargetType capturedType = targetType;
                 Vector3 capturedPosition = fixedPosition ?? captured.transform.position;
-                AddSceneLabel(seen, capturedType, captured,
+                AddSceneLabel(capturedType, captured,
                     delegate { return ThingCatalog.GetSceneTargetDisplayName(capturedType, _nameLanguage.Value); },
                     delegate
                     {
@@ -228,13 +233,8 @@ namespace WhereIsThing
             }
         }
 
-        private void RefreshAmuletStatueLabels(HashSet<string> seen)
+        private void RefreshAmuletStatueLabels()
         {
-            if ((_effectiveScopes & ThingLocationScope.Statue) == 0 || _selectedIds.Count == 0)
-            {
-                return;
-            }
-
             foreach (Peak.PropSpawner_AmuletStatues statue in Resources.FindObjectsOfTypeAll<Peak.PropSpawner_AmuletStatues>())
             {
                 if (statue == null || !statue.gameObject.scene.IsValid() || !statue.gameObject.activeInHierarchy ||
@@ -268,7 +268,6 @@ namespace WhereIsThing
                 Item capturedDefinition = definition;
                 ushort capturedItemId = itemId;
                 string key = "statue:" + capturedStatue.GetInstanceID();
-                seen.Add(key);
                 Transform target = capturedStatueFragment.transform;
                 AddLabel(key, target,
                     delegate { return GetAmuletStatueLabelName(capturedDefinition); },
@@ -443,23 +442,6 @@ namespace WhereIsThing
 
             return ThingCatalog.GetDisplayName(definition, _nameLanguage.Value) + "\n" + suffix;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         private string GetPlacedItemName(Item definition, string fallbackName)
         {

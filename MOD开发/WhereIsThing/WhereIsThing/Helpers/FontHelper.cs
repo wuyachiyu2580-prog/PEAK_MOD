@@ -7,7 +7,7 @@ namespace WhereIsThing
 {
     internal static class FontHelper
     {
-        private const string ChineseSample = "物品在哪简体中文急救箱绷带药用根茎灵药菇曼德拉草行李箱雕像关卡营地陷阱";
+        private const string ChineseSample = "物品在哪简体中文急救箱绷带药用根茎灵药菇曼德拉草行李箱雕像关卡营地陷阱有毒无毒品种启用停用预设限制";
         private static TMP_FontAsset _cached;
 
         public static TMP_FontAsset GetChineseCapable()
@@ -46,8 +46,7 @@ namespace WhereIsThing
 
         public static TMP_FontAsset GetLabelFont(ThingLabelFont choice)
         {
-            string requestedSource;
-            TMP_FontAsset requested = GetFontForChoice(choice, out requestedSource);
+            TMP_FontAsset requested = GetFontForChoice(choice);
             TMP_FontAsset selected = requested;
 
             if (selected == null)
@@ -94,7 +93,8 @@ namespace WhereIsThing
 
         private static TMP_FontAsset FindPreferredFont()
         {
-            foreach (TMP_FontAsset font in GetCandidateFonts())
+            TMP_FontAsset[] candidates = GetCandidateFonts();
+            foreach (TMP_FontAsset font in candidates)
             {
                 if (IsChineseCapable(font))
                 {
@@ -102,7 +102,7 @@ namespace WhereIsThing
                 }
             }
 
-            foreach (TMP_FontAsset font in GetCandidateFonts())
+            foreach (TMP_FontAsset font in candidates)
             {
                 if (font != null)
                 {
@@ -113,24 +113,19 @@ namespace WhereIsThing
             return null;
         }
 
-        private static TMP_FontAsset GetFontForChoice(ThingLabelFont choice, out string source)
+        private static TMP_FontAsset GetFontForChoice(ThingLabelFont choice)
         {
             switch (choice)
             {
                 case ThingLabelFont.TmpDefault:
-                    source = "TmpDefault";
                     return TMP_Settings.defaultFontAsset;
                 case ThingLabelFont.KoreanBinggrae:
-                    source = "KoreanBinggrae";
                     return FindFontAsset("Korean Binggrae-Bold SDF");
                 case ThingLabelFont.Crazk:
-                    source = "Crazk";
                     return FindFontAsset("CRAZK___ SDF");
                 case ThingLabelFont.Auto:
-                    source = "Auto(GameDefault)";
                     return GetGameDefaultFont() ?? TMP_Settings.defaultFontAsset;
                 default:
-                    source = "GameDefault";
                     return GetGameDefaultFont();
             }
         }

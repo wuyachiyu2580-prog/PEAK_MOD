@@ -15,6 +15,9 @@ namespace WhySoLaggy
     {
         internal static WhySoLaggyPlugin Instance;
         internal static ConfigEntry<bool> AutoCapture,AdaptiveTiming,CpuGpuMetrics;
+        internal static ConfigEntry<bool> DebugPhaseTiming;
+        internal static ConfigEntry<int> DebugPhaseTimingSeconds;
+        internal static ConfigEntry<StructuredDiskFormat> DiskFormatConfig;
         internal static ConfigEntry<float> RpcPumpBudget,DashboardFont;
         internal static ConfigEntry<string> DashboardPosition;
         internal static ConfigEntry<KeyboardShortcut> DashboardKey,CaptureKey,MarkerKey;
@@ -27,6 +30,8 @@ namespace WhySoLaggy
         private void InitializeRuntime()
         {
             Instance=this;
+            DebugPhaseTiming=Config.Bind("Diagnostics","PhaseTiming",false,"Run one bounded phase timing window; automatically turns off. Nested phases are not additive.");
+            DebugPhaseTimingSeconds=Config.Bind("Diagnostics","PhaseTimingSeconds",45,new ConfigDescription("Duration of a diagnostic timing window, 30 to 60 seconds.",new AcceptableValueRange<int>(30,60)));
             AutoCapture=Config.Bind("Capture","AutoCapture",true,"Automatically capture repeated or severe frame spikes; plugin timing first, then verified targets.");
             AdaptiveTiming=Config.Bind("General","AdaptiveTiming",false,"Sample at method entry in manual patch profiling. Detailed automatic captures are exact.");
             CpuGpuMetrics=Config.Bind("General","CpuGpuMetrics",false,"Read available CPU/GPU frame timings without changing graphics settings.");
@@ -51,7 +56,8 @@ namespace WhySoLaggy
             FpsTracker.SpikeThresholdMs=SpikeThresholdMs.Value;FpsTracker.ReportIntervalSeconds=ReportIntervalSeconds.Value;FpsTracker.EnableMemoryMonitor=EnableMemoryMonitor.Value;
             LogFilter.Level=VerbosityCfg.Value;PerformanceDashboard.ShowDashboard=ShowDashboard.Value;
             StructuredLogger.MaxLogFileSizeMB=MaxLogFileSizeMB.Value;StructuredLogger.MaxRotatedFiles=MaxRotatedFiles.Value;StructuredLogger.MaxRotatedStorageMB=MaxRotatedStorageMB.Value;
-            CaptureController.UpdateConfiguration(new Dictionary<string,object>{{"SpikeThresholdMs",SpikeThresholdMs.Value},{"AutoCapture",AutoCapture.Value},{"PumpBudgetMs",RpcPumpBudget.Value},{"ManualPluginProfiling",EnablePluginProfiling.Value},{"ManualPatchProfiling",EnablePatchProfiling.Value},{"AdaptiveTiming",AdaptiveTiming.Value},{"QueueCapacity",QueueCapacity.Value}});
+            StructuredLogger.ConfigureDiskFormat(DiskFormatConfig.Value);
+            CaptureController.UpdateConfiguration(new Dictionary<string,object>{{"SpikeThresholdMs",SpikeThresholdMs.Value},{"AutoCapture",AutoCapture.Value},{"PumpBudgetMs",RpcPumpBudget.Value},{"ManualPluginProfiling",EnablePluginProfiling.Value},{"ManualPatchProfiling",EnablePatchProfiling.Value},{"AdaptiveTiming",AdaptiveTiming.Value},{"QueueCapacity",QueueCapacity.Value},{"StructuredDiskFormat",DiskFormatConfig.Value.ToString()},{"PhaseTiming",DebugPhaseTiming.Value},{"PhaseTimingSeconds",DebugPhaseTimingSeconds.Value}});
             CaptureController.AutoEnabled=AutoCapture.Value;NetworkObserver.CpuGpuEnabled=CpuGpuMetrics.Value;
             PatchProfiler.TopMethodCount=TopMethodCount.Value;PatchProfiler.MinReportMs=MinReportMs.Value;PatchProfiler.Adaptive=AdaptiveTiming.Value;
             PatchProfiler.IgnoreMethods.Clear();FillIgnoreSet(IgnorePatchMethods.Value,PatchProfiler.IgnoreMethods);
@@ -87,6 +93,7 @@ namespace WhySoLaggy
         }
         private void RuntimeTick()
         {
+            if(DiagnosticPhases.Profiler.Tick(DebugPhaseTiming.Value,DebugPhaseTimingSeconds.Value,DiagnosticClock.Now,DiagnosticPhases.Report))DebugPhaseTiming.Value=false;
             long started=Stopwatch.GetTimestamp();
             if(Interlocked.Exchange(ref runtimeDirty,0)!=0)try{ApplyRuntimeSettings();}catch(Exception ex){RuntimeStatus="Apply failed: "+ex.GetType().Name;}
             FrameCoordinator.Transition=PluginProfiler.Session.Busy||PatchProfiler.Session.Busy;
@@ -141,6 +148,7 @@ namespace WhySoLaggy
         }
         private void ShutdownRuntime()
         {
+            DiagnosticPhases.Profiler.Stop(DiagnosticClock.Now,DiagnosticPhases.Report,"shutdown");
             Config.SettingChanged-=OnRuntimeSettingChanged;CaptureController.Shutdown();CaptureController.ApplyHooks=null;
             ExceptionObserver.Stop();FrameCoordinator.Shutdown();
             foreach(var h in new[]{rpcHarmony,abuseHarmony,traceHarmony,probeHarmony})try{RuleTargets.RemoveOwner(h);}catch{}

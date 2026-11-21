@@ -15,7 +15,6 @@ namespace WhereIsThing
                 (!luggage.IsOpen || IsTrapActive(trap));
             if (!IsValid()) return;
             string key = "luggage:" + luggage.GetInstanceID();
-            _scanSeenBuffer.Add(key);
             AddLabel(key, luggage.transform, delegate
             {
                 string name = trap != null

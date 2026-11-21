@@ -1,5 +1,26 @@
 # Changelog
 
+## 开发构建 2026-11-17（2026-11-18 验收）
+
+- 新增Diagnostics/PhaseTiming与PhaseTimingSeconds：默认关闭，一次30–60秒窗口，结束自动关闭。
+- 聚合网络发现/重试/清理、20个场景步骤、标签刷新/投影和Update；附峰值对象/标签/选择代数等上下文。P95为直方图上界，阶段嵌套不可相加。
+- 原扫描/晚安莓/共享行为保持；先采集证据再决定周期尖峰优化。
+- 184项helper+104项生产流程检查通过；真实依赖Release零警告零错误。本次隔离构建未部署、未实机。
+
+## Unreleased (development)
+
+- Republish shared presets after room or host changes, retry rejected submissions, and automatically publish resolved targets when the item database becomes ready.
+- Ignore unrelated or unchanged room properties without extending timed scans or interrupting local preset editing. Keep the existing host-transition grace period.
+- Apply scan mode and duration changes consistently from ModConfig and the preset window. Labels keep updating and expiring while a selection window is open.
+- Close the rename dialog before closing the preset window when pressing Escape. Update local settings without rebuilding preset rows.
+- Cache effective selections, reuse unchanged label bindings and classification results, and update distance text without repeating title layout. Recheck scene filters and same-scene camera changes.
+- Remove unused internal scan bookkeeping and helper code while preserving legacy preset migration and shared-property compatibility.
+- Combine unpicked and picked Napberries into one Napberry entry under Food. Existing selections for either form continue to work.
+- Place unpicked Napberry labels on the fruit, and remove them when it is hidden or picked up. Empty plants no longer remain labeled.
+- Apply the Ground filter to unpicked Napberries; picked fruit keeps the existing ground, held and backpack visibility rules.
+
+Validated with 184 helper checks, 97 production state-flow checks, and a Release build against the installed PEAK 3.1.0 assemblies. This build has not been deployed or playtested. Performance gains have not been measured in-game.
+
 ## 0.1.3
 
 - Distinguish hidden mandrakes from medicinal roots before pickup, using their actual pickup identity. Terrain plants follow the Ground filter.

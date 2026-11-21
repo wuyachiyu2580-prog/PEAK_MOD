@@ -1,0 +1,30 @@
+--- MOD开发\WhereIsThing\WhereIsThing\Helpers\ModConfigUiAdapter.cs (turn start)
+
++++ MOD开发\WhereIsThing\WhereIsThing\Helpers\ModConfigUiAdapter.cs
+
+@@ -275,23 +275,6 @@
+
+             if (Warnings.Add(key)) _warn?.Invoke("ModConfig localization: " + message);
+         }
+ 
+-        internal sealed class ActionFieldSubscription : IDisposable
+-        {
+-            private FieldInfo _field;
+-            private Action _handler;
+-            internal void Subscribe(FieldInfo field, Action handler)
+-            {
+-                if (field == null || field.FieldType != typeof(Action) || !field.IsStatic || handler == null) return;
+-                if (_field == field && _handler == handler) return;
+-                Dispose();
+-                field.SetValue(null, (Action)field.GetValue(null) + handler);
+-                _field = field; _handler = handler;
+-            }
+-            public void Dispose()
+-            {
+-                if (_field != null) _field.SetValue(null, (Action)_field.GetValue(null) - _handler);
+-                _field = null; _handler = null;
+-            }
+-        }
++
+     }
+ }

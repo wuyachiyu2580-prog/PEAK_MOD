@@ -1,0 +1,22 @@
+[
+  {
+    "api": "Resources.FindObjectsOfTypeAll",
+    "excerpts": [
+      "FindObjectsOfType this method also lists disabled objects. Note: This method is very slow. Avoid using it every frame. The following code example finds all GameObjects in the scene using non-generic methods: Examples using UnityEngine; using UnityEditor; using System.Collections.Generic; public class ExampleScript : MonoBehaviour { List<UnityEngine.Object> GetSceneObjectsNonGen",
+      "bjectsOfType this method also lists disabled objects. Note: This method is very slow. Avoid using it every frame. The following code example finds all GameObjects in the scene using non-generic methods: Examples using UnityEngine; using UnityEditor; using System.Collections.Generic; public class ExampleScript : MonoBehaviour { List<UnityEngine.Object> GetSceneObjectsNonGeneric(",
+      "ceIDToObjectList Load LoadAll LoadAssetAtPath LoadAsync UnloadAsset UnloadUnusedAssets ResourcesAPI Rigidbody Rigidbody2D RuntimeAnimatorController RuntimeInitializeOnLoadMethodAttribute ScalableBufferManager Screen ScreenCapture ScriptableObject Security SelectionBaseAttribute SerializeField SerializeReference Shader ShaderVariantCollection SharedBetweenAnimatorsAttribute Skin",
+      " && !(go.hideFlags == HideFlags.NotEditable || go.hideFlags == HideFlags.HideAndDontSave)) objectsInScene.Add(go); } return objectsInScene; } } FindObjectsOfTypeAll<T>() Returns a list of all objects of Type T. public static T[] FindObjectsOfTypeAll<T>() where T : Object Returns Type Description <T>[] Remarks This function can return any type of Unity object that is loaded, inc",
+      "n \",\"id\":\"gtm-script\"}]) @layer mui{body{scrollbar-color:var(--mui-palette-text-disabled) var(--mui-palette-background-default);}body::-webkit-scrollbar,body *::-webkit-scrollbar{background-color:rgba(0, 0, 0, 0.1);width:8px;border-radius:8px;}body::-webkit-scrollbar-thumb,body *::-webkit-scrollbar-thumb{border-radius:8px;background-color:var(--mui-palette-text-disabled);min-he"
+    ]
+  },
+  {
+    "api": "Object.FindObjectsByType",
+    "excerpts": [
+      "cription Object[] An array of objects. Remarks FindObjectsByType doesn't return assets (for example meshes, textures, or prefabs). It also doesn't return objects that have HideFlags.DontSave set.Use Resources.FindObjectsOfTypeAll to avoid these limitations. You can't use Object.FindObjectsByType with interfaces directly. Instead, find all components of a base type and then filt",
+      "tObjectByType , Object.FindAnyObjectByType . FindObjectsByType(Type, FindObjectsInactive, FindObjectsSortMode) Retrieves a list of all loaded objects of Type type and sorts the results according to sortMode . public static Object[] FindObjectsByType(Type type, FindObjectsInactive findObjectsInactive, FindObjectsSortMode sortMode) Parameters type Type The type of object to find.",
+      "shes, textures, or prefabs). It also doesn't return objects that have HideFlags.DontSave set.Use Resources.FindObjectsOfTypeAll to avoid these limitations. You can't use Object.FindObjectsByType with interfaces directly. Instead, find all components of a base type and then filter the results by interface using LINQ's OfType . In the Editor, FindObjectsByType searches the Scene ",
+      "es a list of all loaded objects of Type type and sorts the results according to sortMode. Read time 4 minutes Last updated 2 months ago Definition Type: Method Namespace: UnityEngine Assembly: UnityEngine.CoreModule FindObjectsByType(Type, FindObjectsSortMode) Retrieves a list of all loaded objects of Type type and sorts the results according to sortMode . public static Object[",
+      "n \",\"id\":\"gtm-script\"}]) @layer mui{body{scrollbar-color:var(--mui-palette-text-disabled) var(--mui-palette-background-default);}body::-webkit-scrollbar,body *::-webkit-scrollbar{background-color:rgba(0, 0, 0, 0.1);width:8px;border-radius:8px;}body::-webkit-scrollbar-thumb,body *::-webkit-scrollbar-thumb{border-radius:8px;background-color:var(--mui-palette-text-disabled);min-he"
+    ]
+  }
+]

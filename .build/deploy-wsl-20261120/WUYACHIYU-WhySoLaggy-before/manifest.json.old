@@ -1,0 +1,9 @@
+{
+    "name": "WhySoLaggy",
+    "version_number": "1.0.5",
+    "website_url": "",
+    "description": "Diagnose lag and unusual network activity with mod profilers, RPC monitoring, CSV/JSONL logs, and Harmony patch diagnostics.",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.2403"
+    ]
+}

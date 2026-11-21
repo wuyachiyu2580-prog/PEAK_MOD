@@ -1,0 +1,322 @@
+# PEAK MOD Memory
+
+## 2026-11-17 一局实测复核：运行确认，仍有待修缺口
+
+WhySoLaggy retention构建已有本局运行证据：10份保留ZIP、53,651帧均连续，约20秒预录完整；但8份包报告关键事件省略合计328条，按Sequence对照实际少582条，预录部分省略未传入manifest。主线程SelfMainMs在保留Gameplay段均值0.249ms、P99 1.628ms、峰值85.046ms，需分阶段取证。写盘/RPC队列丢弃为0；CSV+JSONL合计约603MiB，JSONL已轮换掉本局前段。
+
+WhereIsThing fixes构建正常加载：700份周期报告累计Update 699,949次、全计时覆盖、0异常，均值0.117934ms/调用；诊断窗口反复出现约5秒一次的8–15ms尖峰，最大14.7521ms。5秒场景校验/Statue全局查询为优先候选，尚未证实具体子方法。退出配置RestrictClientPresets=false、Persistent；保留用户现值，默认仍true。晚安莓/共享/菜单等功能矩阵不能仅凭日志判通过。
+
+本局CSV覆盖19:38–21:34，安装DLL与部署哈希一致。Player.log中Compass相关空引用17,124条，不能误归因到这两个MOD；GetDisplayName/LOC: 0未复现。此次仅审计并保存报告/证据，未改生产源码、配置、DLL或发行，未启动游戏。当前属于部分实机验收，覆盖下方从未实机的旧阶段状态；旧记录保留。
+
+[本局完整审计、数据口径与待修优先级](PLAYTEST_WhereIsThing_WhySoLaggy_2026-11-17.md)。证据：.build/playthrough-20261117/；只同步本地memory。
+
+## 2026-11-17 WhereIsThing 已部署实测目录，实机待验
+
+按用户“放到实测目录”要求，2026-11-17 00:07:42 +08:00 已将 0.1.3-dev.20261116.fixes 的 DLL/PDB 部署到 2.0.a profile 的 BepInEx/plugins 根目录，复制前确认游戏未运行。旧子目录 DLL 已备份并移除，递归核对仅各一份 DLL/PDB；配置哈希不变。
+
+当前状态以本条为准；下方 2026-11-16 的“未部署”等描述保留为历史。184/184 helper 与 97/97 状态流程测试共 281 项逻辑检查通过，Release 构建 0 警告 0 错误，不代表实机通过。下一步启动 2.0.a profile 实测；尚未启动游戏、未实机验证、未发行或提交。
+
+[实施与部署记录](mods/WhereIsThing/IMPLEMENTATION_Fixes_2026-11-16.md)。哈希、安装/备份路径详见该记录；仅同步本地 memory。
+
+## 2026-11-16 WhereIsThing 审查修复已实施，未部署
+
+用户已授权开始修改。共享会话/发布失败重试、目录自动就绪补发、无关属性过滤、扫描计时与菜单生命周期已修；有效选择缓存、标签绑定/分类复用、距离与设置局部更新及确定残留清理已完成。184/184 helper + 97/97 生产流程回归，真实依赖 Release 0 警告 0 错误。开发标识 0.1.3-dev.20261116.fixes，未部署/实机/发行/提交。
+
+WhereIsThing 本批修复已完成并保存隔离产物；未安装，实机验收仍待执行。
+
+[实施与验收记录](mods/WhereIsThing/IMPLEMENTATION_Fixes_2026-11-16.md)。仅同步本地 memory，无可用外部 update_memory 接口。
+
+## 2026-11-16 WhereIsThing 修复方案已调研，未实施
+
+用户要求先调研如何修。确定共享按 Room 会话/actor/模式去重、目录就绪自动补发、无关/重复属性过滤、内容刷新与计时分离；保留协议 2、旧配置、默认客机限制和三秒房主过渡。隔离候选 47/47 检查通过，不能当作生产修复或实机通过。
+
+WhereIsThing 修复方案及隔离验证已保存；当前开发基线仍 0.1.3-dev.20261116.napberry。
+
+[修复方案与验证边界](mods/WhereIsThing/RESEARCH_Fixes_2026-11-16.md)。只同步本地 memory，无可用外部 update_memory 接口。
+
+## 2026-11-16 WhereIsThing 整体审查完成，问题未修复
+
+确认四类状态流问题：相同 payload 跨房/模式漏发布；目录解析后未重新发布；无关房间属性续时并重建窗口；外部常驻→定时保留无穷截止。现有 184/184 回归仍通过，新增隔离审计使用真实方法体和测试替身，未做实机。生产源码未改，问题尚未修复。
+
+新增整体审查入口，近期晚安莓开发实现仍保留，未自动执行修复。
+
+[完整审查报告](mods/WhereIsThing/REVIEW_2026-11-16.md)。仅同步本地 memory；本次没有可用的外部 update_memory 接口。
+
+## 2026-11-16 晚安莓统一标注已实施，未部署
+
+用户“开始”已授权实施：食物分类中的单一晚安莓条目覆盖未摘/已摘；未摘锚定果实，隐藏/采摘/更换后旧标签失效，空株不再标记。Ground控制未摘，已摘沿用地面/手持/背包规则；旧itemID或场景token预设兼容，取消勾选清除两者，共享协议不变。184/184逻辑回归、Release 0警告0错误。开发标识0.1.3-dev.20261116.napberry；仅隔离产物，未部署/改cfg/实机/发行。
+
+此条覆盖前一阶段仅方案状态；不将逻辑回归视为实机通过。
+
+[实施与验收记录](mods/WhereIsThing/IMPLEMENTATION_Napberry_2026-11-16.md)。仅维护本地memory。
+
+## 2026-11-16 晚安莓统一标注可行（仅方案）
+
+用户追问统一标注可行性：可用单一“晚安莓”入口/标签，未摘定位果实，采摘后撤掉植株标签并沿用物品扫描；内部仍分FakeItem/Item两条发现路径，旧物品ID/场景选择应兼容。沿用先调研要求，未改生产代码、配置、构建或部署。此前空株误标缺口仍未修复。
+
+[方案与边界](mods/WhereIsThing/RESEARCH_Napberry_2026-11-16.md)。
+
+## 2026-11-16 晚安莓植株扫描调研（未改代码）
+
+只选普通晚安莓不会自动扫描植株；需另选自然危险中的“未摘下的晚安莓”。实际扫描NapBerrySpawn植株对象，未检查fakeBerry采摘/激活状态，采摘后若植株仍激活会残留标签。已用3.1源码与sharedassets4资源交叉核查，未改生产代码/配置、未构建部署或实机。该旧缺口未修复，也不在此前143项回归覆盖内。
+
+[调研证据与修复边界](mods/WhereIsThing/RESEARCH_Napberry_2026-11-16.md)。只维护本地memory。
+
+## 2026-11-16 客机配置与改版整合完成，额外识别仅调研
+
+用户认可的改动已整合到开发源码：客机 RestrictClientPresets 默认 true（本地偏好），本地多预设并集、放置物门控、蘑菇毒/无毒品种及 Clone 识别、地面过滤与标签范围优化。143/143 逻辑回归，当前 PEAK 3.1.0 隔离 Release 0 警告 0 错误。开发标识 0.1.3-dev.20261116.presets；未部署、未实机、未改发行。
+
+[WhereIsThing实施与研究](mods/WhereIsThing/IMPLEMENTATION_PresetsAndTraits_2026-11-16.md)。
+
+## 2026-11-16 WhereIsThing 新反编译已对比
+
+[renlei 0.1.3.1 对照开发版0.1.3](mods/WhereIsThing/COMPARISON_Renlei_0.1.3.1_2026-11-16.md)：多预设、客机自由配置、放置物门控、毒蘑菇拆分与范围优化。仅分析并保存memory，未合并、构建或部署，开发版不变。
+
+## 2026-11-16 录制保留修复已部署，实机待验
+
+已完成上次实机反馈后中断的录制保留修复：帧/关键事件/明细分区，方法按秒汇总并保留有限尖峰；导出显示真实覆盖时间及分类省略。78/78回归通过，Release零警告零错误。构建1.0.5-dev.20261116.retention（插件仍1.0.5）于00:19安装2.0.a/plugins根目录，仅一份DLL/PDB，旧版可回退，用户配置哈希未变。发行未改、未上传/提交。
+
+[WhySoLaggy修复及下一步](mods/WhySoLaggy/IMPLEMENTATION_Retention_2026-11-16.md)。实机性能与联机矩阵仍未完成。
+
+## 2026-11-15 开发构建已实施部署，实机验收待完成
+
+落实用户批准的准确性、RPC/日志、自动深入、诊断包/HUD和最后国际化；1.0.5-dev.20261115，版本仍1.0.5，70/70自动回归，Release零警告零错误。游戏关闭后安装2.0.a/plugins根目录单份DLL/PDB，旧版可回退，配置SHA256未改变；发行未改、未上传/提交。
+
+[实施、容量边界及验收记录](mods/WhySoLaggy/IMPLEMENTATION_Development_2026-11-14.md)。五模式实机A/B、30分钟四人、完整三语言界面验收未执行，不能记为通过。
+
+
+## 2026-11-14 WhySoLaggy 原症状反馈通过，后续优化仅调研
+
+用户确认 LOC: 0 不再出现；最新日志计时开启且原 GetDisplayName 错误为 0 次。完整语言/主客机/性能矩阵仍待验。当前 1.0.5 修复构建不变。
+
+[后续功能调研](mods/WhySoLaggy/RESEARCH_Roadmap_2026-11-14.md)：先准确性/扫描降误报，再限时取证/诊断包，后 HUD/网络；本轮未改生产源码、配置、DLL 或发行。
+
+## 2026-11-13 修复已实施并部署，实机待验
+
+用户已授权开始。计时目标规范化/去重、独立 Harmony id、主线程开关、并发统计和旧会话保护已实现，国际化说明最后更新。真实故障回归由 2/4 失败变为全部通过；最终 37/37 测试通过，Release 0 警告 0 错误。仍为 1.0.5，发行包不变。
+
+[WhySoLaggy 实施与验收](mods/WhySoLaggy/IMPLEMENTATION_ModConfig_2026-11-13.md)：已部署 2.0.a/plugins 根目录单份 DLL、旧 DLL 备份、配置未变。实机工具截图超时，完整 profile 界面验收待完成；未发行或提交。
+
+## 2026-11-13 下一步方案已调研，未实施
+
+WhySoLaggy 下一步建议已验证到隔离策略阶段：声明目标规范化/去重、独立计时开关、并发保护，最后语言及实机。见 [方案](mods/WhySoLaggy/NEXT_STEPS_ModConfig_2026-11-13.md)。仍未修改正式源码/配置/安装。
+
+## 2026-11-13 补充：旧版本同样具备触发条件
+
+WhySoLaggy LOC: 0 并非已证实的 PEAK 3.1.0 新缺陷：历史源码/依赖及独立 Harmony 实验说明旧版也有条件触发。本次 ShootZombies 继承目标与启用补丁计时组合相关。详见 [历史调查](mods/WhySoLaggy/HISTORY_ModConfig_LOC0_2026-11-13.md)。无生产代码/配置/安装变更。
+
+## 2026-11-13 ModConfig LOC: 0 已定位，未实施修复
+
+PEAK 3.1.0 实际复现：共享按键设置 GetDisplayName 的泛型方法句柄解析异常，中断列表构建并留下 LOC: 0。WhySoLaggy PatchProfiler 的 __originalMethod 注入是优先修复点；不是配置值被改成 0。8 次同类异常、补丁快照和安装 DLL IL 已核对；只完成调研，未改源码/配置/DLL，未构建部署或实机验证修复。
+
+[WhySoLaggy 专项调研](mods/WhySoLaggy/RESEARCH_ModConfig_3.1.0_2026-11-13.md)；当前基线更新为 3.1.0，不代表其他 MOD 全量审核。
+
+## 2026-10-31 已下载地图转发包已准备
+
+用户明确为已下载地图转发以避开慢速下载，已生成“自群山来”在线 r13 手动安装 ZIP（73,261,005 bytes），保留 _net 相对路径、在线版本元数据及 cache，13 个地图文件 SHA256 一致，附安装说明。详见 [调研与打包记录](RESEARCH_PeakWorkshop_0.5.0_OFFLINE_MAPS_2026-10-31.md)。未改安装、未上传/发送、未实机。
+
+## 2026-10-31 PeakWorkshop 0.5.0 离线地图包调研
+
+已分析用户提供的 PeakWorkshop 0.5.0 反编译：普通完整地图原生支持 ZIP 格式 .peakmap，启动时从 BepInEx/PeakWorkshop/maps 自动解包；单独普通 .zip 不自动安装。多人本地优先匹配 CID，远征另需地貌及包版本依赖。详见 [离线地图包调研](RESEARCH_PeakWorkshop_0.5.0_OFFLINE_MAPS_2026-10-31.md)。本轮只读分析并保存文档，未改插件/配置/地图、未打包/部署/实机，未恢复作废中文补丁。
+
+## 2026-10-29 23:32 WhereIsThing 0.1.3 发行文件已备齐
+
+WhereIsThing 发行/0.1.3 已沿用 0.1.2 格式备齐英文说明、manifest、图标与已验证 DLL。用户确认 1.0.3 为笔误。五文件及 DLL 版本/hash 校验通过；未生成 ZIP、未上传，实机验收待完成。详见 mods/WhereIsThing/FILES.md 和 temp/current.md。
+
+## 2026-10-29 23:03 部署路径纠正
+
+用户明确要求 DLL 放在 2.0.a/BepInEx/plugins 根目录。此前采用子目录不符合要求；本次检查时 profile 下已没有 WhereIsThing.dll/PDB，不推断移除原因。现已将验证过的 0.1.3.0 DLL 和 PDB 复制到 C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/，csproj 默认 OutputPath 同步恢复根目录。DLL 为 180224 bytes，SHA256 4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522，与隔离产物一致；递归复查仅一份 DLL。未改功能或配置、未重新构建/启动游戏。本条覆盖下方当前安装在子目录的历史描述。既有 71 项逻辑回归与实机待验状态不变；仅同步本地 memory。
+
+## 2026-10-29 22:07 WhereIsThing 0.1.3 已实施
+
+用户已授权实施，且要求国际化最后统一修。0.1.3/0.1.3.0 已完成植物真实身份与迁移、箱子折叠筛选/单实体标签、当前段/全图范围、国际化及窗口刷新；71 项逻辑回归通过，PEAK 3.0.1 隔离 Release 0 警告 0 错误，已部署原 profile 的 WUYACHIYU-WhereIsThing 子目录。未启动游戏，主客机/自定义地图/中文字体与布局待实机。历史发行与 ZIP 未改。 当前入口：[实施与验收](mods/WhereIsThing/IMPLEMENTATION_0.1.3_2026-10-29.md)。下方同日调研状态已被此项覆盖。
+
+## 2026-10-29 WhereIsThing 0.1.3 调研
+
+[更新前调研](mods/WhereIsThing/RESEARCH_0.1.3_2026-10-29.md)：用户要求先调研、不改代码。已定位国际化、隐藏曼德拉草真实身份、箱子分类/去重、无限距离关卡范围问题；当前仍 0.1.2，0.1.3 尚未实现。安装游戏 DLL 已异于 3.0.0 审核，资源版本标记 3.0.1，后续重新核对。只更新 memory，无构建/部署/配置/发行变更。
+
+## 2026-10-23 PlayersInfo 复核补充
+
+[PlayersInfo 专项报告](mods/PlayersInfo/COMPATIBILITY_3.0.0_2026-10-23.md)：补查 2.4.b → 3.0.0，0.2.5 暂无确定的强制 API/核心读数适配项；新增昵称读取顺序维护建议，并保留 3.0.0 实机验收。terrain 中 0.1.1 仍需更新。仅更新审核记录，源码及部署未改。
+
+## 2026-10-23 PEAK 3.0.0 兼容性审核
+
+当前游戏检查基线为 3.0.0，对照归档 2.6.b；12 个活动插件工程中 8 个隔离 Release 构建 0 警告/0 错误。ItemInfoCN、Lantern_ShootZombies_Night、TerrainCustomiserCN（含 Collector）需要适配；WhySoLaggy 另需更新写死 2.4.b 的测试路径。详见 [COMPATIBILITY_3.0.0_2026-10-23.md](COMPATIBILITY_3.0.0_2026-10-23.md)。本轮只审核并记录，插件源码/配置/版本/已安装 DLL/发行文件未改，未部署或启动游戏。
+
+## 2026-10-12 PeakWorkshopCN 与扫描器已作废
+
+按用户要求，PeakWorkshopCN 和 PeakWorkshopCNScanner 均已停止维护并集中到 `MOD开发/作废/`。源码、扫描证据、发行文件、8 个专属构建目录、散落审核文件及旧 memory 完整保留，1,518 个搬移或快照文件的大小与 SHA256 校验一致。
+
+- [PeakWorkshopCN 作废说明](../MOD开发/作废/PeakWorkshopCN/作废说明.md)；当前 memory 入口：`mods/PeakWorkshopCN/README.md`。
+- [PeakWorkshopCNScanner 作废说明](../MOD开发/作废/PeakWorkshopCNScanner/作废说明.md)；当前 memory 入口：`mods/PeakWorkshopCNScanner/README.md`。
+
+指定 2.0.a profile 原本已无这两个插件的 DLL/PDB；两份残留配置也已移入归档。原 PeakWorkshop 保留原状。本次未构建、部署或启用任何插件。旧漏翻、复扫、性能验收、发行及自动同步 profile 的约定停止执行，仅在用户明确恢复后重新评估。
+
+原六件套/current 与公共入口旧内容分别保存在各项目 `归档资料/memory/` 和中文补丁的 `归档资料/global-memory-before-2026-10-12/`；历史记录中的“当前”“下一步”不代表活动任务。归档不表示未完成的实机验收已通过。
+
+## 2026-09-21 发行文件更新
+
+发行说明已按用户纠正恢复英文和上一版格式，各版更新明确写入 README/CHANGELOG；后续遵循 common/00、05 最新规则。
+
+四 MOD 发行文件已备齐（PlayersInfo 0.2.5、WhySoLaggy 1.0.5、WhereIsThing 0.1.2、WhereIsMyAmulet 1.0.4），各含 DLL、图标、README、CHANGELOG、manifest；包含此前非 ModConfig 改动，未生成 ZIP、未上传，旧版目录原样保留。DLL 与已验证最终产物一致，完整实机验收仍待完成。 详情见 `mods/ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md` 的发行文件记录。
+
+## 2026-09-21 ModConfig 更新
+
+PlayersInfo 开发版 **0.2.5**、WhySoLaggy 开发版 **1.0.5**；WhereIsThing 保持 **0.1.2**、WhereIsMyAmulet 保持 **1.0.4**。四项目 Release 0/0 并部署 profile，23 项自动测试通过；完整实机矩阵待验收。历史发行包不变，详情见 `mods/ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。下方旧日期版本状态为历史。
+
+更新时间：2026-09-12
+
+StateKeeper最新使用归因修订见 `mods/StateKeeper/research/USE_RULES_2026-09-12.md`（analysisVersion7）。本轮是归因与使用/流转报告优化，不表示此前完整扩展分析计划已全部实现；Unity实机性能仍待测。
+
+这是项目记忆的唯一入口。目标是让新的 AI 智能体在 1 到 3 分钟内知道：当前有哪些 MOD、近期做了什么、还有什么没做、哪些规则不能违反。
+
+## 先读什么
+
+1. `CHANGELOG.md`：**先看**。按时间倒序列出最近的结构/内容变更，判断要不要重读。
+2. `MEMORY_INDEX.md`：总览当前结构、全部 MOD 四件套、通用规则清单。
+3. `TODO.md`：跨 MOD 待办；MOD 专属待办看 `mods/<ModName>/TODO.md`。
+4. `common/00_用户偏好.md` + `common/01_协作与记忆规则.md`：四同步铁律、Get-Date 日期规则、说人话风格。
+5. `mods/<ModName>/README.md`：当前 MOD 的专属上下文。
+6. `mods/<ModName>/temp/current.md`：**压缩恢复后先看**；旧日期记录在 `temp/archive/`。
+7. `mods/<ModName>/RECENT.md`：近期已经做过什么；当前状态以 `STATUS.md` 为准。
+8. `mods/<ModName>/DECISIONS.md`：已经确认过的技术决策和禁止回退项。
+9. `common/02-05`：只在需要通用规则时读取（工程/日志/联机/发布）。
+
+## 接手前检查（必做）
+
+- 先 `list_dir memory/`，按文件大小和修改时间判断是否有新增/变更。
+- 翻一遍 `CHANGELOG.md` 顶部最近的两条时间戳条目。
+- 有变更再按需 `read_file` 对应文件；没变更直接按内存记忆里的结论走即可。
+
+## 目录职责
+
+- `mods/`：每个 MOD 一个目录，四件套 `README.md` / `RECENT.md` / `DECISIONS.md` / `FILES.md`。不要把某个 MOD 的细节写进 `common/`。
+- `mods/<ModName>/temp/`：临时思考记忆区；当前摘要固定为 `current.md`，旧日期文件放入 `archive/`。
+- `common/`：跨 MOD 共享的规则和规范，只写可复用结论，不写某个 MOD 的流水账。
+- `TODO.md`：跨 MOD 待办；MOD 专属未完成项同步到各自 `mods/<ModName>/TODO.md`。
+- `CHANGELOG.md`：只记录 memory 结构或重要内容变更，按时间倒序追加。
+
+## 2026-05-24 DreamyAscent 暂停状态
+
+- 用户明确要求 `DreamyAscent永久暂停`。
+- `DreamyAscent` 现在是永久暂停/归档项目；除非用户明确恢复，不再继续 DA 的功能、日志、构建、诊断或 TODO。
+
+## 2026-09-07 PlayersInfo 状态
+
+- `PlayersInfo` 当前版本为 `0.2.4`，目标 PEAK `2.4.b`。新增三档异常图标显示、死亡/晕倒队友距离过滤修复、零体力饥饿倒计时原生可用区域居中，以及统一 `0.25s` 低频刷新；0.2.4 进一步排除死亡玩家的队友条。
+- 图标配置默认 `ShowAll`，可隐藏队友或全部异常图标；中英文 BepInEx/ModConfig 名称、说明和枚举值已同步，异常条颜色、宽度和数字保持不变。
+- 正常及晕倒队友使用当前躯干位置；死亡队友使用死亡前 `VirtualCenter`。名册内超距成员不再误用 1.5 秒丢失保留，5 米滞回仍保留。
+- 当前 Release 构建为 `0 warnings / 0 errors`；profile/0.2.4 发行 DLL 为 `0.2.4.0`、`98304` 字节、SHA-256 `973E9279F70ED5CC25CBC481673D2942394A35100001D4B027C3BD4E1E850BBB`。`发行/0.2.4` 已生成试发行目录和 ZIP；`发行/0.2.3` 仍保留上一版完整 DLL/文档/manifest/icon/ZIP。
+- 日志审计未发现 PlayersInfo warning/error；下次接手先读 `mods/PlayersInfo/temp/current.md`。
+
+## 2026-06-04 PlayersInfo 历史发布状态
+
+- 当时 `PlayersInfo` 当前版本线为 `0.1.1`。
+- `发行/0.1.1/PlayersInfo.dll` 已包含 2026-05-24 队友临时体力数字裁切修复；2026-05-30 已同步 README / CHANGELOG。
+- `发行/0.1.1/wuyachiyu-PlayersInfo-0.1.1.zip` 已存在，大小 `158802`，zip 内 README/CHANGELOG 含临时体力裁切修复说明，发布 DLL 与测试环境 DLL 哈希一致。
+- 历史 PlayersInfo 临时记录位于 `mods/PlayersInfo/temp/archive/`。
+
+## 2026-07-30 PeakMapBrowser 状态
+
+- `PeakMapBrowser` 已补齐独立 memory 四件套和当天临时恢复入口。
+- 当前版本为 `0.1.1`，账号、个人地图管理、上传归属、点赞同步和图片缓存已打包；session 使用 DPAPI 加密 refresh token，access token 只在内存中存在。
+- 点赞仍保持账号/guest cookie 身份，IP 只限频；网页端服务端退出接口 `/api/auth/sign-out` 已在线部署并通过无 token 拒绝测试。
+- 用户明确暂缓 UI 框架重构；当前继续使用 IMGUI，后续若重启 UI 任务再评估 uGUI + TextMeshPro。
+- 下次接手 PeakMapBrowser 先读 `mods/PeakMapBrowser/temp/current.md`。
+
+## 2026-05-21 收口状态
+
+- `DreamyAscent` 今天收尾在官方 `Generate Segment` 的零输出保底恢复：selected `PropSpawner` / `PropSpawner_Line` / `PropSpawner_Sphere` 执行前备份直接子物体，执行后若生成结果为 0 则恢复旧子物体，防止 Jungle/Roots/Snow 点击生成后空段。
+- DreamyAscent 已暂停；历史临时记录位于 `mods/DreamyAscent/temp/archive/`，不执行其中待办。
+
+## 2026-05-30 TerrainCustomiserCN 发布状态
+
+- `TerrainCustomiserCN` 当前发布 `0.1.2`，对应 snozz 原版 `TerrainCustomiser 0.3.2`；最新压缩恢复入口为 `temp/current.md`。
+- 注意不要和 2026-05-12 的旧 `TerrainCustomiserCN -> DreamyAscent` 改名历史混淆；当前 `TerrainCustomiserCN` 是 2026-05-23 重新建立的新项目。
+- 核心约束：以中文 UI 为主，同步对应原版必要修复；不改地图数据、联机同步键、序列化字段和 CN 专属玩法。继续使用原版网络管理器 ID `com.snosz.terraincustomiser` 与属性键 `mapData` / `propViews` / `playerInfo` / `TC_inCustomMap`，并用序列化 binder 保存原版类型名。
+- `0.1.2` 跟随原版 `0.3.2` 保存路径：`%USERPROFILE%\AppData\LocalLow\LandCrab\PEAK\TerrainCustomiser\Map Saves`，并同步 Caldera/Volcano 自定义变体修复。
+- 发布包在 `MOD开发\TerrainCustomiserCN\发布\0.1.2\wuyachiyu-TerrainCustomiserCN-0.1.2.zip`，README / CHANGELOG / manifest description 已中文化，包内包含 `TerrainCustomiserCNCollector.dll` 收集漏翻。
+
+## MOD 开发项目
+
+- `ItemInfoCN`：物品信息中文化（1.0.0 已发布）。入口：`mods/ItemInfoCN/README.md`。
+- `Lantern_ShootZombies_Night`：灯笼、打僵尸、日夜和寒冷/回暖相关功能整合（0.2.1）。入口：`mods/Lantern_ShootZombies_Night/README.md`。
+- `PlayersInfo`：`0.2.5` 发行文件已备齐（无 ZIP、未上传），PEAK 2.4.b；完整实机验收待完成。入口：`mods/PlayersInfo/README.md`。
+- `StateKeeper`：展示名 `STATE KEEPER` / `状态分析`，0.1.0首版测试发布包已生成，未上传Thunderstore；已有采集、六页复盘、命名/搜索/跨局比较。schema3、新局采集修订3、analysisVersion5；发布前清理废弃接口/参数、修复关闭采集仍写事件，64项测试和七局只读回归通过，profile已更新。当前入口：`mods/StateKeeper/RELEASE_AUDIT_2026-09-08.md`；Unity UI和真实性能仍待短时验收。
+- `PEAK-MAP`：网站项目，后续计划承接 StateKeeper 的自愿匿名数据提交；当前只完成调研和 memory，入口：`mods/PEAK-MAP/README.md`。
+- `ModConfigDiagnostics`：ModConfig/PEAKLib 只读诊断工具（0.1.0）；已确认 2.4.b 的 `LOC: 0` 潜在来源为原版 `SettingsCell` 模板上的 `LocalizedText row=0`，修改建议和复测顺序见 `mods/ModConfigDiagnostics/PLAN.md`。
+- `OldPC`：本地旧电脑视觉模式和望远镜清晰模式（0.0.1 开发中）。入口：`mods/OldPC/README.md`。
+- `DreamyAscent`：地形定制中文化与功能修复（永久暂停/归档）。入口：`mods/DreamyAscent/README.md`。
+- `WhySoLaggy`：`1.0.5` 发行文件已备齐（无 ZIP、未上传），PEAK 2.4.b；完整实机验收待完成。入口：`mods/WhySoLaggy/README.md`。
+- `TerrainCustomiserCN`：TerrainCustomiser 中文 UI 版（0.1.2 已发布，对应原版 0.3.2）。入口：`mods/TerrainCustomiserCN/README.md`。
+- `WhereIsThing`：`0.1.2` 发行文件已备齐（无 ZIP、未上传），PEAK 2.4.b；完整实机验收待完成。入口：`mods/WhereIsThing/README.md`。
+- `WhereIsMyAmulet`：`1.0.4` 发行文件已备齐（无 ZIP、未上传），PEAK 2.4.b；完整实机验收待完成。入口：`mods/WhereIsMyAmulet/README.md`。
+
+## 写入规则（四同步铁律）
+
+任何记忆相关变更，必须同时完成：
+
+1. `update_memory`（内存记忆）。
+2. 改对应 MD 文件。
+3. 同步 `MEMORY_INDEX.md`（新增/重命名/删除条目时）。
+4. 追加 `CHANGELOG.md`（格式：`- [新增/修改/删除/规则/索引] 文件名：一句话说清楚`）。
+
+四者缺一不可，否则新接手的 AI 会读到不一致的结论。
+
+## 日期铁律
+
+- 首选 PowerShell 命令：`Get-Date -Format "yyyy-MM-dd"`，用返回值写入文档。
+- 命令异常才问用户。
+- 禁止凭系统时间戳或对话历史猜日期。
+
+## 2026-05-10 收口状态
+
+- `DreamyAscent` 今天主要推进后期物品编辑基础：对象引用诊断、`ObjectCatalog.json`、只读“区段模板库”UI、区段模板库翻译和生成器范围高亮。
+- 当前区段模板库是 Segment 级模板/材质清单，不等于未来山顶、山腰、洞口这类 XYZ 放置子区。
+- `InspectTcCn` 是一次性诊断工具，已确认不参与发布；`tmp/InspectTcCn` 可删除。
+- 最新 DreamyAscent Release 构建成功，输出到 r2modman terrain profile，0 警告 0 错误。
+
+## 2026-05-11 续作状态
+
+- `DreamyAscent` 的 `CustomBlank` 第一版已在实机跑通并通过构建。当前语义是跳过官方生成器、清理该段已生成的官方子物，但保留基础机制对象，例如 Caldera 的 `River`、Volcano 的 `RisingLava/Lava`。
+- 最新复测把 `Caldera_Segment` 的剩余候选进一步收敛到 `ash`、`Bubbles`、`River`、`Coll`，把 `Volcano_Segment` 收敛到 `Coll`、`Plane`；这轮残留已确认主要是机制或粒子，不是未清理的普通装饰。
+- 本轮结论已同步到 `mods/DreamyAscent/RECENT.md`、`DECISIONS.md` 和根 `TODO.md`，后续重点转到地图里剩余漂浮物与后期区域物品编辑架构。
+
+## 2026-05-12 地图生成研究补强
+
+- `DreamyAscent` 已新增 `mods/DreamyAscent/CROSS_SEGMENT_PLACEMENT.md`，专门记录跨区段物品放置。核心模型是“来源模板 + 目标子区”：来源模板提供 prefab/默认参数/组件/风险，目标 `SubArea` 提供 XYZ、范围、ray、layer 和落地约束。
+- 后续不要再只说“模板库可混合”。第一条建议验证例子是把 Jungle `Jungle_PalmTree_*` 低风险模板放到 Desert 平台/山腰子区；Roots `Redwood`、行李、藤蔓、虫类、岩浆机制等因父子/Photon/机制风险先只读标记。
+- `DreamyAscent` 已新增 `mods/DreamyAscent/IMPLEMENTATION_MATRIX.md`，把官方模板、空白自定义、当前区段自选、跨区段、父子依赖、外部 Unity 物品、材质/颜色、UI 拆窗、内置模板快照和多人同步逐项落到实现路径、依据、例子和资料缺口。
+- `MAP_GENERATION.md` 和 `MAP_GENERATION_RESEARCH_NOTES.md` 已补强为多轮、多角度研究记录；下一步开发先做稳定 path、`DaObjectRegistry`、`SubArea` 和低风险 `PlacementRule`。
+
+## 2026-05-13 改名状态收口
+
+- 已收口 DreamyAscent 改名后的 Git 索引脏状态：旧 `TerrainCustomiserCN` 删除和新 `DreamyAscent` 未跟踪已整理为 staged rename/add，避免后续误恢复旧目录或误删新目录。
+- 当前仍有两个无关未处理脏项：`.gitignore` 修改、`MOD开发/PlayersInfo/合并输出.txt` 删除。它们不属于 DreamyAscent/memory 改名冲突，后续处理前需确认来源。
+- 已检查 PEAK 1.62.a 反编译更新：核心反编译源码与 1.61.b 哈希一致，五个 MOD 均 Release 构建通过，暂不需要代码更新；后续若实机出现新日志异常，再按具体栈定位。
+
+## 2026-05-13 DreamyAscent 样本审计收口
+
+- `MOD开发\DreamyAscent\data\map-data` 已完成集中审计：官方自然样本 22 个 JSON、19 个完整诊断目录；TerrainRandomiser 验证样本 29 个 JSON、7 个完整诊断目录。
+- 批量复核结果：26 个诊断目录均包含 `RuntimeExport.json`、`NameMap.json`、`ObjectCatalog.json`、`ObjectReferenceMap.json`，`0 grouper` segment 为 0，未知 variant 为 0。
+- 当前 `Beach / Jungle / Roots / Snow / Desert` 的全部已知变体均已覆盖；`Caldera / Volcano` 按 `DirectSegmentRoot` 处理。下一步不是继续刷图，而是基于 `sample-index.json`、`RuntimeExport`、`ObjectCatalog` 和 `ObjectReferenceMap` 提取模板快照、对象注册表和回归检查。
+- 已新增 `data/tools/build_map_data_artifacts.py` 和 `data/map-data/generated/`：当前生成 `template-snapshots.json`、`object-registry-input.json`、`sample-regression-report.json`，回归为 `pass`。下一步是把离线产物接入源码侧 `DaObjectRegistry` 和稳定 path 匹配。
+
+## 2026-05-14 DreamyAscent UI 重构停点
+
+- DA UI 当前处于重构测试阶段。结构面板已从旧树形缩进改为三层联动：关卡横排、区域/生成组横排、当前区域生成物/步骤列表。
+- 生成物行显示 step 类型和运行时 catalog 匹配到的 item/material 数量，用于先判断每个区域扫到了哪些生成物；这仍是 UI/诊断联动，不是实际自定义生成或重叠检测。
+- 明天优先实机测试三层联动是否符合截图预期，并复测 `SubArea` / `PlacementRule` 导入回显 `placementConfigs=1`。两项通过前不要直接进入 Instantiate 生成。
+
+## 2026-05-17 DreamyAscent Snapshot V2
+
+- `DreamyAscent` 已新增 `GeneratedChildrenSnapshot.json` 诊断，用于记录官方已生成结果、loose/special objects、脏样本原因和 TerrainRandomiser 来源标记。
+- 旧 `data/map-data/1.62.a/` 与 `TerrainRandomiser/` 样本目录已删除；新采集只放 `1.62.a-snapshot-v2/` 和 `TerrainRandomiser-snapshot-v2/`。
+- 下一步必须先跑一份示范样本验字段，不能直接全量重跑；示范通过后再采官方自然样本和 TR 补变体样本。
+
+## 2026-05-20 DreamyAscent 官方生成收尾
+
+- Beach 椰子/物品生成已正常；失败的材质 modifier replay 和 custom placement child-scale sync 已按用户要求退回。Beach 地形材质仍是未解决项，后续先补 renderer/material 诊断。
+- Jungle `Generate Segment` 空段问题二次定位：最新日志已加载新 DLL，但 `Pops_Plat` / `Props_Wall` 仍 `lateSupplementSteps=0`，说明不是外部 postfix guard，而是 Late step 收集没找到 inactive 父层级下的 `PropGrouper`。
+- `DaRuntimeEditService` 已改为手动沿 `Transform.parent` 查找最近 `PropGrouper` 来收集 Late steps；Release 构建 0/0，DLL 已覆盖 terrain profile。下次只需重启/重新加载游戏后复测 Jungle，预期 `lateSupplementSteps>0` 且灌木/藤蔓/蘑菇 runtime spawner 恢复。
+- 同日晚些时候继续修复 Late 执行语义：日志证明 Late 收集已生效但 `Go()` 补跑仍让 Roots/Snow 许多 PropSpawner 归零。当前改为 `LevelGenStep.Execute()` + `DeferredStepTiming.AfterCurrentGroupTiming` deferred 执行，并记录 `deferredAfterGroup`。最新 DLL 时间 `2026/5/20 20:57:50`。

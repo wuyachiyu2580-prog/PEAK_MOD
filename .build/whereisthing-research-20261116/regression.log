@@ -1,0 +1,144 @@
+PASS: hidden mandrake resolves actual pickup
+PASS: medicinal root retains own identity
+PASS: one-step redirect matches game pickup
+PASS: catalog separates root and hidden mandrake
+PASS: carrier remains available for migration
+PASS: old host hidden-ID selection remains visible in summaries
+PASS: unpicked Item label uses carrier transform
+PASS: unpicked Item label names real mandrake
+PASS: pickup invalidates ground label
+PASS: selected FakeItem plant is found
+PASS: picked FakeItem label expires
+PASS: Ground scope controls terrain plants
+PASS: deselection expires plant label
+PASS: rediscovery does not duplicate plant entities
+PASS: untouched survival migration excludes disguised mandrake
+PASS: custom merged root selection preserves both real pickups
+PASS: migration runs once and preserves later edits
+PASS: old preset wire format roundtrips special characters
+PASS: legacy luggage and trap tokens survive roundtrip
+PASS: edited survival selection retains user intent
+PASS: ordinary group preserves partial region selection
+PASS: ordinary group selects all ten legacy pools
+PASS: ordinary group clear affects only its pools
+PASS: chest and trap selections share a single label
+PASS: trap label overrides ordinary name
+PASS: opened active trap retains hazard label
+PASS: expired opened trap label disappears
+PASS: opened ordinary luggage expires
+PASS: revival statue is a landmark
+PASS: saved luggage enum values remain stable
+PASS: Game suffix and variant language: English
+PASS: explicit English ignores game language: English
+PASS: explicit Chinese ignores game language: English
+PASS: new scope UI follows game: English
+PASS: new chest text follows effective name language: English
+PASS: Game suffix and variant language: SimplifiedChinese
+PASS: explicit English ignores game language: SimplifiedChinese
+PASS: explicit Chinese ignores game language: SimplifiedChinese
+PASS: new scope UI follows game: SimplifiedChinese
+PASS: new chest text follows effective name language: SimplifiedChinese
+PASS: Game suffix and variant language: TraditionalChinese
+PASS: explicit English ignores game language: TraditionalChinese
+PASS: explicit Chinese ignores game language: TraditionalChinese
+PASS: new scope UI follows game: TraditionalChinese
+PASS: new chest text follows effective name language: TraditionalChinese
+PASS: Game suffix and variant language: French
+PASS: explicit English ignores game language: French
+PASS: explicit Chinese ignores game language: French
+PASS: new scope UI follows game: French
+PASS: new chest text follows effective name language: French
+PASS: invalid Game name retries the selected language table
+PASS: preset target summary honors explicit language
+PASS: unparented current segment item appears
+PASS: previous segment item filtered
+PASS: next segment item filtered
+PASS: carried cross-segment item uses current position
+PASS: static target uses actual segment hierarchy
+PASS: entry camp stays included
+PASS: next camp excluded
+PASS: repeated volcano biome selects second progress boundary
+PASS: previous caldera excluded in kiln
+PASS: supporting terrain handles overlap before Z fallback
+PASS: supporting previous terrain remains excluded
+PASS: boundary is half-open and does not overlap adjacent bands
+PASS: appending Nadir does not disable kiln spatial boundaries
+PASS: Nadir static hierarchy works without a progress plane
+PASS: invalid transition index fails closed without throwing
+PASS: custom map unknown target gets bounded nearby fallback
+PASS: custom map moved item ignores stale birthplace parent
+PASS: custom map fallback cannot leak distant targets
+PASS: airport without MapHandler remains usable
+PASS: client restriction: enabled=False, room=False, offline=False, host=False
+PASS: client restriction: enabled=False, room=False, offline=False, host=True
+PASS: client restriction: enabled=False, room=False, offline=True, host=False
+PASS: client restriction: enabled=False, room=False, offline=True, host=True
+PASS: client restriction: enabled=False, room=True, offline=False, host=False
+PASS: client restriction: enabled=False, room=True, offline=False, host=True
+PASS: client restriction: enabled=False, room=True, offline=True, host=False
+PASS: client restriction: enabled=False, room=True, offline=True, host=True
+PASS: client restriction: enabled=True, room=False, offline=False, host=False
+PASS: client restriction: enabled=True, room=False, offline=False, host=True
+PASS: client restriction: enabled=True, room=False, offline=True, host=False
+PASS: client restriction: enabled=True, room=False, offline=True, host=True
+PASS: client restriction: enabled=True, room=True, offline=False, host=False
+PASS: client restriction: enabled=True, room=True, offline=False, host=True
+PASS: client restriction: enabled=True, room=True, offline=True, host=False
+PASS: client restriction: enabled=True, room=True, offline=True, host=True
+PASS: legacy active preset migrates
+PASS: multi-selection trims, deduplicates and discards missing IDs
+PASS: valid multi-selection takes priority over legacy
+PASS: invalid selection falls back to legacy
+PASS: missing legacy falls back to first preset
+PASS: empty catalog has no fabricated preset
+PASS: cannot disable final preset
+PASS: enabling preserves existing preset
+PASS: disabling keeps other preset
+PASS: preset union clears stale targets and deduplicates items
+PASS: preset union includes both luggage filters
+PASS: explicit placed scene targets survive without item-based placement
+PASS: built-in placed preset enables item-based placement
+PASS: deselecting placed preset closes the item-based gate
+PASS: classifies Mushroom Cluster
+PASS: English variety: Mushroom Cluster
+PASS: Chinese variety: Mushroom Cluster
+PASS: clone keeps identity: Mushroom Cluster
+PASS: classifies Mushroom Cluster Poison
+PASS: English variety: Mushroom Cluster Poison
+PASS: Chinese variety: Mushroom Cluster Poison
+PASS: clone keeps identity: Mushroom Cluster Poison
+PASS: classifies Mushroom Lace
+PASS: English variety: Mushroom Lace
+PASS: Chinese variety: Mushroom Lace
+PASS: clone keeps identity: Mushroom Lace
+PASS: classifies Mushroom Lace Poison
+PASS: English variety: Mushroom Lace Poison
+PASS: Chinese variety: Mushroom Lace Poison
+PASS: clone keeps identity: Mushroom Lace Poison
+PASS: classifies Mushroom Normie
+PASS: English variety: Mushroom Normie
+PASS: Chinese variety: Mushroom Normie
+PASS: clone keeps identity: Mushroom Normie
+PASS: classifies Mushroom Normie Poison
+PASS: English variety: Mushroom Normie Poison
+PASS: Chinese variety: Mushroom Normie Poison
+PASS: clone keeps identity: Mushroom Normie Poison
+PASS: six mushroom varieties remain separate with identical names
+PASS: clone and prefab group together without poisonous sibling
+PASS: selecting non-poisonous mushroom does not select poisonous sibling
+PASS: unknown mushroom is not assumed safe
+PASS: null mushroom is ignored
+PASS: Game names use Chinese variety suffix
+PASS: English toggle labels describe available action
+PASS: ordinary ground item is reusable
+PASS: blocked item is filtered
+PASS: spent non-storable flare is filtered
+PASS: pocketable flare remains
+PASS: backpackable flare remains
+PASS: null ground item is ignored
+PASS: distance limit includes exact boundary
+PASS: distance limit excludes farther target
+PASS: ten-meter buffer retains hidden target
+PASS: outside buffer removes target
+PASS: unlimited distance stays unlimited
+All 143 regression checks passed. Unity rendering, physics and networking require in-game validation.

@@ -6,9 +6,9 @@
     <AssemblyName>WhySoLaggy</AssemblyName>
     <Version>1.0.5</Version>
     <LangVersion>latest</LangVersion>
-    <!-- 编译后直接输出到当前 r2modman 测试 profile。 -->
+    <!-- 开发构建先输出到项目本地的隔离目录，通过验证后再显式部署。 -->
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins\</OutputPath>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

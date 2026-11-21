@@ -1,0 +1,22 @@
+[
+  {
+    "api": "Resources.FindObjectsOfTypeAll",
+    "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Resources.FindObjectsOfTypeAll.html",
+    "excerpts": [
+      "          type        Type        The type of object.     \n       Return  \n      Type    De cription        Object[]   Return  any array of loaded object  of type    type   .     \n       Remark  \n Thi  method u e  non-generic type  and can return any type of Unity object that i  loaded,  uch a  GameObject , prefab , material , me he , and texture . It al o li t  internal object ,  o be careful how you handle the returned object . \n Unlike  Object.FindObject OfType  thi  metho"
+    ]
+  },
+  {
+    "api": "Object.FindObjectsByType",
+    "url": "https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Object.FindObjectsByType.html",
+    "excerpts": [
+      " }         \n Additional Re ource :  Object.FindFir tObjectByType ,  Object.FindAnyObjectByType . \n       FindObject ByType(Type, FindObject Inactive, FindObject SortMode) \n Retrieve  a li t of all loaded object  of Type    type    and  ort  the re ult  according to     ortMode   . \n                   public  tatic Object[] FindObject ByType(Type type, FindObject Inactive findObject Inactive, FindObject SortMode  ortMode)         \n       Parameter  \n               type        ",
+      "Definition \n \n  Type:  Method \n  Name pace:   UnityEngine  \n  A embly:  UnityEngine.CoreModule \n \n       FindObject ByType(Type, FindObject SortMode) \n Retrieve  a li t of all loaded object  of Type    type    and  ort  the re ult  according to     ortMode   . \n                   public  tatic Object[] FindObject ByType(Type type, FindObject SortMode  ortMode)         \n       Parameter  \n               type        Type        The type of object to find. Mu t be a reference ty",
+      "   Unity Engine documentation          Script Reference          UnityEngine          Object     FindObject ByType  Retrieve  a li t of all loaded object  of Type type and  ort  the re ult  according to  ortMode.   Read time 4 minute     La t updated 2 month  ago          Definition \n \n  Type:  Method \n  Name pace:   UnityEngine  \n  A embly:  UnityEngine.CoreModule \n \n       FindObject ByType(Type, FindObject SortMode) \n Retrieve  a li t of all loaded object  of Type    type "
+    ]
+  },
+  {
+    "api": "Object.FindObjectsInactive",
+    "error": "HTTP Error 404: Not Found"
+  }
+]

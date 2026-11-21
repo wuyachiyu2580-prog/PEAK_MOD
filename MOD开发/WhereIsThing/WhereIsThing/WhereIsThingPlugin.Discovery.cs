@@ -24,42 +24,45 @@ namespace WhereIsThing
 
         private void ProcessPhotonDiscovery()
         {
-            ProcessClassificationRetries();
-            if (!_photonDiscoveryActive)
+            using(_phaseProfiler.Measure(1))
             {
-                if (PhotonNetwork.ViewCount != _lastPhotonViewCount || Time.unscaledTime >= _nextNetworkDiscovery)
+                ProcessClassificationRetries();
+                if (!_photonDiscoveryActive)
                 {
-                    StartPhotonDiscoveryCycle();
-                }
-                else
-                {
-                    return;
-                }
-            }
-
-            long startedAt = Stopwatch.GetTimestamp();
-            int processed = 0;
-            while (processed < NetworkObjectsPerFrame)
-            {
-                if (!_photonViewIterator.MoveNext())
-                {
-                    _photonDiscoveryActive = false;
-                    _lastPhotonViewCount = PhotonNetwork.ViewCount;
-                    CleanupNetworkObjectsIfDue();
-                    break;
+                    if (PhotonNetwork.ViewCount != _lastPhotonViewCount || Time.unscaledTime >= _nextNetworkDiscovery)
+                    {
+                        StartPhotonDiscoveryCycle();
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
 
-                PhotonView view = _photonViewIterator.Current;
-                processed++;
-                if (view != null && view.gameObject != null)
+                long startedAt = Stopwatch.GetTimestamp();
+                int processed = 0;
+                while (processed < NetworkObjectsPerFrame)
                 {
-                    IndexAndSyncPhotonView(view);
-                }
+                    if (!_photonViewIterator.MoveNext())
+                    {
+                        _photonDiscoveryActive = false;
+                        _lastPhotonViewCount = PhotonNetwork.ViewCount;
+                        CleanupNetworkObjectsIfDue();
+                        break;
+                    }
 
-                double elapsedMilliseconds = (Stopwatch.GetTimestamp() - startedAt) * 1000.0 / Stopwatch.Frequency;
-                if (elapsedMilliseconds >= DiscoveryBudgetMilliseconds)
-                {
-                    break;
+                    PhotonView view = _photonViewIterator.Current;
+                    processed++;
+                    if (view != null && view.gameObject != null)
+                    {
+                        IndexAndSyncPhotonView(view);
+                    }
+
+                    double elapsedMilliseconds = (Stopwatch.GetTimestamp() - startedAt) * 1000.0 / Stopwatch.Frequency;
+                    if (elapsedMilliseconds >= DiscoveryBudgetMilliseconds)
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -220,59 +223,88 @@ namespace WhereIsThing
 
         private void ProcessClassificationRetries()
         {
-            float now = Time.unscaledTime;
-            long startedAt = Stopwatch.GetTimestamp();
-            int processed = 0;
-            int inspected = 0;
-            int inspectionLimit = Math.Min(_classificationRetries.Count, NetworkObjectsPerFrame);
-            while (_classificationRetries.Count > 0 && inspected < inspectionLimit &&
-                processed < ClassificationRetriesPerFrame)
+            using(_phaseProfiler.Measure(2))
             {
-                if (_classificationRetryCursor >= _classificationRetries.Count)
+                float now = Time.unscaledTime;
+                long startedAt = Stopwatch.GetTimestamp();
+                int processed = 0;
+                int inspected = 0;
+                int inspectionLimit = Math.Min(_classificationRetries.Count, NetworkObjectsPerFrame);
+                while (_classificationRetries.Count > 0 && inspected < inspectionLimit &&
+                    processed < ClassificationRetriesPerFrame)
                 {
-                    _classificationRetryCursor = 0;
-                }
-                int index = _classificationRetryCursor;
-                NetworkObjectRecord record = _classificationRetries[index];
-                inspected++;
-                if (record == null || !record.NeedsLateClassification || record.View == null ||
-                    record.NextRetryIndex >= ClassificationRetryDelays.Length || now - record.FirstSeenAt > 2.1f)
-                {
-                    _classificationRetries.RemoveAt(index);
-                    continue;
-                }
-                if (now - record.FirstSeenAt < ClassificationRetryDelays[record.NextRetryIndex])
-                {
-                    _classificationRetryCursor++;
-                    continue;
-                }
+                    if (_classificationRetryCursor >= _classificationRetries.Count)
+                    {
+                        _classificationRetryCursor = 0;
+                    }
+                    int index = _classificationRetryCursor;
+                    NetworkObjectRecord record = _classificationRetries[index];
+                    inspected++;
+                    if (record == null || !record.NeedsLateClassification || record.View == null ||
+                        record.NextRetryIndex >= ClassificationRetryDelays.Length || now - record.FirstSeenAt > 2.1f)
+                    {
+                        _classificationRetries.RemoveAt(index);
+                        continue;
+                    }
+                    if (now - record.FirstSeenAt < ClassificationRetryDelays[record.NextRetryIndex])
+                    {
+                        _classificationRetryCursor++;
+                        continue;
+                    }
 
-                processed++;
-                record.NextRetryIndex++;
-                int viewId = record.View.ViewID == 0 ? -record.View.GetInstanceID() : record.View.ViewID;
-                RemoveNetworkRecordLabels(record);
-                NetworkObjectRecord replacement = BuildNetworkObjectRecord(record.View);
-                replacement.FirstSeenAt = record.FirstSeenAt;
-                replacement.NextRetryIndex = record.NextRetryIndex;
-                replacement.LastSeenGeneration = record.LastSeenGeneration;
-                _networkObjects[viewId] = replacement;
-                SyncNetworkObject(replacement);
-                if (!replacement.NeedsLateClassification || replacement.NextRetryIndex >= ClassificationRetryDelays.Length)
-                {
-                    _classificationRetries.RemoveAt(index);
-                }
-                else
-                {
-                    _classificationRetries[index] = replacement;
-                    _classificationRetryCursor++;
-                }
+                    processed++;
+                    record.NextRetryIndex++;
+                    int viewId = record.View.ViewID == 0 ? -record.View.GetInstanceID() : record.View.ViewID;
+                    NetworkObjectRecord replacement = BuildNetworkObjectRecord(record.View);
+                    if (SameClassification(record, replacement))
+                    {
+                        // Keep the record captured by existing label delegates.
+                        record.NeedsLateClassification = replacement.NeedsLateClassification;
+                        replacement = record;
+                    }
+                    else
+                    {
+                        RemoveNetworkRecordLabels(record);
+                        replacement.FirstSeenAt = record.FirstSeenAt;
+                        replacement.NextRetryIndex = record.NextRetryIndex;
+                        replacement.LastSeenGeneration = record.LastSeenGeneration;
+                        _networkObjects[viewId] = replacement;
+                    }
+                    SyncNetworkObject(replacement);
+                    if (!replacement.NeedsLateClassification || replacement.NextRetryIndex >= ClassificationRetryDelays.Length)
+                    {
+                        _classificationRetries.RemoveAt(index);
+                    }
+                    else
+                    {
+                        _classificationRetries[index] = replacement;
+                        _classificationRetryCursor++;
+                    }
 
-                double elapsedMilliseconds = (Stopwatch.GetTimestamp() - startedAt) * 1000.0 / Stopwatch.Frequency;
-                if (elapsedMilliseconds >= ClassificationRetryBudgetMilliseconds)
-                {
-                    break;
+                    double elapsedMilliseconds = (Stopwatch.GetTimestamp() - startedAt) * 1000.0 / Stopwatch.Frequency;
+                    if (elapsedMilliseconds >= ClassificationRetryBudgetMilliseconds)
+                    {
+                        break;
+                    }
                 }
             }
+        }
+
+        private static bool SameClassification(NetworkObjectRecord left, NetworkObjectRecord right)
+        {
+            if (left.View != right.View || left.Item != right.Item || left.PreferPlacedItemLabel != right.PreferPlacedItemLabel ||
+                left.PlacedTargets.Count != right.PlacedTargets.Count) return false;
+            for (int i = 0; i < left.PlacedTargets.Count; i++)
+            {
+                PlacedTargetRecord a = left.PlacedTargets[i];
+                PlacedTargetRecord b = right.PlacedTargets[i];
+                if (a.Key != b.Key || a.FallbackName != b.FallbackName || a.Target != b.Target || a.Definition != b.Definition ||
+                    a.View != b.View || a.OwnerView != b.OwnerView || a.OwnerActorNumber != b.OwnerActorNumber ||
+                    a.LegacySceneTargetType != b.LegacySceneTargetType || a.Rope != b.Rope || a.IsRope != b.IsRope ||
+                    a.RopeAnchor != b.RopeAnchor || a.PitonHandle != b.PitonHandle || a.ShowOwner != b.ShowOwner ||
+                    (a.PositionProvider == null) != (b.PositionProvider == null)) return false;
+            }
+            return true;
         }
 
         private static bool IsBridgeVine(JungleVine vine)
@@ -369,18 +401,20 @@ namespace WhereIsThing
             Item identity = ThingPickupIdentity.Resolve(item);
             if (_selectedIds.Contains(identity.itemID))
             {
-                if ((_effectiveScopes & ThingLocationScope.Ground) != 0 && item.itemState == ItemState.Ground)
+                if ((_effectiveScopes & ThingLocationScope.Ground) != 0 && item.itemState == ItemState.Ground && ThingItemTraits.IsReusableGroundItem(item))
                 {
                     string key = "item:" + item.GetInstanceID();
-                    AddNetworkLabel(record, key, item.transform,
+                    if (PrepareNetworkLabel(record, key, item.transform, item, identity, false))
+                        AddNetworkLabel(record, key, item.transform,
                         delegate { return ThingCatalog.GetDisplayName(identity, _nameLanguage.Value); },
-                        delegate { return IsSelectedGroundItem(item, identity); });
+                        delegate { return IsSelectedGroundItem(item, identity) && ThingItemTraits.IsReusableGroundItem(item); });
                 }
                 else if ((_effectiveScopes & ThingLocationScope.Held) != 0 && item.itemState == ItemState.Held &&
                     ShouldShowHeldItem(item))
                 {
                     string key = "held:" + item.GetInstanceID();
-                    AddNetworkLabel(record, key, item.transform,
+                    if (PrepareNetworkLabel(record, key, item.transform, item, identity, false))
+                        AddNetworkLabel(record, key, item.transform,
                         delegate { return ThingCatalog.GetDisplayName(identity, _nameLanguage.Value); },
                         delegate { return item != null && item.itemState == ItemState.Held && ShouldShowHeldItem(item) &&
                             (_effectiveScopes & ThingLocationScope.Held) != 0 && _selectedIds.Contains(identity.itemID); });
@@ -405,6 +439,7 @@ namespace WhereIsThing
 
                 Item contentPrefab = slot.prefab;
                 string key = "backpack:" + backpack.GetInstanceID() + ":" + slot.itemSlotID;
+                if (!PrepareNetworkLabel(record, key, backpack.transform, slot, contentPrefab, false)) continue;
                 AddNetworkLabel(record, key, backpack.transform, delegate
                 {
                     return ThingCatalog.GetDisplayName(contentPrefab, _nameLanguage.Value) + "\n" +
@@ -416,6 +451,24 @@ namespace WhereIsThing
                         slot.prefab == contentPrefab && _selectedIds.Contains(ThingPickupIdentity.Resolve(contentPrefab).itemID);
                 });
             }
+        }
+
+        private bool PrepareNetworkLabel(NetworkObjectRecord record, string key, Transform target,
+            object source, Item definition, bool showOwner)
+        {
+            // Desired keys must be recorded even when the existing label is reused.
+            record.DesiredLabelKeys.Add(key);
+            record.LabelKeys.Add(key);
+            NetworkLabelBinding binding;
+            if (record.LabelBindings.TryGetValue(key, out binding) && binding.Target == target &&
+                ReferenceEquals(binding.Source, source) && binding.Definition == definition && binding.ShowOwner == showOwner)
+                return !_labels.ContainsKey(key);
+            RemoveLabel(key);
+            record.LabelBindings[key] = new NetworkLabelBinding
+            {
+                Target = target, Source = source, Definition = definition, ShowOwner = showOwner
+            };
+            return true;
         }
 
         private void AddNetworkLabel(NetworkObjectRecord record, string key, Transform target, Func<string> titleProvider,
@@ -436,8 +489,7 @@ namespace WhereIsThing
                 return;
             }
 
-            record.DesiredLabelKeys.Add(placed.Key);
-            record.LabelKeys.Add(placed.Key);
+            if (!PrepareNetworkLabel(record, placed.Key, placed.Target.transform, placed, placed.Definition, placed.ShowOwner)) return;
             Func<bool> isValid = delegate
             {
                 return placed.Target != null && placed.Target.gameObject != null &&
@@ -481,7 +533,7 @@ namespace WhereIsThing
 
         private bool IsPlacedRecordSelected(PlacedTargetRecord placed)
         {
-            if (placed.Definition != null && _selectedIds.Contains(placed.Definition.itemID))
+            if (_labelPlacedFromItemSelection && placed.Definition != null && _selectedIds.Contains(placed.Definition.itemID))
             {
                 return true;
             }
@@ -524,6 +576,7 @@ namespace WhereIsThing
             {
                 RemoveLabel(key);
                 record.LabelKeys.Remove(key);
+                record.LabelBindings.Remove(key);
             }
         }
 
@@ -534,27 +587,30 @@ namespace WhereIsThing
                 return;
             }
 
-            _nextNetworkCleanup = Time.unscaledTime + FullValidationInterval;
-            _networkRecordRemovalBuffer.Clear();
-            foreach (KeyValuePair<int, NetworkObjectRecord> entry in _networkObjects)
+            using(_phaseProfiler.Measure(3))
             {
-                NetworkObjectRecord record = entry.Value;
-                if (record == null || record.LastSeenGeneration != _photonDiscoveryGeneration ||
-                    record.View == null || record.View.gameObject == null)
+                _nextNetworkCleanup = Time.unscaledTime + FullValidationInterval;
+                _networkRecordRemovalBuffer.Clear();
+                foreach (KeyValuePair<int, NetworkObjectRecord> entry in _networkObjects)
                 {
-                    _networkRecordRemovalBuffer.Add(entry.Key);
+                    NetworkObjectRecord record = entry.Value;
+                    if (record == null || record.LastSeenGeneration != _photonDiscoveryGeneration ||
+                        record.View == null || record.View.gameObject == null)
+                    {
+                        _networkRecordRemovalBuffer.Add(entry.Key);
+                    }
                 }
-            }
 
-            foreach (int viewId in _networkRecordRemovalBuffer)
-            {
-                NetworkObjectRecord record;
-                if (_networkObjects.TryGetValue(viewId, out record))
+                foreach (int viewId in _networkRecordRemovalBuffer)
                 {
-                    RemoveNetworkRecordLabels(record);
-                    RemoveClassificationRetry(record);
+                    NetworkObjectRecord record;
+                    if (_networkObjects.TryGetValue(viewId, out record))
+                    {
+                        RemoveNetworkRecordLabels(record);
+                        RemoveClassificationRetry(record);
+                    }
+                    _networkObjects.Remove(viewId);
                 }
-                _networkObjects.Remove(viewId);
             }
         }
 
@@ -585,6 +641,7 @@ namespace WhereIsThing
             }
             record.LabelKeys.Clear();
             record.DesiredLabelKeys.Clear();
+            record.LabelBindings.Clear();
         }
 
         private void ClearDiscoveryCaches()

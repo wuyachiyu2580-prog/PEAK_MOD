@@ -1,0 +1,206 @@
+{
+  "variant": "baseline",
+  "elapsedSeconds": 9.8927185,
+  "peakPayloadBytes": 8131848,
+  "remainingPayloadBytes": 0,
+  "captures": [
+    {
+      "file": "wsl-20261117-121512-2a6cb7fa-anonymous.zip",
+      "frames": 4833,
+      "DroppedFrames": 0,
+      "DroppedCritical": 24,
+      "DroppedDetails": 0,
+      "preMissing": 255,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {
+        "RpcCall": 244,
+        "NetworkSample": 24,
+        "FpsReport": 1,
+        "OwnershipChange": 1,
+        "PluginTiming": 8
+      },
+      "preTriggerMissing": {
+        "RpcCall": 244,
+        "NetworkSample": 24,
+        "FpsReport": 1,
+        "OwnershipChange": 1,
+        "PluginTiming": 8
+      },
+      "recordingMissing": {},
+      "payload": 5195660
+    },
+    {
+      "file": "wsl-20261117-122438-7debe76a-anonymous.zip",
+      "frames": 5126,
+      "DroppedFrames": 0,
+      "DroppedCritical": 0,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {},
+      "preTriggerMissing": {},
+      "recordingMissing": {},
+      "payload": 3287568
+    },
+    {
+      "file": "wsl-20261117-122812-4fc4f59b-anonymous.zip",
+      "frames": 4843,
+      "DroppedFrames": 0,
+      "DroppedCritical": 85,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {
+        "NetworkSample": 83,
+        "FpsReport": 1,
+        "SpikeFrame": 1
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 83,
+        "FpsReport": 1,
+        "SpikeFrame": 1
+      },
+      "recordingMissing": {},
+      "payload": 5359078
+    },
+    {
+      "file": "wsl-20261117-125600-8180d011-anonymous.zip",
+      "frames": 5499,
+      "DroppedFrames": 0,
+      "DroppedCritical": 134,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {
+        "NetworkSample": 128,
+        "SpikeFrame": 3,
+        "FpsReport": 2,
+        "AbuseAlert": 1
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 128,
+        "SpikeFrame": 3,
+        "FpsReport": 2,
+        "AbuseAlert": 1
+      },
+      "recordingMissing": {},
+      "payload": 4260690
+    },
+    {
+      "file": "wsl-20261117-125851-3f18dc8b-anonymous.zip",
+      "frames": 4151,
+      "DroppedFrames": 0,
+      "DroppedCritical": 6,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {
+        "NetworkSample": 6
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 6
+      },
+      "recordingMissing": {},
+      "payload": 2798876
+    },
+    {
+      "file": "wsl-20261117-130610-d9857df0-anonymous.zip",
+      "frames": 4799,
+      "DroppedFrames": 0,
+      "DroppedCritical": 36,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {
+        "NetworkSample": 34,
+        "SpikeFrame": 1,
+        "FpsReport": 1
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 34,
+        "SpikeFrame": 1,
+        "FpsReport": 1
+      },
+      "recordingMissing": {},
+      "payload": 3723464
+    },
+    {
+      "file": "wsl-20261117-130851-7a2e4d13-anonymous.zip",
+      "frames": 4422,
+      "DroppedFrames": 0,
+      "DroppedCritical": 1,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {
+        "NetworkSample": 1
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 1
+      },
+      "recordingMissing": {},
+      "payload": 2914248
+    },
+    {
+      "file": "wsl-20261117-131541-12981a67-anonymous.zip",
+      "frames": 4360,
+      "DroppedFrames": 0,
+      "DroppedCritical": 23,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {
+        "NetworkSample": 23
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 23
+      },
+      "recordingMissing": {},
+      "payload": 2962634
+    },
+    {
+      "file": "wsl-20261117-132617-82e41e62-anonymous.zip",
+      "frames": 8593,
+      "DroppedFrames": 0,
+      "DroppedCritical": 19,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {
+        "NetworkSample": 17,
+        "SpikeFrame": 1,
+        "FpsReport": 1
+      },
+      "preTriggerMissing": {
+        "NetworkSample": 17,
+        "SpikeFrame": 1,
+        "FpsReport": 1
+      },
+      "recordingMissing": {},
+      "payload": 3878920
+    },
+    {
+      "file": "wsl-20261117-133315-a23578bd-anonymous.zip",
+      "frames": 7025,
+      "DroppedFrames": 0,
+      "DroppedCritical": 0,
+      "DroppedDetails": 0,
+      "preMissing": 0,
+      "actualDifferenceMissing": 0,
+      "actualDifferenceExtra": 0,
+      "missing": {},
+      "preTriggerMissing": {},
+      "recordingMissing": {},
+      "payload": 2543386
+    }
+  ]
+}

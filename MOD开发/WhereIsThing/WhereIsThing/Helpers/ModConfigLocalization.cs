@@ -58,6 +58,8 @@ namespace WhereIsThing
         {
             switch (section)
             {
+                case "Diagnostics":
+                    return key == "PhaseTiming" || key == "PhaseTimingSeconds";
                 case "General":
                     return key == "Enabled" || key == "ScanKey" || key == "WindowKey" ||
                         key == "ScanMode" || key == "DisplayDurationSeconds";
@@ -66,7 +68,7 @@ namespace WhereIsThing
                         key == "LabelFont" || key == "ShowOffscreenDirection" || key == "ShowOwnerNames";
                 case "Presets":
                     return key == "PresetSchemaVersion" || key == "PickupIdentityVersion" || key == "LocalPresets" ||
-                        key == "ActiveLocalPresetId" || key == "SelectedSharedPresetId" || key == "ShareMode";
+                        key == "ActiveLocalPresetId" || key == "ActiveLocalPresetIds" || key == "RestrictClientPresets" || key == "SelectedSharedPresetId" || key == "ShareMode";
                 case "Selection":
                     return key == "SelectedItemIds" || key == "SelectedLuggage" ||
                         key == "SelectedLuggageTypes" || key == "SelectedSceneTargetTypes" ||
@@ -87,6 +89,9 @@ namespace WhereIsThing
             {
                 case "物品在哪": return "WhereIsThing";
                 case "常规": return "General";
+                case "诊断": return "Diagnostics";
+                case "限时阶段计时": return "PhaseTiming";
+                case "阶段计时秒数": return "PhaseTimingSeconds";
                 case "显示": return "Display";
                 case "选择": return "Selection";
                 case "预设": return "Presets";
@@ -113,6 +118,8 @@ namespace WhereIsThing
                 case "预设版本号": return "PresetSchemaVersion";
                 case "本地预设数据": return "LocalPresets";
                 case "当前本地预设": return "ActiveLocalPresetId";
+                case "启用的本地预设": return "ActiveLocalPresetIds";
+                case "客机预设限制": return "RestrictClientPresets";
                 case "当前共享预设": return "SelectedSharedPresetId";
                 case "房主共享模式": return "ShareMode";
                 case "常驻": return "Persistent";
@@ -141,6 +148,9 @@ namespace WhereIsThing
             {
                 case "WhereIsThing": return chinese ? "物品在哪" : "WhereIsThing";
                 case "General": return chinese ? "常规" : "General";
+                case "Diagnostics": return chinese ? "诊断" : "Diagnostics";
+                case "PhaseTiming": return chinese ? "限时阶段计时" : "Phase Timing";
+                case "PhaseTimingSeconds": return chinese ? "阶段计时秒数" : "Phase Timing Seconds";
                 case "Display": return chinese ? "显示" : "Display";
                 case "Selection": return chinese ? "选择" : "Selection";
                 case "Presets": return chinese ? "预设" : "Presets";
@@ -163,6 +173,8 @@ namespace WhereIsThing
                 case "PresetSchemaVersion": return chinese ? "预设版本号" : "Preset Schema Version";
                 case "LocalPresets": return chinese ? "本地预设数据" : "Local Presets";
                 case "ActiveLocalPresetId": return chinese ? "当前本地预设" : "Active Local Preset";
+                case "ActiveLocalPresetIds": return chinese ? "启用的本地预设" : "Enabled Local Presets";
+                case "RestrictClientPresets": return chinese ? "客机预设限制" : "Restrict Client Presets";
                 case "SelectedSharedPresetId": return chinese ? "当前共享预设" : "Selected Shared Preset";
                 case "ShareMode": return chinese ? "房主共享模式" : "Share Mode";
                 case "MushroomZombie": return chinese ? "森蕈僵尸" : "Mushroom Zombie";
@@ -177,7 +189,7 @@ namespace WhereIsThing
                 case "Antlion": return chinese ? "蚁狮" : "Antlion";
                 case "VenusFlyTrap": return chinese ? "捕蝇草" : "Venus Flytrap";
                 case "Tornado": return chinese ? "龙卷风" : "Tornado";
-                case "NapberryHypnoOrb": return chinese ? "未摘下的晚安莓" : "Unpicked Napberry";
+                case "NapberryHypnoOrb": return chinese ? "晚安莓" : "Napberry";
                 case "ArrowShooter": return chinese ? "箭矢发射器" : "Arrow Shooter";
                 case "MovingSawBlade": return chinese ? "移动锯刃" : "Moving Sawblade";
                 case "SpikeRoller": return chinese ? "滚刺机关" : "Spike Roller";
@@ -215,6 +227,8 @@ namespace WhereIsThing
             bool chinese = IsChinese;
             switch (key)
             {
+                case "PhaseTiming": return chinese ? "采集一次限时阶段耗时，结束后自动关闭。嵌套阶段不可重复相加。" : "Run one bounded diagnostic window, then automatically switch off. Nested phases must not be summed.";
+                case "PhaseTimingSeconds": return chinese ? "诊断窗口持续 30 至 60 秒。P95 为直方图上界；GC 增量是次数，不是暂停耗时。" : "Diagnostic window duration, 30 to 60 seconds. P95 is a histogram upper bound; GC deltas are counts, not pause durations.";
                 case "Enabled": return chinese ? "启用或关闭 WhereIsThing。" : "Enable or disable WhereIsThing.";
                 case "ScanKey": return chinese ? "显示当前已选目标位置的快捷键。" : "Key used to show the locations of selected targets.";
                 case "WindowKey": return chinese ? "按住 Alt 后使用此键打开物品选择窗口。" : "Hold Alt and press this key to open the target selection window.";
@@ -236,6 +250,8 @@ namespace WhereIsThing
                 case "PresetSchemaVersion": return chinese ? "WhereIsThing 内部使用的预设数据版本，请勿手动编辑。" : "Internal preset schema version used by WhereIsThing. Do not edit manually.";
                 case "LocalPresets": return chinese ? "WhereIsThing 保存的本地预设内容，请勿手动编辑。" : "Serialized local presets managed by WhereIsThing. Do not edit manually.";
                 case "ActiveLocalPresetId": return chinese ? "当前本地玩家使用的预设 ID，请勿手动编辑。" : "Preset ID currently selected for local use. Do not edit manually.";
+                case "ActiveLocalPresetIds": return chinese ? "启用的本地预设 ID，目标合并显示，请勿手动编辑。" : "Enabled local preset IDs, whose targets are combined. Do not edit manually.";
+                case "RestrictClientPresets": return chinese ? "默认开启。作为客机时使用房主共享预设（未共享时使用保底预设）；关闭后可使用和编辑本地预设。这是本地偏好，不是房主强制规则。" : "Enabled by default. As a client, use host-shared presets (or fallback presets). Disable to use and edit local presets. This is a local preference, not a host-enforced rule.";
                 case "SelectedSharedPresetId": return chinese ? "当前客户端选择的共享预设 ID，请勿手动编辑。" : "Shared preset ID currently selected by this client. Do not edit manually.";
                 case "ShareMode": return chinese ? "房主是否向客机共享默认预设或已发布预设。" : "Whether the host shares built-in presets or published presets with clients.";
                 default: return string.Empty;

@@ -1,0 +1,9 @@
+CONFIRMED: initial publish control | Initial publication succeeds.
+CONFIRMED: new room suppresses unchanged payload | No WIT properties are written in the new room; dirty flag is cleared.
+CONFIRMED: Off/BuiltInOnly mode-only transition is lost | WIT.ShareMode still equals BuiltInOnly after setting Off.
+CONFIRMED: catalog resolution is not republished | Local Survival now has a root target but published Survival remains empty.
+CONFIRMED: unrelated room property extends timed scan | Expiry changes from 108 to 113 with no WhereIsThing property change.
+CONFIRMED: unrelated room property rebuilds open picker | The open picker is refreshed even for an unrelated room key.
+CONFIRMED: external persistent-to-timed toggle retains infinite expiry | Periodic state refresh updates mode but leaves the existing infinite expiry unchanged.
+CONFIRMED: scene additional filter is missing from existing-label validity | Rescan skips the disabled hazard but its previous label remains valid.
+Confirmed 8 audit observations using extracted production method bodies; not an in-game test.

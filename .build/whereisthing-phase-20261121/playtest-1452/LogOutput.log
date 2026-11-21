@@ -1,0 +1,100 @@
+[Error  :   BepInEx] Unable to start Unity log writer
+[Message:   BepInEx] BepInEx 5.4.23.3 - PEAK (2026/9/3 20:34:04)
+[Info   :   BepInEx] Running under Unity v6000.3.15.12692100
+[Info   :   BepInEx] CLR runtime version: 4.0.30319.42000
+[Info   :   BepInEx] Supports SRE: True
+[Info   :   BepInEx] System platform: Bits64, Windows
+[Message:   BepInEx] Preloader started
+[Info   :   BepInEx] Loaded 1 patcher method from [BepInEx.Preloader 5.4.23.3]
+[Info   :   BepInEx] Loaded 1 patcher method from [0.com.github.MonoDetour.BepInEx.5 0.7.18.0]
+[Info   :   BepInEx] 2 patcher plugins loaded
+[Info   :   BepInEx] Patching [UnityEngine.CoreModule] with [BepInEx.Chainloader]
+[Message:   BepInEx] Preloader finished
+[Message:   BepInEx] Chainloader ready
+[Message:   BepInEx] Chainloader started
+[Info   :   BepInEx] 25 plugins to load
+[Warning:   BepInEx] Skipping [WhySoLaggy 1.0.5] because a newer version exists (WhySoLaggy 1.0.5)
+[Info   :   BepInEx] Loading [Bing Bong AI 0.9.1]
+[Info   :Bing Bong AI] Game hooks: 14 of 14 in place.
+[Info   :Bing Bong AI] Plugin Bing Bong AI 0.9.1 is loaded! AI: configured.
+[Info   :   BepInEx] Loading [BetterPeakVoiceFix 1.1.10]
+[Info   :BetterPeakVoiceFix] [诊断] Photon AppId 快照: realtime 2be03cc8-3633-4033-a22e-7ef1c243b1fd / voice ba60e90a-af6f-4965-80cf-ff783c91c992
+[Info   :BetterPeakVoiceFix] Better Voice Fix (v1.1.10) 已加载。
+[Info   :   BepInEx] Loading [Better Player Distance 1.1.5]
+[Info   :   BepInEx] Loading [An0n Fair Storms 1.0.6]
+[Info   :   BepInEx] Loading [BetterItemInfoDisplay 0.1.5]
+[Info   :BetterItemInfoDisplay] Plugin configuration loaded.
+[Info   :BetterItemInfoDisplay] Plugin BetterItemInfoDisplay is loaded.
+[Info   :   BepInEx] Loading [BetterRoomShare 0.1.4]
+[Info   :BetterRoomShare] Plugin BetterRoomShare is loaded!
+[Info   :BetterRoomShare] Plugin Config Loaded.
+[Info   :   BepInEx] Loading [ClimbInfoTracker 0.5.1]
+[Info   :ClimbInfoTracker] Plugin ClimbInfoTracker is loaded!
+[Info   :ClimbInfoTracker] Plugin Config Loaded.
+[Info   :   BepInEx] Loading [ItemSpawnerEnhanced 1.3.0]
+[Info   :ItemSpawnerEnhanced] ItemSpawnerEnhanced 1.3.0 loaded for PEAK 2.1.a baseline.
+[Info   :   BepInEx] Loading [ItemSpawnerEnhanced Chinese Search 1.3.0]
+[Info   :ItemSpawnerEnhanced Chinese Search] ItemSpawnerEnhanced Chinese Search 1.3.0 loaded.
+[Info   :   BepInEx] Loading [RemoteAliveHelper 1.0.11]
+[Info   :RemoteAliveHelper] Plugin RemoteAliveHelper is loaded!
+[Info   :RemoteAliveHelper] Plugin Config Loaded.
+[Info   :   BepInEx] Loading [PEAKLib.Core 1.7.2]
+[Info   :PEAKLib.Core] Loading all bundles with extension .autoload.peakbundle from root C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins
+[Info   :PEAKLib.Core] Loading all bundles with extension .autoload_peakbundle from root C:\Users\Administrator\AppData\Roaming\r2modmanPlus-local\PEAK\profiles\2.0.a\BepInEx\plugins
+[Info   :PEAKLib.Core] Plugin PEAKLib.Core is loaded!
+[Info   :   BepInEx] Loading [PEAKLib.Items 1.6.2]
+[Info   :PEAKLib.Items] Plugin PEAKLib.Items is loaded!
+[Info   :   BepInEx] Loading [PEAKLib.UI 1.7.2]
+[Info   :PEAKLib.UI] Plugin PEAKLib.UI is loaded!
+[Info   :   BepInEx] Loading [PEAKLib.ModConfig 1.8.2]
+[Info   :PEAKLib.ModConfig] Plugin PEAKLib.ModConfig is loaded!
+[Info   :   BepInEx] Loading [SoftDependencyFix 1.0.0]
+[Info   :SoftDependencyFix] Plugin SoftDependencyFix is loaded!
+[Info   :   BepInEx] Loading [PeakAMap 1.3.1]
+[Info   :   BepInEx] Loading [StateKeeper 0.1.0]
+[Info   :StateKeeper] Loaded. Data path: C:/Users/Administrator/AppData/LocalLow/LandCrab/PEAK\StateKeeper
+[Info   :   BepInEx] Loading [Compass 1.0.0]
+[Info   :   BepInEx] Loading [PlayersInfo 0.2.5]
+[Info   :PlayersInfo] [PlayersInfo] PlayersInfo v0.2.5 loaded. Lang=en
+[Info   :   BepInEx] Loading [WhereIsThing 0.1.3]
+[Info   :WhereIsThing] WhereIsThing v0.1.3 loaded. Hold Alt and press C to manage presets; press C to scan.
+[Info   :   BepInEx] Loading [WhySoLaggy 1.0.5]
+[Info   :WhySoLaggy] [WHY_LAG] WhySoLaggy Awake
+[Info   :WhySoLaggy] [WHY_LAG] Config bound, loggers initialized
+[Info   :   BepInEx] Loading [Fly Mod 1.0.7]
+[Info   :   Fly Mod] [FlyMod] Patch Harmony applied.
+[Info   :   BepInEx] Loading [Piggyback 1.4.4]
+[Info   : Piggyback] Custom drop key binding set to: <Gamepad>/leftShoulder + <Gamepad>/rightShoulder
+[Info   : Piggyback] Plugin Piggyback loaded
+[Info   :   BepInEx] Loading [EasyBackpack 1.1.9]
+[Info   :EasyBackpack] Patched BackpackWheel.Update
+[Info   :EasyBackpack] Patched GUIManager.CloseBackpackWheel
+[Info   :EasyBackpack] Patched CharacterBackpackHandler.AddFuelToJetpack
+[Info   :EasyBackpack] Patched Player.SyncInventoryRPC
+[Message:   BepInEx] Chainloader startup complete
+[Info   :PEAKLib.Core] Initializing NetworkPrefabs.
+[Info   :PEAKLib.Core] Replaced PhotonNetwork.PrefabPool with CustomPrefabPool.
+[Info   :PEAKLib.Core] Finished initializing NetworkPrefabs.
+[Warning:PEAKLib.ModConfig] Missing SettingType: [Mod: Why So Laggy] DashboardKey (Type: BepInEx.Configuration.KeyboardShortcut)
+[Warning:PEAKLib.ModConfig] Missing SettingType: [Mod: Why So Laggy] CaptureKey (Type: BepInEx.Configuration.KeyboardShortcut)
+[Warning:PEAKLib.ModConfig] Missing SettingType: [Mod: Why So Laggy] MarkerKey (Type: BepInEx.Configuration.KeyboardShortcut)
+[Info   :WhySoLaggy] [WHY_LAG] Waiting 5s for all plugins to finish loading...
+[Info   :Bing Bong AI] Microphones: game sees [], uses '(default)'; Windows has [].
+[Info   :Better Player Distance] BetterPlayerDistance v1.1.5 (AIAE) 已加载 | 显示模式=Hold | 贴近显示距离=False | 兼容模式=False | TimeTheme=未安装 / Not installed
+[Info   :WhySoLaggy] [WHY_LAG] FieldProbe disabled or rules file empty, skip
+[Info   :WhySoLaggy] [WHY_LAG] Profiling active!
+[Info   :PEAKLib.Core] Bundle loading screen finished.
+[Info   :  PeakAMap] Creating Canvas_MapsBoard.
+[Info   :PlayersInfo] [PlayersInfo] BarsCoordinator fallback-initialized in SafeTick.
+[Info   :Bing Bong AI] Bing Bong's brain in this lobby: 乌鸦吃鱼 (actor 1, this game).
+[Info   :ItemSpawnerEnhanced] [Perf:UIWarmUp] Full background warm-up completed in 2745.04 ms; items=157.
+[Info   :  PeakAMap] Custom map set to 110
+[Info   :  PeakAMap] Loading custom map 110
+[Info   :PlayersInfo] [PlayersInfo] Teammate bars initialized on GUIManager.Start
+[Info   :  PeakAMap] ShowBiomesInHUD set to true. Creating biomes text.
+[Warning:WhySoLaggy] [WHY_LAG] PhotonView spike! +173 in 1s (now: 990)
+[Info   :ItemSpawnerEnhanced] [Perf:UIWarmUp] Full background warm-up completed in 2297.49 ms; items=157.
+[Info   :ClimbInfoTracker] Started tracking climb 25723b3c-fb29-4954-8abd-8d3e1d7ed34e.
+[Info   :StateKeeper] Bound to RunId 35941c7e-c18c-4fa1-ab62-d01f9b9b8638
+[Info   :Bing Bong AI] Languages: en, ru, zh-hans, zh-hant
+[Warning:WhySoLaggy] [WHY_LAG] PhotonView spike! +325 in 1s (now: 1317)

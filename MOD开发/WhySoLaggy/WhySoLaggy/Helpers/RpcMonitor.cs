@@ -197,19 +197,36 @@ namespace WhySoLaggy
         private static long _metricsDropped;
         private static int _metricsPeakDepth;
         private static double _metricsPumpMs;
+        private static long _metricsDetails;
+        private static double _objectQueryTotalMs, _objectQueryMaxMs;
+        private static double _argumentFormatTotalMs, _argumentFormatMaxMs;
+        private static double _parameterParseTotalMs, _parameterParseMaxMs;
 
         internal struct RpcRuntimeMetrics
         {
-            public RpcRuntimeMetrics(int depth, int peak, long dropped, long processed, double pumpMs)
+            public RpcRuntimeMetrics(int depth, int peak, long dropped, long processed, double pumpMs,
+                long details, double objectQueryTotalMs, double objectQueryMaxMs,
+                double argumentFormatTotalMs, double argumentFormatMaxMs,
+                double parameterParseTotalMs, double parameterParseMaxMs)
             {
                 QueueDepth = depth; QueuePeak = peak; QueueDropped = dropped;
                 ProcessedCount = processed; PumpMs = pumpMs;
+                DetailCount = details; ObjectQueryTotalMs = objectQueryTotalMs; ObjectQueryMaxMs = objectQueryMaxMs;
+                ArgumentFormatTotalMs = argumentFormatTotalMs; ArgumentFormatMaxMs = argumentFormatMaxMs;
+                ParameterParseTotalMs = parameterParseTotalMs; ParameterParseMaxMs = parameterParseMaxMs;
             }
             public int QueueDepth { get; }
             public int QueuePeak { get; }
             public long QueueDropped { get; }
             public long ProcessedCount { get; }
             public double PumpMs { get; }
+            public long DetailCount { get; }
+            public double ObjectQueryTotalMs { get; }
+            public double ObjectQueryMaxMs { get; }
+            public double ArgumentFormatTotalMs { get; }
+            public double ArgumentFormatMaxMs { get; }
+            public double ParameterParseTotalMs { get; }
+            public double ParameterParseMaxMs { get; }
         }
 
         internal static RpcRuntimeMetrics TakeRuntimeMetrics()
@@ -225,7 +242,18 @@ namespace WhySoLaggy
                 peak = _metricsPeakDepth;
                 _metricsPeakDepth = _queue.Count;
             }
-            return new RpcRuntimeMetrics(_queue.Count, peak, dropped, processed, pumpMs);
+            double objectTotal, objectMax, argsTotal, argsMax, parseTotal, parseMax;
+            lock (_metricsLock)
+            {
+                objectTotal = _objectQueryTotalMs; objectMax = _objectQueryMaxMs;
+                argsTotal = _argumentFormatTotalMs; argsMax = _argumentFormatMaxMs;
+                parseTotal = _parameterParseTotalMs; parseMax = _parameterParseMaxMs;
+                _objectQueryTotalMs = _objectQueryMaxMs = _argumentFormatTotalMs = _argumentFormatMaxMs = 0;
+                _parameterParseTotalMs = _parameterParseMaxMs = 0;
+            }
+            long details = Interlocked.Exchange(ref _metricsDetails, 0);
+            return new RpcRuntimeMetrics(_queue.Count, peak, dropped, processed, pumpMs, details,
+                objectTotal, objectMax, argsTotal, argsMax, parseTotal, parseMax);
         }
 
         private static readonly object _metricsLock = new object();
@@ -279,7 +307,8 @@ namespace WhySoLaggy
                 Interlocked.Exchange(ref _nextQueueSequence, 0);windowStarted=periodStarted=DiagnosticClock.Now;lastWindow.Clear();
                 Interlocked.Exchange(ref _metricsProcessed, 0);
                 Interlocked.Exchange(ref _metricsDropped, 0);
-                lock (_metricsLock) { _metricsPeakDepth = 0; _metricsPumpMs = 0d; }
+                lock (_metricsLock) { _metricsPeakDepth = 0; _metricsPumpMs = 0d; _objectQueryTotalMs = _objectQueryMaxMs = _argumentFormatTotalMs = _argumentFormatMaxMs = _parameterParseTotalMs = _parameterParseMaxMs = 0; }
+                Interlocked.Exchange(ref _metricsDetails, 0);
                 _queue.Capacity = QueueCapacity;
                 _watchedByMethod.Clear();
                 foreach (var mn in WatchedMethods)
@@ -394,11 +423,14 @@ namespace WhySoLaggy
             int processed = 0;
             while (budget-- > 0 && DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-started)<PumpBudgetMs && _queue.TryDequeue(out var item))
             {
+                long itemStarted = Stopwatch.GetTimestamp();
                 try { ProcessDequeued(ref item); }
                 catch (Exception ex)
                 {
                     WhySoLaggyPlugin.Log?.LogWarning($"[WHY_LAG] RpcMonitor pump failed: {ex.Message}");
                 }
+                double itemMs = DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp() - itemStarted);
+                RecordPumpCost("RpcPumpItem", itemMs);
                 processed++;
             }
             if (processed > 0) Interlocked.Add(ref _metricsProcessed, processed);
@@ -447,6 +479,7 @@ namespace WhySoLaggy
                 // 1.0.4：回读 RecordWatched 刚写入的最新记录，复用已解析的 argsSummary/specificDesc/targetName，避免重复计算
                 int lastIdx = (buf.Idx - 1 + buf.Records.Length) % buf.Records.Length;
                 var recForLog = buf.Records[lastIdx];
+                Interlocked.Increment(ref _metricsDetails);
                 try
                 {
                     StructuredLogger.WriteEvent(new StructuredEvent
@@ -553,12 +586,20 @@ namespace WhySoLaggy
             }
             catch { }
 
-            SelfMetrics.Add("ObjectQuery",DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-queryStart));
+            double queryMs=DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-queryStart);
+            RecordPumpCost("RpcObjectQuery",queryMs);
+            SelfMetrics.Add("ObjectQuery",queryMs);
+            long formatStart=Stopwatch.GetTimestamp();
             string argSum = BuildArgsSummary(item.args);
+            double formatMs=DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-formatStart);
+            RecordPumpCost("RpcArgumentFormat",formatMs);
 
             string specific = null;
+            long parseStart=Stopwatch.GetTimestamp();
             try { specific = ParseSpecific(item.methodName, item.args, item.targetVID); }
             catch { }
+            double parseMs=DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-parseStart);
+            RecordPumpCost("RpcParameterParse",parseMs);
 
             var rec = new WatchedRecord
             {
@@ -578,6 +619,17 @@ namespace WhySoLaggy
             buf.Idx = (buf.Idx + 1) % buf.Records.Length;
             if (buf.Count < buf.Records.Length) buf.Count++;
             buf.Total++;
+        }
+
+        private static void RecordPumpCost(string name,double milliseconds)
+        {
+            lock(_metricsLock)
+            {
+                if(name=="RpcObjectQuery"){_objectQueryTotalMs+=milliseconds;_objectQueryMaxMs=Math.Max(_objectQueryMaxMs,milliseconds);}
+                else if(name=="RpcArgumentFormat"){_argumentFormatTotalMs+=milliseconds;_argumentFormatMaxMs=Math.Max(_argumentFormatMaxMs,milliseconds);}
+                else if(name=="RpcParameterParse"){_parameterParseTotalMs+=milliseconds;_parameterParseMaxMs=Math.Max(_parameterParseMaxMs,milliseconds);}
+            }
+            SelfMetrics.Add(name,milliseconds,false);
         }
 
         private static string BuildArgsSummary(object[] args)

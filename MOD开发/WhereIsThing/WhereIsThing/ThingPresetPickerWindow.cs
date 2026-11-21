@@ -66,7 +66,7 @@ namespace WhereIsThing
         private float _displayDuration;
         private float _maxDistance;
         private bool _showOwnerNames;
-        private string _activePresetId;
+        private readonly HashSet<string> _activePresetIds = new HashSet<string>(StringComparer.Ordinal);
         private string _renamingPresetId;
 
         public ThingPresetPickerWindow(Canvas canvas, TMP_FontAsset font)
@@ -219,7 +219,7 @@ namespace WhereIsThing
             RebuildSettings();
         }
 
-        public void Open(IEnumerable<ThingPresetDefinition> presets, string activePresetId, bool allowEditing, bool usingFallbackPresets, ThingPresetShareMode shareMode,
+        public void Open(IEnumerable<ThingPresetDefinition> presets, IEnumerable<string> activePresetIds, bool allowEditing, bool usingFallbackPresets, ThingPresetShareMode shareMode,
             ThingLocationScope scopes, ThingScanMode scanMode, float displayDurationSeconds, float maxDistance, bool showOwnerNames,
             Func<ThingPresetDefinition, string> summaryProvider, Action<string> usePreset, Action<string> editPreset,
             Action<string, string> renamePreset, Action<string> togglePublished, Action<string> deletePreset, Action createPreset,
@@ -230,7 +230,8 @@ namespace WhereIsThing
         {
             _presets.Clear();
             _presets.AddRange((presets ?? Enumerable.Empty<ThingPresetDefinition>()).Where(preset => preset != null).Select(preset => preset.Clone()).ToList());
-            _activePresetId = activePresetId ?? string.Empty;
+            _activePresetIds.Clear();
+            _activePresetIds.UnionWith(activePresetIds ?? Enumerable.Empty<string>());
             _allowEditing = allowEditing;
             _usingFallbackPresets = usingFallbackPresets;
             _shareMode = shareMode;
@@ -270,13 +271,12 @@ namespace WhereIsThing
 
         public void Tick()
         {
-            if (_isOpen)
+            if (!_isOpen) return;
+            MaintainCursor();
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                MaintainCursor();
-                if (_renameOverlay != null && _renameOverlay.activeSelf && Input.GetKeyDown(KeyCode.Escape))
-                {
-                    CloseRenameDialog();
-                }
+                if (_renameOverlay != null && _renameOverlay.activeSelf) CloseRenameDialog();
+                else Close();
             }
         }
 
@@ -345,6 +345,18 @@ namespace WhereIsThing
             }
         }
 
+        public void RefreshSettings(ThingLocationScope scopes, ThingScanMode scanMode, float duration,
+            float maxDistance, bool showOwnerNames, ThingMapScope mapScope)
+        {
+            _scopes = scopes;
+            _scanMode = scanMode;
+            _displayDuration = Mathf.Clamp(duration, 2f, 60f);
+            _maxDistance = Mathf.Round(Mathf.Clamp(maxDistance, 0f, MaxDistanceMaximum) / MaxDistanceStep) * MaxDistanceStep;
+            _showOwnerNames = showOwnerNames;
+            _mapScope = mapScope;
+            RebuildSettings();
+        }
+
         private void RebuildSettings()
         {
             _isRebuilding = true;
@@ -371,7 +383,7 @@ namespace WhereIsThing
         {
             GameObject row = CreateRect("Preset_" + preset.Id, _content);
             LayoutElement element = row.AddComponent<LayoutElement>();
-            bool active = string.Equals(preset.Id, _activePresetId, StringComparison.Ordinal);
+            bool active = _activePresetIds.Contains(preset.Id);
             bool builtIn = ThingPresetFactory.IsBuiltInPresetId(preset.Id);
             element.minHeight = _allowEditing ? 82f : 70f;
             element.preferredHeight = element.minHeight;
@@ -407,7 +419,7 @@ namespace WhereIsThing
             actionLayout.childForceExpandWidth = false;
             actionLayout.childForceExpandHeight = false;
             actionLayout.childAlignment = TextAnchor.MiddleRight;
-            CreateLayoutButton(actions.transform, "Use", ThingUi.Use(active), 80f, delegate
+            CreateLayoutButton(actions.transform, "Use", _allowEditing ? ThingUi.Enable(active) : ThingUi.Use(active), 80f, delegate
             {
                 if (_usePreset != null)
                 {

@@ -8,3 +8,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("f9d08f85-c8c7-4b51-97f9-f3a2f32f6f8a")]
 [assembly: AssemblyVersion("0.1.3.0")]
 [assembly: AssemblyFileVersion("0.1.3.0")]
+[assembly: AssemblyInformationalVersion("0.1.3-dev.20261121.phasetiming")]

@@ -1,0 +1,854 @@
+--- MOD开发\WhereIsThing\WhereIsThing\WhereIsThingPlugin.cs (turn start)
+
++++ MOD开发\WhereIsThing\WhereIsThing\WhereIsThingPlugin.cs
+
+@@ -39,7 +39,6 @@
+
+         private readonly List<ThingLabel> _labelUpdateBuffer = new List<ThingLabel>();
+         private readonly List<string> _labelKeyRemovalBuffer = new List<string>();
+         private readonly List<int> _networkRecordRemovalBuffer = new List<int>();
+-        private readonly HashSet<string> _scanSeenBuffer = new HashSet<string>(StringComparer.Ordinal);
+         private readonly Dictionary<int, string> _ownerNamesByActor = new Dictionary<int, string>();
+         private readonly Dictionary<int, NetworkObjectRecord> _networkObjects = new Dictionary<int, NetworkObjectRecord>();
+         private readonly Dictionary<string, Item> _itemDefinitionsByPrefabName =
+@@ -71,6 +70,7 @@
+
+         private Material _labelTitleMaterial;
+         private Material _labelDetailMaterial;
+         private Camera _mainCamera;
++        private float _nextCameraCheck;
+         private bool _displayActive;
+         private float _hideAt;
+         private float _nextRefresh;
+@@ -84,7 +84,6 @@
+
+         private bool _labelPlacedFromItemSelection;
+         private string _selectedSharedPresetId = string.Empty;
+         private string _editingPresetId = string.Empty;
+-        private string _activeRoomName = string.Empty;
+         private string _lastPublishedSharePayload = string.Empty;
+         private string _lastPublishedShareHash = string.Empty;
+         private float _lastPublishAt = -10f;
+@@ -129,6 +128,15 @@
+
+             public readonly List<PlacedTargetRecord> PlacedTargets = new List<PlacedTargetRecord>();
+             public readonly HashSet<string> LabelKeys = new HashSet<string>(StringComparer.Ordinal);
+             public readonly HashSet<string> DesiredLabelKeys = new HashSet<string>(StringComparer.Ordinal);
++            public readonly Dictionary<string, NetworkLabelBinding> LabelBindings = new Dictionary<string, NetworkLabelBinding>(StringComparer.Ordinal);
++        }
++
++        private sealed class NetworkLabelBinding
++        {
++            public Transform Target;
++            public object Source;
++            public Item Definition;
++            public bool ShowOwner;
+         }
+ 
+         private sealed class PlacedTargetRecord
+@@ -256,33 +264,24 @@
+
+ 
+         private void Update()
+         {
++            ObserveScanSettings();
+             UpdateRoomState();
+             UpdateLabelStyleIfChanged();
+ 
++            bool menuInput = (_window != null && _window.IsOpen) || (_pickerWindow != null && _pickerWindow.IsOpen);
+             if (Input.GetKeyDown(_windowKey.Value) && IsAltHeld())
+             {
+                 ToggleWindow();
+-                return;
+-            }
+-
+-            if (_window != null && _window.IsOpen)
++                menuInput = true;
++            }
++            else if (_window != null && _window.IsOpen)
+             {
+                 _window.Tick();
+-                if (Input.GetKeyDown(KeyCode.Escape))
+-                {
+-                    _window.Close();
+-                }
+-                return;
+-            }
+-
+-            if (_pickerWindow != null && _pickerWindow.IsOpen)
++                if (Input.GetKeyDown(KeyCode.Escape)) _window.Close();
++            }
++            else if (_pickerWindow != null && _pickerWindow.IsOpen)
+             {
+                 _pickerWindow.Tick();
+-                if (Input.GetKeyDown(KeyCode.Escape))
+-                {
+-                    _pickerWindow.Close();
+-                }
+-                return;
+             }
+ 
+             if (!_enabled.Value)
+@@ -292,7 +291,7 @@
+
+                 return;
+             }
+ 
+-            if (Input.GetKeyDown(_scanKey.Value) && !IsAltHeld())
++            if (!menuInput && Input.GetKeyDown(_scanKey.Value) && !IsAltHeld())
+             {
+                 BeginScan();
+             }
+@@ -538,7 +537,7 @@
+
+                 return;
+             }
+ 
+-            RefreshEffectivePresetState(false);
++            RefreshEffectivePresetState(false, false);
+             if (_selectedIds.Count == 0 && _selectedLuggageTypes.Count == 0 && _selectedSceneTargetTypes.Count == 0)
+             {
+                 _displayActive = false;
+@@ -557,7 +556,7 @@
+
+         private void RefreshLabels()
+         {
+             _segmentFilter.Refresh();
+-            RefreshEffectivePresetState(false);
++            RefreshEffectivePresetState(false, false);
+             if (_canvas == null || (_selectedIds.Count == 0 && _selectedLuggageTypes.Count == 0 && _selectedSceneTargetTypes.Count == 0))
+             {
+                 ClearLabels();
+@@ -582,8 +581,6 @@
+
+                 label.RefreshContent();
+             }
+         }
+-
+-
+ 
+         private string GetOwnerName(int actorNumber, PhotonView fallbackView = null)
+         {
+@@ -730,14 +727,15 @@
+
+ 
+         private Camera GetMainCamera()
+         {
+-            if (_mainCamera == null || !_mainCamera.gameObject.activeInHierarchy)
++            if (_mainCamera == null || !_mainCamera.isActiveAndEnabled || Time.unscaledTime >= _nextCameraCheck)
+             {
+                 _mainCamera = Camera.main;
++                _nextCameraCheck = Time.unscaledTime + 0.5f;
+             }
+             return _mainCamera;
+         }
+ 
+-        private void RefreshMobLabels(HashSet<string> seen)
++        private void RefreshMobLabels()
+         {
+             if (!_selectedSceneTargetTypes.Contains(ThingSceneTargetType.Beetle) &&
+                 !_selectedSceneTargetTypes.Contains(ThingSceneTargetType.Scorpion))
+@@ -777,7 +775,7 @@
+
+ 
+                 Mob captured = mob;
+                 ThingSceneTargetType capturedType = sceneTargetType;
+-                AddSceneLabel(seen, capturedType, captured,
++                AddSceneLabel(capturedType, captured,
+                     delegate { return ThingCatalog.GetSceneTargetDisplayName(capturedType, _nameLanguage.Value); },
+                     delegate
+                     {
+@@ -818,7 +816,7 @@
+
+             return false;
+         }
+ 
+-        private void RefreshActiveSceneTargets<T>(HashSet<string> seen, ThingSceneTargetType sceneTargetType,
++        private void RefreshActiveSceneTargets<T>(ThingSceneTargetType sceneTargetType,
+             Func<T, bool> additionalFilter = null) where T : Component
+         {
+             if (!_selectedSceneTargetTypes.Contains(sceneTargetType))
+@@ -835,17 +833,25 @@
+
+                 }
+ 
+                 T captured = target;
+-                AddSceneLabel(seen, sceneTargetType, captured,
++                float nextFilterCheck = 0f;
++                bool matchesFilter = true;
++                AddSceneLabel(sceneTargetType, captured,
+                     delegate { return ThingCatalog.GetSceneTargetDisplayName(sceneTargetType, _nameLanguage.Value); },
+                     delegate
+                     {
+-                        return captured != null && captured.gameObject.activeInHierarchy &&
+-                            _selectedSceneTargetTypes.Contains(sceneTargetType);
++                        if (captured == null || !captured.gameObject.activeInHierarchy ||
++                            !_selectedSceneTargetTypes.Contains(sceneTargetType)) return false;
++                        if (additionalFilter != null && Time.unscaledTime >= nextFilterCheck)
++                        {
++                            matchesFilter = additionalFilter(captured);
++                            nextFilterCheck = Time.unscaledTime + 0.25f;
++                        }
++                        return matchesFilter;
+                     });
+             }
+         }
+ 
+-        private void AddSceneLabel(HashSet<string> seen, ThingSceneTargetType sceneTargetType, Component target,
++        private void AddSceneLabel(ThingSceneTargetType sceneTargetType, Component target,
+             Func<string> titleProvider, Func<bool> isValid, Func<Vector3> positionProvider = null)
+         {
+             if (target == null || target.gameObject == null)
+@@ -854,7 +860,6 @@
+
+             }
+ 
+             string key = "scene:" + sceneTargetType + ":" + target.GetInstanceID();
+-            seen.Add(key);
+             AddLabel(key, target.transform, titleProvider, isValid, positionProvider);
+         }
+ 
+@@ -1047,50 +1052,10 @@
+
+             preset.SelectedSceneTargetTypes.Clear();
+             preset.SelectedSceneTargetTypes.UnionWith(selectedSceneTargetTypes ?? Enumerable.Empty<ThingSceneTargetType>());
+             _nameLanguage.Value = language;
+-            preset.Normalize();
++
+             SaveLocalPresets();
+-            RefreshEffectivePresetState(true);
++            RefreshEffectivePresetState(true, true);
+             MarkShareDirty(true);
+-        }
+-
+-        private bool TryLoadCatalog()
+-        {
+-            if (_catalog.Count > 0)
+-            {
+-                return true;
+-            }
+-
+-            List<ThingTargetDefinition> loaded = ThingCatalog.Load();
+-            if (loaded.Count == 0)
+-            {
+-                return false;
+-            }
+-
+-            _catalog.AddRange(loaded);
+-            BuildCatalogIndexes();
+-            MigratePickupSelections();
+-            MigratePlacedSceneTargetsToItems();
+-            BuildBuiltInPresetCache();
+-            ResolveBuiltInPresetTargets();
+-            SaveLocalPresets();
+-            RefreshEffectivePresetState(false);
+-            foreach (ThingTargetDefinition definition in _catalog)
+-            {
+-                if (definition.IsLuggage)
+-                {
+-                    continue;
+-                }
+-
+-                bool selected = definition.ItemIds.Any(_selectedIds.Contains) ||
+-                    (definition.IsSceneTarget && _selectedSceneTargetTypes.Contains(definition.SceneTargetType));
+-                if (selected)
+-                {
+-                    definition.SetSelected(_selectedIds, _selectedLuggageTypes, _selectedSceneTargetTypes, true);
+-                }
+-            }
+-            _selectedItemIds.Value = string.Join(",", _selectedIds.OrderBy(id => id).Select(id => id.ToString()).ToArray());
+-            _selectedSceneTargetTypesConfig.Value = SerializeSceneTargetTypes(_selectedSceneTargetTypes);
+-            return true;
+         }
+ 
+         private void LoadSelection()
+@@ -1166,7 +1131,7 @@
+
+                     migrated.SelectedItemIds.UnionWith(_selectedIds);
+                     migrated.SelectedLuggageTypes.UnionWith(_selectedLuggageTypes);
+                     migrated.SelectedSceneTargetTypes.UnionWith(_selectedSceneTargetTypes);
+-                    migrated.Normalize();
++
+                     _localPresets.Add(migrated);
+                     _activeLocalPresetIdConfig.Value = migrated.Id;
+                 }
+@@ -1193,7 +1158,6 @@
+
+             }
+ 
+             EnsureDefaultLocalPresets();
+-            NormalizeLocalPresets();
+ 
+             _activeLocalPresetIds.Clear();
+             _activeLocalPresetIds.AddRange(ThingPresetSelection.Load(_activeLocalPresetIdsConfig.Value,
+@@ -1238,34 +1202,7 @@
+
+             existing.SelectedLuggageTypes.UnionWith(builtInPreset.SelectedLuggageTypes);
+             existing.SelectedSceneTargetTypes.Clear();
+             existing.SelectedSceneTargetTypes.UnionWith(builtInPreset.SelectedSceneTargetTypes);
+-            existing.Normalize();
+-        }
+-
+-        private void NormalizeLocalPresets()
+-        {
+-            foreach (ThingPresetDefinition preset in _localPresets)
+-            {
+-                if (preset != null)
+-                {
+-                    preset.Normalize();
+-                }
+-            }
+-        }
+-
+-        private void BuildBuiltInPresetCache()
+-        {
+-            _builtInPresets.Clear();
+-            ThingPresetDefinition achievement = ThingPresetFactory.CreateAchievementPreset();
+-            ThingPresetDefinition survival = ThingPresetFactory.CreateSurvivalPreset();
+-            ThingPresetDefinition ascentEight = ThingPresetFactory.CreateAscentEightPreset();
+-            ThingPresetDefinition playerPlaced = ThingPresetFactory.CreatePlayerPlacedPreset();
+-            ThingPresetFactory.ResolveBuiltInItemTargets(survival, _catalog);
+-            ThingPresetFactory.ResolveBuiltInItemTargets(ascentEight, _catalog);
+-            ThingPresetFactory.ResolveBuiltInItemTargets(playerPlaced, _catalog);
+-            _builtInPresets.Add(achievement);
+-            _builtInPresets.Add(survival);
+-            _builtInPresets.Add(ascentEight);
+-            _builtInPresets.Add(playerPlaced);
++
+         }
+ 
+         private void MigratePlacedSceneTargetsToItems()
+@@ -1307,42 +1244,11 @@
+
+             }
+         }
+ 
+-        private void ResolveBuiltInPresetTargets()
+-        {
+-            foreach (ThingPresetDefinition preset in _localPresets)
+-            {
+-                int added = ThingPresetFactory.ResolveBuiltInItemTargets(preset, _catalog);
+-                if (added > 0)
+-                {
+-                    List<string> resolvedNames = _catalog
+-                        .Where(definition => definition != null && !definition.IsLuggage && !definition.IsSceneTarget &&
+-                            definition.ItemIds.Any(preset.SelectedItemIds.Contains))
+-                        .Select(definition => definition.GetDisplayName(ThingNameLanguage.English))
+-                        .Distinct(StringComparer.OrdinalIgnoreCase)
+-                        .OrderBy(value => value, StringComparer.OrdinalIgnoreCase)
+-                        .ToList();
+-                    string resolutionMessage = "[Presets] Resolved built-in targets for '" + ThingPresetFactory.GetDisplayName(preset) +
+-                        "' (" + preset.Id + "): addedItemIds=" + added + ", targetGroups=" + resolvedNames.Count +
+-                        ", targets=[" + string.Join(", ", resolvedNames.ToArray()) + "]";
+-                    if (resolvedNames.Count < 4)
+-                    {
+-                        _log.LogWarning(resolutionMessage + "; expected 4 target groups");
+-                    }
+-                }
+-                else if ((string.Equals(preset.Id, ThingPresetFactory.SurvivalPresetId, StringComparison.Ordinal) ||
+-                    string.Equals(preset.Id, ThingPresetFactory.AscentEightPresetId, StringComparison.Ordinal) ||
+-                    string.Equals(preset.Id, ThingPresetFactory.PlayerPlacedPresetId, StringComparison.Ordinal)) &&
+-                    preset.SelectedItemIds.Count == 0)
+-                {
+-                    _log.LogWarning("[Presets] Built-in target resolution found no items for '" +
+-                        ThingPresetFactory.GetDisplayName(preset) + "' (" + preset.Id + ")");
+-                }
+-            }
+-        }
+-
+         private void SaveLocalPresets()
+         {
+-            NormalizeLocalPresets();
++            _selectionDirty = true;
++            MarkShareDirty(false);
++
+             _localPresetsConfig.Value = ThingPresetCodec.SerializePresets(_localPresets);
+             _presetSchemaVersion.Value = PresetSchemaVersion;
+             _activeLocalPresetIdsConfig.Value = string.Join(",", _activeLocalPresetIds);
+@@ -1357,94 +1263,6 @@
+
+                 _selectedSceneTargetTypesConfig.Value = SerializeSceneTargetTypes(localPreset.SelectedSceneTargetTypes);
+             }
+             PersistConfig();
+-        }
+-
+-        private ThingPresetDefinition GetEditableLocalPreset(string presetId)
+-        {
+-            if (string.IsNullOrWhiteSpace(presetId))
+-            {
+-                presetId = PrimaryLocalPresetId;
+-            }
+-            ThingPresetDefinition preset = _localPresets.FirstOrDefault(value => string.Equals(value.Id, presetId, StringComparison.Ordinal));
+-            if (preset == null && _localPresets.Count > 0)
+-            {
+-                preset = _localPresets[0];
+-            }
+-            return preset;
+-        }
+-
+-        private ThingPresetDefinition GetCurrentLocalPreset()
+-        {
+-            return GetEditableLocalPreset(PrimaryLocalPresetId);
+-        }
+-
+-        private ThingPresetDefinition GetCurrentEffectivePreset()
+-        {
+-            if (IsClientPresetRestricted())
+-            {
+-                List<ThingPresetDefinition> shared = GetSharedPresetSource().ToList();
+-                if (shared.Count == 0)
+-                {
+-                    return null;
+-                }
+-
+-                ThingPresetDefinition selected = shared.FirstOrDefault(preset => string.Equals(preset.Id, _selectedSharedPresetId, StringComparison.Ordinal));
+-                if (selected == null)
+-                {
+-                    selected = shared[0];
+-                    _selectedSharedPresetId = selected.Id;
+-                    _selectedSharedPresetIdConfig.Value = _selectedSharedPresetId;
+-                }
+-                return selected;
+-            }
+-
+-            return GetCurrentLocalPreset();
+-        }
+-
+-        private IEnumerable<ThingPresetDefinition> GetSharedPresetSource()
+-        {
+-            if (HasUsableSessionPresets())
+-            {
+-                return _sessionPresets;
+-            }
+-            return _builtInPresets;
+-        }
+-
+-        private bool HasUsableSessionPresets()
+-        {
+-            if (_sessionValid && _sessionSourceActor == GetCurrentMasterActorNumber() && _sessionPresets.Count > 0)
+-            {
+-                return true;
+-            }
+-            return _sessionPresets.Count > 0 && _sessionStaleUntil > Time.unscaledTime;
+-        }
+-
+-        private void RefreshEffectivePresetState(bool refreshLabels)
+-        {
+-            IEnumerable<ThingPresetDefinition> active = IsClientPresetRestricted()
+-                ? new[] { GetCurrentEffectivePreset() }
+-                : _localPresets.Where(preset => _activeLocalPresetIds.Contains(preset.Id));
+-            _labelPlacedFromItemSelection = ThingPresetSelection.Combine(active, _selectedIds,
+-                _selectedLuggageTypes, _selectedSceneTargetTypes);
+-            NormalizePickupSelection(_selectedIds);
+-            ThingNapberry.ExpandSelection(_catalog, _selectedIds, _selectedSceneTargetTypes);
+-            _effectiveScopes = _locationScopes.Value;
+-            _effectiveScanMode = _scanMode.Value;
+-            _effectiveDisplayDuration = Mathf.Clamp(_displayDuration.Value, 2f, 60f);
+-
+-            _effectiveScopes &= ~ThingLocationScope.Luggage;
+-            if (_selectedLuggageTypes.Count > 0)
+-            {
+-                _effectiveScopes |= ThingLocationScope.Luggage;
+-            }
+-
+-            if (refreshLabels && _displayActive)
+-            {
+-                _hideAt = _effectiveScanMode == ThingScanMode.Timed
+-                    ? Time.unscaledTime + Mathf.Max(0.5f, _effectiveDisplayDuration)
+-                    : float.PositiveInfinity;
+-                RefreshLabels();
+-            }
+         }
+ 
+         private void OpenPresetPicker()
+@@ -1476,7 +1294,7 @@
+
+             PersistConfig();
+             _nextRefresh = 0f;
+             _nextSceneDiscovery = 0f;
+-            OpenPresetPicker();
++            RefreshPickerSettings();
+         }
+ 
+         private void SelectLocalPreset(string presetId)
+@@ -1486,7 +1304,7 @@
+
+             if (preset == null) return;
+             if (!ThingPresetSelection.Toggle(_activeLocalPresetIds, preset.Id)) return;
+             SaveLocalPresets();
+-            RefreshEffectivePresetState(true);
++            RefreshEffectivePresetState(true, true);
+             OpenPresetPicker();
+         }
+ 
+@@ -1496,10 +1314,11 @@
+
+             {
+                 return;
+             }
++            _selectionDirty = true;
+             _selectedSharedPresetId = presetId;
+             _selectedSharedPresetIdConfig.Value = presetId;
+             PersistConfig();
+-            RefreshEffectivePresetState(true);
++            RefreshEffectivePresetState(true, true);
+             OpenPresetPicker();
+         }
+ 
+@@ -1533,7 +1352,7 @@
+
+             _localPresets.Add(preset);
+             _activeLocalPresetIds.Insert(0, preset.Id);
+             SaveLocalPresets();
+-            RefreshEffectivePresetState(true);
++            RefreshEffectivePresetState(true, true);
+             MarkShareDirty(true);
+             OpenPresetPicker();
+         }
+@@ -1590,7 +1409,7 @@
+
+             _activeLocalPresetIds.Remove(presetId);
+             if (_activeLocalPresetIds.Count == 0) _activeLocalPresetIds.Add(_localPresets[0].Id);
+             SaveLocalPresets();
+-            RefreshEffectivePresetState(true);
++            RefreshEffectivePresetState(true, true);
+             MarkShareDirty(true);
+             OpenPresetPicker();
+         }
+@@ -1646,16 +1465,15 @@
+
+ 
+             _locationScopes.Value = newScopes;
+             PersistConfig();
+-            RefreshEffectivePresetState(true);
+-            OpenPresetPicker();
++            RefreshEffectivePresetState(true, true);
++            RefreshPickerSettings();
+         }
+ 
+         private void CycleLocalScanMode()
+         {
+             _scanMode.Value = _scanMode.Value == ThingScanMode.Persistent ? ThingScanMode.Timed : ThingScanMode.Persistent;
+             PersistConfig();
+-            RefreshEffectivePresetState(true);
+-            OpenPresetPicker();
++            ObserveScanSettings();
+         }
+ 
+         private void AdjustLocalDisplayDuration(int step)
+@@ -1668,8 +1486,7 @@
+
+ 
+             _displayDuration.Value = next;
+             PersistConfig();
+-            RefreshEffectivePresetState(true);
+-            OpenPresetPicker();
++            ObserveScanSettings();
+         }
+ 
+         private void SetShowOwnerNames(bool enabled)
+@@ -1682,6 +1499,7 @@
+
+             _showOwnerNames.Value = enabled;
+             PersistConfig();
+             RefreshLabels();
++            RefreshPickerSettings();
+         }
+ 
+         private void SetMaxDistance(float distance)
+@@ -1697,192 +1515,8 @@
+
+             RefreshLabels();
+             if (_pickerWindow != null && _pickerWindow.IsOpen)
+             {
+-                OpenPresetPicker();
+-            }
+-        }
+-
+-        private bool IsClientPresetRestricted()
+-        {
+-            return ThingPresetSelection.IsClientRestricted(_restrictClientPresets.Value,
+-                PhotonNetwork.InRoom, PhotonNetwork.OfflineMode, PhotonNetwork.IsMasterClient);
+-        }
+-
+-        private void MarkShareDirty(bool immediate)
+-        {
+-            _shareDirty = true;
+-            if (immediate)
+-            {
+-                _lastPublishAt = -10f;
+-            }
+-        }
+-
+-        private void UpdateRoomState()
+-        {
+-            bool clientRestricted = IsClientPresetRestricted();
+-            if (clientRestricted != _lastObservedClientRestriction)
+-            {
+-                _lastObservedClientRestriction = clientRestricted;
+-                if (_window != null && _window.IsOpen) _window.Close();
+-                _editingPresetId = string.Empty;
+-                RefreshEffectivePresetState(true);
+-                if (_pickerWindow != null && _pickerWindow.IsOpen) OpenPresetPicker();
+-            }
+-            if (_shareModeConfig.Value != _lastObservedShareMode)
+-            {
+-                _lastObservedShareMode = _shareModeConfig.Value;
+-                PersistConfig();
+-                MarkShareDirty(true);
+-                if (_pickerWindow != null && _pickerWindow.IsOpen)
+-                {
+-                    OpenPresetPicker();
+-                }
+-            }
+-
+-            bool inOnlineRoom = PhotonNetwork.InRoom && !PhotonNetwork.OfflineMode && PhotonNetwork.CurrentRoom != null;
+-            if (!inOnlineRoom)
+-            {
+-                if (!string.IsNullOrEmpty(_activeRoomName))
+-                {
+-                    _activeRoomName = string.Empty;
+-                    ClearSessionOverlay();
+-                    RefreshEffectivePresetState(true);
+-                }
+-                return;
+-            }
+-
+-            string roomName = PhotonNetwork.CurrentRoom.Name ?? string.Empty;
+-            if (!string.Equals(roomName, _activeRoomName, StringComparison.Ordinal))
+-            {
+-                _activeRoomName = roomName;
+-                _ownerNamesByActor.Clear();
+-                if (PhotonNetwork.IsMasterClient)
+-                {
+-                    ClearSessionOverlay();
+-                    MarkShareDirty(true);
+-                }
+-                else
+-                {
+-                    ApplySharedStateFromRoomProperties();
+-                    RefreshEffectivePresetState(true);
+-                }
+-            }
+-
+-            if (PhotonNetwork.IsMasterClient)
+-            {
+-                PublishShareStateIfNeeded();
+-            }
+-            else if (_sessionPresets.Count > 0 && !_sessionValid && _sessionStaleUntil > 0f && Time.unscaledTime >= _sessionStaleUntil)
+-            {
+-                ClearSessionOverlay();
+-                RefreshEffectivePresetState(true);
+-                if (_pickerWindow != null && _pickerWindow.IsOpen)
+-                {
+-                    OpenPresetPicker();
+-                }
+-            }
+-        }
+-
+-        private void PublishShareStateIfNeeded()
+-        {
+-            if (!_shareDirty || Time.unscaledTime - _lastPublishAt < 0.25f || !PhotonNetwork.IsMasterClient || PhotonNetwork.CurrentRoom == null)
+-            {
+-                return;
+-            }
+-
+-            string payload = string.Empty;
+-            if (_shareModeConfig.Value == ThingPresetShareMode.PublishedPresets)
+-            {
+-                payload = ThingPresetCodec.SerializePresets(_localPresets.Where(preset => preset.Published || ThingPresetFactory.IsBuiltInPresetId(preset.Id)));
+-            }
+-            string hash = ComputePayloadHash(payload);
+-            if (string.Equals(payload, _lastPublishedSharePayload, StringComparison.Ordinal) &&
+-                string.Equals(hash, _lastPublishedShareHash, StringComparison.Ordinal))
+-            {
+-                _shareDirty = false;
+-                _lastPublishAt = Time.unscaledTime;
+-                return;
+-            }
+-
+-            PhotonHashtable props = new PhotonHashtable
+-            {
+-                { ShareModePropertyKey, (int)_shareModeConfig.Value },
+-                { ShareProtocolPropertyKey, ShareProtocolVersion },
+-                { ShareActorPropertyKey, PhotonNetwork.LocalPlayer == null ? -1 : PhotonNetwork.LocalPlayer.ActorNumber },
+-                { ShareHashPropertyKey, hash },
+-                { SharePayloadPropertyKey, payload ?? string.Empty }
+-            };
+-            PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+-            _lastPublishedSharePayload = payload;
+-            _lastPublishedShareHash = hash;
+-            _shareDirty = false;
+-            _lastPublishAt = Time.unscaledTime;
+-        }
+-
+-        private void ApplySharedStateFromRoomProperties()
+-        {
+-            if (!PhotonNetwork.InRoom || PhotonNetwork.CurrentRoom == null || PhotonNetwork.IsMasterClient)
+-            {
+-                return;
+-            }
+-
+-            int shareModeValue;
+-            if (!TryGetRoomInt(ShareModePropertyKey, out shareModeValue))
+-            {
+-                if (_sessionStaleUntil <= 0f || Time.unscaledTime >= _sessionStaleUntil)
+-                {
+-                    ClearSessionOverlay();
+-                }
+-                return;
+-            }
+-
+-            int actorNumber;
+-            int protocolVersion;
+-            string payload;
+-            if (!TryGetRoomInt(ShareActorPropertyKey, out actorNumber) ||
+-                !TryGetRoomInt(ShareProtocolPropertyKey, out protocolVersion) ||
+-                !TryGetRoomString(SharePayloadPropertyKey, out payload) ||
+-                actorNumber != GetCurrentMasterActorNumber() ||
+-                protocolVersion != ShareProtocolVersion)
+-            {
+-                if (_sessionStaleUntil <= 0f || Time.unscaledTime >= _sessionStaleUntil)
+-                {
+-                    ClearSessionOverlay();
+-                }
+-                return;
+-            }
+-
+-            ThingPresetShareMode shareMode = (ThingPresetShareMode)shareModeValue;
+-            if (shareMode != ThingPresetShareMode.PublishedPresets || string.IsNullOrWhiteSpace(payload))
+-            {
+-                ClearSessionOverlay();
+-                return;
+-            }
+-
+-            List<ThingPresetDefinition> presets = ThingPresetCodec.DeserializePresets(payload);
+-            if (presets.Count == 0)
+-            {
+-                ClearSessionOverlay();
+-                return;
+-            }
+-
+-            _sessionPresets.Clear();
+-            _sessionPresets.AddRange(presets);
+-            _sessionSourceActor = actorNumber;
+-            _sessionValid = true;
+-            _sessionStaleUntil = -1f;
+-            if (!_sessionPresets.Any(preset => string.Equals(preset.Id, _selectedSharedPresetId, StringComparison.Ordinal)))
+-            {
+-                _selectedSharedPresetId = _sessionPresets[0].Id;
+-                _selectedSharedPresetIdConfig.Value = _selectedSharedPresetId;
+-            }
+-        }
+-
+-        private void ClearSessionOverlay()
+-        {
+-            _sessionPresets.Clear();
+-            _sessionSourceActor = -1;
+-            _sessionValid = false;
+-            _sessionStaleUntil = -1f;
++                RefreshPickerSettings();
++            }
+         }
+ 
+         private void PersistConfig()
+@@ -1894,98 +1528,6 @@
+
+             catch (Exception ex)
+             {
+                 _log.LogWarning("[Presets] Config.Save failed: " + ex.Message);
+-            }
+-        }
+-
+-        private static string ComputePayloadHash(string payload)
+-        {
+-            unchecked
+-            {
+-                uint hash = 2166136261;
+-                foreach (char value in payload ?? string.Empty)
+-                {
+-                    hash ^= value;
+-                    hash *= 16777619;
+-                }
+-                return hash.ToString("X8", CultureInfo.InvariantCulture);
+-            }
+-        }
+-
+-        private bool TryGetRoomInt(string key, out int value)
+-        {
+-            value = 0;
+-            if (PhotonNetwork.CurrentRoom == null || PhotonNetwork.CurrentRoom.CustomProperties == null)
+-            {
+-                return false;
+-            }
+-
+-            object raw;
+-            if (!PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(key, out raw))
+-            {
+-                return false;
+-            }
+-
+-            if (raw is int)
+-            {
+-                value = (int)raw;
+-                return true;
+-            }
+-            return false;
+-        }
+-
+-        private bool TryGetRoomString(string key, out string value)
+-        {
+-            value = null;
+-            if (PhotonNetwork.CurrentRoom == null || PhotonNetwork.CurrentRoom.CustomProperties == null)
+-            {
+-                return false;
+-            }
+-
+-            object raw;
+-            if (!PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(key, out raw))
+-            {
+-                return false;
+-            }
+-
+-            value = raw as string;
+-            return value != null;
+-        }
+-
+-        private int GetCurrentMasterActorNumber()
+-        {
+-            return PhotonNetwork.MasterClient == null ? -1 : PhotonNetwork.MasterClient.ActorNumber;
+-        }
+-
+-        public void OnRoomPropertiesUpdate(PhotonHashtable propertiesThatChanged)
+-        {
+-            if (!PhotonNetwork.IsMasterClient)
+-            {
+-                ApplySharedStateFromRoomProperties();
+-                RefreshEffectivePresetState(true);
+-                if (_pickerWindow != null && _pickerWindow.IsOpen)
+-                {
+-                    OpenPresetPicker();
+-                }
+-            }
+-        }
+-
+-        public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
+-        {
+-            if (PhotonNetwork.IsMasterClient)
+-            {
+-                ClearSessionOverlay();
+-                MarkShareDirty(true);
+-            }
+-            else
+-            {
+-                _sessionValid = false;
+-                _sessionStaleUntil = Time.unscaledTime + 3f;
+-                ApplySharedStateFromRoomProperties();
+-            }
+-            RefreshEffectivePresetState(true);
+-            if (_pickerWindow != null && _pickerWindow.IsOpen)
+-            {
+-                OpenPresetPicker();
+             }
+         }
+ 

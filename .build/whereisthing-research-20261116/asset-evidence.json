@@ -1,0 +1,1096 @@
+{
+  "scope": "resources.assets only; assets are not proof of current spawnability",
+  "method": "UnityPy MonoBehaviour headers plus version-specific offsets verified against PEAK 3.1.0 C# fields; not a full generated type tree",
+  "assembly_sha256": "a3643f11dc444d86491270b224c0a0caf9126a10b26731feb97fc85ad1d82038",
+  "resources_sha256": "4132cfbb2a2c859708a448b79265002a3b335c81a2a4604be869709c2959afcc",
+  "item_asset_count": 182,
+  "items": [
+    {
+      "path_id": 33120,
+      "game_object": 7411,
+      "prefab": "Kingberry Yellow",
+      "ui_name": "Yellow Kingberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 29122,
+          "class": "Action_InflictPoison",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "duration": 10.0,
+          "rate": 0.02500000037252903,
+          "delay": 3.0
+        },
+        {
+          "path_id": 31525,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.30000001192092896
+        }
+      ]
+    },
+    {
+      "path_id": 33142,
+      "game_object": 7433,
+      "prefab": "Berrynana Brown",
+      "ui_name": "Brown Berrynana",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 30724,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.15000000596046448
+        },
+        {
+          "path_id": 32518,
+          "class": "Action_GiveExtraStamina",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        }
+      ]
+    },
+    {
+      "path_id": 33115,
+      "game_object": 7406,
+      "prefab": "Apple Berry Green",
+      "ui_name": "Green Crispberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 30303,
+          "class": "Action_InflictPoison",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "duration": 4.0,
+          "rate": 0.02500000037252903,
+          "delay": 2.0
+        },
+        {
+          "path_id": 31752,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.05000000074505806
+        }
+      ]
+    },
+    {
+      "path_id": 33144,
+      "game_object": 7435,
+      "prefab": "Mushroom Lace",
+      "ui_name": "Bugle Shroom",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31539,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.15000000596046448
+        }
+      ]
+    },
+    {
+      "path_id": 30029,
+      "game_object": 6830,
+      "prefab": "Mandrake",
+      "ui_name": "Mandrake",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 30028,
+          "class": "Action_ModifyStatus",
+          "enabled": false,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "status": 5,
+          "amount": -0.25,
+          "if_skeleton": false
+        },
+        {
+          "path_id": 34059,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        }
+      ]
+    },
+    {
+      "path_id": 33123,
+      "game_object": 7414,
+      "prefab": "Kingberry Green",
+      "ui_name": "Green Kingberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31528,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.30000001192092896
+        },
+        {
+          "path_id": 31816,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 3,
+          "amount": 0.05000000074505806,
+          "if_skeleton": false
+        }
+      ]
+    },
+    {
+      "path_id": 33133,
+      "game_object": 7424,
+      "prefab": "Mushroom Normie",
+      "ui_name": "Button Shroom",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31533,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        }
+      ]
+    },
+    {
+      "path_id": 33219,
+      "game_object": 7387,
+      "prefab": "Mushroom Lace Poison",
+      "ui_name": "Bugle Shroom",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 28848,
+          "class": "Action_InflictPoison",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "duration": 8.0,
+          "rate": 0.02500000037252903,
+          "delay": 10.0
+        },
+        {
+          "path_id": 31519,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.15000000596046448
+        }
+      ]
+    },
+    {
+      "path_id": 34131,
+      "game_object": 8241,
+      "prefab": "NestEgg",
+      "ui_name": "Big Egg",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": []
+    },
+    {
+      "path_id": 34132,
+      "game_object": 8242,
+      "prefab": "NestEgg_Raven",
+      "ui_name": "Small Egg",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": []
+    },
+    {
+      "path_id": 33134,
+      "game_object": 7425,
+      "prefab": "Shroomberry_Red",
+      "ui_name": "Red Shroomberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 28466,
+          "class": "Action_RandomMushroomEffect",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "index": 0,
+          "use_debug": false,
+          "debug_effect": 9,
+          "force": 1000.0
+        },
+        {
+          "path_id": 28641,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "status": 10,
+          "amount": 0.05000000074505806,
+          "if_skeleton": false
+        },
+        {
+          "path_id": 31534,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        }
+      ]
+    },
+    {
+      "path_id": 33148,
+      "game_object": 7439,
+      "prefab": "Mushroom Glow",
+      "ui_name": "Weird Shroom",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31541,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        }
+      ]
+    },
+    {
+      "path_id": 29171,
+      "game_object": 5918,
+      "prefab": "Mandrake_Hidden",
+      "ui_name": "Medicinal Root",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 30029
+      },
+      "actions": [
+        {
+          "path_id": 30048,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 0,
+          "amount": -0.10000000149011612,
+          "if_skeleton": false
+        },
+        {
+          "path_id": 30479,
+          "class": "Action_ModifyStatus",
+          "enabled": false,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 3,
+          "amount": -0.20000000298023224,
+          "if_skeleton": false
+        },
+        {
+          "path_id": 30652,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.05000000074505806
+        },
+        {
+          "path_id": 32917,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 3,
+          "amount": -0.25,
+          "if_skeleton": false
+        }
+      ]
+    },
+    {
+      "path_id": 33149,
+      "game_object": 7440,
+      "prefab": "Apple Berry Red",
+      "ui_name": "Red Crispberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31753,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.05000000074505806
+        }
+      ]
+    },
+    {
+      "path_id": 33130,
+      "game_object": 7421,
+      "prefab": "Mushroom Chubby",
+      "ui_name": "Chubby Shroom",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31532,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        }
+      ]
+    },
+    {
+      "path_id": 29100,
+      "game_object": 4972,
+      "prefab": "Mushroom Cluster Poison",
+      "ui_name": "Cluster Shroom",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 30407,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.05000000074505806
+        },
+        {
+          "path_id": 34351,
+          "class": "Action_InflictPoison",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "duration": 16.0,
+          "rate": 0.02500000037252903,
+          "delay": 10.0
+        }
+      ]
+    },
+    {
+      "path_id": 33117,
+      "game_object": 7408,
+      "prefab": "Mushroom Cluster",
+      "ui_name": "Cluster Shroom",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31524,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.05000000074505806
+        }
+      ]
+    },
+    {
+      "path_id": 31788,
+      "game_object": 9278,
+      "prefab": "MedicinalRoot",
+      "ui_name": "Medicinal Root",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 28490,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.05000000074505806
+        },
+        {
+          "path_id": 29528,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 3,
+          "amount": -0.25,
+          "if_skeleton": false
+        },
+        {
+          "path_id": 32445,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 0,
+          "amount": -0.10000000149011612,
+          "if_skeleton": false
+        },
+        {
+          "path_id": 33509,
+          "class": "Action_ModifyStatus",
+          "enabled": false,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 3,
+          "amount": -0.20000000298023224,
+          "if_skeleton": false
+        }
+      ]
+    },
+    {
+      "path_id": 33131,
+      "game_object": 7422,
+      "prefab": "Berrynana Pink",
+      "ui_name": "Pink Berrynana",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 30723,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.15000000596046448
+        },
+        {
+          "path_id": 34223,
+          "class": "Action_InflictPoison",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "duration": 6.0,
+          "rate": 0.02500000037252903,
+          "delay": 2.0
+        }
+      ]
+    },
+    {
+      "path_id": 33114,
+      "game_object": 7405,
+      "prefab": "Apple Berry Yellow",
+      "ui_name": "Yellow Crispberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31751,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.05000000074505806
+        },
+        {
+          "path_id": 33621,
+          "class": "Action_GiveExtraStamina",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        }
+      ]
+    },
+    {
+      "path_id": 33119,
+      "game_object": 7410,
+      "prefab": "Berrynana Yellow",
+      "ui_name": "Yellow Berrynana",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 30722,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.15000000596046448
+        }
+      ]
+    },
+    {
+      "path_id": 33137,
+      "game_object": 7428,
+      "prefab": "Kingberry Purple",
+      "ui_name": "Purple Kingberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 28637,
+          "class": "Action_GiveExtraStamina",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.3499999940395355
+        },
+        {
+          "path_id": 31536,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.30000001192092896
+        }
+      ]
+    },
+    {
+      "path_id": 33151,
+      "game_object": 7442,
+      "prefab": "Berrynana Peel Yellow",
+      "ui_name": "Berrynana Peel",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": []
+    },
+    {
+      "path_id": 29455,
+      "game_object": 5485,
+      "prefab": "Shroomberry_Yellow",
+      "ui_name": "Yellow Shroomberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 30693,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        },
+        {
+          "path_id": 31434,
+          "class": "Action_RandomMushroomEffect",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "index": 1,
+          "use_debug": false,
+          "debug_effect": 9,
+          "force": 1000.0
+        },
+        {
+          "path_id": 33741,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "status": 10,
+          "amount": 0.05000000074505806,
+          "if_skeleton": false
+        }
+      ]
+    },
+    {
+      "path_id": 28621,
+      "game_object": 5405,
+      "prefab": "Shroomberry_Purple",
+      "ui_name": "Purple Shroomberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 30297,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        },
+        {
+          "path_id": 31031,
+          "class": "Action_RandomMushroomEffect",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "index": 4,
+          "use_debug": false,
+          "debug_effect": 9,
+          "force": 1000.0
+        },
+        {
+          "path_id": 33289,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "status": 10,
+          "amount": 0.05000000074505806,
+          "if_skeleton": false
+        }
+      ]
+    },
+    {
+      "path_id": 29075,
+      "game_object": 5071,
+      "prefab": "EggTurkey",
+      "ui_name": "Bird",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 32675,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.20000000298023224
+        }
+      ]
+    },
+    {
+      "path_id": 29073,
+      "game_object": 5069,
+      "prefab": "EggRaven",
+      "ui_name": "Egg",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 32673,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.07500000298023224
+        }
+      ]
+    },
+    {
+      "path_id": 29074,
+      "game_object": 5070,
+      "prefab": "Egg",
+      "ui_name": "Egg",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 32674,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.15000000596046448
+        }
+      ]
+    },
+    {
+      "path_id": 29312,
+      "game_object": 5723,
+      "prefab": "Berrynana Peel Blue Variant",
+      "ui_name": "Berrynana Peel",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": []
+    },
+    {
+      "path_id": 30480,
+      "game_object": 3054,
+      "prefab": "Mushroom Normie Poison",
+      "ui_name": "Button Shroom",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 29013,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        },
+        {
+          "path_id": 31441,
+          "class": "Action_InflictPoison",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "duration": 12.0,
+          "rate": 0.02500000037252903,
+          "delay": 10.0
+        }
+      ]
+    },
+    {
+      "path_id": 32793,
+      "game_object": 11021,
+      "prefab": "Shroomberry_Green",
+      "ui_name": "Green Shroomberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31248,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "status": 10,
+          "amount": 0.05000000074505806,
+          "if_skeleton": false
+        },
+        {
+          "path_id": 33504,
+          "class": "Action_RandomMushroomEffect",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "index": 2,
+          "use_debug": false,
+          "debug_effect": 9,
+          "force": 1000.0
+        },
+        {
+          "path_id": 34243,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        }
+      ]
+    },
+    {
+      "path_id": 30316,
+      "game_object": 3196,
+      "prefab": "Berrynana Peel Pink Variant",
+      "ui_name": "Berrynana Peel",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": []
+    },
+    {
+      "path_id": 32586,
+      "game_object": 10251,
+      "prefab": "Berrynana Blue",
+      "ui_name": "Blue Berrynana",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 31019,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.30000001192092896
+        }
+      ]
+    },
+    {
+      "path_id": 29706,
+      "game_object": 6243,
+      "prefab": "Berrynana Peel Brown Variant",
+      "ui_name": "Berrynana Peel",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": []
+    },
+    {
+      "path_id": 29929,
+      "game_object": 7012,
+      "prefab": "Shroomberry_Blue",
+      "ui_name": "Blue Shroomberry",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 0
+      },
+      "actions": [
+        {
+          "path_id": 30680,
+          "class": "Action_RandomMushroomEffect",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "index": 3,
+          "use_debug": false,
+          "debug_effect": 9,
+          "force": 1000.0
+        },
+        {
+          "path_id": 31320,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.10000000149011612
+        },
+        {
+          "path_id": 34307,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": true,
+          "triggers": [
+            "consumed"
+          ],
+          "status": 10,
+          "amount": 0.05000000074505806,
+          "if_skeleton": false
+        }
+      ]
+    }
+  ],
+  "secret_identity_items": [
+    {
+      "path_id": 29171,
+      "game_object": 5918,
+      "prefab": "Mandrake_Hidden",
+      "ui_name": "Medicinal Root",
+      "secret_identity": {
+        "file_id": 0,
+        "path_id": 30029
+      },
+      "actions": [
+        {
+          "path_id": 30048,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 0,
+          "amount": -0.10000000149011612,
+          "if_skeleton": false
+        },
+        {
+          "path_id": 30479,
+          "class": "Action_ModifyStatus",
+          "enabled": false,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 3,
+          "amount": -0.20000000298023224,
+          "if_skeleton": false
+        },
+        {
+          "path_id": 30652,
+          "class": "Action_RestoreHunger",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "amount": 0.05000000074505806
+        },
+        {
+          "path_id": 32917,
+          "class": "Action_ModifyStatus",
+          "enabled": true,
+          "on_consumed": false,
+          "triggers": [
+            "cast_finished"
+          ],
+          "status": 3,
+          "amount": -0.25,
+          "if_skeleton": false
+        }
+      ]
+    }
+  ]
+}

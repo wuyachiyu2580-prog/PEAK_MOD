@@ -1,0 +1,10 @@
+{
+  "regression_checks": 184,
+  "release_build": "success, 0 warnings, 0 errors",
+  "diff_check_exit": 0,
+  "memory_entries_verified": 11,
+  "dll_sha256": "8EEA8EDDC8D808FB0FF8DDE9D3A2D2D17DDA7000C9406659B6DF41ED9061CF68",
+  "deployed": false,
+  "config_modified": false,
+  "in_game_tested": false
+}

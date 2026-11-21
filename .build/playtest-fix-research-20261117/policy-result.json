@@ -1,0 +1,29 @@
+{
+  "policyChecks": [
+    "all inside exact",
+    "expired not counted",
+    "partial cutoff bounded",
+    "partial never claims zero exact",
+    "single exact boundary inclusive",
+    "beyond latest zero",
+    "journal remains bounded",
+    "recent requested window exact",
+    "outside journal unknown",
+    "victim time not eviction time",
+    "query idempotent",
+    "room boundary independent",
+    "frozen inherited count immutable",
+    "inherited and new losses additive"
+  ],
+  "passed": 14,
+  "ledgerBound": "128 one-second slots per fixed category/reason combination",
+  "limitation": "Prototype policy only; partial cutoff returns lower/upper, no exact point count; production integration unimplemented",
+  "wit": {
+    "peakCountAbove8ms": 67,
+    "gaps": 57,
+    "gapsIn4p5to5p3": 56,
+    "medianGap": 5.0518849999998565,
+    "minGap": 0.2129000999998425,
+    "maxGap": 5.2570370000003095
+  }
+}

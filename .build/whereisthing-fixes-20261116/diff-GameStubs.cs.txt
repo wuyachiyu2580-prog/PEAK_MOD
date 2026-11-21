@@ -1,0 +1,32 @@
+--- MOD开发\WhereIsThing\Tests\GameStubs.cs (turn start)
+
++++ MOD开发\WhereIsThing\Tests\GameStubs.cs
+
+@@ -9,6 +9,7 @@
+
+     {
+         public float x,y,z;
+         public Vector3(float x,float y,float z) { this.x=x;this.y=y;this.z=z; }
++        public static Vector3 zero => new Vector3(0,0,0);
+         public float sqrMagnitude => x*x+y*y+z*z;
+         public static Vector3 operator -(Vector3 a,Vector3 b) => new Vector3(a.x-b.x,a.y-b.y,a.z-b.z);
+         public static Vector3 operator +(Vector3 a,Vector3 b) => new Vector3(a.x+b.x,a.y+b.y,a.z+b.z);
+@@ -108,7 +109,7 @@
+
+ namespace WhereIsThing
+ {
+     public class TestSetting<T> { public T Value; }
+-    public class TestLog { public void LogInfo(string text) {} }
++    public class TestLog { public void LogInfo(string text) {} public void LogWarning(string text) {} }
+     public sealed partial class WhereIsThingPlugin
+     {
+         internal ThingLocationScope _effectiveScopes=ThingLocationScope.Ground;
+@@ -120,7 +121,6 @@
+
+         internal TestSetting<int> _pickupIdentityVersion=new TestSetting<int>();
+         internal TestSetting<ThingNameLanguage> _nameLanguage=new TestSetting<ThingNameLanguage>();
+         internal TestLog _log=new TestLog();
+-        internal HashSet<string> _scanSeenBuffer=new HashSet<string>();
+         internal Dictionary<string,(UnityEngine.Transform target,Func<string> title,Func<bool> valid)> Labels=new();
+         internal static List<FakeItem> FakeItems=new();
+         internal static List<OrbThatMakesYouSleepy> NapberryPlants=new();

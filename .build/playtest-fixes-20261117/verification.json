@@ -1,0 +1,495 @@
+{
+  "verifiedDate": "2026-11-18",
+  "changedFromTurnBaseline": [
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\WhySoLaggyPlugin.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\WhySoLaggyPlugin.Runtime.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\CaptureBuffer.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\CaptureController.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\CaptureTimingWindow.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\DiagnosticCore.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\HookSession.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\ModConfigLocalization.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\StructuredLogger.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\TimingLedger.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy\\Properties\\AssemblyInfo.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy.Tests\\CoreBehaviorTests.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\WhySoLaggy.Tests\\DiagnosticDevelopmentTests.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\Tests\\StateFlow\\GameRuntimeStubs.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\Tests\\StateFlow\\Program.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\Tests\\StateFlow\\WhereIsThing.StateFlow.csproj",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.Discovery.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.SceneDiscovery.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.State.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\WhereIsThing\\Helpers\\ModConfigLocalization.cs",
+    "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\WhereIsThing\\Properties\\AssemblyInfo.cs"
+  ],
+  "protected": [
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.0\\CHANGELOG.md",
+      "sha256": "6BF881C649E4F47AA459373239D3BC46AD7D26ABDF5E7B4EAE3204567EA7A2A8",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.0\\icon.png",
+      "sha256": "25D422BC5C191E0A8AFD25530C2C6EFB28241A75FF267C2468AFC490A69940C3",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.0\\manifest.json",
+      "sha256": "643E9D54BF178AD0F6C0EFBE67736137637AA4258F3775270F2FBB179CC374B4",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.0\\README.md",
+      "sha256": "4C2DEBE10ABE401B1CA414C3CA72879679A2190503A8743E6D2EC8D2A3B3F3F1",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.0\\WhySoLaggy.dll",
+      "sha256": "06FCCF4A7D4046A7ABAB4D5CA70FFBF8D655BC2028FFE7BA30C0D5952F353EE9",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.0\\wuyachiyu-WhySoLaggy-1.0.0.zip",
+      "sha256": "05C888365031F983CC11ABB22304E15671701C543F63722E7DACBFE121759367",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.1\\CHANGELOG.md",
+      "sha256": "0AB2C55F708C9C6EBDF5E4E98915F795FA9F2FC302DB8EA225E72BA9BDBB6264",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.1\\icon.png",
+      "sha256": "25D422BC5C191E0A8AFD25530C2C6EFB28241A75FF267C2468AFC490A69940C3",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.1\\manifest.json",
+      "sha256": "D6A2E2D1E5C015ADDD1CC2F543DAB994324F117B5CA962A6C9B52E1ED684FD45",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.1\\README.md",
+      "sha256": "1187B39BB6ED5A6276B68BC939843827008D7A6B0450CDD913AC419EF1799C3A",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.1\\WhySoLaggy.dll",
+      "sha256": "28A31C92F2A3C4D71554FABA1549A69C606167DC45953CB74430D990B4B0F42B",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.1\\wuyachiyu-WhySoLaggy-1.0.1.zip",
+      "sha256": "43B1B7A17104F330F9AC83ECE6A354D5980CFC00D2ADABFB8D58E5AC574C56B4",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.2\\CHANGELOG.md",
+      "sha256": "06EE22B2EF489D019807E413C00B116E76AD8325BC4228EA34B57DA408CE9F7F",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.2\\icon.png",
+      "sha256": "25D422BC5C191E0A8AFD25530C2C6EFB28241A75FF267C2468AFC490A69940C3",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.2\\manifest.json",
+      "sha256": "C1D0BE37F1242C753575D538EBBDE2C1149EACA2F8755E656041C395E0A046BC",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.2\\README.md",
+      "sha256": "F0944E8202866679DEF72E3C4110F6A21075E6A43AAA44E8AA29F79361572F2B",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.2\\WhySoLaggy.dll",
+      "sha256": "8C0F3E2583A3F94F32B8DB7F5179354A2D60E6F33054F33302FA848DFFE90CC3",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.2\\wuyachiyu-WhySoLaggy-1.0.2.zip",
+      "sha256": "D7E61059AEB18EB57EEC294BC9BC5E4EB0A5274A9CBFBFD97490B404730F529B",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.3\\CHANGELOG.md",
+      "sha256": "5E49EF29FFFA95E6CA2FE70535716F804F209E38B7E005DFCB64F97AB9D6C9C5",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.3\\icon.png",
+      "sha256": "25D422BC5C191E0A8AFD25530C2C6EFB28241A75FF267C2468AFC490A69940C3",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.3\\manifest.json",
+      "sha256": "142C3F14A3D382B36C17514A82ED7C7FF13BCF326B3255840FED60B42AD4CDFB",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.3\\README.md",
+      "sha256": "AD430795AC7DCF7A8BECCCA0D024EC8C673CE33E91BD0653EDC33F8FC19E22B2",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.3\\WhySoLaggy.dll",
+      "sha256": "29D2B361F956A5AA94C972932A9DCB39DC58562E78180A83D90CA7E1131BC48B",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.3\\wuyachiyu-WhySoLaggy-1.0.3.zip",
+      "sha256": "83F7DB2D5DE84CA7BC6E5023BF472F356C88C9DB49B576B3231884B2EC9D4160",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.4\\CHANGELOG.md",
+      "sha256": "9FD050F554EE4ADCA16A2110A985390A30E68EE237F4BE6C7C5367198ED93BE1",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.4\\icon.png",
+      "sha256": "25D422BC5C191E0A8AFD25530C2C6EFB28241A75FF267C2468AFC490A69940C3",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.4\\manifest.json",
+      "sha256": "0005307B51471542E84E5DE6A115890E752CBBFB9C2038CE372ACDB03C45E563",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.4\\README.md",
+      "sha256": "E49AA4F62DC6ECB94C655C15F0BC816A5ABFFBDDC1BEE468C818BA1BF82091F0",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.4\\WhySoLaggy.dll",
+      "sha256": "CC9FCC52E825088AE254754BF30BF5E58A6A1FA8FA78C5E3DDA0A121B3B71431",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.4\\wuyachiyu-WhySoLaggy-1.0.4.zip",
+      "sha256": "A2B6960F9FA5893EBC3434D391306A4142DAE422F744325D047327F369A0C809",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.5\\CHANGELOG.md",
+      "sha256": "882EC29C7432AE3C74C605D9CF444DEAEC2104DFBF8316EE4F8FCA585D5356A4",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.5\\icon.png",
+      "sha256": "25D422BC5C191E0A8AFD25530C2C6EFB28241A75FF267C2468AFC490A69940C3",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.5\\manifest.json",
+      "sha256": "038C0583A8478E5AA59DAD73C7A3E7FBFA0FDD6AA103050677B2B9DAF2564F43",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.5\\README.md",
+      "sha256": "B1850068882070A93CCA34E32CAE09E5540F1E6F6A999F2D2C8101694B26480C",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.5\\WhySoLaggy.dll",
+      "sha256": "946168D48B36DF3D8733C38FE2BDA6C807D7007337167AA5529F816FD2DBD550",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhySoLaggy\\发行\\1.0.5\\wuyachiyu-WhySoLaggy-1.0.5.zip",
+      "sha256": "A4C603A43E632EDC68B9D80983814A1BB5382A454AF35B24C62E0894A84174DA",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.0\\CHANGELOG.md",
+      "sha256": "1DC1984EB32AA5B02CFB296ABC328A49D036FFC949E1ADFFD08AF0CBC3A07655",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.0\\icon.png",
+      "sha256": "B2B719D50AC14E595D5E7091D73F4B8B1D41CB81B4080AFD25D5AAB9942EC83C",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.0\\manifest.json",
+      "sha256": "4944CB7097ADEBFCBA5D2DECF1BBF9B13066F70E8A6C4D6433A0BC8CFE48B1BA",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.0\\README.md",
+      "sha256": "951A90A747715EE4D116EC6CE8515BFE8C10BE55AA93F63704818C4C7796521A",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.0\\WhereIsThing.dll",
+      "sha256": "B7675322BF29A99591331E4676997678CF50A7B1774581348923448315E893DC",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.0\\WUYACHIYU-WhereIsThing-0.1.0.zip",
+      "sha256": "1F4F88006F24BECEF1980631AD8CF6C57942718564989DC64A482728194525E7",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.1\\CHANGELOG.md",
+      "sha256": "0161164A178EB65D43CFAF3895024111AC9CC1E7DCF74F2A8CA4DA578978A4F3",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.1\\icon.png",
+      "sha256": "B2B719D50AC14E595D5E7091D73F4B8B1D41CB81B4080AFD25D5AAB9942EC83C",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.1\\manifest.json",
+      "sha256": "1542005BF20074EB46051A4F615699AA27C768616E8C11634E8C07D8046244B5",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.1\\README.md",
+      "sha256": "D6BB269EDCB8D8F848109C0F2096E91D9D037945F03F2093B803692D24B0CA80",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.1\\WhereIsThing.dll",
+      "sha256": "EC3487EA4145EB275F82E43C45270ECC0E8F4D92A620D8AD8FF3182E496FBCA3",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.1\\WUYACHIYU-WhereIsThing-0.1.1.zip",
+      "sha256": "2CF14C5B66D023AE7DA46A95C0C087ECFC82939D6B5184AB8F4F6CC6512EDF6F",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.2\\CHANGELOG.md",
+      "sha256": "9AAEAC798B85FED4585D7235FA3EE3D414ED2A639ECBF092165F0F7AF2C487CB",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.2\\icon.png",
+      "sha256": "B2B719D50AC14E595D5E7091D73F4B8B1D41CB81B4080AFD25D5AAB9942EC83C",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.2\\manifest.json",
+      "sha256": "C1B690D56193A799DFCD1E90A3EDEFEE032D3324ACB1C5D40BF54B492C28837F",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.2\\README.md",
+      "sha256": "05D2331DCE2B2F663CA9EFA39D06A6929F3D845FF06A2FE49387C3BB692554B5",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.2\\WhereIsThing.dll",
+      "sha256": "CF1C9043F74E843032CB65F972137EA135297D690EA9E397929977AAB889BF63",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.2\\WUYACHIYU-WhereIsThing-0.1.2.zip",
+      "sha256": "59B6C7C9E3E3D090174BB71E14BA307A987A758FC14BE8A776A2872F7F8AB095",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.3\\CHANGELOG.md",
+      "sha256": "AF057DCAC26EFA2CDD710A1AD9E946FA1C03000227B288D61092F05544B63FE5",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.3\\icon.png",
+      "sha256": "B2B719D50AC14E595D5E7091D73F4B8B1D41CB81B4080AFD25D5AAB9942EC83C",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.3\\manifest.json",
+      "sha256": "44AF13193487A453214D54A61715F206E17F2D6293443E11235347E6EB92F722",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.3\\README.md",
+      "sha256": "7C5948065203D21459B7662DF6B6B437FB4E9BB2E238F500C943B0BE58A1BD7E",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.3\\WhereIsThing.dll",
+      "sha256": "4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\MOD开发\\WhereIsThing\\发行\\0.1.3\\WUYACHIYU-WhereIsThing-0.1.3.zip",
+      "sha256": "D6128CC457D8DF3DF4AF5A4B24AA32B4A03829B6756A6D7E5745917849948D09",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhereIsThing.dll",
+      "sha256": "5FC795194989B4F0A47FF73B50914642FA86390526CD90EF2268B7D482AFBBC5",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhereIsThing.pdb",
+      "sha256": "58A27EBC73EAE7118C7C18D30732AF0B0C05B7E4EA330E8369D240FE8B7F6EA2",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\config\\com.wuyachiyu.WhereIsThing.cfg",
+      "sha256": "1572365CABF80D8F5B3EF507D07A6E07C820B846E81E96A184E9EAF0F2558D08",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhySoLaggy.dll",
+      "sha256": "97F1320DE575B44034F251F6FBFC2A1A2250BC4BF736C0E89FA2EFDB80AA328E",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhySoLaggy.pdb",
+      "sha256": "E6B8087EA96336FB8CC6951BFDF4592228A7857A7A2295A8941D8175A6B0B16C",
+      "unchanged": true
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\config\\com.wuyachiyu.WhySoLaggy.cfg",
+      "sha256": "8EF5013212F41901495A83A9FB0A6DCEDA07B9DA0FB7C048EF5F7126887F1397",
+      "unchanged": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\.build\\playtest-fixes-20261117\\whysolaggy-release\\WhySoLaggy.dll",
+      "bytes": 279040,
+      "sha256": "EE36793F76ABF3DCCDB1B2EC430EBA96B10A32D6D583578693C8CD62B5EF567B"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\.build\\playtest-fixes-20261117\\whysolaggy-release\\WhySoLaggy.pdb",
+      "bytes": 76712,
+      "sha256": "C1BC328EF8BB6C7300CB78BD6882D4DA887B3DB101E043A0A21E60B817B500C6"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\.build\\playtest-fixes-20261117\\whereisthing\\bin\\WhereIsThing.dll",
+      "bytes": 197632,
+      "sha256": "ED6043D4A73A4DC1EFC031776C58A6C99FF890768F41E79993D52BC70E43D794"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\.build\\playtest-fixes-20261117\\whereisthing\\bin\\WhereIsThing.pdb",
+      "bytes": 59856,
+      "sha256": "64A4E7D1B44A15CCA2664107D3F0E296701543C5BE1528C529F0571B9A622775"
+    }
+  ],
+  "tests": {
+    "WhySoLaggy": 105,
+    "WhereIsThingHelper": 184,
+    "WhereIsThingStateFlow": 104,
+    "trx": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\.build\\playtest-fixes-20261117\\results\\Administrator_DESKTOP-3PF2CMK_2026-11-18_20_49_18_net472.trx"
+  },
+  "replay": {
+    "captures": 10,
+    "frames": 53651,
+    "networkFieldChecks": 3297,
+    "networkMismatches": 0,
+    "newlyMissingOldRows": 0,
+    "sameRangeMissing": 253,
+    "sameRangeRecovered": 329,
+    "firstPreRollLoss": {
+      "lower": 211,
+      "upper": 262,
+      "quality": "Bounded"
+    },
+    "peakPayloadBytes": 7818644,
+    "remainingPayloadBytes": 0,
+    "stressChecks": 5
+  },
+  "sourceHashes": {
+    "MOD开发\\WhereIsThing\\Tests\\GameStubs.cs": "A64BC2C0011F913E6FC566D2300DE0804D1A11B9302DA11CE4E262250539EA49",
+    "MOD开发\\WhereIsThing\\Tests\\NapberryTests.cs": "EB9B3DDCBCA60909E5423F573643CA809BF1A9D753A76AF218C4DC9FA5593DDD",
+    "MOD开发\\WhereIsThing\\Tests\\PresetAndTraitTests.cs": "C633C9925CECDDA833B66CA4C9F6F70A01F19D3C2DF8224B7E791A3478397642",
+    "MOD开发\\WhereIsThing\\Tests\\Program.cs": "906C9CE8095FD231D98F8FE94F15C5A72C87949F062BC665F6CCC995389C4EE6",
+    "MOD开发\\WhereIsThing\\Tests\\WhereIsThing.Regression.csproj": "998B8C2C72303D235E21AC567C9CF12C91F6E31A966DFA5ADF96AB38FD4E6764",
+    "MOD开发\\WhereIsThing\\Tests\\StateFlow\\ExtractProduction.ps1": "CE44A8401700775424F60BD729DC2CE8B42C1A123D6724D567A4545E49ACE2C1",
+    "MOD开发\\WhereIsThing\\Tests\\StateFlow\\GameRuntimeStubs.cs": "CFA6430CF02AE193D7C97AF998E33E6EC0B2466B6C1BF02CD791CA1E2DCCC4DA",
+    "MOD开发\\WhereIsThing\\Tests\\StateFlow\\Program.cs": "5D406250E2BA9DA67CB9495B95C3E6A4D81F132FA9902D720939026EF5781878",
+    "MOD开发\\WhereIsThing\\Tests\\StateFlow\\WhereIsThing.StateFlow.csproj": "C513105E484C9E8D17D074A21FD38C9F73FA60098C0FF5600CB432618B1F8918",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingItemTraits.cs": "71D60908CCFB5A0763ACE1F2E21EE0C00377774128446EB736D131C3EBE9035F",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingLabel.cs": "CECD8F7EF654637503F1476A8FB8B6384D38C48D131A0DB0E481115FCDB986B8",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingLabelRange.cs": "C5C75FA2B9E53ABC20B09DF869C1870AD8ED33CD959C2F6859DECCC6D3AFC78B",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingNapberry.cs": "9952E5BDB496D2BC89C0DAD827135CF86ECB6DF559E9A4DA44887364FE7BFBD9",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingPickupIdentity.cs": "DE25D3EF21A9FD6888A35325BE6EBE5284A1056BF8717EDC29E4B50F3C894ED4",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingPresetPickerWindow.cs": "687C2B70AE73D07714CECA1199D5DB90CBC469D43F230637CD4654527067CDE8",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingPresets.cs": "A253FA234FCCE8C2C99B3C649E240184BF4D7D329CA0F3731F3E7CC80BB1C7DC",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingPresetSelection.cs": "524DA4F3E8C3F261818400A64F6B3AA380FB26F45285A03DBFC0459138442229",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingSegmentFilter.cs": "65BC30B3164521638605FD8CEECECC10FB64C99E874F1696F938676D2576F83C",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingSelectionWindow.cs": "05877827F0FC1C9C51DFC0D78531D6B1AD2914C275592E4477540089DD6D0BC9",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\ThingTypes.cs": "092D4A4FB9BD995F989383D50C75BDD302A4D8F1A4D22171FC7D350CB0635873",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThing.csproj": "31DAE749FC33D835D3119FDC8EE78341FDE60002BEB5F7C5C4C10EDCF33182D5",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.cs": "3DA949C8156CA5B43CE401575E5B5323D8071BFD2A0F3256F80A6358E33729D0",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.Diagnostics.cs": "7CBC03AF1AE0EF3DAE75AE3B3BCFD963E7F7EC4CAF16319CA47EB2A0C489BD39",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.Discovery.cs": "767BED8EC4610848E8E1DD75DB1FC68572214D1644A4F43124AD267119250691",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.Luggage.cs": "60D26CF4487F36084DB40F9C18671AD9CD261DEB4CF5F1541909E21DB228541E",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.Napberry.cs": "DBFD7650389B6B37EF48DD49EF0D92CDBEAF1EAF56DB773447990188B26EF6B5",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.PlacedSources.cs": "0A99B4FEC150DF9065D7BA538475E66753EF883C70E1E9B30EB97DB9D0BC9630",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.Plants.cs": "99B130325C617CB5F92BBE2E2C0CAB8CEA1A509D0FD3C186B224A87B5CB0A124",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.SceneDiscovery.cs": "AE52F2D662CECE72D4618D2D168A9AE6F060541D717A51F401930291A7268E72",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\WhereIsThingPlugin.State.cs": "30B08AE4FDE4D1AC9F873D588CE272614A11C0B64E123D5187D03E4FBFE87EA9",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\Helpers\\BoundedPhaseProfiler.cs": "6A60FF2C970C95333AC7176497EE6373FE869F2FEB0653ED57D50AD260F38E86",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\Helpers\\FontHelper.cs": "5E3452B1DD0F984D6E36E4FD525BCDDB40AC31C01135E282DB1197C686CAC8B2",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\Helpers\\ModConfigLocalization.cs": "EC72611460D01AF88EB7D53B031CEC7FF78897F007A4EB75CB04E941C1EDB692",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\Helpers\\ModConfigUiAdapter.cs": "0DABE250F73395C5B291555C7CF5CFC7E46037D742D912F7BC0269165237E627",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\Helpers\\ThingUi.cs": "C9705839962CC22C7AF36248C9A3BCAA8B2C1F3BE447D27C13A6EA13D96EB729",
+    "MOD开发\\WhereIsThing\\WhereIsThing\\Properties\\AssemblyInfo.cs": "F43802DCEFDC6074FAC24F711F4A9F475FA5D35D4014D111547AA106B42ECAD5",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\WhySoLaggy.csproj": "D735373059019179C64A128339E53F7C7573306C9B0072E3160B77EF603A1311",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\WhySoLaggyPlugin.cs": "921090F190E3867D77EF964F0E6E3F78EECCD80AF9DB4234F17479B1A9321BAB",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\WhySoLaggyPlugin.Runtime.cs": "E12FC0C5510F407B4EB1EB69BAFC6DA8461BC5A52B5C9A68618A3C03CEA741EC",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\AbuseLogger.cs": "A3F731A415C13F8F51B5A5C52064595AAC744AAF8F3AD0AB10E13C689EAADA19",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\AbuseNotificationUI.cs": "F32B8E31531B2E4B263573B5CB7D838796CA113CEFC9B29B8C6FEF485A621885",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\AlertCooldown.cs": "E24E16AFDB7B7D7E42C11080E722CF68323DF4C0D6EC00A74D2708436031F7E0",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\BoundedConcurrentQueue.cs": "5488FD3D79AE0B05B3E31A857F51E1A09F536A289EF70EF46ABF825DB430FB74",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\BoundedPhaseProfiler.cs": "760252C6571E719E3FD49BEB7DB3F675DBDED8368D0B147B1F3DB6DCC30CC4DF",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\CaptureBuffer.cs": "4D6D1B5A402C5933BFB3F74313BA3FF1766195022891A0E1F7CE36088F01A739",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\CaptureController.cs": "AABCDAF543DD33D14F40069103CAE8B33F739C8439D96D6B64DC7AE9DC68CDD9",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\CaptureLossLedger.cs": "2E6BB5B16F19777E1DBF3A3B04341CC9E4A671E3FB5A9569DC76FF90BDD13D32",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\CaptureNetwork.cs": "8EA38FA2FB07AC44C4DB3BB4E6C22AA763841DF2321B35A0ABD1053ADACFF8D7",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\CaptureTiming.cs": "551AC1F47DA046013349728A37D5A510F6CBC70E9E2C5449A6FA3CC6F86EBD39",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\CaptureTimingWindow.cs": "120B5E4F69BC513338D731FF5A5922777CF913F9C371BB922D5EE38387571E07",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\DeferredProfilerSwitch.cs": "F44AA93AB6883E1EF6F5C0B2B8061D7152805FB5A652BF77057E83F175B51207",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\DiagnosticCore.cs": "895E8BD037EB0CC86D8ED316A4875710E37AEE6C3B7AE15AE433309ED20C7F65",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\DiagnosticIO.cs": "8037C7ACA482D2D3E853DA1A1BD572ECEA470EDB9ACD8850CF0C78274A369E5A",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\DiagnosticPhases.cs": "9E0F63B2FCF19405254F32863D50E3870254E316372F3979CD190D2886F2911B",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\ExpressionEvaluator.cs": "A11585CD78B4556CDE49D1F735CF4A6BA937E78CCC8709173582BD609EDE601A",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\FieldProbe.cs": "9BD3F0C36B05F3CC511A508A3E83BA89EE99DB71477B5A63D2E55876986067A3",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\FpsTracker.cs": "F51CABCD4339C5BECCF734590B14F17584B2CE09B35E8E07FB64D0215F702B8B",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\HarmonyScanner.cs": "CB2C47641DD8D0F97BD2E1B5141D2D006E92D1AF5976C6CF30529C8272F0E6FF",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\HookSession.cs": "D3068522A60B6F175B78AA78C7E3CBA4CBCF94E40CB09CA968091860E3AE5274",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\LagLogger.cs": "0F07DADD95D4160EBB2E25C758465C394C314F2A11DD8BE0A004A1EB712CFDB3",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\LogVerbosity.cs": "EFBE54D0492D9253CD83AD87EE0C3BC23FD4B399093E10901EDE84EB632C9852",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\MethodKey.cs": "15057081798743F9B7491706A9749CA1392A86186EFE16868ECB32D921CC4A43",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\MethodTracer.cs": "D8777A003899FCA4B77128046B85CC546519414656A5E2BCB9F99E8000D8190A",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\MiniJson.cs": "57DCA88CFC311F68FDFB2740CDC948CECFB21162DDE253F868FE7BC80EBD643A",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\ModConfigLocalization.cs": "D58DD56B2443286E39A377201111EDC830183B9A3C5F7973F5D3B658C8CE99C5",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\ModConfigUiAdapter.cs": "664356EE0C9E678208C97EC6BAA87DB6EF49A768C0228239B4020C188DFE813B",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\NetworkAbuseDetector.cs": "6EE5E6616948AFCDF6D4227471287E6AE1F194620BE6D2FBBD5CCFEFD0B3938B",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\OwnershipEventParser.cs": "FF5393880B8F8559AD7D3380BCB3C4BC137EC5C942B94E2CE55669443E8A1CC7",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\PatchProfiler.cs": "9D53DB21BA8C7C291474D2D684260D676081E25827674A5785EC18282CA3372F",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\PerformanceDashboard.cs": "9D097F0CA6CE77BEC28C5C09C0A84E4D983B57D6F5956EFE9A79B82BBCBCE69D",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\PluginProfiler.cs": "29F83559CF27B786CF9EDB747CB364C7EE6AD5249B38C84885DA4D6A7F3BADAA",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\ProfilerTargetResolver.cs": "AE12C29E751CFAD2ED17C715FDC127FF85C6F87EDF95989582E746CACF313870",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\RpcIngress.cs": "4BC10A539BB955EE26865B88DBE472A945B2906B63637A2D5C8A2C55D1980A0E",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\RpcMonitor.cs": "FB8BB5DA275218B72DDE3CE80108A8A22BEA7CCB004224564349312B06AD83F6",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\RuleTargets.cs": "A9FFE3CE88C7C811D18C2359E300CAF0272DDE5906AD61889504CBD10CD3E5D3",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\RuntimeObservers.cs": "6459F10F3CAAEE51B738F7B5BA09D48DE54D777A2ACD67CAE1455A46A48C19EB",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\StructuredEvent.cs": "F0DA19ECDF2493F51F2E0C5127ECBFEB618235337FC324DAA87F804CFEC0A1CD",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\StructuredLogger.cs": "D077873353ABA37BFC92E596EB30988A87DC85CB38690F3E1412CD294206BC67",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\TimingLedger.cs": "9CBF1A1F134656ED7B2987696DE99DABC63D13438365D9FE28579C2F6871F2B1",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\UiText.cs": "4857567603A792211BA579CD082CE4507DC5B2C783839E58ADE37FFBBB6D907C",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Helpers\\ValueFormatter.cs": "44E1C0147A7B2892776EAEF90B4937F8BF42E4765294B4E71C46F0CD66535A3C",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy\\Properties\\AssemblyInfo.cs": "62C1D977B9DF4E58A09C0B2C86F247726B85B9358177FFECEDA4C014899D755B",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy.Tests\\CaptureRetentionTests.cs": "EEEA07EC5D1ECDE331EE35B8F46E0D85F1C4F4F1A806A577EF8A8E0E6E4B6859",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy.Tests\\CoreBehaviorTests.cs": "C3CEB8B2C92BF9AA77569F49735DB7FD3325C6DB8CDC02F0561AA90B7829B66E",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy.Tests\\DiagnosticDevelopmentTests.cs": "A9FA9D3723B6D36A6C07F4F6F4CCC8F2599DB972D760539F425BC3FFA114307F",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy.Tests\\ModConfigIntegrationTests.cs": "C58528C43A637B362C38417DBDDABD833CD8556A53C59A325946016F35EB2476",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy.Tests\\PatchProfilerIntegrationTests.cs": "D01233EC547E7C855630B2603E63EBB2698FD4148BD48D75ABC8D15DA20AB75E",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy.Tests\\PlaytestFixTests.cs": "891429C91FF000C277A4D08AE4F8DF98991172E4DD0B316718D891D84CCE5CF6",
+    "MOD开发\\WhySoLaggy\\WhySoLaggy.Tests\\WhySoLaggy.Tests.csproj": "20B025865002BFD1042322918A5EC5097848C530539C377E9CE9E799AF478426"
+  }
+}

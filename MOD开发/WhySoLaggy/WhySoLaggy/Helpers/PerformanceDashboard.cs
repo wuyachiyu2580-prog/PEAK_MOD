@@ -42,10 +42,21 @@ namespace WhySoLaggy
         {
             var s=FpsTracker.NormalStatistics;
             overview=T("Gameplay / airport (30 seconds)","游玩 / 机场（最近 30 秒）")+"\n"+$"FPS: {(s.Mean>0?1000/s.Mean:0):F1}   p95: {s.P95:F2}ms   p99: {s.P99:F2}ms\n1% low: {N(s.Low1)}   "+T("Samples","样本")+": "+s.Count+
-                "\n"+T("Unity allocated / managed used","Unity 已分配 / 托管已用")+": "+N(MemoryMetrics.UnityBytes/1048576d)+" / "+N(MemoryMetrics.ManagedUsedBytes/1048576d)+" MiB\n"+
-                T("Memory net change","内存净变化")+": "+N(MemoryMetrics.NetKBps)+" KiB/s\n"+T("GC allocated this frame","本帧 GC 分配")+": "+N(MemoryMetrics.GcAllocatedBytes)+" B\n"+
+                "\n"+T("Unity allocated / Mono used / Mono capacity","Unity 已分配 / Mono 已用 / Mono 容量")+": "+N(MemoryMetrics.UnityBytes/1048576d)+" / "+N(MemoryMetrics.ManagedUsedBytes/1048576d)+" / "+N(MemoryMetrics.ManagedCapacityBytes/1048576d)+" MiB\n"+
+                T("Unity / Mono used change","Unity / Mono 已用变化率")+": "+N(MemoryMetrics.NetKBps)+" / "+N(MemoryMetrics.ManagedUsedNetKBps)+" KiB/s\n"+
+                T("GC allocated this frame / recorder","本帧 GC 分配 / 计数器")+": "+N(MemoryMetrics.GcAllocatedBytes)+" B / "+T(MemoryMetrics.AllocationStatus,MemoryMetrics.AllocationStatus=="Available"?"可用":MemoryMetrics.AllocationStatus=="Disabled"?"已关闭":"不可用")+"\n"+
                 T("Self p95 / p99","自身耗时 p95 / p99")+$": {FpsTracker.SelfStatistics.P95:F3} / {FpsTracker.SelfStatistics.P99:F3}ms\n"+T("Scene state","场景状态")+": "+UiText.State(DiagnosticContext.State)+"\n"+T("Observed chains are inclusive; associated owners are not proof of causation.","调用链耗时包含嵌套调用；关联插件不代表责任归因。");
-            network=$"RTT: {NetworkObserver.Ping}ms   "+T("SDK variance","SDK 波动值")+$": {NetworkObserver.Variance}\n"+T("Incoming / outgoing backlog","收包 / 发包积压")+$": {NetworkObserver.Incoming} / {NetworkObserver.Outgoing}\n"+
+            overview += "\n" + T("Plugin / patch hook coverage","插件 / 补丁钩子覆盖") + ": " +
+                UiText.State(PluginProfiler.Session.Coverage) + " / " + UiText.State(PatchProfiler.Session.Coverage) +
+                "\n" + T("Last frame timed / observed calls","上帧计时样本 / 已观察调用") + ": " + CaptureController.LastFrameSamples + " / " + CaptureController.LastFrameCalls +
+                "\n" + T("Buffer losses / writer jobs dropped / fields truncated","缓冲丢失 / 写盘任务丢弃 / 字段截断") + ": " +
+                CaptureController.RingDrops + " / " + DiagnosticIO.Dropped + " / " + EventCodec.TruncatedFields;
+            var trend=NetworkObserver.Window;
+            network=$"RTT: {NetworkObserver.Ping}ms   "+T("SDK variance","SDK 波动值")+$": {NetworkObserver.Variance}\n"+
+                T("RTT 30s min / median / p95 / max (ms)","RTT 最近30秒 最小 / 中位 / p95 / 最大（毫秒）")+$": {N(trend.Rtt.Minimum)} / {N(trend.Rtt.Median)} / {N(trend.Rtt.P95)} / {N(trend.Rtt.Maximum)}   n={trend.Rtt.Count}\n"+
+                T("Incoming / outgoing backlog","收包 / 发包积压")+$": {NetworkObserver.Incoming} / {NetworkObserver.Outgoing}\n"+
+                T("Incoming backlog 30s min / median / p95 / max","收包积压最近30秒 最小 / 中位 / p95 / 最大")+$": {N(trend.IncomingCommands.Minimum)} / {N(trend.IncomingCommands.Median)} / {N(trend.IncomingCommands.P95)} / {N(trend.IncomingCommands.Maximum)}   n={trend.IncomingCommands.Count}\n"+
+                T("Outgoing backlog 30s min / median / p95 / max","发包积压最近30秒 最小 / 中位 / p95 / 最大")+$": {N(trend.OutgoingCommands.Minimum)} / {N(trend.OutgoingCommands.Median)} / {N(trend.OutgoingCommands.P95)} / {N(trend.OutgoingCommands.Maximum)}   n={trend.OutgoingCommands.Count}\n"+
                 T("Reliable retransmissions / second","每秒可靠消息重传")+": "+NetworkObserver.Resent+"\n"+T("Diagnostic queue / delay","诊断队列 / 等待")+$": {RpcMonitor.LastDepth} / {RpcMonitor.LastQueueDelayMs:F1}ms\n"+
                 T("Dropped / sampled details","丢弃 / 采样省略明细")+$": {RpcMonitor.TotalDropped} / {RpcIngress.SampledOut}\n"+RpcMonitor.GetRecentWatchedSummary(8)+"\nCPU: "+N(NetworkObserver.CpuMs)+"ms GPU: "+N(NetworkObserver.GpuMs)+"ms";
             errors=string.Join("\n\n",ExceptionObserver.Recent.Take(5).Select(e=>e.Kind+" x"+e.Count+"\n"+e.Stack))+"\n"+T("Dropped error samples","丢弃异常样本")+": "+ExceptionObserver.Dropped;

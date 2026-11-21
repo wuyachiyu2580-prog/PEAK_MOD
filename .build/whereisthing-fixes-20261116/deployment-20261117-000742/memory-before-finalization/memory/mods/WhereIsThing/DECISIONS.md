@@ -1,0 +1,233 @@
+# WhereIsThing Decisions
+
+## 2026-11-16 WhereIsThing 审查修复已实施，未部署
+
+用户已授权开始修改。共享会话/发布失败重试、目录自动就绪补发、无关属性过滤、扫描计时与菜单生命周期已修；有效选择缓存、标签绑定/分类复用、距离与设置局部更新及确定残留清理已完成。184/184 helper + 97/97 生产流程回归，真实依赖 Release 0 警告 0 错误。开发标识 0.1.3-dev.20261116.fixes，未部署/实机/发行/提交。
+
+自动共享/目录/房间状态更新不续时，显式用户操作保留原语义；已提交不等于服务器确认。晚分类无变化保留原 record，绑定变更必须重建；desired key 在复用前记录。复杂缓存与池化不抢先实施。
+
+[实施与验收记录](IMPLEMENTATION_Fixes_2026-11-16.md)。仅同步本地 memory，无可用外部 update_memory 接口。
+
+## 2026-11-16 WhereIsThing 修复方案已调研，未实施
+
+用户要求先调研如何修。确定共享按 Room 会话/actor/模式去重、目录就绪自动补发、无关/重复属性过滤、内容刷新与计时分离；保留协议 2、旧配置、默认客机限制和三秒房主过渡。隔离候选 47/47 检查通过，不能当作生产修复或实机通过。
+
+自动同步/目录/换房只刷新内容不续时；显式用户操作保留原计时语义。主线程统一观察配置；只缓存已提交而非声称服务器确认。保留兼容，不引入新 RPC/心跳/强制房主策略。
+
+[修复方案与验证边界](RESEARCH_Fixes_2026-11-16.md)。只同步本地 memory，无可用外部 update_memory 接口。
+
+## 2026-11-16 WhereIsThing 整体审查完成，问题未修复
+
+确认四类状态流问题：相同 payload 跨房/模式漏发布；目录解析后未重新发布；无关房间属性续时并重建窗口；外部常驻→定时保留无穷截止。现有 184/184 回归仍通过，新增隔离审计使用真实方法体和测试替身，未做实机。生产源码未改，问题尚未修复。
+
+本轮只审查与记录，不自动删功能/迁移/协议字段。additionalFilter 为合成条件下的维护缺口，正常 RunSettings 关闭会禁用 GO，不将其写成已确认游戏残留 bug。
+
+[完整审查报告](REVIEW_2026-11-16.md)。仅同步本地 memory；本次没有可用的外部 update_memory 接口。
+
+## 2026-11-16 晚安莓统一标注已实施，未部署
+
+用户“开始”已授权实施：食物分类中的单一晚安莓条目覆盖未摘/已摘；未摘锚定果实，隐藏/采摘/更换后旧标签失效，空株不再标记。Ground控制未摘，已摘沿用地面/手持/背包规则；旧itemID或场景token预设兼容，取消勾选清除两者，共享协议不变。184/184逻辑回归、Release 0警告0错误。开发标识0.1.3-dev.20261116.napberry；仅隔离产物，未部署/改cfg/实机/发行。
+
+内部保持FakeItem与Item双路径，界面为单一目标；催眠组件禁用不代表果实不可取得。有效选择展开不改写原始共享预设，旧场景枚举值保留。
+
+[实施与验收记录](IMPLEMENTATION_Napberry_2026-11-16.md)。仅维护本地memory。
+
+## 2026-11-16 晚安莓统一标注可行（仅方案）
+
+用户追问统一标注可行性：可用单一“晚安莓”入口/标签，未摘定位果实，采摘后撤掉植株标签并沿用物品扫描；内部仍分FakeItem/Item两条发现路径，旧物品ID/场景选择应兼容。沿用先调研要求，未改生产代码、配置、构建或部署。此前空株误标缺口仍未修复。
+
+[方案与边界](RESEARCH_Napberry_2026-11-16.md)。
+
+## 2026-11-16 晚安莓植株扫描调研（未改代码）
+
+只选普通晚安莓不会自动扫描植株；需另选自然危险中的“未摘下的晚安莓”。实际扫描NapBerrySpawn植株对象，未检查fakeBerry采摘/激活状态，采摘后若植株仍激活会残留标签。已用3.1源码与sharedassets4资源交叉核查，未改生产代码/配置、未构建部署或实机。该旧缺口未修复，也不在此前143项回归覆盖内。
+
+[调研证据与修复边界](RESEARCH_Napberry_2026-11-16.md)。只维护本地memory。
+
+## 2026-11-16 客机配置与改版整合完成，额外识别仅调研
+
+用户认可的改动已整合到开发源码：客机 RestrictClientPresets 默认 true（本地偏好），本地多预设并集、放置物门控、蘑菇毒/无毒品种及 Clone 识别、地面过滤与标签范围优化。143/143 逻辑回归，当前 PEAK 3.1.0 隔离 Release 0 警告 0 错误。开发标识 0.1.3-dev.20261116.presets；未部署、未实机、未改发行。
+
+最新用户认可整合，覆盖同日只比较的限制。客机开关不是房主强制规则；共享协议保持。无毒后缀明确为品种，实例烹饪风险另议。保留网络发现，按实际标签位置过滤，避免根位置导致绳索漏标。
+
+[实施与额外能力调研](IMPLEMENTATION_PresetsAndTraits_2026-11-16.md)。此条覆盖下方只对比、未授权移植状态；旧记录保留为历史。
+
+## 2026-11-16 反编译参考边界
+
+用户仅要求比较；不把 renlei 0.1.3.1 自动视为正式更新或覆盖开发版。客机 IsClientPresetRestricted 固定false及放置物预设门控是行为变化，不是无副作用优化。详情及验证风险见 [对比报告](COMPARISON_Renlei_0.1.3.1_2026-11-16.md)。
+
+## 2026-10-29 23:32 WhereIsThing 0.1.3 发行文件已备齐
+
+用户明确回复“0.1.3，刚才写反了”，无需改成 1.0.3。发行文案继续英文、保留 0.1.2 结构与三张图片，明确本版更新和实机待验。沿用此前五文件准备方式，本轮未生成 ZIP、未上传，不将准备发行视为公开发布。
+
+## 2026-10-29 23:03 部署路径纠正
+
+用户明确要求 DLL 放在 2.0.a/BepInEx/plugins 根目录。此前采用子目录不符合要求；本次检查时 profile 下已没有 WhereIsThing.dll/PDB，不推断移除原因。现已将验证过的 0.1.3.0 DLL 和 PDB 复制到 C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx/plugins/，csproj 默认 OutputPath 同步恢复根目录。DLL 为 180224 bytes，SHA256 4D99F46134B996BB8788BFEA6F86C4C613F6B5DE8F5CD5AE7D81CFCB16C8B522，与隔离产物一致；递归复查仅一份 DLL。未改功能或配置、未重新构建/启动游戏。本条覆盖下方当前安装在子目录的历史描述。既有 71 项逻辑回归与实机待验状态不变；仅同步本地 memory。
+
+## 2026-10-29 22:07 WhereIsThing 0.1.3 已实施
+
+最新用户“开始修改”覆盖本页旧调研限制；国际化最后做并包含新增功能。默认 CurrentSegment，WholeMap 保留全图能力；动态目标优先现场支撑地形再按运行时进度 Z，不能永久按出生段过滤。未知地图回退附近 40m 已写配置说明。箱子旧 token/分享协议保持，普通箱分组只是 UI 聚合；复活雕像列地标。Item 与 FakeItem 都遵守原版一次拾取引用，禁止修改游戏对象或 RPC。新默认部署目录采用已有 WUYACHIYU-WhereIsThing 子目录防重复。
+
+## 2026-10-29 调研边界
+
+- 用户明确“先调研，不改代码”；0.1.3 是未来目标，不提前改版本或部署。
+- [0.1.3 调研](RESEARCH_0.1.3_2026-10-29.md) 中箱子分组、当前关卡默认范围是建议，不代表用户已确认实施细节。
+- 后续植物识别以 FakeItem.realItemPrefab / Item.isSecretlyOtherItemPrefab 的实际引用为证据，保留现场实例位置；已确认隐藏曼德拉草会借用药用根茎名称，不允许仅按显示名断言真实类型。
+- 修段过滤只管理本 MOD 可见标签，不销毁游戏中的旧段道具、不修改物品或联网权威；携带跨段物品不能永久归属出生段。
+- 当前安装游戏 DLL 已变更，旧 3.0.0 构建通过不作为当前兼容保证；当前 profile 子目录安装路径以报告为准。
+
+## 2026-09-21 玩家名声明
+
+发行 0.1.2 README Notes 已用英文声明玩家名仅供娱乐，不作为放置者的可靠证据；中途加入可能缺少此前放置物的玩家名。准确语义为“部分目标仅显示物品名称和距离，无玩家名”，不是“仅显示玩家名”。踏板菇/弹力菇/云雾菇依赖本机观察到的唯一近期投掷记录，缺失或歧义时留空；魔豆不显示种植者。CHANGELOG 同步，仅改文档，不改 DLL、不打 ZIP。
+
+代码依据：PlacedSources.MatchThrownOwner 只接受同场景、同来源物品/prefab、2 秒内且 12 米内的唯一记录；GetActorNumber 优先 CreatorActorNr，再取 Owner；GetOwnerName 依赖房间玩家昵称或已缓存昵称。不存在完整历史放置者回放，不能承诺晚加入一定可恢复玩家名。
+
+## 2026-09-21 发行语言与格式
+
+- 用户要求发行文件使用英文，保留上一版格式；仅追加对应版本更新说明及必要修改。
+- README 和 CHANGELOG 都必须有当前版本的明确更新条目，不能只改版本号。
+
+## 2026-09-21 发行文件范围
+
+- 用户明确要求编辑四 MOD 发行文件，包含此前非 ModConfig 改动；该指示覆盖旧记录中的“验收前不更新发行目录”限制。
+- 当前 `0.1.2` 目录仅准备 DLL、图标和三份说明/清单，不生成 ZIP、不上传；不因此宣称完成实机验收。
+- 复用已验证最终 DLL，不改源码版本；既有历史发行目录及 ZIP 原样保留。
+
+## 2026-09-21 ModConfig 接入约束
+
+- ModConfig 保持 SoftDependency；按新菜单签名适配，旧类型只回退；按声明方法去重。
+- 配置值、section/key、枚举原值与网络协议不变；只改归属明确的显示控件，不清空/重建第三方全局设置。
+- 自身实例 autoSet=false 防止标题覆盖，不能修改共享模板；同根 UI 刷新合并，销毁清理自身监听/补丁。
+- 本轮源码版本 0.1.2，历史发行包保留；最终实机边界见 `../ModConfigDiagnostics/INTEGRATION_RESULT_2026-09-21.md`。
+
+更新时间：2026-09-06
+
+## 2026-09-20 Canvas兼容
+
+- Canvas排序固定20000，低于TMP下拉列表的30000，避免TFA按最大活动Canvas排序+10抬高窗口后遮住列表。用户要求沿用WhereIsMyAmulet的对照结论。
+- WhereIsThing有交互式选择窗口，GraphicRaycaster继续保留；本次只调整排序，不迁移WIMA的其他修改。
+
+## 物品分类决策
+
+- WhereIsThing 保持一个物品只属于一个展示分类；不得直接改成 ItemSpawnerEnhanced 的可重叠过滤标签，否则会改变现有选择窗口语义。
+- 分类优先级固定为：特殊物品游戏标签、神秘游戏标签、精确 prefab 覆盖、食物游戏标签、用途关键词、`Misc`。精确覆盖用于解决 `pack`、`dart`、`fungus` 等子串造成的误判。
+- ItemSpawnerEnhanced 的审阅名单只作为分类证据和回归清单；其插件自述基线为 PEAK 2.1.a。当前 137 个审阅 prefab 虽已确认仍存在于 2.4.b 资源中，仍不得自动覆盖 WhereIsThing 的定位用途分类。
+- 可食用性不覆盖定位用途：Early Worm、Beehive 归生物，Scorpion 与场景目标合并归危险生物，棋子归玩具，Honeycomb 归食物。
+- `Deployable` 不新增为窗口分类，也不代表能可靠显示放置者；玩家放置目标继续按攀爬、生存、武器等用途分类，owner 仍由现有纯客户端证据决定。
+- 不直接采用 ItemSpawnerEnhanced 的默认隐藏名单；Prop、Variant 和内部物品继续由同名合并与现有目录规则处理，避免漏掉真实场景实例。
+
+## PEAK 2.4.b 放置体与 owner 决策
+
+- 当前反编译/编译基线是 `C:\SteamLibrary\steamapps\common\PEAK` 的 `2.4.b`，不得回到 1.65.a 或 2.3.a 地址作为当前事实。
+- 玩家放置体使用物品目录行为组件指向的生成 prefab 做正向识别，不得只看通用组件类型或对象名黑名单。
+- 绳索 owner 的权威来源是已知物品锚点上的玩家 PhotonView；绳索本体只提供 anchored 状态和显示位置关系。系统、机场、神庙、`PeakSequence` 和可破坏锚点绳索一律排除。
+- `JungleVine` 本身不足以证明来自锁链发射器；必须命中 `VineShooter.vinePrefab`，同时排除 `BreakableBridge`。
+- 蘑菇的玩家名不增加 RPC/房间属性。仅使用本地收到的 `OnItemThrown` 与 `lastThrownCharacter` 证据做严格唯一匹配；无法确认放置者时显示标签但不显示玩家名。
+- 魔豆仍然只显示名称和距离：`InstantiateRoomObject` 不保留可靠种植者，纯客户端条件下不得猜 owner。
+- owner 只在首次分类、有限延迟重试或状态变化时解析并缓存；不得恢复每帧父子层级搜索。
+- 未分类 PhotonView 只允许 2 秒内有限重试，并受每帧数量/时间预算限制；5 秒校验不得恢复成单帧全量重分类。
+- WhereIsThing 必须是只读定位工具：不得为修标签或 owner 逻辑销毁道具、清空物品栏、补调消耗或拦截原版放置流程。
+- `0.1.2` 仍处于测试收口；未经房主/客户端验收前，不更新发行目录、不重打 ZIP。
+
+## 数据来源
+
+- 物品名单必须来自当前游戏的 `ItemDatabase.itemLookup`，不维护容易过期的硬编码 ID 清单；早期规则最初在 2.1.a 建立，2.4.b 继续沿用动态目录原则。
+- 地面和手持目标按真实 `Item` 实例跟踪；背包内槽位没有独立可用的地面 Transform，因此显示承载该物品的落地背包位置。
+- 同一英文游戏显示名的多个 Item prefab 合并为一个选择组；组内保留全部 itemID，避免窗口出现大量重名项，也不丢失实际变体。
+- 旧版 `SelectedItemIds` 若只命中组内一个 ID，首次加载目录时扩展为该组所有 ID，避免窗口合并但扫描仍只跟踪单一变体。
+- `Luggage` 继承 `Spawner` 而不是 `Item`，不能塞入物品数据库；使用游戏公开的 `Luggage.ALL_LUGGAGE` 跟踪未打开行李箱，打开后等待普通 Item 生成。
+- 名称优先走游戏 `LocalizedText.GetText(LocalizedText.GetNameIndex(item.UIData.itemName), language)`；跟随游戏模式走 `Item.GetName()`，英文/简体中文明确读取游戏名称表。
+
+## 交互
+
+- 默认 `C` 执行扫描，默认 `Alt+C` 打开选择窗口。按住 Alt 时不重复触发普通扫描。
+- `ScanMode=Persistent` 保持标签；`ScanMode=Timed` 使用 `DisplayDurationSeconds` 自动隐藏。
+- 选择窗口先编辑工作副本，点击 `Apply` 才写回选择 ID 和语言配置；取消或 Escape 放弃本次窗口修改。
+- 标签只读显示，不改变物品、背包、网络状态或生成逻辑。
+- 位置范围窗口提供 `Ground`、`Held`、`Backpack`、`Statue` 四个复选框；`Statue` 只影响已选护符在场景雕像手中的碎片显示，不新增目标列表项。`ThingLocationScope.Luggage` 保留用于旧配置兼容，但扫描是否包含行李箱完全由 `SelectedLuggageTypes` 是否为空自动决定。至少选择一种行李箱类型时自动加入该范围，全部取消时自动清除。
+
+## UI
+
+- 选择窗口采用独立 ScreenSpaceOverlay Canvas，面板按屏幕比例伸缩，深色面板、滚动列表和固定底部操作栏，视觉上参考原版 MenuWindow/ItemBrowser。
+- 每个分类使用 GridLayoutGroup，按当前列表宽度和最小卡片宽度自动计算列数；不把窗口项目限制为一列。
+- 打开窗口时保存 `Cursor.visible`/`Cursor.lockState`，窗口存续期间持续显示并解锁鼠标，关闭时恢复保存值。
+- 所有 TMP 文本都必须显式指派游戏字体；优先 `AscentUI.text.font`，再按通用字体规范兜底。
+- 类别是筛选辅助，不是游戏正式分类。能用游戏 `ItemTags` 时优先使用，名称关键词只作为补充，未命中的物品仍归入“其他”。
+- 分类补充规则：`Peak.EarlyWorm` 组件优先归入生物；食物/可食用素材、医疗、武器、玩具与运动使用精确名称关键词；Checkpoint Flag、Conch、Magic Bean、Megaphone、Portable Stove、Stick、Stone 使用“生存工具”类别；AK 使用完整名称判断，避免命中 Snake 中的 `ak` 子串。
+
+## 禁止回退
+
+- 不要将动态 `ItemDatabase` 改回固定物品名单。
+- 不要把背包槽位 prefab 当成真实场景物体直接创建或移动。
+- 不要把 `Luggage` 强行伪装成 Item 或分配虚构 itemID；它是 Spawner，应走 `Luggage.ALL_LUGGAGE`。
+- 不要用 MOD 自造名称覆盖游戏已有翻译；新增翻译只能作为游戏表缺失时的兜底。
+- 不要为了窗口输入直接改动游戏网络或玩家控制逻辑；实机若出现输入穿透，再单独评估与原版 `MenuWindow`/`UIInputHandler` 的兼容接入。
+
+## 光标兼容
+
+- 选择窗口虽然使用独立 Overlay Canvas，但必须通过 inactive `MenuWindow` 代理接入 `MenuWindow.AllActiveWindows`；这是 2.1.a `GUIManager.UpdateWindowStatus()` 和 `CursorHandler.Update()` 识别“窗口正在显示光标”的正式状态来源。
+- 代理只作为状态登记对象，不调用原版 `MenuWindow.Open`，避免其默认生命周期和自动选择逻辑影响自定义窗口。
+
+## 行李箱分类
+
+- 行李箱不进入 `ItemDatabase`，而是在选择目录中加入独立的 `ThingLuggageType` 定义；分类项固定为 `RespawnChest`、十个普通场景池、`Cursed`、`Clown` 和 `Other`。
+- 分类顺序优先使用特殊运行时类型和标签，再使用 `Luggage.spawnPool`；无法识别的池保留为 `Other`，避免静默漏掉新版本行李箱。
+- `SelectedLuggageTypes` 使用枚举名称逗号分隔持久化，不保存易变的显示文本；旧 `SelectedLuggage` 仅作为迁移和兼容状态保留。
+- 选择窗口的勾选状态、批量选择/清除和扫描有效性都使用同一个类型集合，避免窗口显示已勾选但扫描仍显示全部行李箱。
+- 行李箱类型名是 MOD 补充的细分类，`NameLanguage=Game` 时必须通过 `LocalizedText.CURRENT_LANGUAGE` 决定中英文，不能直接把 `Game` 当作英文；简体和繁体中文都使用中文分类名。
+
+## ModConfig 本地化
+
+- 保留 BepInEx 原始 section/key 和枚举值，避免现有配置失效；只通过 Harmony 和 ModConfig UI 文本替换修改玩家看到的名称。
+- ModConfig `GetDisplayName` 后缀必须按配置文件名限制为 WhereIsThing，不能改写其他 MOD 的配置项名称。
+- `ThingScanMode`、`ThingNameLanguage` 使用枚举配置，由 ModConfig 自动提供下拉菜单；中文只替换下拉显示文本，不改变序列化值。
+- `ThingLocationScope` 是 `[Flags]` 多选值，不改成普通下拉菜单；正式入口是选择窗口中的 Ground、Held、Backpack、Statue 四个复选框，Luggage 由行李箱类型自动维护。
+
+## 护符雕像碎片
+
+- 第 1~4 关手里拿着碎片的场景雕像使用 `Peak.PropSpawner_AmuletStatues`，不是复活队友相关的 `ScoutStatue`。
+- 雕像碎片不作为新的 `ThingTargetDefinition` 或独立目标类别出现；用户选择仍是四个护符本身，是否额外显示雕像上的碎片由 `ThingLocationScope.Statue` 控制。
+- 扫描只读 `PropSpawner_AmuletStatues` 已生成的子物体和护符 prefab 定义，不执行生成逻辑，不拿起物品，不改变网络、场景或存档状态。
+- 识别优先看雕像子物体名称中的护符关键词；只有 `props.Length == 4` 且 `statueIndex` 合法时才回退使用 `statueIndex`，避免在随机化表更复杂时误判。
+- 游戏语言变化时只重新写入 WhereIsThing 自己的 `ConfigDescription` 并刷新当前可见 UI；禁止清空或重建 ModConfig 全局缓存，禁止调用 `ProcessModEntries` / `LoadModSettings`。ModConfig 未安装或初始化尚未完成时必须静默降级，不影响位置显示主体。
+- 配置项本地化使用稳定的 `Definition.Section + Definition.Key`，中文只作为显示文本；配置文件中的 section/key 和枚举序列化值保持原样。
+
+## 场景目标调研
+
+- 僵尸、甲虫、风滚草、GhostBall 和 GhostFire 钟塔都不是普通 `Item`，后续必须新增独立场景目标定义，不能分配虚构 itemID 或塞进 `ItemDatabase`。
+- 优先使用原版稳定注册表：僵尸用 `ZombieManager.zombies`，甲虫用 `MobManager.mobs`，GhostBall 用 `GhostBallSpawner.currentGhostBall`，钟塔用 `GloomSafeZone.ALL_GLOOM_SAFE_ZONES.OfType<GhostFire>()`。
+- 风滚草没有原版全局列表，允许复用标签刷新周期执行 `FindObjectsByType<TumbleWeed>`；不要每帧全场景扫描。
+- 钟塔以 `GhostFire` 组件识别，不依赖 `ClockTower` 对象名。后续可显示全部五座，并在标签中附加已点亮/未点亮状态；是否默认只显示未点亮塔由实机体验决定。
+- 动态目标标签必须跟随各自真实 Transform，并以死亡、销毁、禁用或管理器移除作为失效条件；不改变 Photon 所有权、AI、生成和建筑交互状态。
+
+## 选择整理
+
+- “仅显示已选”是窗口工作态筛选，不写入配置；每次打开窗口默认关闭。
+- 该筛选与类别、搜索取交集；筛选开启时取消勾选的项目应立即消失，点击 Apply 前仍遵守窗口工作副本语义。
+
+## 杂项审计
+
+- 初始审计中的 33 个 `Misc` 显示名组已按用户选择的 B1/B2/B3 方案重新分类；按英文显示名合并后，2.1.a 资源快照的 194 个物品 ID 当前剩余 `Misc` 为 0 组。
+- 变体合并仍然以英文显示名为键，莓蕉皮、王莓和棋子不会因分类变化而重复出现；运行时名称表、标签和实机用途仍需验证。
+- 资源中的 `itemTags` 对部分物品变体并不完整，杂项重分类不能只依据资源快照；最终修改应结合运行时 `ItemDatabase` 对象和实机显示用途验证。
+
+## 已接入场景目标
+
+- 场景目标配置键为 `SelectedSceneTargetTypes`，按 `ThingSceneTargetType` 枚举名保存；默认不自动选择，用户需在“危险”或“地标”窗口分类中勾选。
+- 僵尸、甲虫和 GhostBall 使用原版管理器引用，避免全场景扫描；风滚草是唯一没有管理器的类型，限定为现有 0.5 秒刷新周期扫描。
+- GhostFire 是雾沼钟塔的正式标记对象；标签锚定 GhostFire Transform，标题优先使用 `GhostFire.GetName()`，并额外显示亮灭状态。
+- 场景目标不受物品的 Ground/Held/Backpack/Luggage 范围限制，因为它们始终是场景对象；取消其类型选择后，现有标签在下一次刷新立即移除。
+
+## 第一批危险目标
+
+- 场景目标按玩家面对的威胁形式分类：会追击或攻击的实体归“危险生物”，固定或自然形成的威胁归“自然危险”，明确的机械装置归“机关陷阱”；钟塔继续单列为地标。
+- 蝎子与甲虫都继承 `Mob`，因此共用 `MobManager.mobs` 一次遍历；蜘蛛、蜂群、Scoutmaster 和各类自然/机关组件使用受用户选择门控的 `FindObjectsByType<T>`，不改变游戏 AI、机关或 Photon 状态。
+- 用户明确排除青蛙舌，即使它在原版属于危险项，也不建立 `ThingSceneTargetType`、窗口条目或扫描分支。
+- 全局天气/状态类危险没有单一可标记位置；高密度静态地形会造成标签刷屏；仙人掌球、炸药、曼德拉草和蜂巢可走普通物品追踪。因此以上目标不纳入本批场景危险。
+
+## 物品与场景目标合并
+
+- 同一概念同时存在普通 `Item` 和场景实体时，选择窗口只保留一个联合条目；当前按英文游戏显示名的标准化键匹配，不为蝎子、甲虫等对象显示两份同名入口。
+- 联合条目使用场景行为分类，例如蝎子归“危险生物”，勾选一次同时维护组内全部 itemID 和对应 `ThingSceneTargetType`；取消时也同时清除两侧选择。
+- 旧配置若只选择了 itemID 或场景目标枚举，目录加载时自动扩展为联合选择并写回两份配置，避免升级后只追踪一种形态。
+- `MobItem` 落地时由场景实体扫描负责标签，普通 Item 扫描跳过同一对象，避免一只蝎子叠两层标签；手持或进入背包后改回物品扫描，并继续受 Held/Backpack 范围开关控制。

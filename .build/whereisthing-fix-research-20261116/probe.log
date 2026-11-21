@@ -1,0 +1,48 @@
+PASS: initial submission
+PASS: unchanged same-session data is suppressed
+PASS: identical data is submitted to another room
+PASS: same-name new room object is a new session
+PASS: leave invalidates submitted cache
+PASS: rejoin submits again
+PASS: BuiltInOnly to Off changes room mode
+PASS: Off to BuiltInOnly changes room mode
+PASS: new publisher actor is submitted
+PASS: becoming host forces publication even with identical data
+PASS: failed submission retains dirty and does not cache success
+PASS: failed submission is throttled
+PASS: failed submission can recover
+PASS: send acceptance is distinct from server echo
+PASS: pending echo does not cause same-content retransmission
+PASS: deferred echo contains expected actor
+PASS: catalog resolution republishes resolved item IDs
+PASS: catalog cache does not repeatedly publish
+PASS: unready catalog schedules a bounded retry
+PASS: scene-only entries cannot finalize an empty item database
+PASS: catalog retry is not attempted each frame
+PASS: host publishes ready catalog without opening UI or scanning
+PASS: ready catalog stops readiness retries
+PASS: unrelated properties do not extend timer
+PASS: unrelated properties do not parse or rebuild picker
+PASS: real shared change refreshes content without extending timer
+PASS: real shared change updates restricted picker
+PASS: same relevant values do not reparse or rebuild
+PASS: unused hash-only update does not reparse
+PASS: unrestricted client retains local UI and timer
+PASS: unrestricted client keeps incoming cache ready
+PASS: reenabling restriction uses the cached shared target
+PASS: host transition preserves existing three-second grace
+PASS: new host data replaces stale session
+PASS: invalid protocol falls back without restarting timer
+PASS: grace retains old preset until deadline
+PASS: grace expires even without another property callback
+PASS: late new host data recovers after grace expiry
+PASS: same-name new room cannot retain previous shared overlay
+PASS: persistent mode has infinite deadline
+PASS: external persistent to timed starts a finite duration
+PASS: unchanged configuration never restarts timer
+PASS: content-only refresh preserves deadline
+PASS: explicit duration change restarts current timed scan
+PASS: timed to persistent clears finite expiry
+PASS: configuration change does not start an inactive scan
+PASS: explicit user restart retains existing refresh behavior
+All 47 research candidate checks passed. Experimental copies only; not production or game validation.

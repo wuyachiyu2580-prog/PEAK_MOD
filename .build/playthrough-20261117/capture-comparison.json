@@ -1,0 +1,527 @@
+{
+  "captures": [
+    {
+      "file": "wsl-20261117-121512-2a6cb7fa-anonymous.zip",
+      "min": 298035,
+      "max": 305874,
+      "trigger": 2207.7581464,
+      "missing": {
+        "RpcCall": 244,
+        "NetworkSample": 24,
+        "FpsReport": 1,
+        "OwnershipChange": 1,
+        "PluginTiming": 8
+      },
+      "missingBeforeTrigger": {
+        "RpcCall": 244,
+        "NetworkSample": 24,
+        "FpsReport": 1,
+        "OwnershipChange": 1,
+        "PluginTiming": 8
+      },
+      "missingDuringRecording": {},
+      "examples": [
+        {
+          "timestamp": "2026-11-17 20:14:22.613",
+          "type": "RpcCall",
+          "sequence": 298036,
+          "rpcMethod": "RPCA_AddForceAtPosition",
+          "exceptionKind": null
+        },
+        {
+          "timestamp": "2026-11-17 20:14:22.613",
+          "type": "RpcCall",
+          "sequence": 298037,
+          "rpcMethod": "RPCA_AddForceAtPosition",
+          "exceptionKind": null
+        }
+      ]
+    },
+    {
+      "file": "wsl-20261117-122438-7debe76a-anonymous.zip",
+      "min": 373509,
+      "max": 380491,
+      "trigger": 2773.7137016,
+      "missing": {},
+      "missingBeforeTrigger": {},
+      "missingDuringRecording": {},
+      "examples": []
+    },
+    {
+      "file": "wsl-20261117-122812-4fc4f59b-anonymous.zip",
+      "min": 400198,
+      "max": 407889,
+      "trigger": 2987.558868,
+      "missing": {
+        "NetworkSample": 83,
+        "FpsReport": 1,
+        "SpikeFrame": 1
+      },
+      "missingBeforeTrigger": {
+        "NetworkSample": 83,
+        "FpsReport": 1,
+        "SpikeFrame": 1
+      },
+      "missingDuringRecording": {},
+      "examples": [
+        {
+          "timestamp": "2026-11-17 20:27:22.730",
+          "type": "NetworkSample",
+          "sequence": 400233,
+          "rpcMethod": null,
+          "exceptionKind": null
+        },
+        {
+          "timestamp": "2026-11-17 20:27:22.826",
+          "type": "NetworkSample",
+          "sequence": 400243,
+          "rpcMethod": "JumpRpc",
+          "exceptionKind": null
+        }
+      ]
+    },
+    {
+      "file": "wsl-20261117-125600-8180d011-anonymous.zip",
+      "min": 586390,
+      "max": 594633,
+      "trigger": 4645.2778404,
+      "missing": {
+        "NetworkSample": 128,
+        "SpikeFrame": 3,
+        "FpsReport": 2,
+        "AbuseAlert": 1
+      },
+      "missingBeforeTrigger": {
+        "NetworkSample": 128,
+        "SpikeFrame": 3,
+        "FpsReport": 2,
+        "AbuseAlert": 1
+      },
+      "missingDuringRecording": {},
+      "examples": [
+        {
+          "timestamp": "2026-11-17 20:55:00.301",
+          "type": "NetworkSample",
+          "sequence": 586407,
+          "rpcMethod": null,
+          "exceptionKind": null
+        },
+        {
+          "timestamp": "2026-11-17 20:55:00.301",
+          "type": "NetworkSample",
+          "sequence": 586408,
+          "rpcMethod": "JumpRpc",
+          "exceptionKind": null
+        }
+      ]
+    },
+    {
+      "file": "wsl-20261117-125851-3f18dc8b-anonymous.zip",
+      "min": 606195,
+      "max": 612093,
+      "trigger": 4826.4867741,
+      "missing": {
+        "NetworkSample": 6
+      },
+      "missingBeforeTrigger": {
+        "NetworkSample": 6
+      },
+      "missingDuringRecording": {},
+      "examples": [
+        {
+          "timestamp": "2026-11-17 20:58:01.912",
+          "type": "NetworkSample",
+          "sequence": 606248,
+          "rpcMethod": null,
+          "exceptionKind": null
+        },
+        {
+          "timestamp": "2026-11-17 20:58:01.912",
+          "type": "NetworkSample",
+          "sequence": 606249,
+          "rpcMethod": "JumpRpc",
+          "exceptionKind": null
+        }
+      ]
+    },
+    {
+      "file": "wsl-20261117-130610-d9857df0-anonymous.zip",
+      "min": 653440,
+      "max": 660450,
+      "trigger": 5265.0358478,
+      "missing": {
+        "NetworkSample": 34,
+        "SpikeFrame": 1,
+        "FpsReport": 1
+      },
+      "missingBeforeTrigger": {
+        "NetworkSample": 34,
+        "SpikeFrame": 1,
+        "FpsReport": 1
+      },
+      "missingDuringRecording": {},
+      "examples": [
+        {
+          "timestamp": "2026-11-17 21:05:20.469",
+          "type": "NetworkSample",
+          "sequence": 653488,
+          "rpcMethod": null,
+          "exceptionKind": null
+        },
+        {
+          "timestamp": "2026-11-17 21:05:20.469",
+          "type": "NetworkSample",
+          "sequence": 653489,
+          "rpcMethod": "SyncStatusesRPC",
+          "exceptionKind": null
+        }
+      ]
+    },
+    {
+      "file": "wsl-20261117-130851-7a2e4d13-anonymous.zip",
+      "min": 671982,
+      "max": 678179,
+      "trigger": 5426.1848826,
+      "missing": {
+        "NetworkSample": 1
+      },
+      "missingBeforeTrigger": {
+        "NetworkSample": 1
+      },
+      "missingDuringRecording": {},
+      "examples": [
+        {
+          "timestamp": "2026-11-17 21:08:01.790",
+          "type": "NetworkSample",
+          "sequence": 672055,
+          "rpcMethod": null,
+          "exceptionKind": null
+        }
+      ]
+    },
+    {
+      "file": "wsl-20261117-131541-12981a67-anonymous.zip",
+      "min": 715640,
+      "max": 721842,
+      "trigger": 5836.9753409,
+      "missing": {
+        "NetworkSample": 23
+      },
+      "missingBeforeTrigger": {
+        "NetworkSample": 23
+      },
+      "missingDuringRecording": {},
+      "examples": [
+        {
+          "timestamp": "2026-11-17 21:14:52.414",
+          "type": "NetworkSample",
+          "sequence": 715696,
+          "rpcMethod": null,
+          "exceptionKind": null
+        },
+        {
+          "timestamp": "2026-11-17 21:14:52.521",
+          "type": "NetworkSample",
+          "sequence": 715707,
+          "rpcMethod": "SyncStatusesRPC",
+          "exceptionKind": null
+        }
+      ]
+    },
+    {
+      "file": "wsl-20261117-132617-82e41e62-anonymous.zip",
+      "min": 779303,
+      "max": 790456,
+      "trigger": 6450.4155777,
+      "missing": {
+        "NetworkSample": 17,
+        "SpikeFrame": 1,
+        "FpsReport": 1
+      },
+      "missingBeforeTrigger": {
+        "NetworkSample": 17,
+        "SpikeFrame": 1,
+        "FpsReport": 1
+      },
+      "missingDuringRecording": {},
+      "examples": [
+        {
+          "timestamp": "2026-11-17 21:25:05.287",
+          "type": "NetworkSample",
+          "sequence": 779308,
+          "rpcMethod": null,
+          "exceptionKind": null
+        },
+        {
+          "timestamp": "2026-11-17 21:25:05.287",
+          "type": "NetworkSample",
+          "sequence": 779309,
+          "rpcMethod": "RemoveFeedDataRPC",
+          "exceptionKind": null
+        }
+      ]
+    },
+    {
+      "file": "wsl-20261117-133315-a23578bd-anonymous.zip",
+      "min": 840976,
+      "max": 849169,
+      "trigger": 6890.4101648,
+      "missing": {},
+      "missingBeforeTrigger": {},
+      "missingDuringRecording": {},
+      "examples": []
+    }
+  ],
+  "witPeakFrames": [
+    {
+      "capture": "wsl-20261117-121512-2a6cb7fa-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 14.7521,
+      "frame": 241490,
+      "timestamp": "2026-11-17 20:14:43.586",
+      "frameMs": 38.3967,
+      "selfMs": 0.4222,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-122438-7debe76a-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 14.698,
+      "frame": 301744,
+      "timestamp": "2026-11-17 20:24:38.403",
+      "frameMs": 36.7375,
+      "selfMs": 0.1576,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-121512-2a6cb7fa-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 14.6614,
+      "frame": 243946,
+      "timestamp": "2026-11-17 20:15:08.636",
+      "frameMs": 27.2341,
+      "selfMs": 0.2223,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-131541-12981a67-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 14.2671,
+      "frame": 573551,
+      "timestamp": "2026-11-17 21:15:20.431",
+      "frameMs": 29.2373,
+      "selfMs": 1.02,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-122438-7debe76a-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.9923,
+      "frame": 300110,
+      "timestamp": "2026-11-17 20:24:23.205",
+      "frameMs": 34.321,
+      "selfMs": 0.23,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-125600-8180d011-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.3734,
+      "frame": 468233,
+      "timestamp": "2026-11-17 20:55:33.650",
+      "frameMs": 25.1873,
+      "selfMs": 0.2804,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-133315-a23578bd-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.2187,
+      "frame": 686198,
+      "timestamp": "2026-11-17 21:32:56.336",
+      "frameMs": 19.1073,
+      "selfMs": 0.2565,
+      "sceneState": "Unfocused"
+    },
+    {
+      "capture": "wsl-20261117-130610-d9857df0-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.2005,
+      "frame": 521293,
+      "timestamp": "2026-11-17 21:05:40.764",
+      "frameMs": 32.9719,
+      "selfMs": 0.855,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-125600-8180d011-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.1838,
+      "frame": 470100,
+      "timestamp": "2026-11-17 20:55:53.851",
+      "frameMs": 21.6228,
+      "selfMs": 0.1512,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-125851-3f18dc8b-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.1664,
+      "frame": 482906,
+      "timestamp": "2026-11-17 20:58:25.919",
+      "frameMs": 22.0079,
+      "selfMs": 0.2737,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-125851-3f18dc8b-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.0961,
+      "frame": 485006,
+      "timestamp": "2026-11-17 20:58:51.328",
+      "frameMs": 21.0777,
+      "selfMs": 0.1553,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-125600-8180d011-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.0779,
+      "frame": 469644,
+      "timestamp": "2026-11-17 20:55:48.800",
+      "frameMs": 24.6354,
+      "selfMs": 0.2988,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-132617-82e41e62-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.0212,
+      "frame": 630641,
+      "timestamp": "2026-11-17 21:25:38.903",
+      "frameMs": 22.7209,
+      "selfMs": 0.1647,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-121512-2a6cb7fa-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 13.0026,
+      "frame": 243410,
+      "timestamp": "2026-11-17 20:15:03.587",
+      "frameMs": 19.5725,
+      "selfMs": 0.1435,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-122438-7debe76a-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.9024,
+      "frame": 299067,
+      "timestamp": "2026-11-17 20:24:12.908",
+      "frameMs": 21.695,
+      "selfMs": 0.1924,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-125851-3f18dc8b-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.8366,
+      "frame": 483335,
+      "timestamp": "2026-11-17 20:58:30.978",
+      "frameMs": 24.2289,
+      "selfMs": 0.1748,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-125600-8180d011-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.8045,
+      "frame": 469168,
+      "timestamp": "2026-11-17 20:55:43.750",
+      "frameMs": 20.2688,
+      "selfMs": 0.2755,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-121512-2a6cb7fa-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.7068,
+      "frame": 242885,
+      "timestamp": "2026-11-17 20:14:58.455",
+      "frameMs": 24.1142,
+      "selfMs": 0.8146,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-121512-2a6cb7fa-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.6976,
+      "frame": 242375,
+      "timestamp": "2026-11-17 20:14:53.205",
+      "frameMs": 24.3177,
+      "selfMs": 0.2938,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-130851-7a2e4d13-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.6685,
+      "frame": 536792,
+      "timestamp": "2026-11-17 21:08:28.806",
+      "frameMs": 24.5078,
+      "selfMs": 0.1534,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-122438-7debe76a-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.6429,
+      "frame": 301188,
+      "timestamp": "2026-11-17 20:24:33.371",
+      "frameMs": 42.2841,
+      "selfMs": 1.1055,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-125600-8180d011-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.6304,
+      "frame": 470555,
+      "timestamp": "2026-11-17 20:55:58.898",
+      "frameMs": 19.6535,
+      "selfMs": 0.2011,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-130851-7a2e4d13-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.6196,
+      "frame": 538578,
+      "timestamp": "2026-11-17 21:08:49.123",
+      "frameMs": 20.0416,
+      "selfMs": 0.2861,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-130851-7a2e4d13-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.6066,
+      "frame": 537719,
+      "timestamp": "2026-11-17 21:08:38.975",
+      "frameMs": 20.1064,
+      "selfMs": 0.1511,
+      "sceneState": "Gameplay"
+    },
+    {
+      "capture": "wsl-20261117-121512-2a6cb7fa-anonymous.zip",
+      "method": "WhereIsThing.WhereIsThingPlugin.Update()",
+      "peakFrameMs": 12.5804,
+      "frame": 241875,
+      "timestamp": "2026-11-17 20:14:48.175",
+      "frameMs": 29.1319,
+      "selfMs": 2.0449,
+      "sceneState": "Gameplay"
+    }
+  ]
+}

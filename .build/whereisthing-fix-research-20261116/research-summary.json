@@ -1,0 +1,26 @@
+{
+  "completed_at": "2026-11-16T23:08:27.832835+08:00",
+  "research_candidate_checks_passed": 47,
+  "production_files_verified": 24,
+  "prior_audit_cs_verified": 23,
+  "production_files_changed": [],
+  "formal_regression_status": "Prior audit: 184 passed; not rerun this turn",
+  "production_fixes_applied": false,
+  "in_game_validation": false,
+  "deployed": false,
+  "evidence_limit": "Experimental modified copies of extracted methods with game/network/config doubles; no formal plugin build or Unity/Photon integration validation.",
+  "memory_entries_updated": [
+    "memory/mods/WhereIsThing/README.md",
+    "memory/mods/WhereIsThing/STATUS.md",
+    "memory/mods/WhereIsThing/TODO.md",
+    "memory/mods/WhereIsThing/RECENT.md",
+    "memory/mods/WhereIsThing/DECISIONS.md",
+    "memory/mods/WhereIsThing/FILES.md",
+    "memory/mods/WhereIsThing/temp/current.md",
+    "memory/README.md",
+    "memory/TODO.md",
+    "memory/MEMORY_INDEX.md",
+    "memory/CHANGELOG.md"
+  ],
+  "report": "memory/mods/WhereIsThing/RESEARCH_Fixes_2026-11-16.md"
+}

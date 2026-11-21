@@ -1,0 +1,45 @@
+--- MOD开发\WhereIsThing\WhereIsThing\ThingPresetPickerWindow.cs (turn start)
+
++++ MOD开发\WhereIsThing\WhereIsThing\ThingPresetPickerWindow.cs
+
+@@ -271,13 +271,12 @@
+
+ 
+         public void Tick()
+         {
+-            if (_isOpen)
+-            {
+-                MaintainCursor();
+-                if (_renameOverlay != null && _renameOverlay.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+-                {
+-                    CloseRenameDialog();
+-                }
++            if (!_isOpen) return;
++            MaintainCursor();
++            if (Input.GetKeyDown(KeyCode.Escape))
++            {
++                if (_renameOverlay != null && _renameOverlay.activeSelf) CloseRenameDialog();
++                else Close();
+             }
+         }
+ 
+@@ -344,6 +343,18 @@
+
+                 CreateText(_content, "Empty", ThingUi.EmptyPresets(), 14f, TextAlignmentOptions.Center,
+                     new Vector2(0f, 1f), new Vector2(0.5f, 1f), new Vector2(1f, 1f), new Vector2(12f, 0f), new Vector2(-12f, -36f), false, true);
+             }
++        }
++
++        public void RefreshSettings(ThingLocationScope scopes, ThingScanMode scanMode, float duration,
++            float maxDistance, bool showOwnerNames, ThingMapScope mapScope)
++        {
++            _scopes = scopes;
++            _scanMode = scanMode;
++            _displayDuration = Mathf.Clamp(duration, 2f, 60f);
++            _maxDistance = Mathf.Round(Mathf.Clamp(maxDistance, 0f, MaxDistanceMaximum) / MaxDistanceStep) * MaxDistanceStep;
++            _showOwnerNames = showOwnerNames;
++            _mapScope = mapScope;
++            RebuildSettings();
+         }
+ 
+         private void RebuildSettings()

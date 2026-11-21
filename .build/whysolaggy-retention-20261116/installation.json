@@ -1,0 +1,23 @@
+{
+  "installedAt": "2026-11-16T00:19:37.7914581+08:00",
+  "build": "1.0.5-dev.20261116.retention",
+  "version": "1.0.5",
+  "profile": "C:/Users/Administrator/AppData/Roaming/r2modmanPlus-local/PEAK/profiles/2.0.a/BepInEx",
+  "rollback": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\.build\\whysolaggy-retention-20261116\\rollback-20261116-001937",
+  "oldHashes": {
+    "WhySoLaggy.pdb": "09551B1CF7BA9BE6AFD6F864F839005DF320CADC324DE72A26BCD5C571916E21",
+    "WhySoLaggy.dll": "90BF430A3838D0B7C74738554D46C261886E1EE17E6172A2238C2952471DB139"
+  },
+  "newHashes": {
+    "WhySoLaggy.pdb": "E6B8087EA96336FB8CC6951BFDF4592228A7857A7A2295A8941D8175A6B0B16C",
+    "WhySoLaggy.dll": "97F1320DE575B44034F251F6FBFC2A1A2250BC4BF736C0E89FA2EFDB80AA328E"
+  },
+  "configurationHashBefore": "21F8E52EB7A8E00E9A8A19820B3CF3AD571A10775C4A10E4F7D41AC141796B06",
+  "configurationHashAfter": "21F8E52EB7A8E00E9A8A19820B3CF3AD571A10775C4A10E4F7D41AC141796B06",
+  "dllCopies": 1,
+  "gameRunning": false,
+  "testsPassed": 78,
+  "testsFailed": 0,
+  "releaseWarnings": 0,
+  "releaseErrors": 0
+}

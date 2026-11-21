@@ -205,6 +205,8 @@ namespace WhereIsThing
         {
             if (IsLuggageGroup) return ThingCatalog.GetOrdinaryLuggageName(language);
             if (IsLuggage) return ThingCatalog.GetLuggageDisplayName(_luggageType, language);
+            if (IsSceneTarget && _sceneTargetType == ThingSceneTargetType.NapberryHypnoOrb && Prefab != null)
+                return ThingCatalog.GetDisplayName(Prefab, language);
             if (IsSceneTarget) return ThingCatalog.GetSceneTargetDisplayName(_sceneTargetType, language);
             return ThingCatalog.GetDisplayName(Prefab, language);
         }
@@ -423,6 +425,16 @@ namespace WhereIsThing
             result.AddRange(LuggageTypes.Select(ThingTargetDefinition.CreateLuggage));
             foreach (ThingSceneTargetType sceneTargetType in SceneTargetTypes)
             {
+                if (sceneTargetType == ThingSceneTargetType.NapberryHypnoOrb)
+                {
+                    // Match the pickup identity explicitly, independent of localized display names.
+                    List<ThingTargetDefinition> napberries = itemDefinitions
+                        .Where(definition => definition.Prefabs.Any(ThingNapberry.IsNapberry)).ToList();
+                    foreach (ThingTargetDefinition definition in napberries) result.Remove(definition);
+                    result.Add(ThingTargetDefinition.CreateSceneTarget(sceneTargetType,
+                        napberries.SelectMany(definition => definition.Prefabs)));
+                    continue;
+                }
                 string sceneMergeKey = NormalizeMergeKey(GetSceneTargetDisplayName(sceneTargetType, ThingNameLanguage.English));
                 ThingTargetDefinition matchingItem = itemDefinitions.FirstOrDefault(definition =>
                     string.Equals(GetMergeKey(definition.Prefab), sceneMergeKey, StringComparison.OrdinalIgnoreCase));
@@ -477,14 +489,14 @@ namespace WhereIsThing
                 if (language == ThingNameLanguage.Game)
                 {
                     string gameName = item.GetName();
-                    if (IsUsableName(gameName)) return gameName;
+                    if (IsUsableName(gameName)) return AddMushroomVariety(item, gameName, language);
                 }
 
                 LocalizedText.Language gameLanguage = ResolveNameLanguage(language);
                 string localized = LocalizedText.GetText(LocalizedText.GetNameIndex(item.UIData.itemName), gameLanguage);
                 if (IsUsableName(localized))
                 {
-                    return localized;
+                    return AddMushroomVariety(item, localized, language);
                 }
             }
             catch
@@ -492,7 +504,17 @@ namespace WhereIsThing
                 // Some item assets are not fully initialized until the first scene loads.
             }
 
-            return string.IsNullOrEmpty(item.UIData.itemName) ? item.gameObject.name : item.UIData.itemName;
+            return AddMushroomVariety(item, string.IsNullOrEmpty(item.UIData.itemName) ? item.gameObject.name : item.UIData.itemName, language);
+        }
+
+        private static string AddMushroomVariety(Item item, string name, ThingNameLanguage language)
+        {
+            bool poisonous;
+            string variant;
+            if (!ThingItemTraits.TryGetMushroomVariant(item, out poisonous, out variant)) return name;
+            return name + (UseChineseNames(language)
+                ? (poisonous ? "（有毒品种）" : "（无毒品种）")
+                : (poisonous ? " (Poisonous variety)" : " (Non-poisonous variety)"));
         }
 
         public static string GetLuggageDisplayName(ThingLuggageType luggageType, ThingNameLanguage language)
@@ -555,7 +577,7 @@ namespace WhereIsThing
                     case ThingSceneTargetType.Antlion: return "蚁狮";
                     case ThingSceneTargetType.VenusFlyTrap: return "捕蝇草";
                     case ThingSceneTargetType.Tornado: return "龙卷风";
-                    case ThingSceneTargetType.NapberryHypnoOrb: return "未摘下的晚安莓";
+                    case ThingSceneTargetType.NapberryHypnoOrb: return "晚安莓";
                     case ThingSceneTargetType.ArrowShooter: return "箭矢发射器";
                     case ThingSceneTargetType.MovingSawBlade: return "移动锯刃";
                     case ThingSceneTargetType.SpikeRoller: return "滚刺机关";
@@ -589,7 +611,7 @@ namespace WhereIsThing
                 case ThingSceneTargetType.Antlion: return "Antlion";
                 case ThingSceneTargetType.VenusFlyTrap: return "Venus Flytrap";
                 case ThingSceneTargetType.Tornado: return "Tornado";
-                case ThingSceneTargetType.NapberryHypnoOrb: return "Unpicked Napberry";
+                case ThingSceneTargetType.NapberryHypnoOrb: return "Napberry";
                 case ThingSceneTargetType.ArrowShooter: return "Arrow Shooter";
                 case ThingSceneTargetType.MovingSawBlade: return "Moving Sawblade";
                 case ThingSceneTargetType.SpikeRoller: return "Spike Roller";
@@ -809,8 +831,9 @@ namespace WhereIsThing
                 case ThingSceneTargetType.Antlion:
                 case ThingSceneTargetType.VenusFlyTrap:
                 case ThingSceneTargetType.Tornado:
-                case ThingSceneTargetType.NapberryHypnoOrb:
                     return "Natural Hazards";
+                case ThingSceneTargetType.NapberryHypnoOrb:
+                    return "Food";
                 case ThingSceneTargetType.ArrowShooter:
                 case ThingSceneTargetType.MovingSawBlade:
                 case ThingSceneTargetType.SpikeRoller:
@@ -930,6 +953,10 @@ namespace WhereIsThing
         private static string GetMergeKey(Item item)
         {
             item = ThingPickupIdentity.Resolve(item);
+            bool poisonous;
+            string variant;
+            if (ThingItemTraits.TryGetMushroomVariant(item, out poisonous, out variant))
+                return "MUSHROOM:" + NormalizeMergeKey(variant);
             string displayName = GetDisplayName(item, ThingNameLanguage.English);
             if (string.IsNullOrEmpty(displayName) || displayName.StartsWith("LOC: ", StringComparison.OrdinalIgnoreCase))
             {

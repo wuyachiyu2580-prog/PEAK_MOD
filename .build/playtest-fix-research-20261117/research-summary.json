@@ -1,0 +1,16 @@
+{
+  "baselineMatchesAll10OriginalSequenceSets": true,
+  "baselineMissingInOriginalBounds": 582,
+  "candidateMissingInSameBounds": 253,
+  "restoredInSameBounds": 329,
+  "additionalOriginalEventsLost": 0,
+  "frameCount": 53651,
+  "networkRoundTripChecks": 3297,
+  "sharedBudgetBalanced": true,
+  "stressPass": 5,
+  "runtime": "isolated .NET 10; not Unity Mono; saved/inflight exports omitted from replay; no performance claim",
+  "memoryEntriesUpdated": 18,
+  "sourceInstalledConfigUnchanged": 87,
+  "productionImplemented": false,
+  "inGameValidated": false
+}

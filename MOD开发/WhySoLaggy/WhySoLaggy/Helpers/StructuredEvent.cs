@@ -22,7 +22,7 @@ namespace WhySoLaggy
         RemoteRpcTrace,
         /// <summary>PhotonView Ownership 请求/转让/批量更新事件（EventCode 209/210/212）。</summary>
         OwnershipChange,
-        FrameSample, ExceptionSummary, NetworkSample, CaptureState, SessionBoundary, Marker,
+        FrameSample, ExceptionSummary, NetworkSample, CaptureState, SessionBoundary, Marker, TimingWindow,
     }
 
     /// <summary>

@@ -43,9 +43,7 @@ namespace WhereIsThing
             return copy;
         }
 
-        public void Normalize()
-        {
-        }
+
     }
 
     internal static class ThingPresetCodec
@@ -68,7 +66,6 @@ namespace WhereIsThing
                     continue;
                 }
 
-                preset.Normalize();
                 if (builder.Length > 0)
                 {
                     builder.Append(RecordSeparator);
@@ -138,7 +135,6 @@ namespace WhereIsThing
                     }
                 }
 
-                preset.Normalize();
                 result.Add(preset);
             }
 
@@ -178,7 +174,7 @@ namespace WhereIsThing
             };
             preset.SelectedLuggageTypes.Add(ThingLuggageType.Clown);
             preset.SelectedSceneTargetTypes.Add(ThingSceneTargetType.GloomBellTower);
-            preset.Normalize();
+
             return preset;
         }
 
@@ -188,7 +184,7 @@ namespace WhereIsThing
             {
                 Published = true
             };
-            preset.Normalize();
+
             return preset;
         }
 
@@ -198,7 +194,7 @@ namespace WhereIsThing
             {
                 Published = true
             };
-            preset.Normalize();
+
             return preset;
         }
 
@@ -208,7 +204,7 @@ namespace WhereIsThing
             {
                 Published = true
             };
-            preset.Normalize();
+
             return preset;
         }
 

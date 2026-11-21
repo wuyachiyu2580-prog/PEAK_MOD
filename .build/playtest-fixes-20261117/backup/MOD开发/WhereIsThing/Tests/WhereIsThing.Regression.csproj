@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="PresetAndTraitTests.cs" />
+    <Compile Include="NapberryTests.cs" />
+    <Compile Include="GameStubs.cs" />
+    <Compile Include="../WhereIsThing/ThingTypes.cs" Link="Production/ThingTypes.cs" />
+    <Compile Include="../WhereIsThing/ThingNapberry.cs" Link="Production/ThingNapberry.cs" />
+    <Compile Include="../WhereIsThing/WhereIsThingPlugin.Napberry.cs" Link="Production/Napberry.cs" />
+    <Compile Include="../WhereIsThing/ThingPresetSelection.cs" Link="Production/ThingPresetSelection.cs" />
+    <Compile Include="../WhereIsThing/ThingItemTraits.cs" Link="Production/ThingItemTraits.cs" />
+    <Compile Include="../WhereIsThing/ThingLabelRange.cs" Link="Production/ThingLabelRange.cs" />
+    <Compile Include="../WhereIsThing/ThingPickupIdentity.cs" Link="Production/ThingPickupIdentity.cs" />
+    <Compile Include="../WhereIsThing/ThingSegmentFilter.cs" Link="Production/ThingSegmentFilter.cs" />
+    <Compile Include="../WhereIsThing/ThingPresets.cs" Link="Production/ThingPresets.cs" />
+    <Compile Include="../WhereIsThing/Helpers/ThingUi.cs" Link="Production/ThingUi.cs" />
+    <Compile Include="../WhereIsThing/WhereIsThingPlugin.Plants.cs" Link="Production/Plants.cs" />
+    <Compile Include="../WhereIsThing/WhereIsThingPlugin.Luggage.cs" Link="Production/Luggage.cs" />
+  </ItemGroup>
+</Project>

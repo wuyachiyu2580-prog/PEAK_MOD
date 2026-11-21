@@ -268,6 +268,7 @@ namespace WhySoLaggy.Tests
         {
             var expected = new[]
             {
+                "Diagnostics/PhaseTiming", "Diagnostics/PhaseTimingSeconds", "Logging/StructuredDiskFormat",
                 "Capture/AutoCapture", "Capture/CaptureKey", "Capture/MarkerKey", "General/AdaptiveTiming", "General/CpuGpuMetrics", "RpcMonitor/PumpBudgetMs", "UI/FontSize", "UI/Position", "UI/DashboardKey",
                 "General/SpikeThresholdMs", "General/ReportIntervalSeconds", "General/EnablePluginProfiling",
                 "General/EnablePatchProfiling", "General/TopMethodCount", "General/MinReportMs",

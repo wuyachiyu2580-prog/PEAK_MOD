@@ -1,0 +1,105 @@
+PASS: phase timer defaults off
+PASS: phase percentile upper bound covers P95
+PASS: phase timer expires at configured deadline
+PASS: phase report retains nested context
+PASS: phase timer does not restart itself
+PASS: explicit rearm starts a new window
+PASS: old phase scopes cannot pollute a new window
+PASS: initial submission
+PASS: unchanged same-session data is suppressed
+PASS: identical data is submitted to another room
+PASS: same-name new room object is a new session
+PASS: leave invalidates submitted cache
+PASS: rejoin submits again
+PASS: BuiltInOnly to Off changes room mode
+PASS: Off to BuiltInOnly changes room mode
+PASS: new publisher actor is submitted
+PASS: becoming host forces publication even with identical data
+PASS: failed submission retains dirty and does not cache success
+PASS: failed submission is throttled
+PASS: failed submission can recover
+PASS: send acceptance is distinct from server echo
+PASS: pending echo does not cause same-content retransmission
+PASS: deferred echo contains expected actor
+PASS: catalog resolution republishes resolved item IDs
+PASS: catalog cache does not repeatedly publish
+PASS: unready catalog schedules a bounded retry
+PASS: scene-only entries cannot finalize an empty item database
+PASS: catalog retry is not attempted each frame
+PASS: host publishes ready catalog without opening UI or scanning
+PASS: ready catalog stops readiness retries
+PASS: unrelated properties do not extend timer
+PASS: unrelated properties do not parse or rebuild picker
+PASS: real shared change refreshes content without extending timer
+PASS: real shared change updates restricted picker
+PASS: same relevant values do not reparse or rebuild
+PASS: unused hash-only update does not reparse
+PASS: unrestricted client retains local UI and timer
+PASS: unrestricted client keeps incoming cache ready
+PASS: reenabling restriction uses the cached shared target
+PASS: host transition preserves existing three-second grace
+PASS: new host data replaces stale session
+PASS: invalid protocol falls back without restarting timer
+PASS: grace retains old preset until deadline
+PASS: grace expires even without another property callback
+PASS: late new host data recovers after grace expiry
+PASS: same-name new room cannot retain previous shared overlay
+PASS: persistent mode has infinite deadline
+PASS: external persistent to timed starts a finite duration
+PASS: unchanged configuration never restarts timer
+PASS: content-only refresh preserves deadline
+PASS: explicit duration change restarts current timed scan
+PASS: timed to persistent clears finite expiry
+PASS: configuration change does not start an inactive scan
+PASS: explicit user restart retains existing refresh behavior
+PASS: urgent edit cannot bypass failed-send throttle
+PASS: urgent edit recovers after throttle
+PASS: missing local actor does not publish invalid actor
+PASS: local actor readiness permits submission
+PASS: saved preset content invalidates effective selection
+PASS: active preset toggle recomputes union
+PASS: deselected preset disappears from cached union
+PASS: editing active preset updates cached targets
+PASS: restriction switches cached source to shared preset
+PASS: unrestrict restores unchanged local union
+PASS: open picker continues updating label projection
+PASS: open picker removes invalid picked target
+PASS: timed scan expires while picker is open
+PASS: disable takes effect while picker is open
+PASS: configuration mode change works while picker is open
+PASS: switch to persistent applies before expiry check
+PASS: first Escape closes rename only
+PASS: second Escape closes picker
+PASS: scan hotkey is suppressed while menu is open
+PASS: timed expiry also runs in selection editor
+PASS: distance change updates text without relayout
+PASS: changed title still relayouts
+PASS: screen boundary changes layout
+PASS: style invalidation still relayouts
+PASS: unchanged ordinary item classification can retain labels
+PASS: replacement item is not reused
+PASS: unchanged placed classification can retain callbacks
+PASS: new owner requires binding refresh
+PASS: new rope anchor requires binding refresh
+PASS: first binding requests label creation
+PASS: identical binding avoids rebuilding delegates
+PASS: reused label remains in desired set
+PASS: same slot new item removes old binding
+PASS: replaced slot object refreshes callbacks
+PASS: new target transform refreshes binding
+PASS: removed target releases cached binding
+PASS: unchanged retry preserves existing record and label
+PASS: unchanged retry advances its original retry cursor
+PASS: changed retry removes stale label and replaces record
+PASS: changed retry retains timing generation and finishes
+PASS: distance changes retain picker rename and deadline
+PASS: unchanged distance does not refresh settings
+PASS: scope settings update without rebuilding preset rows
+PASS: owner setting preserves local editor
+PASS: own UI mode change uses shared observer
+PASS: own UI duration uses shared observer
+PASS: next frame does not restart own UI change again
+PASS: scene predicate starts valid
+PASS: existing scene label rechecks additional predicate
+PASS: same-scene camera replacement is observed
+All 104 production state-flow checks passed. Game/API doubles; native rendering and networking still require in-game validation.

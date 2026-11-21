@@ -25,6 +25,9 @@ namespace WhySoLaggy
 
         private static readonly LocalizedConfigEntry[] ConfigEntries =
         {
+            Entry("Logging", "StructuredDiskFormat", "Structured Disk Format", "持续日志格式", "Both (compatible default), Jsonl, or Csv. Memory recording and ZIP exports are independent of this setting.", "Both（兼容默认值）、Jsonl 或 Csv。内存录制与诊断 ZIP 导出独立于此设置。"),
+            Entry("Diagnostics", "PhaseTiming", "Phase Timing", "限时阶段计时", "Run one bounded diagnostic window, then automatically switch off. Nested phases must not be summed.", "采集一次限时阶段耗时，结束后自动关闭。嵌套阶段不可重复相加。"),
+            Entry("Diagnostics", "PhaseTimingSeconds", "Phase Timing Seconds", "阶段计时秒数", "Diagnostic window duration, 30 to 60 seconds. P95 is a histogram upper bound; GC deltas are counts, not pause durations.", "诊断窗口持续 30 至 60 秒。P95 为直方图上界；GC 增量是次数，不是暂停耗时。"),
             Entry("Capture", "AutoCapture", "Automatic Capture", "自动卡顿录制", "Automatically collect plugin timing and then verified patch targets after severe or repeated frame spikes.", "严重或连续卡顿后自动采集插件耗时，再深入有证据的补丁目标。"),
             Entry("General", "AdaptiveTiming", "Adaptive Sampling", "自适应采样", "Manual patch timing may sample at entry; automatic detailed recording remains exact.", "手动补丁计时可在入口采样；自动详细录制保持精确。"),
             Entry("General", "CpuGpuMetrics", "CPU/GPU Timings", "CPU/GPU 帧耗时", "Read supported CPU/GPU counters; unavailable counters stay unavailable.", "读取受支持的 CPU/GPU 指标；不可用时明确显示不可用。"),
@@ -209,6 +212,10 @@ namespace WhySoLaggy
                 Token("AbuseDetection", "Abuse Detection", "滥用检测"),
                 Token("RpcMonitor", "RPC Monitor", "RPC 监控"),
                 Token("Logging", "Logging", "日志"),
+                Token("Diagnostics", "Diagnostics", "诊断"),
+                Token("Both", "Both", "两种格式"),
+                Token("Jsonl", "JSONL", "JSONL"),
+                Token("Csv", "CSV", "CSV"),
                 Token("MethodTracer", "Method Tracer", "方法追踪"),
                 Token("FieldProbe", "FieldProbe", "字段探针"),
                 Token("UI", "UI", "界面"),

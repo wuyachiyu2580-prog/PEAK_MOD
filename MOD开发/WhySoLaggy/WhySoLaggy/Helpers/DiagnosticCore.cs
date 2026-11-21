@@ -41,35 +41,47 @@ namespace WhySoLaggy
         internal double Time, DurationMs, CoveredMs, SelfMs;
         internal string State, Scene;
         internal bool Complete;
-        internal int Epoch;
+        internal int Epoch, IntervalsOmitted;
         internal List<MethodFrame> Methods = new List<MethodFrame>();
     }
 
     internal sealed class FrameWindow
     {
-        private readonly Queue<Tuple<double, double>> samples = new Queue<Tuple<double, double>>();
+        private struct Sample { internal double Time, Ms; }
+        private readonly Queue<Sample> samples = new Queue<Sample>();
+        private double[] scratch = new double[256];
+        internal long CapacityEvictions { get; private set; }
         internal const int MaxSamples = 60000;
         internal void Add(double now, double milliseconds)
         {
             if (milliseconds <= 0 || double.IsNaN(milliseconds) || double.IsInfinity(milliseconds)) return;
-            samples.Enqueue(Tuple.Create(now, milliseconds));
-            while (samples.Count > MaxSamples || (samples.Count > 0 && samples.Peek().Item1 < now - 30)) samples.Dequeue();
+            samples.Enqueue(new Sample { Time=now, Ms=milliseconds });
+            while (samples.Count > 0 && samples.Peek().Time < now - 30) samples.Dequeue();
+            if (samples.Count > MaxSamples) { samples.Dequeue(); CapacityEvictions++; }
         }
         internal FrameStatistics Snapshot(double now)
         {
-            while (samples.Count > 0 && samples.Peek().Item1 < now - 30) samples.Dequeue();
-            return Calculate(samples.Select(x => x.Item2));
+            using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.Statistics))
+            {
+                while (samples.Count > 0 && samples.Peek().Time < now - 30) samples.Dequeue();
+                if(scratch.Length<samples.Count)Array.Resize(ref scratch,Math.Min(MaxSamples,Math.Max(samples.Count,scratch.Length*2)));
+                int count=0;foreach(var sample in samples)scratch[count++]=sample.Ms;
+                return CalculateSorted(scratch,count);
+            }
         }
         internal static FrameStatistics Calculate(IEnumerable<double> values)
         {
-            double[] data = values.Where(x => x > 0 && !double.IsNaN(x) && !double.IsInfinity(x)).OrderBy(x => x).ToArray();
-            if (data.Length == 0) return new FrameStatistics();
-            int slow = Math.Max(1, (int)Math.Ceiling(data.Length * .01));
-            return new FrameStatistics { Count = data.Length, Mean = data.Average(), Median = data[(data.Length - 1) / 2],
-                P95 = data[Math.Max(0, (int)Math.Ceiling(data.Length * .95) - 1)], P99 = data[Math.Max(0, (int)Math.Ceiling(data.Length * .99) - 1)],
-                Low1 = data.Length >= 100 ? (double?)(1000d / data.Skip(data.Length - slow).Average()) : null };
+            double[] data = values.Where(x => x > 0 && !double.IsNaN(x) && !double.IsInfinity(x)).ToArray();
+            return CalculateSorted(data,data.Length);
         }
-        internal void Clear() => samples.Clear();
+        private static FrameStatistics CalculateSorted(double[] data,int count)
+        {
+            if(count==0)return new FrameStatistics();Array.Sort(data,0,count);
+            int slow=Math.Max(1,(int)Math.Ceiling(count*.01));double sum=0,slowSum=0;
+            for(int i=0;i<count;i++){sum+=data[i];if(i>=count-slow)slowSum+=data[i];}
+            return new FrameStatistics{Count=count,Mean=sum/count,Median=data[(count-1)/2],P95=data[(int)Math.Ceiling(count*.95)-1],P99=data[(int)Math.Ceiling(count*.99)-1],Low1=count>=100?(double?)(1000d*slow/slowSum):null};
+        }
+        internal void Clear() { samples.Clear(); CapacityEvictions = 0; }
     }
     internal sealed class FrameStatistics
     {
@@ -81,10 +93,11 @@ namespace WhySoLaggy
     internal static class MemoryMetrics
     {
         internal static long? UnityBytes, ManagedUsedBytes, ManagedCapacityBytes, GcAllocatedBytes;
-        internal static double? NetKBps;
-        internal static int GcCollections;
-        internal static string AllocationStatus = "Unavailable";
+        internal static double? NetKBps, ManagedUsedNetKBps;
+        internal static int GcCollections, GcCollectionsGen1, GcCollectionsGen2;
+        internal static string AllocationStatus => !FpsTracker.EnableMemoryMonitor ? "Disabled" : recorderValid ? "Available" : "Unavailable";
         private static long? previous;
+        private static long? previousManagedUsed;
         private static int[] collections;
         private static double last;
         private static ProfilerRecorder allocation;
@@ -103,40 +116,52 @@ namespace WhySoLaggy
                     if (description.Name != "GC Allocated In Frame" || description.UnitType.ToString() != "Bytes") continue;
                     allocation = new ProfilerRecorder(handle, 1, ProfilerRecorderOptions.Default | ProfilerRecorderOptions.StartImmediately);
                     recorderValid = allocation.Valid;
-                    AllocationStatus = recorderValid ? "Available" : "Unavailable";
                     break;
                 }
             }
-            catch { AllocationStatus = "Unavailable"; }
+            catch { recorderValid = false; }
         }
         internal static void ReadFrame()
         {
             GcAllocatedBytes = null;
             if (!recorderValid || !FpsTracker.EnableMemoryMonitor) return;
-            try { if (allocation.Valid && allocation.Count > 0) GcAllocatedBytes = allocation.LastValue; }
-            catch { recorderValid = false; AllocationStatus = "Unavailable"; }
+            try { recorderValid = allocation.Valid; if (recorderValid && allocation.Count > 0) GcAllocatedBytes = allocation.LastValue; }
+            catch { recorderValid = false; }
         }
         internal static void Tick(double now)
         {
             if (now - last < 1) return;
             double elapsed = now - last; last = now;
-            if (!FpsTracker.EnableMemoryMonitor) { UnityBytes = ManagedUsedBytes = ManagedCapacityBytes = null; NetKBps = null; previous=null;collections=null;return; }
+            if (!FpsTracker.EnableMemoryMonitor) { UnityBytes = ManagedUsedBytes = ManagedCapacityBytes = null; NetKBps = ManagedUsedNetKBps = null; previous=previousManagedUsed=null;collections=null;return; }
             try
             {
                 long value = Profiler.GetTotalAllocatedMemoryLong();
                 UnityBytes = value; NetKBps = NetRate(previous, value, elapsed); previous = value;
-                ManagedUsedBytes = Profiler.GetMonoUsedSizeLong(); ManagedCapacityBytes = Profiler.GetMonoHeapSizeLong();
+                long managedUsed = Profiler.GetMonoUsedSizeLong();
+                ManagedUsedBytes = managedUsed; ManagedUsedNetKBps = NetRate(previousManagedUsed, managedUsed, elapsed); previousManagedUsed = managedUsed;
+                ManagedCapacityBytes = Profiler.GetMonoHeapSizeLong();
                 int[] current = Enumerable.Range(0, GC.MaxGeneration + 1).Select(GC.CollectionCount).ToArray();
-                GcCollections += collections == null ? 0 : Math.Max(0,current[0]-collections[0]);
+                if (collections != null)
+                {
+                    GcCollections += CollectionDelta(collections, current, 0);
+                    if (current.Length > 1) GcCollectionsGen1 += CollectionDelta(collections, current, 1);
+                    if (current.Length > 2) GcCollectionsGen2 += CollectionDelta(collections, current, 2);
+                }
                 collections = current;
             }
-            catch { UnityBytes = ManagedUsedBytes = ManagedCapacityBytes = null; NetKBps = null; }
+            catch { UnityBytes = ManagedUsedBytes = ManagedCapacityBytes = null; NetKBps = ManagedUsedNetKBps = null; }
         }
         internal static void Shutdown()
         {
             try { allocation.Dispose(); } catch { }
-            allocation = default; recorderValid = false; previous = null; collections = null; last = 0;GcCollections=0;
-            UnityBytes = ManagedUsedBytes = ManagedCapacityBytes = GcAllocatedBytes = null; NetKBps = null; AllocationStatus = "Unavailable";
+            allocation = default; recorderValid = false; previous = previousManagedUsed = null; collections = null; last = 0;GcCollections=GcCollectionsGen1=GcCollectionsGen2=0;
+            UnityBytes = ManagedUsedBytes = ManagedCapacityBytes = GcAllocatedBytes = null; NetKBps = ManagedUsedNetKBps = null;
+        }
+
+        internal static int CollectionDelta(int[] before, int[] after, int generation)
+        {
+            if (before == null || after == null || generation < 0 || generation >= before.Length || generation >= after.Length) return 0;
+            return Math.Max(0, after[generation] - before[generation]);
         }
     }
 
@@ -198,29 +223,32 @@ namespace WhySoLaggy
         }
         private static void Boundary()
         {
-            if (!active) return;
-            long now = Stopwatch.GetTimestamp();
-            try
+            using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.FrameBoundary))
             {
-                if (started != 0)
+                if (!active) return;
+                long now = Stopwatch.GetTimestamp();
+                try
                 {
-                    var frame = TimingLedger.Seal(DiagnosticContext.Frame, started, now);
-                    frame.State = DiagnosticContext.State; frame.Scene = DiagnosticContext.Scene; frame.Epoch = frameEpoch;
-                    frame.Complete &= DiagnosticContext.Valid;
-                    MemoryMetrics.ReadFrame();
-                    Completed?.Invoke(frame);
+                    if (started != 0)
+                    {
+                        var frame = TimingLedger.Seal(DiagnosticContext.Frame, started, now);
+                        frame.State = DiagnosticContext.State; frame.Scene = DiagnosticContext.Scene; frame.Epoch = frameEpoch;
+                        frame.Complete &= DiagnosticContext.Valid;
+                        MemoryMetrics.ReadFrame();
+                        Completed?.Invoke(frame);
+                    }
+                    string scene = SceneManager.GetActiveScene().name;
+                    bool isLoading = loading != null && (bool)loading.GetValue(null, null);
+                    string state = !Application.isFocused ? "Unfocused" : Transition||PluginProfiler.Session.Busy||PatchProfiler.Session.Busy ? "Transition" : isLoading ? "Loading" :
+                        scene.IndexOf("Island", StringComparison.OrdinalIgnoreCase) >= 0 || scene.IndexOf("Level_", StringComparison.OrdinalIgnoreCase) >= 0 ? "Gameplay" :
+                        scene.IndexOf("Airport", StringComparison.OrdinalIgnoreCase) >= 0 ? "Airport" : "Menu";
+                    if (state != DiagnosticContext.State || scene != DiagnosticContext.Scene) StableSince = DiagnosticClock.Now;
+                    DiagnosticContext.State = state; DiagnosticContext.Scene = scene; DiagnosticContext.Frame++;
+                    frameEpoch=DiagnosticContext.RoomEpoch;DiagnosticContext.Valid = true;
                 }
-                string scene = SceneManager.GetActiveScene().name;
-                bool isLoading = loading != null && (bool)loading.GetValue(null, null);
-                string state = !Application.isFocused ? "Unfocused" : Transition||PluginProfiler.Session.Busy||PatchProfiler.Session.Busy ? "Transition" : isLoading ? "Loading" :
-                    scene.IndexOf("Island", StringComparison.OrdinalIgnoreCase) >= 0 || scene.IndexOf("Level_", StringComparison.OrdinalIgnoreCase) >= 0 ? "Gameplay" :
-                    scene.IndexOf("Airport", StringComparison.OrdinalIgnoreCase) >= 0 ? "Airport" : "Menu";
-                if (state != DiagnosticContext.State || scene != DiagnosticContext.Scene) StableSince = DiagnosticClock.Now;
-                DiagnosticContext.State = state; DiagnosticContext.Scene = scene; DiagnosticContext.Frame++;
-                frameEpoch=DiagnosticContext.RoomEpoch;DiagnosticContext.Valid = true;
+                catch { DiagnosticContext.Valid = false; }
+                finally { started = now; TimingLedger.Begin(DiagnosticContext.Frame);SelfMetrics.Add("FrameBoundary",DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-now)); }
             }
-            catch { DiagnosticContext.Valid = false; }
-            finally { started = now; TimingLedger.Begin(DiagnosticContext.Frame);SelfMetrics.Add("FrameBoundary",DiagnosticClock.Milliseconds(Stopwatch.GetTimestamp()-now)); }
         }
         internal static void Shutdown()
         {

@@ -1,0 +1,74 @@
+--- MOD开发\WhereIsThing\WhereIsThing\ThingPresets.cs (turn start)
+
++++ MOD开发\WhereIsThing\WhereIsThing\ThingPresets.cs
+
+@@ -43,9 +43,7 @@
+
+             return copy;
+         }
+ 
+-        public void Normalize()
+-        {
+-        }
++
+     }
+ 
+     internal static class ThingPresetCodec
+@@ -68,7 +66,6 @@
+
+                     continue;
+                 }
+ 
+-                preset.Normalize();
+                 if (builder.Length > 0)
+                 {
+                     builder.Append(RecordSeparator);
+@@ -138,7 +135,6 @@
+
+                     }
+                 }
+ 
+-                preset.Normalize();
+                 result.Add(preset);
+             }
+ 
+@@ -178,7 +174,7 @@
+
+             };
+             preset.SelectedLuggageTypes.Add(ThingLuggageType.Clown);
+             preset.SelectedSceneTargetTypes.Add(ThingSceneTargetType.GloomBellTower);
+-            preset.Normalize();
++
+             return preset;
+         }
+ 
+@@ -188,7 +184,7 @@
+
+             {
+                 Published = true
+             };
+-            preset.Normalize();
++
+             return preset;
+         }
+ 
+@@ -198,7 +194,7 @@
+
+             {
+                 Published = true
+             };
+-            preset.Normalize();
++
+             return preset;
+         }
+ 
+@@ -208,7 +204,7 @@
+
+             {
+                 Published = true
+             };
+-            preset.Normalize();
++
+             return preset;
+         }
+ 

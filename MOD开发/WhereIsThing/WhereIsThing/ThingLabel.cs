@@ -90,6 +90,7 @@ namespace WhereIsThing
             _arrow.rectTransform.sizeDelta = new Vector2(18f, 18f);
             _arrow.rectTransform.anchoredPosition = new Vector2(0f, -28f);
             _arrow.enabled = false;
+            _root.SetActive(false);
         }
 
         public string Key { get { return _key; } }
@@ -119,36 +120,45 @@ namespace WhereIsThing
             _contentDirty = false;
         }
 
-        public void Update(Camera camera, float maxDistance, bool showOffscreen)
+        public bool Update(Camera camera, Vector3 cameraPosition, float maxDistance, bool showOffscreen)
         {
             if (camera == null)
             {
                 SetVisible(false);
-                return;
+                return true;
             }
 
             Vector3 targetPosition = _positionProvider == null ? _target.position : _positionProvider();
+            if (!ThingLabelRange.Within(targetPosition, cameraPosition, maxDistance, 10f))
+            {
+                SetVisible(false);
+                return false;
+            }
+            if (!ThingLabelRange.Within(targetPosition, cameraPosition, maxDistance))
+            {
+                SetVisible(false);
+                return true;
+            }
             Vector3 worldPosition = targetPosition + Vector3.up * 0.8f;
             Vector3 viewport = camera.WorldToViewportPoint(worldPosition);
-            float distance = Vector3.Distance(camera.transform.position, targetPosition);
-            bool withinDistance = maxDistance <= 0f || distance <= maxDistance;
+            float distance = Vector3.Distance(cameraPosition, targetPosition);
             bool inFront = viewport.z > 0f;
             bool onScreen = inFront && viewport.x >= 0f && viewport.x <= 1f && viewport.y >= 0f && viewport.y <= 1f;
 
-            if (onScreen && withinDistance)
+            if (onScreen)
             {
                 _root.transform.position = camera.WorldToScreenPoint(worldPosition);
                 EnsureContent();
                 SetText(_cachedTitle, _cachedOwner, GetDistanceText(distance), true);
                 _arrow.enabled = false;
                 SetVisible(true);
-                return;
+                return true;
             }
 
-            if (!showOffscreen || !withinDistance)
+            if (!showOffscreen)
             {
                 SetVisible(false);
-                return;
+                return true;
             }
 
             Vector2 direction = new Vector2(viewport.x - 0.5f, viewport.y - 0.5f);
@@ -168,6 +178,7 @@ namespace WhereIsThing
             _arrow.enabled = true;
             _arrow.rectTransform.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f);
             SetVisible(true);
+            return true;
         }
 
         public void Dispose()
@@ -221,6 +232,7 @@ namespace WhereIsThing
 
             _visible = visible;
             _group.alpha = visible ? 1f : 0f;
+            _root.SetActive(visible);
         }
 
         private void SetText(string title, string owner, string distance, bool placeAboveTarget)
@@ -230,6 +242,15 @@ namespace WhereIsThing
                 string.Equals(_lastDistance, distance, StringComparison.Ordinal) &&
                 _lastPlaceAboveTarget == placeAboveTarget)
             {
+                return;
+            }
+
+            if (_hasTextState && string.Equals(_lastTitle, title, StringComparison.Ordinal) &&
+                string.Equals(_lastOwner, owner, StringComparison.Ordinal) && _lastPlaceAboveTarget == placeAboveTarget)
+            {
+                // Distance changes do not require title layout or player-name updates.
+                _lastDistance = distance;
+                _mainDistance.text = distance;
                 return;
             }
 

@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-18",
+  "completedUtc": "2026-11-18T13:00:03.5330727Z",
+  "profile": "2.0.a",
+  "directory": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins",
+  "backup": "C:\\Users\\Administrator\\Desktop\\MOD\\PEAK\\.build\\deploy-playtest-20261118-210002",
+  "before": [
+    {
+      "name": "WhySoLaggy.dll",
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhySoLaggy.dll",
+      "sha256": "97F1320DE575B44034F251F6FBFC2A1A2250BC4BF736C0E89FA2EFDB80AA328E",
+      "bytes": 261632
+    },
+    {
+      "name": "WhySoLaggy.pdb",
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhySoLaggy.pdb",
+      "sha256": "E6B8087EA96336FB8CC6951BFDF4592228A7857A7A2295A8941D8175A6B0B16C",
+      "bytes": 72224
+    },
+    {
+      "name": "WhereIsThing.dll",
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhereIsThing.dll",
+      "sha256": "5FC795194989B4F0A47FF73B50914642FA86390526CD90EF2268B7D482AFBBC5",
+      "bytes": 189952
+    },
+    {
+      "name": "WhereIsThing.pdb",
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhereIsThing.pdb",
+      "sha256": "58A27EBC73EAE7118C7C18D30732AF0B0C05B7E4EA330E8369D240FE8B7F6EA2",
+      "bytes": 58356
+    }
+  ],
+  "installed": [
+    {
+      "name": "WhySoLaggy.dll",
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhySoLaggy.dll",
+      "sha256": "EE36793F76ABF3DCCDB1B2EC430EBA96B10A32D6D583578693C8CD62B5EF567B",
+      "bytes": 279040,
+      "version": "1.0.5-dev.20261117.playtest",
+      "copies": 1
+    },
+    {
+      "name": "WhySoLaggy.pdb",
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhySoLaggy.pdb",
+      "sha256": "C1BC328EF8BB6C7300CB78BD6882D4DA887B3DB101E043A0A21E60B817B500C6",
+      "bytes": 76712,
+      "version": null,
+      "copies": 1
+    },
+    {
+      "name": "WhereIsThing.dll",
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhereIsThing.dll",
+      "sha256": "ED6043D4A73A4DC1EFC031776C58A6C99FF890768F41E79993D52BC70E43D794",
+      "bytes": 197632,
+      "version": "0.1.3-dev.20261117.playtest",
+      "copies": 1
+    },
+    {
+      "name": "WhereIsThing.pdb",
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\plugins\\WhereIsThing.pdb",
+      "sha256": "64A4E7D1B44A15CCA2664107D3F0E296701543C5BE1528C529F0571B9A622775",
+      "bytes": 59856,
+      "version": null,
+      "copies": 1
+    }
+  ],
+  "configs": [
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\config\\com.wuyachiyu.WhySoLaggy.cfg",
+      "sha256": "8EF5013212F41901495A83A9FB0A6DCEDA07B9DA0FB7C048EF5F7126887F1397"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Roaming\\r2modmanPlus-local\\PEAK\\profiles\\2.0.a\\BepInEx\\config\\com.wuyachiyu.WhereIsThing.cfg",
+      "sha256": "1572365CABF80D8F5B3EF507D07A6E07C820B846E81E96A184E9EAF0F2558D08"
+    }
+  ],
+  "configUnchanged": true,
+  "gameStartedByAgent": false
+}

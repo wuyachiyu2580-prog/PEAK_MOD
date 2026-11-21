@@ -1,0 +1,13 @@
+--- MOD开发\WhereIsThing\WhereIsThing\WhereIsThingPlugin.Luggage.cs (turn start)
+
++++ MOD开发\WhereIsThing\WhereIsThing\WhereIsThingPlugin.Luggage.cs
+
+@@ -15,7 +15,6 @@
+
+                 (!luggage.IsOpen || IsTrapActive(trap));
+             if (!IsValid()) return;
+             string key = "luggage:" + luggage.GetInstanceID();
+-            _scanSeenBuffer.Add(key);
+             AddLabel(key, luggage.transform, delegate
+             {
+                 string name = trap != null

@@ -1,0 +1,10 @@
+{
+  "memory_links": 10,
+  "all_links_valid": true,
+  "asset_count": 182,
+  "five_shroomberries_have_spores": true,
+  "diff_check_exit": 0,
+  "isolated_artifact_hash_matches": true,
+  "deployed": false,
+  "in_game_tested": false
+}

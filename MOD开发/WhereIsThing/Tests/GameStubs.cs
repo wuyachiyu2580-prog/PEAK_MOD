@@ -9,6 +9,7 @@ namespace UnityEngine
     {
         public float x,y,z;
         public Vector3(float x,float y,float z) { this.x=x;this.y=y;this.z=z; }
+        public static Vector3 zero => new Vector3(0,0,0);
         public float sqrMagnitude => x*x+y*y+z*z;
         public static Vector3 operator -(Vector3 a,Vector3 b) => new Vector3(a.x-b.x,a.y-b.y,a.z-b.z);
         public static Vector3 operator +(Vector3 a,Vector3 b) => new Vector3(a.x+b.x,a.y+b.y,a.z+b.z);
@@ -62,17 +63,19 @@ namespace Zorro.Core
     public static class Singleton<T> { public static T Instance; }
     public static class SingletonAsset<T> { public static T Instance; }
 }
-public class UIData { public string itemName; }
+public class UIData { public string itemName; public bool canPocket=true,canBackpack=true; }
+public class Flare:UnityEngine.Component {}
 public enum ItemState { Ground,Held }
 public class Item:UnityEngine.Component
 {
     [Flags] public enum ItemTags { ScoutAmulet=1,GoldenIdol=2,BingBong=4,Mystical=8,PackagedFood=16,Berry=32,Mushroom=64,GourmandRequirement=128,Bird=256 }
     public static List<Item> ALL_ITEMS=new List<Item>();
     public ushort itemID; public Item isSecretlyOtherItemPrefab; public UIData UIData=new UIData();
-    public ItemTags itemTags; public ItemState itemState; public string GameNameOverride;
+    public ItemTags itemTags; public ItemState itemState; public string GameNameOverride; public bool blockInteraction;
     public string GetName()=>GameNameOverride??LocalizedText.GetText(LocalizedText.GetNameIndex(UIData.itemName),LocalizedText.CURRENT_LANGUAGE);
 }
 public class FakeItem:UnityEngine.Component { public Item realItemPrefab; public bool pickedUp; }
+public class OrbThatMakesYouSleepy:UnityEngine.Component { public FakeItem fakeBerry; }
 public class ItemDatabase { public Dictionary<ushort,Item> itemLookup=new Dictionary<ushort,Item>(); }
 [Flags] public enum SpawnPool { LuggageBeach=1,LuggageJungle=2,LuggageTundra=4,LuggageCaldera=8,LuggageClimber=16,LuggageAncient=32,LuggageMesa=64,LuggageRoots=128,LuggageGloom=256,LuggageCitadel=512,LuggageClown=1024 }
 public class Spawner:UnityEngine.Component { public SpawnPool spawnPool; private SpawnPool GetSpawnPool()=>spawnPool; }
@@ -106,7 +109,7 @@ public class Character:UnityEngine.Component { public static Character localChar
 namespace WhereIsThing
 {
     public class TestSetting<T> { public T Value; }
-    public class TestLog { public void LogInfo(string text) {} }
+    public class TestLog { public void LogInfo(string text) {} public void LogWarning(string text) {} }
     public sealed partial class WhereIsThingPlugin
     {
         internal ThingLocationScope _effectiveScopes=ThingLocationScope.Ground;
@@ -118,13 +121,14 @@ namespace WhereIsThing
         internal TestSetting<int> _pickupIdentityVersion=new TestSetting<int>();
         internal TestSetting<ThingNameLanguage> _nameLanguage=new TestSetting<ThingNameLanguage>();
         internal TestLog _log=new TestLog();
-        internal HashSet<string> _scanSeenBuffer=new HashSet<string>();
         internal Dictionary<string,(UnityEngine.Transform target,Func<string> title,Func<bool> valid)> Labels=new();
         internal static List<FakeItem> FakeItems=new();
-        private T[] FindObjectsByType<T>(UnityEngine.FindObjectsSortMode sort)=>FakeItems.OfType<T>().ToArray();
+        internal static List<OrbThatMakesYouSleepy> NapberryPlants=new();
+        private T[] FindObjectsByType<T>(UnityEngine.FindObjectsSortMode sort)=>FakeItems.Cast<UnityEngine.Component>().Concat(NapberryPlants).OfType<T>().ToArray();
         private void AddLabel(string key,UnityEngine.Transform target,Func<string> title,Func<bool> valid,Func<UnityEngine.Vector3> position=null)
         { if(!Labels.ContainsKey(key))Labels[key]=(target,title,valid); }
         internal void Plants() { RefreshRootPlantItems();RefreshRootPlantFakeItems(); }
+        internal void Napberries()=>RefreshNapberryPlants();
         internal void Migrate()=>MigratePickupSelections();
         internal void Chest(Luggage luggage)=>RefreshLuggageLabel(luggage);
     }

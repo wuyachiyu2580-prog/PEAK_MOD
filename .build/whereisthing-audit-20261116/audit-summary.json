@@ -1,0 +1,32 @@
+{
+  "reviewed_at": "2026-11-16T22:18:42.158872+08:00",
+  "production_cs_verified": 23,
+  "production_cs_changed_since_audit_start": [],
+  "existing_regression_checks_passed": 184,
+  "extracted_production_methods": 23,
+  "audit_observations": {
+    "total": 8,
+    "normal_control": 1,
+    "functional_observations": 6,
+    "functional_root_causes": 4,
+    "synthetic_filter_boundary": 1
+  },
+  "evidence_limit": "Extracted production methods and test doubles; not an in-game or real Photon networking test. Existing additionalFilter callers are parent-component/type checks; ordinary RunSettings shutdown disables the GO and is covered by the active check.",
+  "production_fixes_applied": false,
+  "in_game_validation": false,
+  "deployed": false,
+  "memory_entries_updated": [
+    "memory/mods/WhereIsThing/README.md",
+    "memory/mods/WhereIsThing/STATUS.md",
+    "memory/mods/WhereIsThing/TODO.md",
+    "memory/mods/WhereIsThing/DECISIONS.md",
+    "memory/mods/WhereIsThing/FILES.md",
+    "memory/mods/WhereIsThing/RECENT.md",
+    "memory/mods/WhereIsThing/temp/current.md",
+    "memory/README.md",
+    "memory/TODO.md",
+    "memory/MEMORY_INDEX.md",
+    "memory/CHANGELOG.md"
+  ],
+  "report": "memory\\mods\\WhereIsThing\\REVIEW_2026-11-16.md"
+}

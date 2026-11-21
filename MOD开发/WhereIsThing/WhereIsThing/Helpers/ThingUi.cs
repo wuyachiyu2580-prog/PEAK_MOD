@@ -40,7 +40,7 @@ namespace WhereIsThing
         {
             if (allowEditing)
             {
-                return Text("Manage preset contents and sharing.", "管理预设内容与共享。");
+                return Text("Enable multiple presets to combine their targets. Keep at least one enabled.", "可启用多个预设合并目标，至少保留一个启用。");
             }
 
             if (usingFallbackPresets)
@@ -184,6 +184,11 @@ namespace WhereIsThing
         public static string Use(bool active)
         {
             return active ? Text("Using", "使用中") : Text("Use", "使用");
+        }
+
+        public static string Enable(bool active)
+        {
+            return active ? Text("Disable", "停用") : Text("Enable", "启用");
         }
 
         public static string LocalScanSettings()

@@ -5,8 +5,45 @@ using System.Text;
 
 namespace WhySoLaggy
 {
+    internal enum StructuredDiskFormat { Both, Jsonl, Csv }
     internal static class StructuredLogger
     {
+        private static StructuredDiskFormat diskFormat=StructuredDiskFormat.Both;
+        private static StructuredDiskFormat requestedDiskFormat=StructuredDiskFormat.Both;
+        internal static StructuredDiskFormat DiskFormat=>diskFormat;
+        internal static void ConfigureDiskFormat(StructuredDiskFormat format)
+        {
+            if(!Enum.IsDefined(typeof(StructuredDiskFormat),format))format=StructuredDiskFormat.Both;
+            if(DiagnosticContext.IsMainThread&&!DiagnosticIO.IsWorker)
+            {DiagnosticIO.Start();DiagnosticIO.Enqueue(()=>ConfigureDiskFormat(format),128,true);return;}
+            lock(_lock)
+            {
+                requestedDiskFormat=format;
+                if(diskFormat==format)return;
+                if(!_inited){diskFormat=format;return;}
+                // Flush in queue order; a failed flush keeps the previous policy intact.
+                FlushBuffersLocked();
+                ApplyPendingDiskFormat();
+            }
+        }
+        private static void ApplyPendingDiskFormat()
+        {
+            if(diskFormat==requestedDiskFormat||_csvBuffer.Length!=0||_jsonBuffer.Length!=0||diskFailures!=0)return;
+            CloseWriters();diskFormat=requestedDiskFormat;
+            try{OpenWriters();}
+            catch(Exception ex){DiagnosticIO.Error="Disk format change failed: "+ex.GetType().Name;}
+        }
+        private static void OpenWriters()
+        {
+            if(diskFormat!=StructuredDiskFormat.Jsonl)
+            {
+                RotateCsvForSchemaMismatch();CleanupRotatedFiles(_csvPath);
+                bool needHeader=!File.Exists(_csvPath)||new FileInfo(_csvPath).Length==0;
+                _csvWriter=NewWriter(_csvPath,true);
+                if(needHeader){_csvWriter.WriteLine(ExpectedCsvHeader);_csvWriter.Flush();}
+            }
+            if(diskFormat!=StructuredDiskFormat.Csv){CleanupRotatedFiles(_jsonlPath);_jsonlWriter=NewWriter(_jsonlPath,true);}
+        }
         public static int MaxLogFileSizeMB = 10;
         public static int MaxRotatedFiles = 30;
         public static int MaxRotatedStorageMB = 350;
@@ -35,6 +72,12 @@ namespace WhySoLaggy
             "SuppressedCount", "PeakRate", "SchemaVersion", "SessionId", "RoomEpoch", "Sequence", "MonotonicSeconds", "CaptureId", "Validity",
             "UnityAllocatedBytes", "ManagedUsedBytes", "ManagedCapacityBytes", "MemoryNetKBps", "GcAllocatedFrameBytes", "GcAllocationStatus", "GcCollections",
             "P95FrameMs", "P99FrameMs", "Low1Fps", "SampleCount", "SampleCoverage", "BackgroundMs", "Exceptions", "MethodId", "TimingKind", "CoveredMs", "UnattributedMs", "SceneState",
+            "ManagedUsedNetKBps", "SamplingMode", "BoundaryCalls", "FrameIntervalsOmitted", "EventFieldsTruncated", "HookCoverage",
+            "GcCollectionsGen0", "GcCollectionsGen1", "GcCollectionsGen2",
+            "RpcDetailsTruncated", "RttSampleCount30s", "RttMin30s", "RttMedian30s", "RttP95_30s", "RttMax30s",
+            "IncomingCommandsSampleCount30s", "IncomingCommandsMin30s", "IncomingCommandsMedian30s", "IncomingCommandsP95_30s", "IncomingCommandsMax30s",
+            "OutgoingCommandsSampleCount30s", "OutgoingCommandsMin30s", "OutgoingCommandsMedian30s", "OutgoingCommandsP95_30s", "OutgoingCommandsMax30s",
+            "RpcDetailCount", "RpcObjectLookupTotalMs", "RpcObjectLookupMaxMs", "RpcArgumentFormatTotalMs", "RpcArgumentFormatMaxMs", "RpcParameterParseTotalMs", "RpcParameterParseMaxMs",
         };
 
         private static readonly object _lock = new object();
@@ -51,7 +94,7 @@ namespace WhySoLaggy
         private static long _lastFlushTicks;
         private static long _eventsSinceMetrics;
         private static double _lastFlushMs;
-        private static bool _inited;
+        private static volatile bool _inited;
 
         internal static string ExpectedCsvHeader => string.Join(",", CsvColumns);
 
@@ -67,17 +110,7 @@ namespace WhySoLaggy
                     _dir = dir;
                     _csvPath = Path.Combine(dir, "whysolaggy_data.csv");
                     _jsonlPath = Path.Combine(dir, "whysolaggy_events.jsonl");
-                    RotateCsvForSchemaMismatch();
-                    CleanupRotatedFiles(_csvPath);
-                    CleanupRotatedFiles(_jsonlPath);
-                    bool needHeader = !File.Exists(_csvPath) || new FileInfo(_csvPath).Length == 0;
-                    _csvWriter = NewWriter(_csvPath, true);
-                    _jsonlWriter = NewWriter(_jsonlPath, true);
-                    if (needHeader)
-                    {
-                        _csvWriter.WriteLine(ExpectedCsvHeader);
-                        _csvWriter.Flush();
-                    }
+                    OpenWriters();
                     _csvBuffer.Clear();
                     _jsonBuffer.Clear();
                     _eventsSinceMetrics = 0;
@@ -97,23 +130,39 @@ namespace WhySoLaggy
         internal static event Action<StructuredEvent> EventWritten;
         private static double nextFlush,nextDiskRetry;
         private static int diskFailures;
-        internal static long DiskDropped;
+        internal static long DiskDropped, DiskWriteFailures, CaptureCallbackFailures;
         public static void WriteEvent(StructuredEvent evt)
         {
             if (!_inited) return;
-            var frozen=EventCodec.Freeze(evt);
-            try {EventWritten?.Invoke(frozen);} catch { }
+            StructuredEvent frozen;using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.Freeze))frozen=EventCodec.Freeze(evt);
+            try {EventWritten?.Invoke(frozen);} catch { System.Threading.Interlocked.Increment(ref CaptureCallbackFailures); }
             bool important=evt.Type==EventType.AbuseAlert||evt.Type==EventType.ExceptionSummary||evt.Type==EventType.CaptureState;
-            DiagnosticIO.Enqueue(()=>{long start=System.Diagnostics.Stopwatch.GetTimestamp();lock(_lock){AppendCsvRow(frozen);AppendJsonlRow(frozen);_eventsSinceMetrics++;if(_csvBuffer.Length+_jsonBuffer.Length>262144)FlushBuffersLocked();}SelfMetrics.Add("Serialization",DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp()-start));},EventCodec.Size(frozen),important);
+            DiagnosticIO.Enqueue(() => Serialize(frozen), EventCodec.Size(frozen), important, frozen.Type);
+        }
+        internal static void WriteFrame(CaptureFrame frame)
+        {
+            if (_inited) DiagnosticIO.Enqueue(() => Serialize(frame.Expand()), CaptureFrame.PayloadBytes + frame.Context.Bytes, false, EventType.FrameSample);
+        }
+        private static void Serialize(StructuredEvent frozen)
+        {
+            long start = System.Diagnostics.Stopwatch.GetTimestamp();
+            lock (_lock)
+            {
+                if (diskFormat != StructuredDiskFormat.Jsonl) AppendCsvRow(frozen);
+                if (diskFormat != StructuredDiskFormat.Csv) AppendJsonlRow(frozen);
+                _eventsSinceMetrics++;
+                if (_csvBuffer.Length + _jsonBuffer.Length > 262144) FlushBuffersLocked();
+            }
+            SelfMetrics.Add("Serialization", DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp() - start));
         }
         public static void Tick()
-        {if(!_inited||DiagnosticClock.Now<nextFlush)return;nextFlush=DiagnosticClock.Now+1;DiagnosticIO.Enqueue(()=>{lock(_lock)FlushBuffersLocked();TextLogSink.Flush();},128,true);}
+        {if(!_inited||DiagnosticClock.Now<nextFlush)return;nextFlush=DiagnosticClock.Now+1;DiagnosticIO.Enqueue(()=>{lock(_lock){FlushBuffersLocked();ApplyPendingDiskFormat();}TextLogSink.Flush();},128,true);}
         public static void Flush()
-        {if(!_inited)return;Action action=()=>{lock(_lock)FlushBuffersLocked();TextLogSink.Flush();};if(DiagnosticContext.IsMainThread)DiagnosticIO.Enqueue(action,128,true);else DiagnosticIO.Barrier(action);}
+        {if(!_inited)return;Action action=()=>{lock(_lock){FlushBuffersLocked();ApplyPendingDiskFormat();}TextLogSink.Flush();};if(DiagnosticContext.IsMainThread)DiagnosticIO.Enqueue(action,128,true);else DiagnosticIO.Barrier(action);}
         public static void Shutdown()
         {
             if(!_inited)return;
-            DiagnosticIO.Enqueue(()=>{lock(_lock){FlushBuffersLocked();CloseWriters();_csvBuffer.Clear();_jsonBuffer.Clear();_inited=false;_eventsSinceMetrics=0;}TextLogSink.Close();},256,true);
+            DiagnosticIO.Enqueue(()=>{lock(_lock){FlushBuffersLocked();if(_csvBuffer.Length+_jsonBuffer.Length>0)System.Threading.Interlocked.Increment(ref DiskDropped);CloseWriters();_csvBuffer.Clear();_jsonBuffer.Clear();_inited=false;_eventsSinceMetrics=0;}TextLogSink.Close();},256,true);
             DiagnosticIO.Stop();
         }
 
@@ -123,6 +172,8 @@ namespace WhySoLaggy
             long started = System.Diagnostics.Stopwatch.GetTimestamp();
             try
             {
+                if((diskFormat!=StructuredDiskFormat.Jsonl&&_csvWriter==null)||(diskFormat!=StructuredDiskFormat.Csv&&_jsonlWriter==null))
+                {CloseWriters();OpenWriters();}
                 RotateIfNeeded();
                 if (_csvBuffer.Length > 0)
                 {
@@ -139,6 +190,7 @@ namespace WhySoLaggy
             }
             catch (Exception ex)
             {
+                System.Threading.Interlocked.Increment(ref DiskWriteFailures);
                 diskFailures++;nextDiskRetry=DiagnosticClock.Now+Math.Min(30,Math.Pow(2,Math.Min(diskFailures,5)));
                 DiagnosticIO.Error = "Flush failed: " + ex.GetType().Name;BoundFailedBuffer();
             }
@@ -151,7 +203,7 @@ namespace WhySoLaggy
         }
 
         private static void BoundFailedBuffer()
-        {if(_csvBuffer.Length+_jsonBuffer.Length>262144){_csvBuffer.Clear();_jsonBuffer.Clear();DiskDropped++;}}
+        {if(_csvBuffer.Length+_jsonBuffer.Length>262144){_csvBuffer.Clear();_jsonBuffer.Clear();System.Threading.Interlocked.Increment(ref DiskDropped);}}
         private static void AppendCsvRow(StructuredEvent evt)
         {
             _csvRow.Clear();

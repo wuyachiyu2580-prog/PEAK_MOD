@@ -1,0 +1,143 @@
+--- MOD开发\WhereIsThing\WhereIsThing\WhereIsThingPlugin.Discovery.cs (turn start)
+
++++ MOD开发\WhereIsThing\WhereIsThing\WhereIsThingPlugin.Discovery.cs
+
+@@ -250,12 +250,21 @@
+
+                 processed++;
+                 record.NextRetryIndex++;
+                 int viewId = record.View.ViewID == 0 ? -record.View.GetInstanceID() : record.View.ViewID;
+-                RemoveNetworkRecordLabels(record);
+                 NetworkObjectRecord replacement = BuildNetworkObjectRecord(record.View);
+-                replacement.FirstSeenAt = record.FirstSeenAt;
+-                replacement.NextRetryIndex = record.NextRetryIndex;
+-                replacement.LastSeenGeneration = record.LastSeenGeneration;
+-                _networkObjects[viewId] = replacement;
++                if (SameClassification(record, replacement))
++                {
++                    // Keep the record captured by existing label delegates.
++                    record.NeedsLateClassification = replacement.NeedsLateClassification;
++                    replacement = record;
++                }
++                else
++                {
++                    RemoveNetworkRecordLabels(record);
++                    replacement.FirstSeenAt = record.FirstSeenAt;
++                    replacement.NextRetryIndex = record.NextRetryIndex;
++                    replacement.LastSeenGeneration = record.LastSeenGeneration;
++                    _networkObjects[viewId] = replacement;
++                }
+                 SyncNetworkObject(replacement);
+                 if (!replacement.NeedsLateClassification || replacement.NextRetryIndex >= ClassificationRetryDelays.Length)
+                 {
+@@ -273,6 +282,23 @@
+
+                     break;
+                 }
+             }
++        }
++
++        private static bool SameClassification(NetworkObjectRecord left, NetworkObjectRecord right)
++        {
++            if (left.View != right.View || left.Item != right.Item || left.PreferPlacedItemLabel != right.PreferPlacedItemLabel ||
++                left.PlacedTargets.Count != right.PlacedTargets.Count) return false;
++            for (int i = 0; i < left.PlacedTargets.Count; i++)
++            {
++                PlacedTargetRecord a = left.PlacedTargets[i];
++                PlacedTargetRecord b = right.PlacedTargets[i];
++                if (a.Key != b.Key || a.FallbackName != b.FallbackName || a.Target != b.Target || a.Definition != b.Definition ||
++                    a.View != b.View || a.OwnerView != b.OwnerView || a.OwnerActorNumber != b.OwnerActorNumber ||
++                    a.LegacySceneTargetType != b.LegacySceneTargetType || a.Rope != b.Rope || a.IsRope != b.IsRope ||
++                    a.RopeAnchor != b.RopeAnchor || a.PitonHandle != b.PitonHandle || a.ShowOwner != b.ShowOwner ||
++                    (a.PositionProvider == null) != (b.PositionProvider == null)) return false;
++            }
++            return true;
+         }
+ 
+         private static bool IsBridgeVine(JungleVine vine)
+@@ -372,7 +398,8 @@
+
+                 if ((_effectiveScopes & ThingLocationScope.Ground) != 0 && item.itemState == ItemState.Ground && ThingItemTraits.IsReusableGroundItem(item))
+                 {
+                     string key = "item:" + item.GetInstanceID();
+-                    AddNetworkLabel(record, key, item.transform,
++                    if (PrepareNetworkLabel(record, key, item.transform, item, identity, false))
++                        AddNetworkLabel(record, key, item.transform,
+                         delegate { return ThingCatalog.GetDisplayName(identity, _nameLanguage.Value); },
+                         delegate { return IsSelectedGroundItem(item, identity) && ThingItemTraits.IsReusableGroundItem(item); });
+                 }
+@@ -380,7 +407,8 @@
+
+                     ShouldShowHeldItem(item))
+                 {
+                     string key = "held:" + item.GetInstanceID();
+-                    AddNetworkLabel(record, key, item.transform,
++                    if (PrepareNetworkLabel(record, key, item.transform, item, identity, false))
++                        AddNetworkLabel(record, key, item.transform,
+                         delegate { return ThingCatalog.GetDisplayName(identity, _nameLanguage.Value); },
+                         delegate { return item != null && item.itemState == ItemState.Held && ShouldShowHeldItem(item) &&
+                             (_effectiveScopes & ThingLocationScope.Held) != 0 && _selectedIds.Contains(identity.itemID); });
+@@ -405,6 +433,7 @@
+
+ 
+                 Item contentPrefab = slot.prefab;
+                 string key = "backpack:" + backpack.GetInstanceID() + ":" + slot.itemSlotID;
++                if (!PrepareNetworkLabel(record, key, backpack.transform, slot, contentPrefab, false)) continue;
+                 AddNetworkLabel(record, key, backpack.transform, delegate
+                 {
+                     return ThingCatalog.GetDisplayName(contentPrefab, _nameLanguage.Value) + "\n" +
+@@ -416,6 +445,24 @@
+
+                         slot.prefab == contentPrefab && _selectedIds.Contains(ThingPickupIdentity.Resolve(contentPrefab).itemID);
+                 });
+             }
++        }
++
++        private bool PrepareNetworkLabel(NetworkObjectRecord record, string key, Transform target,
++            object source, Item definition, bool showOwner)
++        {
++            // Desired keys must be recorded even when the existing label is reused.
++            record.DesiredLabelKeys.Add(key);
++            record.LabelKeys.Add(key);
++            NetworkLabelBinding binding;
++            if (record.LabelBindings.TryGetValue(key, out binding) && binding.Target == target &&
++                ReferenceEquals(binding.Source, source) && binding.Definition == definition && binding.ShowOwner == showOwner)
++                return !_labels.ContainsKey(key);
++            RemoveLabel(key);
++            record.LabelBindings[key] = new NetworkLabelBinding
++            {
++                Target = target, Source = source, Definition = definition, ShowOwner = showOwner
++            };
++            return true;
+         }
+ 
+         private void AddNetworkLabel(NetworkObjectRecord record, string key, Transform target, Func<string> titleProvider,
+@@ -436,8 +483,7 @@
+
+                 return;
+             }
+ 
+-            record.DesiredLabelKeys.Add(placed.Key);
+-            record.LabelKeys.Add(placed.Key);
++            if (!PrepareNetworkLabel(record, placed.Key, placed.Target.transform, placed, placed.Definition, placed.ShowOwner)) return;
+             Func<bool> isValid = delegate
+             {
+                 return placed.Target != null && placed.Target.gameObject != null &&
+@@ -524,6 +570,7 @@
+
+             {
+                 RemoveLabel(key);
+                 record.LabelKeys.Remove(key);
++                record.LabelBindings.Remove(key);
+             }
+         }
+ 
+@@ -585,6 +632,7 @@
+
+             }
+             record.LabelKeys.Clear();
+             record.DesiredLabelKeys.Clear();
++            record.LabelBindings.Clear();
+         }
+ 
+         private void ClearDiscoveryCaches()

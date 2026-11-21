@@ -1,0 +1,9 @@
+  正在确定要还原的项目…
+  所有项目均是最新的，无法还原。
+  WhySoLaggy -> C:\Users\Administrator\Desktop\MOD\PEAK\.build\playtest-fixes-20261117\whysolaggy\bin\WhySoLaggy.dll
+  WhySoLaggy.Tests -> C:\Users\Administrator\Desktop\MOD\PEAK\.build\playtest-fixes-20261117\whysolaggy\bin\WhySoLaggy.Tests.dll
+C:\Users\Administrator\Desktop\MOD\PEAK\.build\playtest-fixes-20261117\whysolaggy\bin\WhySoLaggy.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+总共 1 个测试文件与指定模式相匹配。
+结果文件: C:\Users\Administrator\Desktop\MOD\PEAK\.build\playtest-fixes-20261117\results\Administrator_DESKTOP-3PF2CMK_2026-11-18_20_49_18_net472.trx
+
+已通过! - 失败:     0，通过:   105，已跳过:     0，总计:   105，持续时间: 3 s - WhySoLaggy.Tests.dll (net472)

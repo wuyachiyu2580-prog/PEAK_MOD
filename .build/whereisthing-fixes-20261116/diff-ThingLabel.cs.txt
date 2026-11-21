@@ -1,0 +1,21 @@
+--- MOD开发\WhereIsThing\WhereIsThing\ThingLabel.cs (turn start)
+
++++ MOD开发\WhereIsThing\WhereIsThing\ThingLabel.cs
+
+@@ -245,6 +245,15 @@
+
+                 return;
+             }
+ 
++            if (_hasTextState && string.Equals(_lastTitle, title, StringComparison.Ordinal) &&
++                string.Equals(_lastOwner, owner, StringComparison.Ordinal) && _lastPlaceAboveTarget == placeAboveTarget)
++            {
++                // Distance changes do not require title layout or player-name updates.
++                _lastDistance = distance;
++                _mainDistance.text = distance;
++                return;
++            }
++
+             _hasTextState = true;
+             _lastTitle = title;
+             _lastOwner = owner;

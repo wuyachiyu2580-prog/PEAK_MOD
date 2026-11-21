@@ -67,6 +67,56 @@ namespace WhySoLaggy.Tests
         {Assert.IsNull(MemoryMetrics.NetRate(null,100,2));Assert.AreEqual(-.5,MemoryMetrics.NetRate(2048,1024,2).Value,1e-9);}
 
         [TestMethod]
+        public void NetworkWindow_ReportsThirtySecondTrendPercentilesAndSkipsUnavailableSamples()
+        {
+            var window = new NetworkWindow();
+            window.Add(0, 10, 1, 4);
+            window.Add(1, 20, null, 8);
+            window.Add(2, 30, 3, 12);
+
+            var snapshot = window.Snapshot(2);
+            Assert.AreEqual(3, snapshot.Rtt.Count);
+            Assert.AreEqual(10d, snapshot.Rtt.Minimum);
+            Assert.AreEqual(20d, snapshot.Rtt.Median);
+            Assert.AreEqual(30d, snapshot.Rtt.P95);
+            Assert.AreEqual(30d, snapshot.Rtt.Maximum);
+            Assert.AreEqual(2, snapshot.IncomingCommands.Count);
+            Assert.AreEqual(1d, snapshot.IncomingCommands.Minimum);
+            Assert.AreEqual(2d, snapshot.IncomingCommands.Median);
+            Assert.AreEqual(3d, snapshot.IncomingCommands.Maximum);
+            Assert.AreEqual(3, snapshot.OutgoingCommands.Count);
+
+            var expired = window.Snapshot(33);
+            Assert.AreEqual(0, expired.Rtt.Count);
+            Assert.AreEqual(0, expired.IncomingCommands.Count);
+        }
+
+        [TestMethod]
+        public void PackedFrame_ExpandsWithCoverageAndBoundaryMetadata()
+        {
+            var context = new CaptureFrameContext("session", "capture", "Scene", "Gameplay", "Incomplete", 7, "Active/Partial");
+            var frame = new FrameRecord
+            {
+                Frame = 12,
+                Time = 4.5,
+                DurationMs = 22,
+                CoveredMs = 18,
+                SelfMs = 1.25,
+                IntervalsOmitted = 3,
+            };
+            var expanded = new CaptureFrame(frame, context).Expand();
+
+            Assert.AreEqual(2, expanded.Fields["SchemaVersion"]);
+            Assert.AreEqual("session", expanded.Fields["SessionId"]);
+            Assert.AreEqual("capture", expanded.Fields["CaptureId"]);
+            Assert.AreEqual(7, expanded.Fields["RoomEpoch"]);
+            Assert.AreEqual("Incomplete", expanded.Fields["Validity"]);
+            Assert.AreEqual("Active/Partial", expanded.Fields["HookCoverage"]);
+            Assert.AreEqual(3L, expanded.Fields["FrameIntervalsOmitted"]);
+            Assert.AreEqual(18d, expanded.Fields["CoveredMs"]);
+        }
+
+        [TestMethod]
         public void IntervalUnion_ClipsAndDeduplicatesNestedScopes()
         {
             long unit=Stopwatch.Frequency;
@@ -186,21 +236,36 @@ namespace WhySoLaggy.Tests
             DiagnosticIO.Start();Assert.IsFalse(DiagnosticIO.Enqueue(()=>{},4*1024*1024+1));
             DiagnosticIO.Enqueue(()=>{throw new IOException("simulated disk failure");},32,true);int result=0;Assert.IsTrue(DiagnosticIO.Barrier(()=>result=1));Assert.AreEqual(1,result);StringAssert.Contains(DiagnosticIO.Error,"simulated disk failure");Assert.IsTrue(DiagnosticIO.Stop());
         }
-        [TestMethod]
-        public void DiagnosticZip_ContainsStructuredFilesAndNoPrivatePayload()
+        [DataTestMethod]
+        [DataRow("Both")]
+        [DataRow("Jsonl")]
+        [DataRow("Csv")]
+        public void DiagnosticZip_ContainsStructuredFilesAndNoPrivatePayload(string diskFormat)
         {
             string dir=Path.Combine(Path.GetTempPath(),"WhySoLaggy.Tests",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(dir);
             try
             {
+                StructuredLogger.ConfigureDiskFormat((StructuredDiskFormat)Enum.Parse(typeof(StructuredDiskFormat),diskFormat));
                 StructuredLogger.Initialize(dir);CaptureController.Initialize(dir,new Dictionary<string,object>(),new string[0]);
                 StructuredLogger.WriteEvent(new StructuredEvent{Type=EventType.RpcCall,Fields=new Dictionary<string,object>{{"SenderActor",42},{"SenderName","PrivateNickname"},{"ArgsSummary","PrivateParameter"},{"TargetPath",@"C:\Users\PrivateUser"}}});
+                StructuredLogger.WriteEvent(new StructuredEvent{Type=EventType.FrameSample,FrameNumber=42,Fields=new Dictionary<string,object>{{"AvgFrameMs",5d},{"CoveredMs",2d},{"SelfMainMs",.2d},{"SceneState","Gameplay"},{"Scene","PrivateSceneName"},{"Validity","Complete"}}});
+                StructuredLogger.WriteEvent(new StructuredEvent{Type=EventType.PluginTiming,FrameNumber=42,Fields=new Dictionary<string,object>{{"MethodId","module:Update"},{"Name","Example.Update()"},{"PluginGuid","example.plugin"},{"TimingKind","window inclusive"},{"WindowStartSeconds",0d},{"WindowEndSeconds",1d},{"CallCount",100L},{"SampleCount",10L},{"SampleCoverage",.1},{"TotalMs",12.5}}});
                 CaptureController.ExportLatest(false,false);Assert.IsTrue(DiagnosticIO.Barrier(()=>{},10000));
                 string path=Directory.GetFiles(Path.Combine(dir,"WhySoLaggy","diagnostics"),"*.zip").Single();
                 using(var zip=ZipFile.OpenRead(path))
-                {foreach(var name in new[]{"summary.txt","manifest.json","events.jsonl","frames.csv","calls.csv","network.csv","exceptions.csv","harmony_patches.csv"})Assert.IsNotNull(zip.GetEntry(name));
-                    foreach(var entry in zip.Entries)using(var reader=new StreamReader(entry.Open())){string content=reader.ReadToEnd();foreach(var secret in new[]{"PrivateNickname","PrivateParameter","PrivateUser"})Assert.IsFalse(content.Contains(secret),entry.FullName);}}
+                {foreach(var name in new[]{"summary.txt","loss-summary.txt","manifest.json","events.jsonl","frames.csv","calls.csv","network.csv","exceptions.csv","harmony_patches.csv"})Assert.IsNotNull(zip.GetEntry(name));
+                    foreach(var entry in zip.Entries)using(var reader=new StreamReader(entry.Open()))
+                    {
+                        string content=reader.ReadToEnd();foreach(var secret in new[]{"PrivateNickname","PrivateParameter","PrivateUser","PrivateSceneName"})Assert.IsFalse(content.Contains(secret),entry.FullName);
+                        if(entry.FullName=="manifest.json"){StringAssert.Contains(content,"\"RetainedFrameCount\":1");StringAssert.Contains(content,"\"DroppedFrames\":0");StringAssert.Contains(content,"RetainedFrameStartSeconds");StringAssert.Contains(content,"RetainedFrameEndSeconds");}
+                        if(entry.FullName=="manifest.json"){StringAssert.Contains(content,"LossStatistics");StringAssert.Contains(content,"PreRollStartSeconds");StringAssert.Contains(content,"LossCountQuality");StringAssert.Contains(content,"UpperBound");}
+                        if(entry.FullName=="summary.txt"){StringAssert.Contains(content,"Retained frames: 1");StringAssert.Contains(content,"Dropped frames / critical events / details: 0 / 0 / 0");StringAssert.Contains(content,"spike details are subsets");StringAssert.Contains(content,"Inherited pre-roll losses");}
+                        if(entry.FullName=="loss-summary.txt")StringAssert.Contains(content,"unknown is not zero");
+                        if(entry.FullName=="frames.csv"){Assert.AreEqual(2,content.Split(new[]{'\n'},StringSplitOptions.RemoveEmptyEntries).Length);StringAssert.Contains(content,"FrameSample");}
+                        if(entry.FullName=="calls.csv"){Assert.AreEqual(2,content.Split(new[]{'\n'},StringSplitOptions.RemoveEmptyEntries).Length);StringAssert.Contains(content,"window inclusive");StringAssert.Contains(content,"12.5");}
+                    }}
             }
-            finally{CaptureController.Shutdown();StructuredLogger.Shutdown();Directory.Delete(dir,true);}
+            finally{CaptureController.Shutdown();StructuredLogger.Shutdown();StructuredLogger.ConfigureDiskFormat(StructuredDiskFormat.Both);DiagnosticIO.Barrier(()=>{});DiagnosticIO.Stop();Directory.Delete(dir,true);}
         }
 
         public static void ThrowExternal(){throw new ApplicationException("external original object");}
@@ -247,6 +312,7 @@ namespace WhySoLaggy.Tests
         {
             Assert.AreEqual("自動卡頓錄製",UiText.Traditional("自动卡顿录制"));
             Assert.AreEqual("預設關閉，記憶體與網絡監控",UiText.Traditional("预设关闭，内存与网络监控"));
+            Assert.AreEqual("保留幀時間範圍（單調秒）",UiText.Traditional("保留帧时间范围（单调秒）"));
             foreach(var entry in ModConfigLocalization.Entries){Assert.IsFalse(string.IsNullOrWhiteSpace(UiText.Traditional(entry.ChineseName)));Assert.IsFalse(string.IsNullOrWhiteSpace(UiText.Traditional(entry.ChineseDescription)));}
         }
         private struct ForeignNode { }

@@ -31,6 +31,8 @@ internal static class Program
         foreach(var item in new[]{Root,Mandrake,Hidden,Bandage,Kit,Remedy}) SingletonAsset<ItemDatabase>.Instance.itemLookup[item.itemID]=item;
         Catalog=ThingCatalog.Load();
         IdentityAndPlants();MigrationAndCodec();Chests();Languages();Segments();
+        PresetAndTraitTests.Run(Check, Make);
+        NapberryTests.Run(Check, Make);
         Console.WriteLine($"All {_passed} regression checks passed. Unity rendering, physics and networking require in-game validation.");
     }
     private static void IdentityAndPlants()

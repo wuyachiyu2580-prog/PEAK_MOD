@@ -20,12 +20,13 @@ namespace WhySoLaggy
         private static string Csv(string value)=>"\""+(value??"").Replace("\"","\"\"")+"\"";
         public static void Scan(string dir)
         {
+            var snapshot=HarmonyPatchSnapshot.Refresh();
             var sb=new StringBuilder("TargetId,TargetMethod,PatchType,OwnerHarmonyId,DiagnosticOnly,PatchMethod,Assembly,Priority,Before,After,ReflectedType,DeclaredType\n");
             var ids=new HashSet<string>();int shared=0,cycles=0,failures=0;
-            foreach(var method in Harmony.GetAllPatchedMethods().ToArray())try
+            foreach(var method in snapshot.Methods)try
             {
                 if(sb.Length>512*1024){failures++;break;}
-                var info=Harmony.GetPatchInfo(method);if(info==null)continue;string id=ProfilerTargetResolver.Identity(method);var external=new HashSet<string>();
+                var info=snapshot.GetPatchInfo(method);if(info==null)continue;string id=ProfilerTargetResolver.Identity(method);var external=new HashSet<string>();
                 foreach(var group in new[]{Tuple.Create("Prefix",info.Prefixes),Tuple.Create("Postfix",info.Postfixes),Tuple.Create("Transpiler",info.Transpilers),Tuple.Create("Finalizer",info.Finalizers),Tuple.Create("ILManipulator",info.ILManipulators)})
                 {
                     var graph=new Dictionary<string,HashSet<string>>();var phaseOwners=new HashSet<string>(group.Item2.Select(x=>x.owner??"?"));

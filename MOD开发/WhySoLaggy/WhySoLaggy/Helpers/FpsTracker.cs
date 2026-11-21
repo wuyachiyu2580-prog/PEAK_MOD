@@ -11,7 +11,7 @@ namespace WhySoLaggy
         internal static FrameStatistics Statistics=new FrameStatistics(),NormalStatistics=new FrameStatistics();
         private static readonly FrameWindow all=new FrameWindow(),normal=new FrameWindow();
         private static double duration,sum,min=double.MaxValue,max,lastSnapshot,continuous,longest;
-        private static int frames,spikes,runs,lastGc;
+        private static int frames,spikes,runs,lastGc,lastGcGen1,lastGcGen2;
         internal static readonly FrameWindow SelfWindow=new FrameWindow();
         internal static FrameStatistics SelfStatistics=new FrameStatistics();
         internal static void Observe(FrameRecord frame)
@@ -34,16 +34,24 @@ namespace WhySoLaggy
             var rpc=RpcMonitor.TakeRuntimeMetrics();var writer=StructuredLogger.TakeRuntimeMetrics();
             var fields=new Dictionary<string,object>{{"AvgFps",frames/Math.Max(.001,duration)},{"MinFps",1000/Math.Max(.001,max)},{"MaxFps",1000/Math.Max(.001,min)},
                 {"AvgFrameMs",sum/Math.Max(1,frames)},{"SpikeThresholdMs",SpikeThresholdMs},{"SpikeCount",spikes},{"ReportDuration",duration},
+                {"FrameWindowCapacityEvictions",all.CapacityEvictions},{"GameplayWindowCapacityEvictions",normal.CapacityEvictions},{"SelfWindowCapacityEvictions",SelfWindow.CapacityEvictions},
+                {"BoundaryCalls",TimingLedger.BoundaryCalls},{"BoundaryExceptions",TimingLedger.BoundaryExceptions},{"RetiredUnreportedCalls",TimingLedger.RetiredCalls},{"RetiredUnreportedExceptions",TimingLedger.RetiredExceptions},
                 {"SelfMainP95Ms",SelfStatistics.P95},{"SelfMainP99Ms",SelfStatistics.P99},{"GameplaySamples",NormalStatistics.Count},{"GameplayP95Ms",NormalStatistics.P95},{"GameplayP99Ms",NormalStatistics.P99},{"GameplayLow1Fps",NormalStatistics.Low1},{"P95FrameMs",Statistics.P95},{"P99FrameMs",Statistics.P99},{"Low1Fps",Statistics.Low1},{"LongestStallMs",longest},{"StallRuns",runs},
                 {"UnityAllocatedBytes",MemoryMetrics.UnityBytes},{"ManagedUsedBytes",MemoryMetrics.ManagedUsedBytes},{"ManagedCapacityBytes",MemoryMetrics.ManagedCapacityBytes},
-                {"MemoryNetKBps",MemoryMetrics.NetKBps},{"GcAllocatedFrameBytes",MemoryMetrics.GcAllocatedBytes},{"GcAllocationStatus",MemoryMetrics.AllocationStatus},{"GcCollections",Math.Max(0,MemoryMetrics.GcCollections-lastGc)},
+                {"MemoryNetKBps",MemoryMetrics.NetKBps},{"ManagedUsedNetKBps",MemoryMetrics.ManagedUsedNetKBps},{"GcAllocatedFrameBytes",MemoryMetrics.GcAllocatedBytes},{"GcAllocationStatus",MemoryMetrics.AllocationStatus},{"GcCollections",Math.Max(0,MemoryMetrics.GcCollections-lastGc)},
+                {"GcCollectionsGen0",Math.Max(0,MemoryMetrics.GcCollections-lastGc)},{"GcCollectionsGen1",Math.Max(0,MemoryMetrics.GcCollectionsGen1-lastGcGen1)},{"GcCollectionsGen2",Math.Max(0,MemoryMetrics.GcCollectionsGen2-lastGcGen2)},
                 {"RpcQueueDepth",rpc.QueueDepth},{"RpcQueuePeak",rpc.QueuePeak},{"RpcQueueDropped",rpc.QueueDropped},{"RpcProcessedCount",rpc.ProcessedCount},{"RpcPumpMs",rpc.PumpMs},
+                {"RpcDetailCount",rpc.DetailCount},
+                {"RpcObjectLookupTotalMs",rpc.ObjectQueryTotalMs},{"RpcObjectLookupMaxMs",rpc.ObjectQueryMaxMs},
+                {"RpcArgumentFormatTotalMs",rpc.ArgumentFormatTotalMs},{"RpcArgumentFormatMaxMs",rpc.ArgumentFormatMaxMs},
+                {"RpcParameterParseTotalMs",rpc.ParameterParseTotalMs},{"RpcParameterParseMaxMs",rpc.ParameterParseMaxMs},
                 {"StructuredEventsWritten",writer.EventsWritten},{"StructuredFlushMs",writer.LastFlushMs}};
             lastGc=MemoryMetrics.GcCollections;
+            lastGcGen1=MemoryMetrics.GcCollectionsGen1;lastGcGen2=MemoryMetrics.GcCollectionsGen2;
             foreach(var pair in SelfMetrics.Snapshot(true))fields["Self"+pair.Key]=pair.Value;
             StructuredLogger.WriteEvent(new StructuredEvent{Timestamp=StructuredLogger.NowStamp(),FrameNumber=DiagnosticContext.Frame,Type=EventType.FpsReport,Fields=fields});
             LagLogger.Write($"[WHY_LAG] FPS {frames/Math.Max(.001,duration):F1}; p95={Statistics.P95:F2}ms p99={Statistics.P99:F2}ms; spikes={spikes}; window={duration:F2}s");
         }
-        public static void Reset(){SelfWindow.Clear();SelfStatistics=new FrameStatistics();all.Clear();normal.Clear();Statistics=new FrameStatistics();NormalStatistics=new FrameStatistics();frames=spikes=runs=0;duration=sum=max=continuous=longest=lastSnapshot=0;min=double.MaxValue;}
+        public static void Reset(){SelfWindow.Clear();SelfStatistics=new FrameStatistics();all.Clear();normal.Clear();Statistics=new FrameStatistics();NormalStatistics=new FrameStatistics();lastGc=lastGcGen1=lastGcGen2=0;frames=spikes=runs=0;duration=sum=max=continuous=longest=lastSnapshot=0;min=double.MaxValue;}
     }
 }

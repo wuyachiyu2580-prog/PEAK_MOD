@@ -1,0 +1,9 @@
+{
+    "name": "WhySoLaggy",
+    "version_number": "1.0.3",
+    "website_url": "",
+    "description": "Find which mod causes lag and who is bombing your room. Profilers, RPC + abuse detectors, structured CSV+JSONL logs, Harmony conflict scan, JSON-driven field probe.",
+    "dependencies": [
+        "BepInEx-BepInExPack_PEAK-5.4.2403"
+    ]
+}

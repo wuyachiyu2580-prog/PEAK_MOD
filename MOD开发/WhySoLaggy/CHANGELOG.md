@@ -1,5 +1,12 @@
 # Changelog
 
+## 开发构建 2026-11-17（2026-11-18 验收）
+
+- 修复预录容量省略未继承：按原事件时间窗导出独立损失上下界与Unknown状态，保留旧Dropped计数含义。
+- 紧凑存储网络样本，独立网络与保护摘要配额，保留未知字段回退及数值/null语义；不增加原载荷上限或缩减明细配额。
+- SelfMetrics复用统计对象；新增默认关闭的限时阶段计时，以及默认Both的StructuredDiskFormat可选输出。
+- 105/105正式测试通过；同批10包回放补回329条、无新增旧事件丢失、53,651帧保留。Release零警告零错误，隔离构建未部署；Unity性能收益待实测。
+
 ## 开发构建2026-11-15（1.0.5发行包不变）
 
 - 帧/异常安全计时、实际网络窗口、有界异步日志、自动限时定向采集、匿名诊断包、四页HUD与英简繁说明。
@@ -9,6 +16,9 @@
 
 ## Unreleased
 
+- Added compact frame capture records, explicit frame and writer loss counters, hook coverage and boundary-call reporting, sampled timing coverage, and 30-second network trend percentiles while preserving CSV columns and JSONL schema v2.
+- Added runtime memory/GC availability fields, RPC pump cost counters, shared Harmony snapshots, and isolated Release output. Added regression coverage for network windows and packed frame metadata.
+- 107/107 formal tests pass. The Release DLL was deployed to the 2.0.a profile and loaded successfully. A live automatic capture retained 6,100 frames with exact loss accounting and zero dropped frames, critical events, or detail events.
 - Fixed patch profiling breaking ModConfig key-binding rows in mixed mod setups. Inherited methods are resolved to their actual declarations and profiled once.
 - Patch profiling can now be switched on and off during gameplay after initialization, without removing localization or other diagnostic hooks.
 - Protected timing statistics against background-thread updates and discarded records from stopped profiling sessions.

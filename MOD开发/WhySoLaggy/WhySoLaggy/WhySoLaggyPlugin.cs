@@ -49,7 +49,7 @@ namespace WhySoLaggy
         public static ConfigEntry<string> ExtraWatchMethods;
         public static ConfigEntry<int> PumpBatchSize;
         public static ConfigEntry<int> QueueCapacity;
-        
+
         // ── 1.0.3 新增：性能/过滤/日志 ──
         public static ConfigEntry<float> MinReportMs;
         public static ConfigEntry<string> IgnorePluginGuids;
@@ -60,7 +60,7 @@ namespace WhySoLaggy
         public static ConfigEntry<int> MaxRotatedStorageMB;
         public static ConfigEntry<bool> EnableMemoryMonitor;
         public static ConfigEntry<bool> ShowDashboard;
-        
+
         // ── 1.0.3 新增：方法追踪 ──
         public static ConfigEntry<string> TraceMethodNames;
         public static ConfigEntry<int> TraceMaxDepth;
@@ -73,9 +73,9 @@ namespace WhySoLaggy
         public static ConfigEntry<int> FieldProbeDefaultMaxLen;
         public static ConfigEntry<bool> FieldProbeDefaultStack;
         public static ConfigEntry<int> FieldProbeDefaultStackDepth;
-        
+
         private static string _bepInExDir;
-        
+
         internal static ManualLogSource Log;
         private Harmony _harmony;
         private int _reportFrameCount;
@@ -182,10 +182,10 @@ namespace WhySoLaggy
                 new ConfigDescription(
                     "How many most-recent detailed records to print per watched method in each periodic report.",
                     new AcceptableValueRange<int>(1, 50)));
-        
+
             ExtraWatchMethods = Config.Bind("RpcMonitor", "ExtraWatchMethods", "",
                 "Comma-separated extra RPC method names merged into the watch list (e.g. 'MyRPC1,MyRPC2').");
-        
+
             PumpBatchSize = Config.Bind("RpcMonitor", "PumpBatchSize", 32,
                 new ConfigDescription(
                     "Max RPC queue items consumed per frame on main thread.",
@@ -195,22 +195,22 @@ namespace WhySoLaggy
                 new ConfigDescription(
                     "Maximum queued RPC records. When full, the oldest records are discarded so recent activity is retained.",
                     new AcceptableValueRange<int>(256, 65536)));
-        
+
             // ── 1.0.3 性能/过滤/日志 ──
             MinReportMs = Config.Bind("General", "MinReportMs", 0.1f,
                 new ConfigDescription(
                     "Sample low-cost methods less often below this average time (ms); calls and frame timings remain counted. Applied when patch profiling is next enabled.",
                     new AcceptableValueRange<float>(0f, 5f)));
-        
+
             IgnorePluginGuids = Config.Bind("General", "IgnorePluginGuids", "",
                 "Comma-separated plugin GUIDs to skip in PluginProfiler.");
-        
+
             IgnorePatchMethods = Config.Bind("General", "IgnorePatchMethods", "",
                 "Comma-separated method names (Type.Method or full signatures) to skip. Applied when patch profiling is next enabled or the game restarts.");
-        
+
             VerbosityCfg = Config.Bind("Logging", "LogVerbosity", LogVerbosity.Minimal,
                 "Minimal (default) = abuse alerts + their detail lines + monitor init/error/milestones. Normal = Minimal + periodic reports (RPC top/watched, FPS, patch/plugin profiler, frame spike detail).");
-        
+
             MaxLogFileSizeMB = Config.Bind("Logging", "MaxLogFileSizeMB", 10,
                 new ConfigDescription(
                     "Rotate structured CSV/JSONL files when they exceed this size.",
@@ -223,27 +223,27 @@ namespace WhySoLaggy
             MaxRotatedStorageMB = Config.Bind("Logging", "MaxRotatedStorageMB", 350,
                 new ConfigDescription("Maximum total size of rotated CSV or JSONL files retained per format.",
                     new AcceptableValueRange<int>(1, 4096)));
-        
+
             EnableMemoryMonitor = Config.Bind("General", "EnableMemoryMonitor", true,
                 "Sample GC allocation rate and include AllocRateKBps in FpsReport events.");
-        
+
             ShowDashboard = Config.Bind("UI", "ShowDashboard", false,
                 "Show draggable on-screen performance dashboard. Zero cost when disabled.");
-        
+
             // ── 1.0.3 方法追踪 ──
             TraceMethodNames = Config.Bind("MethodTracer", "TraceMethodNames", "",
                 "Comma-separated method full names to attach a stack-tracing prefix (e.g. 'Player.Update,ColdComponent.Apply'). Empty disables tracing.");
-        
+
             TraceMaxDepth = Config.Bind("MethodTracer", "TraceMaxDepth", 5,
                 new ConfigDescription(
                     "Maximum stack frames recorded per trace sample.",
                     new AcceptableValueRange<int>(3, 20)));
-        
+
             TraceRateLimit = Config.Bind("MethodTracer", "TraceRateLimit", 100,
                 new ConfigDescription(
                     "Max trace records per method per second. Excess samples are dropped.",
                     new AcceptableValueRange<int>(10, 1000)));
-        
+
             // ── 1.0.3 字段探针 FieldProbe ──
             EnableFieldProbe = Config.Bind("FieldProbe", "EnableFieldProbe", false,
                 "Enable FieldProbe: reflectively snapshot arbitrary fields / parameters / return values at any method via a JSON rules file. Zero overhead when disabled.");
@@ -270,7 +270,7 @@ namespace WhySoLaggy
                     new AcceptableValueRange<int>(1, 30)));
 
             ModConfigLocalization.ApplyLocalizedDescriptions(GetConfigEntries());
-        
+
             // 初始化日志系统
             _bepInExDir = Path.GetDirectoryName(
                 Path.GetDirectoryName(typeof(BaseUnityPlugin).Assembly.Location))
@@ -292,8 +292,10 @@ namespace WhySoLaggy
             StructuredLogger.MaxLogFileSizeMB = MaxLogFileSizeMB.Value;
             StructuredLogger.MaxRotatedFiles = MaxRotatedFiles.Value;
             StructuredLogger.MaxRotatedStorageMB = MaxRotatedStorageMB.Value;
+            DiskFormatConfig=Config.Bind("Logging","StructuredDiskFormat",StructuredDiskFormat.Both,"Continuous structured disk output: Both (compatible default), Jsonl, or Csv. Memory capture and diagnostic ZIPs are independent.");
+            StructuredLogger.ConfigureDiskFormat(DiskFormatConfig.Value);
             StructuredLogger.Initialize(_bepInExDir);
-        
+
             // 传递配置
             FpsTracker.SpikeThresholdMs = SpikeThresholdMs.Value;
             FpsTracker.ReportIntervalSeconds = ReportIntervalSeconds.Value;
@@ -303,11 +305,11 @@ namespace WhySoLaggy
             PatchProfiler.TopMethodCount = TopMethodCount.Value;
             PatchProfiler.MinReportMs = MinReportMs.Value;
             PerformanceDashboard.ShowDashboard = ShowDashboard.Value;
-        
+
             // 装填忽略名单
             FillIgnoreSet(IgnorePluginGuids.Value, PluginProfiler.IgnoreGuids);
             FillIgnoreSet(IgnorePatchMethods.Value, PatchProfiler.IgnoreMethods);
-        
+
             // 创建 Harmony 实例
             _harmony = new Harmony(PluginGuid);
             PatchProfiler.OwnHarmonyId = PluginGuid;
@@ -323,10 +325,10 @@ namespace WhySoLaggy
                 Log.LogWarning("[WHY_LAG] ModConfig localization patch skipped: " + ex.Message);
             }
             ModConfigLocalization.SubscribeLanguageChanged(OnGameLanguageChanged);
-        
+
             Log.LogInfo("[WHY_LAG] Config bound, loggers initialized");
         }
-        
+
         private static void FillIgnoreSet(string csv, System.Collections.Generic.HashSet<string> set)
         {
             if (string.IsNullOrEmpty(csv) || set == null) return;
@@ -396,11 +398,11 @@ namespace WhySoLaggy
             {
                 RpcMonitor.Enabled = false;
             }
-        
+
             // Harmony 全量扫描（一次性，PatchProfiler.Initialize 之后）
             try { HarmonyScanner.Scan(_bepInExDir); }
             catch (Exception ex) { Log.LogWarning($"[WHY_LAG] HarmonyScanner.Scan failed: {ex.Message}"); }
-        
+
             // 方法追踪（按需）
             MethodTracer.TraceMethodNames = TraceMethodNames.Value;
             MethodTracer.TraceMaxDepth = TraceMaxDepth.Value;
@@ -417,7 +419,7 @@ namespace WhySoLaggy
             FieldProbe.DefaultStackMaxDepth = FieldProbeDefaultStackDepth.Value;
             try { FieldProbe.Initialize(probeHarmony); }
             catch (Exception ex) { Log.LogWarning($"[WHY_LAG] FieldProbe.Initialize failed: {ex.Message}"); }
-        
+
             runtimeStarted=true;System.Threading.Interlocked.Exchange(ref runtimeDirty,1);
             _profilingActive = true;
             Log.LogInfo("[WHY_LAG] Profiling active!");
@@ -426,8 +428,11 @@ namespace WhySoLaggy
 
         void Update()
         {
-            long start=System.Diagnostics.Stopwatch.GetTimestamp();
-            try{UpdateCore();}finally{SelfMetrics.Add("MainUpdate",DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp()-start));}
+            using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.Update))
+            {
+                long start=System.Diagnostics.Stopwatch.GetTimestamp();
+                try{UpdateCore();}finally{SelfMetrics.Add("MainUpdate",DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp()-start));}
+            }
         }
         private void UpdateCore()
         {
@@ -435,20 +440,20 @@ namespace WhySoLaggy
             StructuredLogger.Tick();
             // FPS 追踪始终运行
             FpsTracker.Tick();
-        
+
             // 炸房监测 Tick
             if (EnableAbuseDetection.Value)
                 NetworkAbuseDetector.Tick();
-        
+
             // RPC 队列主线程消费（即便 _profilingActive 未置位也需 Pump，避免积压）
             if (RpcMonitor.Enabled)
-                RpcMonitor.Tick();
-        
+                using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.RpcPump))RpcMonitor.Tick();
+
             if (!_profilingActive) return;
-        
+
             _reportFrameCount++;
             _reportTimer += Time.unscaledDeltaTime;
-        
+
             // 定期汇总报告
             if (_reportTimer >= ReportIntervalSeconds.Value)
             {
@@ -459,11 +464,11 @@ namespace WhySoLaggy
                 _reportFrameCount = 0;
                 _reportTimer = 0f;
             }
-        
+
             // 帧末重置即时计时
             // Completed frames are sealed by FrameCoordinator.
         }
-        
+
         void OnDestroy()
         {
             ShutdownRuntime();
@@ -608,9 +613,12 @@ namespace WhySoLaggy
 
         void OnGUI()
         {
-            long start=System.Diagnostics.Stopwatch.GetTimestamp();
-            try{if(EnableAbuseDetection.Value)AbuseNotificationUI.DrawGUI();PerformanceDashboard.DrawGUI();}
-            finally{SelfMetrics.Add("Hud",DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp()-start));}
+            using(DiagnosticPhases.Measure(DiagnosticPhases.Stage.Hud))
+            {
+                long start=System.Diagnostics.Stopwatch.GetTimestamp();
+                try{if(EnableAbuseDetection.Value)AbuseNotificationUI.DrawGUI();PerformanceDashboard.DrawGUI();}
+                finally{SelfMetrics.Add("Hud",DiagnosticClock.Milliseconds(System.Diagnostics.Stopwatch.GetTimestamp()-start));}
+            }
         }
     }
 }

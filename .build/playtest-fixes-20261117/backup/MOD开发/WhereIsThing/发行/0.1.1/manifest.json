@@ -1,0 +1,9 @@
+{
+  "name": "WhereIsThing",
+  "version_number": "0.1.1",
+  "website_url": "",
+  "description": "Locate selected items, luggage, hazards, landmarks, and visible statue amulets with local or shared presets.",
+  "dependencies": [
+    "BepInEx-BepInExPack_PEAK-5.4.2403"
+  ]
+}

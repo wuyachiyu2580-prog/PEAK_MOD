@@ -1,5 +1,42 @@
 # WhereIsThing Plan
 
+## 2026-11-21　五秒扫描尖峰优化计划
+
+目标是在 2.0.a 的常驻扫描下削减主线程长帧，同时维持物品、雕像和玩家放置物的发现时效。开发按下列顺序进行。
+
+### 实测和代码依据
+
+- 11 月 21 日同一会话留存的 10 包包含 55,227 个不同帧。311 个精确计时窗口覆盖 33,210 次 WhereIsThing.Update 调用，平均 0.200 毫秒。13:15:37 和 13:23:21 两个 Gameplay 帧中，Update 分别为 79.05 / 88.06 毫秒与 76.35 / 87.40 毫秒（回调 / 整帧）。逐包取峰值达到 10 毫秒的窗口，以峰值帧的单调时间计算相邻间隔，53 个间隔中 48 个落在 4.8～5.6 秒。捕获为触发窗口，不能据此外推整局频率。当前阶段计时关闭。
+- 成功按 C 扫描时，BeginScan 立即刷新并把下次刷新时间置零，同一 Update 后段随即再次刷新。常驻扫描另有两项使用 5 秒周期的工作，即场景发现和 Photon 对象清理。现有 20 个场景步骤分帧执行，但单次 Unity 全局查询和单个步骤里的对象遍历都在调用当帧完成。
+- 2.0.a 保存配置启用了常驻扫描、当前区段、500 米、雕像范围，活动预设含 Ascent 8。该内置预设包含四种护符。因此“没有选护符就跳过雕像”可以帮助其他预设，复现本局还要测有护符时的扫描成本。房间内实际生效的本地或共享选择以实测为准。
+- PEAK 3.1.0 的 PropGrouper 可跨帧完成关卡生成，PropSpawner_AmuletStatues 按随机偏移选出实际子物体。FakeItem.PickUpVisibly 与 UnPickUpVisibly 处理隐藏和恢复。FakeItemManager.RefreshList 会重写所有拾取索引，运行时 AddToList 不登记新对象。MOD 侧缓存应跟踪对象引用以及可见状态，保持网络拾取索引由游戏维护。
+- 本局 Unity 6000.3。Resources.FindObjectsOfTypeAll 涵盖已加载资源、内部和非激活对象；Object.FindObjectsByType 的查询范围会排除带 DontSave 标志的对象。替换扫描入口时需在同景核对当前可标注的候选集合。
+
+### 实施顺序
+
+1. **同时检验雕像扫描与网络清理。** 两项各自按约 5 秒调度。网络清理在 Photon 枚举结束时检查是否到期，雕像扫描在场景发现的第 0 步运行；同一 Update 先处理 Photon，再处理场景发现。固定地图、位置、镜头、预设、在线人数和扫描状态，记录实际加载的两个 MOD 版本及对象数，用现有 45 秒阶段计时做 Statue 范围开、关、再开的对照。三个窗口均保留网络清理计时。若两项都有开销，分别优化并复测组合效果。
+
+   现有报告只留各阶段的汇总与各自峰值。要确认同帧叠加，在开发版的限时诊断窗口里，给实际执行雕像扫描或网络清理的帧记录帧号、两项各自耗时及完整 Update 耗时；区分只执行其一与两者都执行。记录实际扫描，排除第 0 步因范围或选择不符而提前返回的情况。窗口结束再输出，同帧比较前核对 WhySoLaggy 的帧号。NetworkDiscovery 已包含 NetworkCleanup；核算时只计一次清理。把剩余 Update 耗时与 LabelRefresh、LabelProjection 和其他场景步骤对照。
+2. **合并按键刷新。** 让 BeginScan 设置选择、显示状态、计时到期点和立即刷新标记，由当帧 Update 统一执行一次刷新并推进 0.5 秒调度。使用现有状态流测试编译实际 Update 和 BeginScan，断言按 C 当帧刷新恰好一次、随后半秒内无重复、再次按键仍能立即响应。覆盖菜单打开、Alt+C、空选择、目录未就绪和限时扫描重启。此改动可独立验证。
+3. **若雕像阶段占峰，优先优化选中护符的场景。** 在目录建立时索引可识别的护符 ID 和按索引回退的物品，预设合并后按有效选择判断是否需要雕像。目录未就绪或共享/自定义 ID 不能判定时沿用现有发现。对有护符的选择，先分测寻找生成器、查找碎片、创建标签三步。稳定场景优先复用经验证的生成器和子物体引用；在现有复查周期校验迟生成、重建、重新启用及附加场景中的新候选。比较新旧候选集合后再取消相应的全资源查询。保留 realItemPrefab 优先、索引回退、已拾取隐藏及拒绝拾取恢复。原生查询若占主耗时，仅分批处理查询结果不足以消除该峰。
+4. **若网络清理占峰，按预算拆分。** 记录一轮扫描结束时的代次，分帧检查记录及清理标签，使用可跨帧推进的稳定记录顺序，避免启动时一次复制整表。删除前复核当前记录、ViewID 绑定和最近发现代次；处理扫描中新对象、同 ID 换对象、反复回房和切场景。Photon 的 ValueIterator 读取活动表，单轮漏见的仍存活对象可通过注册表身份再次验证。以旧版完成一轮清理的时效为对照，实测待处理量能回落。
+5. **按实测选择后续改动。** 若 Scene18RootItems 或 Scene19RootFakeItems 明显，先缓存根系选择条件，再分别测 Item.ALL_ITEMS 和全场景 FakeItem 搜索。若 LabelRefresh 或 LabelProjection 占峰，区分标签创建、内容刷新与区段判定的成本，再改最重的一项。每项单独验证，保留原扫描周期、距离、屏外方向和目标覆盖。
+
+**当日进展。** 第 2 项已在开发目录完成。新增测试在旧实现复现按键帧重复刷新，修改后通过 184 项逻辑回归与 111 项状态流回归。隔离 Release 构建为 0 警告、0 错误，产物在 `.build/whereisthing-scan-20261121/WhereIsThing.dll`。2.0.a 仍使用原实测版，可用来采集第 1 项的阶段基线。
+
+### 验收
+
+- 本次已跑通 184 项逻辑回归和 104 项状态流回归。实施时补上述路径用例，再用已安装游戏依赖做隔离 Release 构建，显式覆盖 OutputPath；当前项目默认输出指向 2.0.a 插件目录。
+- 功能对照覆盖四类护符、无护符预设、迟生成/换子物体、拾取成功/被拒、区段切换、多人晚加入/房主变更；根系或标签路径有改动时补测曼德拉草与药用根茎、晚安莓采前采后、选中/取消、地面/背包和距离边界。比对目标身份、重复/残留数与首次发现延迟。
+- 实机用同一 WhySoLaggy 构建、同一地图和预设交替运行旧版与候选版，建议至少三组成对 45 秒窗口。主指标是各窗口 Update 超过 10 毫秒的窗口峰值次数（按等长窗口归一）、最慢帧和目标阶段峰值，同时记录整帧 p95/p99、发现延迟及标签数量。只把超过旧版重复波动且功能对照通过的变化计作收益。Gameplay 与失焦、加载分别统计。
+
+### 复核入口
+
+- MOD 源码：WhereIsThingPlugin.cs 的 Update / BeginScan / RefreshLabels；WhereIsThingPlugin.SceneDiscovery.cs 的 RefreshAmuletStatueLabels / TryGetAmuletStatueItem；WhereIsThingPlugin.Discovery.cs 的 CleanupNetworkObjectsIfDue；WhereIsThingPlugin.Diagnostics.cs 和 Helpers/BoundedPhaseProfiler.cs。
+- 游戏反编译：3.1.0 下的 PropGrouper、Peak/PropSpawner_AmuletStatues、Peak/StatueSpawnRandomizationStep、FakeItem、FakeItemManager、PhotonNetwork 和 NonAllocDictionary.ValueIterator。
+- 诊断包：2.0.a 中的 wsl-20261121-051557-67c10f11-anonymous.zip 和 wsl-20261121-052323-995c1fb9-anonymous.zip。核对 events.jsonl 中同一帧的 FrameSample 与 WhereIsThing.Update 的精确计时明细；窗口合计与其尖峰子集分开计算。
+- 引擎依据：Unity 6000.3 Scripting API，Resources.FindObjectsOfTypeAll 与 Object.FindObjectsByType 的 Remarks。
+
 ## 2026-10-29 23:32 WhereIsThing 0.1.3 发行文件已备齐
 
 0.1.3 发行文件准备已完成，采用 0.1.2 格式和验证过的 DLL；用户确认 1.0.3 为笔误。后续仅按实施记录做实机验收，并在有明确请求时处理压缩包/上传；本次未发布。

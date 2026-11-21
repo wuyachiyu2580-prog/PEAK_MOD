@@ -24,16 +24,18 @@ namespace WhySoLaggy
         internal static List<HookSession.Target> Targets(HashSet<string> owners=null,int limit=int.MaxValue)
         {
             var map=new Dictionary<string,HookSession.Target>();
-            foreach(var source in Harmony.GetAllPatchedMethods().ToArray())
+            var snapshot=HarmonyPatchSnapshot.Current;
+            var modules=owners==null?null:new HashSet<Assembly>(BepInEx.Bootstrap.Chainloader.PluginInfos
+                .Where(x=>owners.Contains(x.Key)&&x.Value.Instance!=null).Select(x=>x.Value.Instance.GetType().Assembly));
+            foreach(var source in snapshot.Methods)
             {
                 if(!ProfilerTargetResolver.TryResolve(source,out var target,out _))continue;
                 if(MethodKey.IsIgnored(source,IgnoreMethods)||MethodKey.IsIgnored(target,IgnoreMethods))continue;
-                var info=Harmony.GetPatchInfo(source);if(info==null)continue;
+                var info=snapshot.GetPatchInfo(source);if(info==null)continue;
                 var external=info.Owners.Where(x=>!IsOwnOwner(x)).ToArray();
                 if(external.Length==0)continue;
                 if(owners!=null)
                 {
-                    var modules=BepInEx.Bootstrap.Chainloader.PluginInfos.Where(x=>owners.Contains(x.Key)&&x.Value.Instance!=null).Select(x=>x.Value.Instance.GetType().Assembly).Distinct().ToArray();
                     bool linked=info.Prefixes.Concat(info.Postfixes).Concat(info.Transpilers).Concat(info.Finalizers).Concat(info.ILManipulators).Any(p=>!IsOwnOwner(p.owner)&&p.PatchMethod!=null&&modules.Contains(p.PatchMethod.Module.Assembly));
                     if(!linked)continue;
                 }
@@ -57,7 +59,7 @@ namespace WhySoLaggy
         private static bool previousAdaptive;
         private static float previousThreshold=-1;
         private static void ApplySampling()
-        {bool adaptive=Adaptive&&!Session.Automatic;if(samplingRevision==Session.Revision&&adaptive==previousAdaptive&&MinReportMs==previousThreshold)return;samplingRevision=Session.Revision;previousAdaptive=adaptive;previousThreshold=MinReportMs;foreach(var e in TimingLedger.All("PatchProfiler")){e.Adaptive=adaptive;e.Threshold=MinReportMs;}}
+        {bool adaptive=Adaptive&&!Session.Automatic&&!CaptureController.Busy;if(samplingRevision==Session.Revision&&adaptive==previousAdaptive&&MinReportMs==previousThreshold)return;samplingRevision=Session.Revision;previousAdaptive=adaptive;previousThreshold=MinReportMs;foreach(var e in TimingLedger.All("PatchProfiler")){e.Adaptive=adaptive;e.Threshold=MinReportMs;}}
         public static void TimingPrefix(MethodBase __originalMethod,out TimingState __state)
         {__state=default;try{if(Enabled)__state.Invocation=Session.Enter(__originalMethod);}catch{}}
         public static Exception TimingFinalizer(Exception __exception,ref TimingState __state)
@@ -84,7 +86,7 @@ namespace WhySoLaggy
             {
                 var fields=new Dictionary<string,object>{{"Name",r.Name},{"MethodId",r.Id},{"Owner",r.Owners},{"PluginGuid",r.PluginGuid},
                     {"AvgMs",r.Ms/Math.Max(1,frames)},{"TotalMs",r.Ms},{"CallCount",r.Calls},{"SampleCount",r.Samples},{"Exceptions",r.Exceptions},
-                    {"BackgroundMs",r.BackgroundMs},{"SampleCoverage",r.Calls>0?r.Samples/(double)r.Calls:0},{"TimingKind","inclusive observed chain"}};
+                    {"SamplingMode",r.SamplingMode},{"BackgroundMs",r.BackgroundMs},{"SampleCoverage",r.Calls>0?r.Samples/(double)r.Calls:0},{"TimingKind","inclusive observed chain"}};
                 StructuredLogger.WriteEvent(new StructuredEvent{Timestamp=StructuredLogger.NowStamp(),FrameNumber=DiagnosticContext.Frame,
                     Type=scope=="PluginProfiler"?EventType.PluginTiming:EventType.PatchTiming,Fields=fields});
                 LagLogger.Write($"[WHY_LAG] {scope}: {r.Name} observed={r.Ms/Math.Max(1,frames):F3}ms/frame calls={r.Calls} sampled={r.Samples} errors={r.Exceptions}; associated owners=[{r.Owners}]");

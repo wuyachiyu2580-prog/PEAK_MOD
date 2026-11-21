@@ -80,6 +80,7 @@ namespace WhySoLaggy
 
     internal static class NetworkObserver
     {
+        private static readonly NetworkWindow window = new NetworkWindow();
         private static double last;
         private static object peer;
         private static object roomObject;
@@ -87,6 +88,7 @@ namespace WhySoLaggy
         private static string room;
         private static int lastResent,epoch;
         internal static int? Ping,Variance,Incoming,Outgoing,Resent;
+        internal static NetworkWindowSnapshot Window { get; private set; } = new NetworkWindowSnapshot();
         internal static bool CpuGpuEnabled;
         internal static double? CpuMs,GpuMs,PresentWaitMs;
         private static readonly FrameTiming[] timings=new FrameTiming[4];
@@ -104,6 +106,7 @@ namespace WhySoLaggy
                     peer=current;room=currentRoom;roomObject=PhotonNetwork.CurrentRoom;connected=PhotonNetwork.IsConnected;lastResent=-1;
                     RpcMonitor.ResetEpoch();NetworkAbuseDetector.ResetEpoch();
                     if(changed)DiagnosticContext.RoomEpoch++;
+                    window.Clear(); Window = default;
                     epoch=DiagnosticContext.RoomEpoch;
                     StructuredLogger.WriteEvent(new StructuredEvent{Timestamp=StructuredLogger.NowStamp(),FrameNumber=DiagnosticContext.Frame,Type=EventType.SessionBoundary,Fields=new Dictionary<string,object>{{"RoomName",room??""}}});
                 }
@@ -117,6 +120,8 @@ namespace WhySoLaggy
                 else {Ping=Variance=Incoming=Outgoing=Resent=null;lastResent=-1;}
             }
             catch{Ping=Variance=Incoming=Outgoing=Resent=null;}
+            window.Add(now, Ping, Incoming, Outgoing);
+            Window = window.Snapshot(now);
             CpuMs=GpuMs=PresentWaitMs=null;
             if(CpuGpuEnabled)try
             {
@@ -130,7 +135,11 @@ namespace WhySoLaggy
             }catch{}
             StructuredLogger.WriteEvent(new StructuredEvent{Timestamp=StructuredLogger.NowStamp(),FrameNumber=DiagnosticContext.Frame,Type=EventType.NetworkSample,
                 Fields=new Dictionary<string,object>{{"Ping",Ping},{"RttVariance",Variance},{"IncomingCommands",Incoming},{"OutgoingCommands",Outgoing},{"ReliableRetransmissions",Resent},
+                    {"RttSampleCount30s",Window.Rtt.Count},{"RttMin30s",Window.Rtt.Minimum},{"RttMedian30s",Window.Rtt.Median},{"RttP95_30s",Window.Rtt.P95},{"RttMax30s",Window.Rtt.Maximum},
+                    {"IncomingCommandsSampleCount30s",Window.IncomingCommands.Count},{"IncomingCommandsMin30s",Window.IncomingCommands.Minimum},{"IncomingCommandsMedian30s",Window.IncomingCommands.Median},{"IncomingCommandsP95_30s",Window.IncomingCommands.P95},{"IncomingCommandsMax30s",Window.IncomingCommands.Maximum},
+                    {"OutgoingCommandsSampleCount30s",Window.OutgoingCommands.Count},{"OutgoingCommandsMin30s",Window.OutgoingCommands.Minimum},{"OutgoingCommandsMedian30s",Window.OutgoingCommands.Median},{"OutgoingCommandsP95_30s",Window.OutgoingCommands.P95},{"OutgoingCommandsMax30s",Window.OutgoingCommands.Maximum},
                     {"RpcQueueDepth",RpcMonitor.LastDepth},{"QueueDelayMs",RpcMonitor.LastQueueDelayMs},{"DetailDroppedTotal",RpcMonitor.TotalDropped},{"DetailSampledOut",RpcIngress.SampledOut},
+                    {"RpcDetailsTruncated",RpcIngress.Truncated},
                     {"CpuFrameMs",CpuMs},{"GpuFrameMs",GpuMs},{"PresentWaitMs",PresentWaitMs},{"CpuGpuStatus",CpuMs.HasValue||GpuMs.HasValue?"Available":"Unavailable"}}});
         }
     }

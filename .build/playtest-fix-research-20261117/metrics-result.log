@@ -1,0 +1,1 @@
+{"runtime":"10.0.12","baseline":{"calls":1000000,"bytes":40000040,"bytesPerCall":40.00004,"ms":62.6874},"candidate":{"calls":1000000,"bytes":40,"bytesPerCall":4E-05,"ms":103.826},"concurrentTotalsEqual":true,"resetAndFrameScopePass":true,"limitation":".NET isolated measurement, not Unity Mono or in-game FPS"}

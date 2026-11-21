@@ -1,0 +1,649 @@
+{
+  "eventCount": 546949,
+  "types": {
+    "FrameSample": 149130,
+    "PatchTiming": 164457,
+    "PluginTiming": 151526,
+    "RpcCall": 50173,
+    "NetworkSample": 27960,
+    "SpikeFrame": 1664,
+    "InstantiateTrace": 63,
+    "OwnershipChange": 798,
+    "AbuseAlert": 642,
+    "FpsReport": 300,
+    "PeriodicReport": 100,
+    "CaptureState": 15,
+    "ExceptionSummary": 121
+  },
+  "sessions": {
+    "0599da7287f34d7aa5b89f05a2a1fd4b": 546949
+  },
+  "states": {
+    "Gameplay": 132339,
+    "Unfocused": 16791
+  },
+  "frameStats": {
+    "Gameplay:avgFrameMs": {
+      "n": 132339,
+      "mean": 20.14140176743085,
+      "p50": 17.4616,
+      "p95": 33.4962,
+      "p99": 50.892,
+      "max": 452.9631
+    },
+    "capture:avgFrameMs": {
+      "n": 11356,
+      "mean": 23.610614600211452,
+      "p50": 20.2877,
+      "p95": 40.9043,
+      "p99": 78.079,
+      "max": 302.2394
+    },
+    "Gameplay:selfMainMs": {
+      "n": 132339,
+      "mean": 0.4348404068339604,
+      "p50": 0.2299,
+      "p95": 1.2256,
+      "p99": 1.7584000000000002,
+      "max": 115.08500000000001
+    },
+    "capture:selfMainMs": {
+      "n": 11356,
+      "mean": 0.8426806710109201,
+      "p50": 0.5771,
+      "p95": 1.4773999999999998,
+      "p99": 2.0163,
+      "max": 111.1369
+    },
+    "Gameplay:coveredMs": {
+      "n": 132339,
+      "mean": 0.6706290919532398,
+      "p50": 0.3994,
+      "p95": 1.277,
+      "p99": 2.3912,
+      "max": 182.6076
+    },
+    "capture:coveredMs": {
+      "n": 11356,
+      "mean": 0.7241640806622061,
+      "p50": 0.3929,
+      "p95": 1.7292,
+      "p99": 3.2728,
+      "max": 98.5432
+    },
+    "standby:avgFrameMs": {
+      "n": 137774,
+      "mean": 19.87097905700681,
+      "p50": 17.197,
+      "p95": 33.0908,
+      "p99": 49.9888,
+      "max": 452.9631
+    },
+    "standby:selfMainMs": {
+      "n": 137774,
+      "mean": 0.39764281141579133,
+      "p50": 0.2064,
+      "p95": 1.1824,
+      "p99": 1.7367000000000004,
+      "max": 115.08500000000001
+    },
+    "standby:coveredMs": {
+      "n": 137774,
+      "mean": 0.6701319450694587,
+      "p50": 0.3989,
+      "p95": 1.3045,
+      "p99": 2.4068,
+      "max": 182.6076
+    },
+    "Unfocused:avgFrameMs": {
+      "n": 16791,
+      "mean": 20.26880111369188,
+      "p50": 16.9305,
+      "p95": 35.9585,
+      "p99": 56.7923,
+      "max": 178.3379
+    },
+    "Unfocused:selfMainMs": {
+      "n": 16791,
+      "mean": 0.4054539812995066,
+      "p50": 0.18469999999999998,
+      "p95": 1.1319,
+      "p99": 1.8014999999999999,
+      "max": 83.7057
+    },
+    "Unfocused:coveredMs": {
+      "n": 16791,
+      "mean": 0.7027563873503657,
+      "p50": 0.3881,
+      "p95": 1.671,
+      "p99": 2.7127,
+      "max": 80.4139
+    }
+  },
+  "maxima": {
+    "writerDropped": 0.0,
+    "diskDroppedBatches": 0.0,
+    "writerQueueBytes": 129506,
+    "capturePayloadBytes": 33554432,
+    "methodRecordOmitted": 8
+  },
+  "captureStates": [
+    {
+      "timestamp": "2026-11-15 18:42:18.047",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "7805b411e0b4438dab8902a298bf7e6b",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 18:44:34.912",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "d75baaabe32647a78e941d74c7720dc7",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 18:45:27.183",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "d75baaabe32647a78e941d74c7720dc7",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 18:51:27.292",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "9eecb5b35fd546f9920451aa65550a65",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 18:52:21.537",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "9eecb5b35fd546f9920451aa65550a65",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 18:54:46.171",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "211e00c867d34460bfae4a0429bd9ae5",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 18:55:16.243",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "211e00c867d34460bfae4a0429bd9ae5",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 18:59:54.619",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "3ba1ff4d00694865aa61a934d3352ea7",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 19:00:24.638",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "3ba1ff4d00694865aa61a934d3352ea7",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 19:04:54.160",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "ba8a3f586a42487ea51f192a5126feab",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 19:05:24.170",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "ba8a3f586a42487ea51f192a5126feab",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 19:28:37.280",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "d3e2f8527618419b814e8aa9b3853d57",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 19:29:07.288",
+      "phase": "Saving",
+      "reason": "Completed",
+      "captureId": "d3e2f8527618419b814e8aa9b3853d57",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 19:31:42.388",
+      "phase": "Plugins",
+      "reason": "Frame spike; pre-trigger methods may not have been instrumented",
+      "captureId": "0ad9d64ae2894c68a2748d744364bb7d",
+      "roomEpoch": 7
+    },
+    {
+      "timestamp": "2026-11-15 19:31:55.005",
+      "phase": "Saving",
+      "reason": "Shutdown",
+      "captureId": "0ad9d64ae2894c68a2748d744364bb7d",
+      "roomEpoch": 7
+    }
+  ],
+  "boundaries": [],
+  "errors": [
+    [
+      [
+        "NullReferenceException",
+        "(wrapper dynamic-method) WindChillZone.DMD<WindChillZone::ApplyStatus>(WindChillZone,Character)"
+      ],
+      148
+    ],
+    [
+      [
+        "Error",
+        ""
+      ],
+      45
+    ],
+    [
+      [
+        "NullReferenceException",
+        "Peak.WarpOnThrow.OnDisable () (at <e9a4fa24a0684abd8c8d66c4b2b65471>:0)"
+      ],
+      23
+    ],
+    [
+      [
+        "NullReferenceException",
+        "UnityEngine.Bindings.ThrowHelper.ThrowNullReferenceException (System.Object obj) (at <89f3c519d1ec48c99a8d1a0ae8590602>:0)"
+      ],
+      15
+    ],
+    [
+      [
+        "NullReferenceException",
+        "Compass.CompassTapeUI.UpdatePlayerMark (System.Int32 index, UnityEngine.Vector3 headingVector, UnityEngine.Vector3 rightVector, UnityEngine.Vector3 cameraPosition) (at <32e879d7c0ef4d2dade462af00e8003b>:0)"
+      ],
+      11
+    ],
+    [
+      [
+        "ArgumentNullException",
+        "System.Collections.Generic.Dictionary`2[TKey,TValue].Remove (TKey key) (at <41d29b352f6a475ab1bf7c6628b82790>:0)"
+      ],
+      7
+    ],
+    [
+      [
+        "NullReferenceException",
+        "FrogTongue.WaterRaycast () (at <e9a4fa24a0684abd8c8d66c4b2b65471>:0)"
+      ],
+      7
+    ],
+    [
+      [
+        "NullReferenceException",
+        "Peak.Island.GloomVoiceConfuser.Update () (at <e9a4fa24a0684abd8c8d66c4b2b65471>:0)"
+      ],
+      5
+    ],
+    [
+      [
+        "IndexOutOfRangeException",
+        "UIPlayerNames+<>c__DisplayClass6_0+<<Init>g__GetNameAsync|0>d.MoveNext () (at <e9a4fa24a0684abd8c8d66c4b2b65471>:0)"
+      ],
+      2
+    ],
+    [
+      [
+        "ArgumentException",
+        "UnityEngine.Object.Instantiate (UnityEngine.Object original, UnityEngine.Transform parent, System.Boolean instantiateInWorldSpace) (at <89f3c519d1ec48c99a8d1a0ae8590602>:0)"
+      ],
+      1
+    ],
+    [
+      [
+        "InvalidCastException",
+        "(wrapper dynamic-method) Item.DMD<Item::Consume>(Item,int)"
+      ],
+      1
+    ]
+  ],
+  "alerts": {
+    "RpcFlood": 178,
+    "DestroyFlood": 44,
+    "InstantiateFlood": 53,
+    "PhotonViewSpike": 28,
+    "ActorMethodHotspot": 339
+  },
+  "largestSpikes": [
+    {
+      "timestamp": "2026-11-15 19:17:24.629",
+      "avgFrameMs": 452.9631,
+      "coveredMs": 0.3827,
+      "unattributedMs": 452.5804,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 18:43:33.279",
+      "avgFrameMs": 307.5695,
+      "coveredMs": 0.2023,
+      "unattributedMs": 307.3672,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 18:44:56.292",
+      "avgFrameMs": 302.2394,
+      "coveredMs": 0.3481,
+      "unattributedMs": 301.8913,
+      "sceneState": "Gameplay",
+      "captureId": "d75baaabe32647a78e941d74c7720dc7"
+    },
+    {
+      "timestamp": "2026-11-15 19:21:58.942",
+      "avgFrameMs": 223.5154,
+      "coveredMs": 2.6764,
+      "unattributedMs": 220.839,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 19:31:42.386",
+      "avgFrameMs": 221.4551,
+      "coveredMs": 182.6076,
+      "unattributedMs": 38.8475,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 19:22:46.101",
+      "avgFrameMs": 220.1325,
+      "coveredMs": 0.9087,
+      "unattributedMs": 219.22379999999998,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 18:59:54.618",
+      "avgFrameMs": 201.4877,
+      "coveredMs": 0.6984,
+      "unattributedMs": 200.7893,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 19:01:05.110",
+      "avgFrameMs": 189.1063,
+      "coveredMs": 40.2482,
+      "unattributedMs": 148.8581,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 19:31:42.565",
+      "avgFrameMs": 181.3821,
+      "coveredMs": 0.8823,
+      "unattributedMs": 180.49980000000002,
+      "sceneState": "Gameplay",
+      "captureId": "0ad9d64ae2894c68a2748d744364bb7d"
+    },
+    {
+      "timestamp": "2026-11-15 18:55:29.858",
+      "avgFrameMs": 178.3379,
+      "coveredMs": 0.959,
+      "unattributedMs": 177.3789,
+      "sceneState": "Unfocused",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 18:55:16.839",
+      "avgFrameMs": 175.14,
+      "coveredMs": 3.3212,
+      "unattributedMs": 171.81879999999998,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    },
+    {
+      "timestamp": "2026-11-15 18:55:16.665",
+      "avgFrameMs": 172.8695,
+      "coveredMs": 0.383,
+      "unattributedMs": 172.48649999999998,
+      "sceneState": "Gameplay",
+      "captureId": ""
+    }
+  ],
+  "spikeCount": 1664,
+  "fpsReports": 300,
+  "network": {
+    "ping": {
+      "n": 2970,
+      "mean": 44.178451178451176,
+      "p50": 43,
+      "p95": 50,
+      "p99": 57,
+      "max": 103
+    },
+    "rttVariance": {
+      "n": 2970,
+      "mean": 5.6491582491582495,
+      "p50": 4,
+      "p95": 12,
+      "p99": 22,
+      "max": 49
+    },
+    "incomingCommands": {
+      "n": 2970,
+      "mean": 0.05925925925925926,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "max": 72
+    },
+    "outgoingCommands": {
+      "n": 2970,
+      "mean": 0.17744107744107745,
+      "p50": 0,
+      "p95": 1,
+      "p99": 2,
+      "max": 64
+    },
+    "reliableRetransmissions": {
+      "n": 2970,
+      "mean": 0.11582491582491583,
+      "p50": 0,
+      "p95": 0,
+      "p99": 2,
+      "max": 30
+    },
+    "detailDroppedTotal": {
+      "n": 2970,
+      "mean": 0.0,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "max": 0
+    },
+    "detailSampledOut": {
+      "n": 2970,
+      "mean": 87687.04949494949,
+      "p50": 92313,
+      "p95": 125275,
+      "p99": 125355,
+      "max": 125372
+    },
+    "cpuFrameMs": {},
+    "gpuFrameMs": {}
+  },
+  "logs": {
+    "LogOutput.log": {
+      "bytes": 114995,
+      "lines": 996,
+      "errors": [
+        [
+          "[Error  :   BepInEx] Unable to start Unity log writer",
+          1
+        ]
+      ],
+      "getDisplayName": 0,
+      "loc0": 0,
+      "whyLagErrors": []
+    },
+    "Player.log": {
+      "bytes": 6737030,
+      "lines": 56778,
+      "errors": [
+        [
+          "NullReferenceException: Object reference not set to an instance of an object",
+          236
+        ],
+        [
+          "NullReferenceException: Object reference not set to an instance of an object.",
+          88
+        ],
+        [
+          "ArgumentNullException: Value cannot be null.",
+          13
+        ],
+        [
+          "Rethrow as TargetInvocationException: Exception has been thrown by the target of an invocation.",
+          8
+        ],
+        [
+          "Rethrow as AggregateException: Caught 1 exception(s) in methods called by DispatchIncomingCommands(). Rethrowing first only (see above). (Exception has been thrown by the target of an invocation.)",
+          7
+        ],
+        [
+          "IndexOutOfRangeException: Index was outside the bounds of the array.",
+          7
+        ],
+        [
+          "ArgumentException: The Object you want to instantiate is null.",
+          4
+        ],
+        [
+          "InvalidCastException: Specified cast is not valid.",
+          3
+        ],
+        [
+          "TypeLoadException: Could not load type of field 'BingBongAI.Pigs.PigsBridge+<>c:<>9__9_1' (1) due to: Could not load file or assembly 'CavyCrew.GuineaPigsAndTreats, Version=0.9.5.0, Culture=neutral, PublicKeyToken=null' ",
+          1
+        ],
+        [
+          "Rethrow as AggregateException: Caught 2 exception(s) in methods called by DispatchIncomingCommands(). Rethrowing first only (see above). (Exception has been thrown by the target of an invocation.)",
+          1
+        ],
+        [
+          "ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.",
+          1
+        ],
+        [
+          "InvalidOperationException: Duplicate key 258",
+          1
+        ]
+      ],
+      "getDisplayName": 0,
+      "loc0": 0,
+      "whyLagErrors": []
+    },
+    "WhySoLaggy.log": {
+      "bytes": 5539480,
+      "lines": 33254,
+      "errors": [],
+      "getDisplayName": 0,
+      "loc0": 0,
+      "whyLagErrors": [
+        "[WHY_LAG] Found: 126 | Unique: 126 | Merged: 0 | Hooked: 114 | Self-only: 12 | Ignored: 0 | Unsupported: 0 | Failed: 0",
+        "[WHY_LAG]   Total MOD overhead: 0.14ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.58ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.57ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.70ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 1.24ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.20ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.14ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.16ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.17ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.14ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.20ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.17ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.20ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.15ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.14ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.16ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.17ms/frame",
+        "[WHY_LAG]   Total MOD overhead: 0.20ms/frame"
+      ]
+    }
+  },
+  "storage": {
+    ".csv": 321602941,
+    ".jsonl": 318964122,
+    ".log": 15828938
+  },
+  "archives": [
+    {
+      "file": "wsl-20261115-103551-122dc848-anonymous.zip",
+      "rows": 5808,
+      "first": "2026-11-15 18:35:47.906",
+      "last": "2026-11-15 18:35:51.630",
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\n已完成\n持续时间: 60.02s\n记录条数: 5808\n省略条数: 80082\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "sampleCoverage": {
+        "PatchTiming": {
+          "n": 2958,
+          "mean": 0.10808520084964761,
+          "p50": 0.0,
+          "p95": 0.5,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PluginTiming": {
+          "n": 2571,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "forbiddenFields": {}
+    },
+    {
+      "file": "wsl-20261115-113155-0ad9d64a-anonymous.zip",
+      "rows": 5063,
+      "first": "2026-11-15 19:31:49.250",
+      "last": "2026-11-15 19:31:55.005",
+      "summary": "WhySoLaggy 1.0.5-dev.20261115\nShutdown\n持续时间: 12.62s\n记录条数: 5063\n省略条数: 10315\n采集覆盖范围有限，关联插件不能直接认定为根因。\n触发前只有已经安装计时的方法才有耗时数据。\n隐私模式: 匿名",
+      "sampleCoverage": {
+        "PatchTiming": {
+          "n": 2406,
+          "mean": 0.19320797909139345,
+          "p50": 0.08333333333333333,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "PluginTiming": {
+          "n": 2440,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        }
+      },
+      "forbiddenFields": {}
+    }
+  ]
+}

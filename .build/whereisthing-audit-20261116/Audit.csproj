@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AuditHarness.cs" />
+    <Compile Include="ExtractedMethods.cs" />
+    <Compile Include="GameStubs.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\ThingTypes.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\ThingNapberry.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\WhereIsThingPlugin.Napberry.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\ThingPresetSelection.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\ThingItemTraits.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\ThingLabelRange.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\ThingPickupIdentity.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\ThingSegmentFilter.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\ThingPresets.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\Helpers\ThingUi.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\WhereIsThingPlugin.Plants.cs" />
+    <Compile Include="C:\Users\Administrator\Desktop\MOD\PEAK\MOD开发\WhereIsThing\WhereIsThing\WhereIsThingPlugin.Luggage.cs" />
+  </ItemGroup>
+</Project>
